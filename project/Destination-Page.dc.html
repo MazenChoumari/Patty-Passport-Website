@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="_ds/modernist-cf9009e6-65ae-4cc3-81bb-0a0e3ffc9a69/styles.css">
+<script src="./pp-data.js"></script>
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#ae1800;text-underline-offset:3px}
+a:hover{color:#ec3013}
+:focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+::selection{background:rgba(236,48,19,.28)}
+@keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+@keyframes ppPulse{0%{opacity:.25;transform:scale(1)}100%{opacity:0;transform:scale(2.6)}}
+@keyframes ppEq{0%{height:14%}100%{height:100%}}
+</style></helmet>
+
+<dc-import name="PP-Nav" active="Destinations" hint-size="100%,130px"></dc-import>
+
+<div style="display:flex;align-items:center;gap:12px;padding:12px 44px;background:#1b1a19;color:#f7f3ec;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;border-bottom:2px solid #1b1a19;overflow-x:auto">
+  <a href="Destinations.dc.html" style="color:#bab6b6;text-decoration:none" style-hover="color:#f2b30c">All destinations</a>
+  <span style="color:#605d5d">/</span>
+  <span style="color:#f2b30c">{{ routeName }} Route</span>
+  <span style="color:#605d5d">/</span>
+  <span>{{ name }}</span>
+  <span style="margin-left:auto;color:#bab6b6">{{ med }}</span>
+</div>
+
+<section style="position:relative;background:{{ accent }};border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:relative;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr)">
+    <div style="padding:58px 44px 52px;border-right:2px solid #1b1a19;color:{{ accentFg }}">
+      <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#1b1a19;color:#f7f3ec;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px">
+        <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Destination {{ stamp }} · {{ routeName }} Route
+      </div>
+      <h1 data-rv="up" data-rv-d="70" style="font:800 clamp(48px,7.4vw,112px)/.88 'Archivo',sans-serif;letter-spacing:-.045em;margin:0 0 16px">{{ nameUpper }}</h1>
+      <div data-rv="up" data-rv-d="120" style="font:800 clamp(18px,2.1vw,30px)/1.1 'Archivo',sans-serif;letter-spacing:-.02em;margin-bottom:20px">{{ identity }}</div>
+      <p data-rv="up" data-rv-d="170" style="font:400 clamp(15px,1.25vw,18px)/1.55 'Archivo',sans-serif;max-width:54ch;margin:0 0 30px;opacity:.9">{{ intro }}</p>
+      <div data-rv="up" data-rv-d="220" style="display:flex;flex-wrap:wrap;gap:12px">
+        <a href="Menu.dc.html" style="display:inline-flex;align-items:center;min-width:262px;padding:16px 19px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#ec3013">Order the {{ dishShort }}<span style="margin-left:auto">→</span></a>
+        <a href="My-Passport.dc.html" style="display:inline-flex;align-items:center;min-width:210px;padding:16px 19px;border:2px solid #1b1a19;color:inherit;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#1b1a19;color:#f7f3ec">Collect stamp {{ stamp }}<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+    <div style="position:relative;min-height:460px;background:#1b1a19">
+      <image-slot id="{{ slotHero }}" shape="rect" fit="cover" placeholder="{{ heroSlot }}" style="position:absolute;inset:0"></image-slot>
+      <div style="position:absolute;right:26px;top:26px;width:118px;height:118px;border:3px solid #f7f3ec;color:#f7f3ec;background:rgba(27,26,25,.6);display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-11deg);pointer-events:none">
+        <span style="position:absolute;inset:-3px;border:3px solid #f7f3ec;border-radius:50%;animation:ppPulse 3.4s ease-out infinite"></span>
+        <span style="font:800 25px/1 'Archivo',sans-serif">{{ stamp }}</span>
+        <span style="font:600 8px/1.4 'Archivo',sans-serif;letter-spacing:.18em">{{ nameUpper }}</span>
+      </div>
+      <div style="position:absolute;left:0;right:0;bottom:0;padding:13px 18px;background:rgba(27,26,25,.92);color:#f7f3ec;font:600 9.5px/1.5 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;pointer-events:none">{{ heroCaption }}</div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#1b1a19;color:#f7f3ec;border-bottom:2px solid #1b1a19">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+    <sc-for list="{{ quickFacts }}" as="q" hint-placeholder-count="4">
+      <div data-rv="up" data-rv-d="{{ q.delay }}" style="padding:24px 26px 26px;border-right:1px solid rgba(247,243,236,.22)">
+        <div style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979;margin-bottom:10px">{{ q.label }}</div>
+        <div style="font:800 22px/1.08 'Archivo',sans-serif;letter-spacing:-.025em;color:{{ q.color }}">{{ q.value }}</div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+<section style="background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:70px 0 76px">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:46px;align-items:start">
+    <div>
+      <div data-rv="up" style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#ae1800;margin-bottom:16px">The culture</div>
+      <h2 data-rv="up" data-rv-d="60" style="font:800 clamp(30px,4vw,56px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 20px;max-width:18ch">{{ cultureTitle }}</h2>
+      <p data-rv="up" data-rv-d="110" style="font:400 15.5px/1.6 'Archivo',sans-serif;color:#444141;margin:0 0 18px">{{ culture1 }}</p>
+      <p data-rv="up" data-rv-d="150" style="font:400 15.5px/1.6 'Archivo',sans-serif;color:#444141;margin:0 0 26px">{{ culture2 }}</p>
+      <div data-rv="up" data-rv-d="190" style="border:2px solid #1b1a19;padding:18px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:18px">
+        <span>
+          <span style="display:block;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#605d5d;margin-bottom:8px">Say it at the table</span>
+          <span style="display:block;font:800 30px/1 'Archivo',sans-serif;letter-spacing:-.02em">{{ phrase }}</span>
+          <span style="display:block;font:600 10px/1.4 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#605d5d;margin-top:6px">{{ translit }}</span>
+        </span>
+        <span style="margin-left:auto;display:flex;align-items:flex-end;gap:3px;height:44px;width:120px">
+          <sc-for list="{{ eqBars }}" as="b" hint-placeholder-count="14">
+            <span style="flex:1;background:{{ b.color }};height:30%;animation:ppEq {{ b.dur }} ease-in-out {{ b.delay }} infinite alternate"></span>
+          </sc-for>
+        </span>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0;border-top:2px solid #1b1a19">
+      <sc-for list="{{ facts }}" as="f" hint-placeholder-count="3">
+        <div data-rv="up" data-rv-d="{{ f.delay }}" style="display:flex;gap:16px;padding:18px 0;border-bottom:2px solid rgba(27,26,25,.2)">
+          <span style="width:44px;height:44px;flex:none;background:{{ f.bg }};color:{{ f.fg }};display:flex;align-items:center;justify-content:center;font:800 15px/1 'Archivo',sans-serif">{{ f.n }}</span>
+          <span style="flex:1">
+            <span style="display:block;font:800 16px/1.2 'Archivo',sans-serif;letter-spacing:-.015em;margin-bottom:5px">{{ f.title }}</span>
+            <span style="display:block;font:400 13px/1.5 'Archivo',sans-serif;color:#605d5d">{{ f.line }}</span>
+          </span>
+        </div>
+      </sc-for>
+      <div data-rv="up" data-rv-d="240" style="position:relative;height:250px;border:2px solid #1b1a19;margin-top:22px">
+        <image-slot id="{{ slotNature }}" shape="rect" fit="cover" placeholder="{{ natureSlot }}" style="position:absolute;inset:0"></image-slot>
+        <span style="position:absolute;left:0;bottom:0;padding:7px 10px;background:#1b1a19;color:#f7f3ec;font:800 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;pointer-events:none">{{ natureLabel }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#1b1a19;color:#f7f3ec;border-bottom:2px solid #1b1a19;padding:70px 0 76px">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:34px">
+      <h2 data-rv="up" style="font:800 clamp(30px,4.2vw,58px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0;max-width:18ch">WHAT ARRIVES AT THE TABLE</h2>
+      <a href="Menu.dc.html" data-rv="up" data-rv-d="70" style="display:inline-flex;align-items:center;min-width:230px;padding:15px 18px;background:#f2b30c;color:#1b1a19;text-decoration:none;font:800 14px/1.1 'Archivo',sans-serif" style-hover="background:#ec3013;color:#fff">Full menu<span style="margin-left:auto">→</span></a>
+    </div>
+    <div style="display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:0;border:2px solid #f7f3ec">
+      <div style="position:relative;min-height:380px;border-right:2px solid #f7f3ec">
+        <image-slot id="{{ slotDish }}" shape="rect" fit="cover" placeholder="{{ dishSlot }}" style="position:absolute;inset:0"></image-slot>
+        <span style="position:absolute;left:0;top:0;padding:8px 12px;background:#ec3013;color:#fff;font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;pointer-events:none">SIGNATURE PLATE</span>
+      </div>
+      <div style="padding:26px 24px 28px;display:flex;flex-direction:column;gap:16px">
+        <div>
+          <h3 style="font:800 30px/1.02 'Archivo',sans-serif;letter-spacing:-.03em;margin:0 0 10px">{{ dish }}</h3>
+          <p style="font:400 14px/1.55 'Archivo',sans-serif;color:#bab6b6;margin:0">{{ dishLine }}</p>
+        </div>
+        <div style="display:flex;flex-direction:column;border-top:2px solid rgba(247,243,236,.3)">
+          <sc-for list="{{ pairings }}" as="p" hint-placeholder-count="3">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 0;border-bottom:1px solid rgba(247,243,236,.22)">
+              <span>
+                <span style="display:block;font:600 9px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979;margin-bottom:5px">{{ p.kind }}</span>
+                <span style="display:block;font:800 15px/1.15 'Archivo',sans-serif">{{ p.name }}</span>
+              </span>
+              <span style="font:800 14px/1 'Archivo',sans-serif;color:#f2b30c">{{ p.price }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:14px">
+          <span style="font:800 30px/1 'Archivo',sans-serif;letter-spacing:-.03em">{{ price }}</span>
+          <span style="font:600 9.5px/1.5 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#bab6b6;text-align:right">{{ dietTags }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:66px 0 0">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:28px">
+      <div>
+        <div data-rv="up" style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#ae1800;margin-bottom:14px">The full card · {{ name }}</div>
+        <h2 data-rv="up" data-rv-d="60" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0;max-width:20ch">EVERYTHING THIS COUNTRY SERVES</h2>
+      </div>
+      <a href="Menu.dc.html" data-rv="up" data-rv-d="100" style="display:inline-flex;align-items:center;min-width:230px;padding:15px 18px;border:2px solid #1b1a19;color:#1b1a19;text-decoration:none;font:800 14px/1.1 'Archivo',sans-serif" style-hover="background:#1b1a19;color:#f7f3ec">Compare all 21 menus<span style="margin-left:auto">→</span></a>
+    </div>
+  </div>
+  <sc-for list="{{ menuGroups }}" as="g" hint-placeholder-count="5">
+    <div style="border-top:2px solid #1b1a19">
+      <div style="padding:14px 32px;background:{{ g.bg }};color:{{ g.fg }};font:800 11px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;display:flex;justify-content:space-between;gap:14px">
+        <span>{{ g.title }}</span><span style="opacity:.7">{{ g.count }}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));border-left:2px solid #1b1a19">
+        <sc-for list="{{ g.items }}" as="i" hint-placeholder-count="3">
+          <div style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:#f7f3ec;padding:18px 17px 20px;display:flex;flex-direction:column;gap:9px;min-height:184px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+              <span style="font:600 9px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:{{ i.kindColor }}">{{ i.kindLabel }}</span>
+              <span style="font:800 15px/1 'Archivo',sans-serif">{{ i.price }}</span>
+            </div>
+            <h3 style="font:800 17px/1.12 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">{{ i.name }}</h3>
+            <p style="font:400 12.5px/1.45 'Archivo',sans-serif;color:#605d5d;margin:0">{{ i.desc }}</p>
+            <div style="margin-top:auto;display:flex;flex-wrap:wrap;gap:5px;padding-top:10px;border-top:2px solid rgba(27,26,25,.16)">
+              <sc-for list="{{ i.tags }}" as="t" hint-placeholder-count="3">
+                <span style="padding:4px 7px;border:2px solid rgba(27,26,25,.28);color:{{ t.color }};font:800 8.5px/1 'Archivo',sans-serif;letter-spacing:.11em;text-transform:uppercase">{{ t.t }}</span>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-for>
+  <div style="border-top:2px solid #1b1a19;background:#1b1a19;color:#f7f3ec;padding:26px 32px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between">
+    <span style="font:600 10px/1.6 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#bab6b6">{{ comboLine }}</span>
+    <a href="Booking.dc.html" style="display:inline-flex;align-items:center;min-width:240px;padding:15px 18px;background:#f2b30c;color:#1b1a19;text-decoration:none;font:800 14px/1.1 'Archivo',sans-serif" style-hover="background:#ec3013;color:#fff">Book this destination<span style="margin-left:auto">→</span></a>
+  </div>
+</section>
+
+<section style="background:#e7e3dc;border-bottom:2px solid #1b1a19;padding:66px 0 72px">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:30px">
+      <h2 data-rv="up" style="font:800 clamp(28px,3.6vw,50px)/.96 'Archivo',sans-serif;letter-spacing:-.035em;margin:0;max-width:20ch">ALSO ON THE {{ routeUpper }} ROUTE</h2>
+      <a href="Route-Map.dc.html" data-rv="up" data-rv-d="70" style="display:inline-flex;align-items:center;min-width:220px;padding:15px 18px;border:2px solid #1b1a19;color:#1b1a19;text-decoration:none;font:800 14px/1.1 'Archivo',sans-serif" style-hover="background:#1b1a19;color:#f7f3ec">See the route map<span style="margin-left:auto">→</span></a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19">
+      <sc-for list="{{ related }}" as="r" hint-placeholder-count="4">
+        <a href="{{ r.href }}" data-rv="up" data-rv-d="{{ r.delay }}" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;padding:22px 20px 24px;background:#f7f3ec;text-decoration:none;color:#1b1a19;display:flex;flex-direction:column;gap:10px;min-height:190px;transition:background .2s ease" style-hover="background:#1b1a19;color:#f7f3ec">
+          <span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.7">{{ r.med }}</span>
+          <span style="font:800 24px/1.02 'Archivo',sans-serif;letter-spacing:-.025em">{{ r.name }}</span>
+          <span style="font:400 13px/1.5 'Archivo',sans-serif;opacity:.8">{{ r.identity }}</span>
+          <span style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase">{{ r.stamp }}<span>→</span></span>
+        </a>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section style="position:relative;background:#ec3013;color:#fff;padding:66px 0 72px;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(255,255,255,.14) 1px,transparent 1px);background-size:74px 100%"></div>
+  <div style="position:relative;max-width:1240px;margin:0 auto;padding:0 32px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:26px">
+    <div>
+      <h2 data-rv="up" style="font:800 clamp(32px,4.6vw,66px)/.93 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 14px;max-width:17ch">FLY TO {{ nameUpper }} THIS WEEK.</h2>
+      <p data-rv="up" data-rv-d="80" style="font:400 15.5px/1.55 'Archivo',sans-serif;margin:0;max-width:46ch">Book the table, tell the desk the destination, and the boarding pass prints with {{ med }} on it.</p>
+    </div>
+    <div data-rv="up" data-rv-d="140" style="display:flex;flex-wrap:wrap;gap:12px">
+      <a href="Events.dc.html" style="display:inline-flex;align-items:center;min-width:230px;padding:17px 20px;border:2px solid #fff;color:#fff;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" style-hover="background:#fff;color:#ec3013">Book a celebration<span style="margin-left:auto">→</span></a>
+      <a href="Booking.dc.html" style="display:inline-flex;align-items:center;min-width:250px;padding:17px 20px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" style-hover="background:#f2b30c;color:#1b1a19">Reserve your flight<span style="margin-left:auto">→</span></a>
+    </div>
+  </div>
+</section>
+
+<dc-import name="PP-Footer" hint-size="100%,420px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
+const RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
+const ROUTES = { LEV: ["Levant", YEL, INK], AEG: ["Aegean", BLU, "#fff"], IBL: ["Iberia & Latin", CREAM, INK], ADR: ["Adriatic", "#e7e3dc", INK], NAF: ["N. Africa", RED, "#fff"] };
+// code,name,route,med,identity,intro,culture1,culture2,phrase,translit,dish,dishLine,price,facts[3],nature,capital,pop,sea,dietTags
+const D = [
+["lbn","Lebanon","LEV","MED-12","Land of the Phoenicians",
+ "The loudest welcome on the Mediterranean: cedar mountains behind you, the sea in front, and a table that refuses to stay small.",
+ "Lebanon gave the alphabet to the world and then spent three thousand years perfecting the art of feeding people who show up unannounced. The mezze table is the national argument — twenty small plates, all arriving at once, none of them optional.",
+ "Beirut cooks like a port city because it is one: Ottoman grills, French bakery technique, mountain village preserving, all inside six streets.",
+ "مرحبا","Marhaba · Welcome","Shish Tawouk Street Burger",
+ "Garlic-marinated chicken thigh off the charcoal, toum whipped to a cloud, pickled turnip, sumac onion, saj-style bun.","€11.50",
+ [["Alphabet exporters","The Phoenician script that became Greek, Latin and most of what you're reading."],["Six millennia of Byblos","One of the oldest continuously inhabited cities on earth, still serving lunch."],["Cedar on the flag","The tree that built Egyptian ships and Solomon's temple."]],
+ "Cedar forest on a Lebanese mountain slope","Beirut","5.5M","Levantine Sea","Halal · nut-free option"],
+["syr","Syria","LEV","MED-13","The Oldest Kitchens",
+ "Aleppo pepper, pomegranate molasses and a grill tradition older than most of the borders around it.",
+ "Aleppo was a trade capital when Rome was a village, and its kitchen still shows the inventory: pistachio, cherry, cumin, tamarind, charcoal.",
+ "Damascus does sweets the way Paris does pastry — patient, layered, and slightly competitive.",
+ "أهلا وسهلا","Ahlan wa sahlan · Welcome","Aleppo Kebab Burger",
+ "Cherry-kebab spiced lamb, pomegranate glaze, pistachio crumb, flatbread bun.","€12.00",
+ [["Cherry kebab","Aleppo grills lamb over sour cherries — sweet, sharp, unmistakable."],["Oldest capital","Damascus has been continuously inhabited for roughly eleven thousand years."],["Spice road station","Every caravan between Asia and the sea stopped here and left something behind."]],
+ "Terraced orchards outside Aleppo","Damascus","21M","Levantine Sea","Halal · contains nuts"],
+["pse","Palestine","LEV","MED-14","Olive, Thyme and Stone",
+ "Za'atar hillsides, taboon bread baked on stones, and the sweetest olive oil on the eastern coast.",
+ "The Palestinian table is built on preserving: oil, olives, thyme, sumac, labneh rolled in herbs and kept in jars through the winter.",
+ "Musakhan — sumac chicken on oil-soaked bread — is the dish families cook to mark the first press of the season.",
+ "أهلاً","Ahlan · Welcome","Musakhan Chicken Burger",
+ "Sumac-roasted chicken, caramelised onion, olive oil-brushed taboon bun, toasted pine nuts.","€11.50",
+ [["First press","The olive harvest is a national calendar event, not an agricultural one."],["Za'atar blend","Wild thyme, sesame, sumac — every family swears by a different ratio."],["Taboon bread","Baked directly on hot stones, dimpled by the oven floor."]],
+ "Olive terraces on limestone hills","Ramallah","5.4M","Levantine Sea","Halal · contains nuts"],
+["tur","Türkiye","AEG","MED-21","The Bridge Between Continents",
+ "Two seas, two landmasses, and the grill culture that connects them.",
+ "Turkish cooking is regional to the point of stubbornness: Black Sea anchovies, Gaziantep pistachio, Aegean olive oil, Istanbul street everything.",
+ "The meyhane table — small plates, slow drinking, long conversation — is the Mediterranean's other mezze tradition.",
+ "Hoş geldiniz","Hoş geldiniz · Welcome","Doner Chicken Burger",
+ "Vertical-spit chicken shaved thin, garlic yoghurt, sumac onion, pickled chilli, sesame bun.","€11.50",
+ [["Two continents","Istanbul is the only city sitting on two landmasses at once."],["Pistachio capital","Gaziantep produces baklava under legal geographic protection."],["Tea by volume","Türkiye drinks more tea per person than any country on earth."]],
+ "Aegean coastline with olive groves","Ankara","85M","Aegean & Black Sea","Halal · contains dairy"],
+["cyp","Cyprus","AEG","MED-22","Island of Two Tables",
+ "Halloumi on the grill, mint in the salad, and a sea on every side.",
+ "Cyprus cooks Greek and Turkish at the same time and has never seen a contradiction in it.",
+ "Meze here runs to thirty plates and several hours; nobody orders a main course.",
+ "Καλώς ήρθατε","Kalos irthate · Welcome","Halloumi Grill Burger",
+ "Charred halloumi, grilled lamb, mint-cucumber yoghurt, tomato, sesame bun.","€11.00",
+ [["Halloumi is protected","Only cheese made on the island can carry the name."],["Copper island","Cyprus gave copper its Latin name — cuprum."],["Commandaria","The oldest named wine still in production, going since 800 BC."]],
+ "Troodos vineyards above the sea","Nicosia","1.2M","Levantine Sea","Vegetarian option · contains dairy"],
+["grc","Greece","AEG","MED-23","Birthplace of the Open Sea",
+ "Six thousand islands, one horizon, and a cuisine built on fire, lemon and patience.",
+ "Greek cooking is an argument for restraint: good oil, hot charcoal, one herb, plenty of lemon.",
+ "The taverna model — shared plates, no rush, the sea in view — is the reason the rest of Europe eats outside.",
+ "Καλώς ήρθατε","Kalós irthate · Welcome","Souvlaki Burger",
+ "Oregano-marinated pork, tzatziki, tomato, red onion, fries inside the bun as it should be.","€11.50",
+ [["Six thousand islands","Two hundred and twenty-seven of them inhabited."],["Olive oil per head","Greece consumes more per person than anywhere in the world."],["Coastline","Eleven times longer than Italy's relative to land area."]],
+ "Aegean island coast, white rock and olive","Athens","10.4M","Aegean & Ionian","Contains dairy · pork"],
+["ita","Italy","IBL","MED-31","The Art of Fewer Things",
+ "Three ingredients, done perfectly, repeated for two thousand years.",
+ "Italian cooking is regional law: Naples defends the pizza, Bologna the ragù, Sicily the citrus and the eggplant.",
+ "The Mediterranean diet was formally described in Southern Italy — a village diet rebranded as the world's healthiest.",
+ "Benvenuti","Benvenuti · Welcome","Parmigiana Beef Burger",
+ "Beef patty, fried aubergine, San Marzano sugo, basil, aged parmigiano, semolina bun.","€12.50",
+ [["Sixty pasta shapes","Each one engineered for a specific sauce viscosity."],["Slow Food started here","Founded in Piedmont in 1986, in protest at a fast-food opening."],["Citrus of Sicily","Arab traders planted the groves that still define the island."]],
+ "Sicilian lemon grove under Etna","Rome","59M","Tyrrhenian & Adriatic","Vegetarian option · contains dairy"],
+["esp","Spain","IBL","MED-32","Kingdom of the Long Table",
+ "Where lunch is an institution and the heat comes from smoked paprika, not chilli.",
+ "Spain eats late, in company, and in small plates — the tapas format exists because nobody wants the meal to end.",
+ "Andalusian olive plains produce more oil than any country on earth; the Basque coast produces the cooks.",
+ "Bienvenidos","Bienvenidos · Welcome","Iberian Beef Burger",
+ "Iberian pork-beef blend, piquillo pepper, manchego, smoked pimentón aioli, brioche-style bun.","€13.00",
+ [["Olive oil superpower","Spain produces roughly half the world's olive oil."],["Tapas by law","In some regions a drink still legally arrives with food."],["Longest lunch","The midday meal is protected by habit, not legislation — but only just."]],
+ "Andalusian olive rows at golden hour","Madrid","48M","Balearic & Alborán","Contains dairy · pork"],
+["fra","France","IBL","MED-33","The Southern Kitchen",
+ "Provençal herbs, sea salt and butter that refuses to apologise.",
+ "The French Mediterranean is not Paris: it is garlic, anchovy, tomato, olive — closer to Naples than to Normandy.",
+ "Marseille's bouillabaisse began as the fishermen's leftovers and ended up with a legal charter.",
+ "Bienvenue","Bienvenue · Welcome","Provence Beef Burger",
+ "Herb-crusted beef, ratatouille relish, tapenade aioli, comté, sourdough bun.","€13.50",
+ [["Bouillabaisse charter","Marseille restaurants signed a legal recipe agreement in 1980."],["Herbes de Provence","Thyme, rosemary, savory, oregano — the hillside, dried."],["Camargue salt","Hand-harvested from the Rhône delta since Roman times."]],
+ "Lavender and stone in inland Provence","Paris","68M","Gulf of Lion","Contains dairy"],
+["mco","Monaco","IBL","MED-34","The Smallest Coastline",
+ "A harbour the size of a street, cooking above its weight since 1297.",
+ "Monaco's kitchen is Ligurian at heart: chickpea flour, olive oil, basil, seafood straight off the rock.",
+ "Barbagiuan — fried chard and ricotta pastry — is the national dish of a country you can walk across in an hour.",
+ "Benvenue","Benvenue · Welcome","Riviera Surf Burger",
+ "Seared sea bass, basil pistou, lemon aioli, fennel slaw, focaccia bun.","€14.00",
+ [["Two square kilometres","The second-smallest country in the world."],["Barbagiuan","Chard and ricotta in fried pastry — served at every national holiday."],["Socca","Chickpea pancake shared with neighbouring Nice."]],
+ "Cliffs and harbour on the Riviera","Monaco","39K","Ligurian Sea","Pescatarian · contains dairy"],
+["mlt","Malta","IBL","MED-35","Fortress in the Middle",
+ "Limestone, rabbit stew and a language that belongs to nowhere else.",
+ "Malta sits exactly between Sicily and North Africa, and its food and language both prove it — Semitic grammar, Italian vocabulary, British habits.",
+ "Fenkata, the rabbit feast, is the closest thing the islands have to a national ceremony.",
+ "Merħba","Merħba · Welcome","Maltese Rabbit Burger",
+ "Slow-braised rabbit, red wine and bay reduction, caramelised onion, crusty ftira bun.","€12.50",
+ [["Semitic language, Latin script","Maltese is the only one of its kind in the EU."],["Fenkata","The rabbit feast is a village-scale event, not a dinner."],["Limestone everywhere","The whole archipelago is one honey-coloured rock."]],
+ "Honey limestone cliffs above blue water","Valletta","540K","Sicilian Channel","Contains alcohol in sauce"],
+["svn","Slovenia","ADR","MED-41","Where the Alps Meet the Sea",
+ "Forty-six kilometres of coast and a kitchen borrowed — brilliantly — from three neighbours.",
+ "Slovenian cooking runs Alpine in the north, Italian on the coast and Balkan in the east, all within two hours' drive.",
+ "The Karst produces prosciutto cured in the bora wind, and wine grown on red iron soil.",
+ "Dobrodošli","Dobrodošli · Welcome","Kranjska Sausage Burger",
+ "Kranjska sausage patty, horseradish cream, pickled cabbage, rye bun.","€12.00",
+ [["46 km of coast","One of the shortest coastlines in Europe, fiercely used."],["Karst prosciutto","Cured by the bora wind, not by smoke."],["Beekeeping nation","Slovenia has more beekeepers per head than anywhere in the EU."]],
+ "Karst vineyards on red iron soil","Ljubljana","2.1M","Gulf of Trieste","Contains pork · gluten"],
+["hrv","Croatia","ADR","MED-42","A Thousand Islands of Stone",
+ "Karst cliffs, black risotto, and grill smoke over green water.",
+ "Dalmatian cooking is Venetian at the edges and Ottoman inland: olive oil and fish on the coast, peka and paprika behind it.",
+ "Peka — meat and vegetables under an iron bell buried in embers — is the slowest good idea on the Adriatic.",
+ "Dobro došli","Dobro došli · Welcome","Peka Beef Burger",
+ "Bell-roasted beef, rosemary potato crisp, ajvar, kajmak cream, seeded bun.","€12.50",
+ [["1,244 islands","Only about fifty are permanently inhabited."],["Peka under embers","Cooked under an iron bell for three hours, minimum."],["Zinfandel origin","DNA-traced to the Croatian grape crljenak kaštelanski."]],
+ "Karst cliffs above the green Adriatic","Zagreb","3.9M","Adriatic Sea","Contains dairy"],
+["bih","Bosnia","ADR","MED-43","The Inland Coast",
+ "Ćevapi, kajmak and copper pots — the Adriatic's mountain kitchen.",
+ "Bosnian food is Ottoman architecture in edible form: slow-braised, layered, cooked in copper, served with bread that arrives hot.",
+ "Sarajevo's ćevabdžinicas serve one thing, perfectly, all day. Nothing else is on the menu.",
+ "Dobro došli","Dobro došli · Welcome","Ćevapi Burger",
+ "Hand-minced ćevapi patty, kajmak, raw onion, ajvar, pillowy somun bread.","€11.50",
+ [["Twenty kilometres of coast","The shortest coastline of any Adriatic country."],["Copper craft","Sarajevo's coppersmith street has worked metal since the 1500s."],["Somun bread","Baked to order, always served hot enough to steam."]],
+ "Mountain rivers above Mostar","Sarajevo","3.2M","Adriatic Sea","Halal available · contains dairy"],
+["mne","Montenegro","ADR","MED-44","Black Mountain, Blue Bay",
+ "Fjord light, smoked ham and the quietest gulf on the sea.",
+ "Montenegro cooks between mountain and coast: Njeguši ham cured in mountain air, fish pulled from the Bay of Kotor below it.",
+ "The bay is the Mediterranean's deepest natural inlet, and it behaves like a lake with opinions.",
+ "Dobrodošli","Dobrodošli · Welcome","Njeguši Smoked Burger",
+ "Njeguši-style smoked beef, young cheese, roast pepper, honey mustard, dark bun.","€12.00",
+ [["Bay of Kotor","Often called Europe's southernmost fjord — technically a ria."],["Njeguši village","Two hundred people, one nationally famous ham."],["Black mountain","Named by Venetians for the dark forest on Mount Lovćen."]],
+ "The Bay of Kotor from the mountain road","Podgorica","620K","Adriatic Sea","Contains dairy"],
+["alb","Albania","ADR","MED-45","The Undiscovered Shore",
+ "Byrek pastry, mountain yoghurt and a coastline Europe forgot to develop.",
+ "Albanian cooking leans on yoghurt, lamb and wild herbs, with Ottoman pastry technique layered over it.",
+ "Tavë kosi — lamb baked under a yoghurt custard — is comfort food with an unusual amount of engineering.",
+ "Mirë se vini","Mirë se vini · Welcome","Tavë Kosi Lamb Burger",
+ "Baked lamb, yoghurt-egg custard glaze, oregano, mountain cheese, soft bun.","€11.50",
+ [["Two seas","Adriatic in the north, Ionian in the south, one coastline."],["Bunkers everywhere","Around 170,000 of them, now mostly cafés and storage."],["Wild herbs","Albania is one of Europe's largest exporters of wild sage."]],
+ "The Albanian Riviera from the pass","Tirana","2.8M","Adriatic & Ionian","Contains dairy · eggs"],
+["egy","Egypt","NAF","MED-51","Gift of the River",
+ "Seven thousand years of street food perfected on one riverbank.",
+ "Egyptian cooking is the oldest continuous tradition on the Mediterranean: bread, beans, onions, herbs, all documented on tomb walls.",
+ "Hawawshi — spiced minced meat baked inside bread — is the Cairo street dish that translates perfectly into a burger.",
+ "أهلا بيك","Ahlan bik · Welcome","Hawawshi Burger",
+ "Cumin-chilli minced beef baked into the bun, green pepper, parsley, tahini drizzle.","€13.00",
+ [["Bread as currency","Pyramid workers were partly paid in bread and beer."],["Ful medames","The national breakfast, unchanged for several thousand years."],["One river","Ninety-five percent of Egyptians live within a few kilometres of it."]],
+ "Nile delta farmland at dawn","Cairo","112M","Eastern Mediterranean","Halal · contains sesame"],
+["lby","Libya","NAF","MED-52","Desert Meets Harbour",
+ "Bazin, harissa and a coast where the Sahara comes right down to the sea.",
+ "Libyan cooking sits between Maghreb and Levant: pasta from Italy, spice from the desert routes, fish from a very long coastline.",
+ "Shorba, the spiced lamb and orzo soup, is the dish every family makes slightly differently.",
+ "مرحبا بك","Marhaban bik · Welcome","Libyan Spiced Lamb Burger",
+ "Bzaar-spiced lamb, harissa mayo, preserved lemon, mint salad, semolina bun.","€12.50",
+ [["Longest coast","Nearly 1,800 km of Mediterranean shoreline."],["Bzaar spice","Turmeric, cinnamon, caraway — the house blend of the country."],["Roman Leptis Magna","One of the best-preserved Roman cities anywhere."]],
+ "Where the desert reaches the sea","Tripoli","7M","Gulf of Sidra","Halal · spicy"],
+["tun","Tunisia","NAF","MED-53","The Spice Crossroads",
+ "Harissa born here, brik pastry perfected here, olives absolutely everywhere.",
+ "Tunisian food is the spiciest on the Mediterranean, and the most Italian-influenced in North Africa — a Carthage habit that never stopped.",
+ "Brik — egg in crisp pastry, eaten with your hands and some risk — is the national test of nerve.",
+ "أهلا وسهلا","Ahlan wa sahlan · Welcome","Harissa Brik Burger",
+ "Harissa-marinated beef, crisp brik pastry layer, capers, tuna aioli, soft bun.","€12.00",
+ [["Harissa's home","Protected by UNESCO as intangible cultural heritage."],["Carthage","Rome's great rival ran the western Mediterranean from here."],["Olive groves","Among the largest planted olive areas on earth."]],
+ "Olive plains inland from Sfax","Tunis","12M","Gulf of Gabès","Halal · spicy · contains fish"],
+["dza","Algeria","NAF","MED-54","The Widest Country",
+ "Mountain herbs, Saharan dates and a French-Ottoman kitchen entirely its own.",
+ "Algeria is Africa's largest country, and its coast cooks nothing like its desert — Kabyle olive oil north, dates and cumin south.",
+ "Chakhchoukha, rechta, merguez: dishes that travelled to Marseille and stayed there.",
+ "مرحبا","Marhaba · Welcome","Algerian Merguez Burger",
+ "Merguez-spiced lamb and beef, roasted pepper salad, chermoula, olive tapenade, sesame bun.","€12.00",
+ [["Largest in Africa","Eighty percent of it is Sahara."],["Kabyle olive oil","Mountain groves producing oil pressed the same way for centuries."],["Merguez everywhere","The sausage that colonised French street food."]],
+ "Kabyle mountain olive terraces","Algiers","45M","Alborán & Algerian Basin","Halal · spicy"],
+["mar","Morocco","NAF","MED-55","Where the Desert Meets the Atlantic",
+ "Fondouks, tanneries and spice mountains — a kitchen that never rushes anything.",
+ "Moroccan cooking is the Mediterranean's most patient: tagines run for hours, preserved lemons sit for months, tea is poured from a height for the theatre of it.",
+ "Marrakech's spice souks still sell by pyramid, and the ras el hanout blend changes with every stall.",
+ "مرحبا","Marhaba · Welcome","Tagine Beef Burger",
+ "Slow-braised tagine beef, apricot-onion jam, ras el hanout aioli, coriander, khobz bun.","€13.00",
+ [["Two coastlines","Atlantic on one side, Mediterranean on the other."],["Ras el hanout","Literally 'head of the shop' — the merchant's best blend."],["Mint tea ritual","Poured from height to aerate; refusing a glass is not really an option."]],
+ "Date palm oasis at the desert edge","Rabat","37M","Alborán Sea","Halal · contains nuts"]
+];
+
+class Component extends DCLogic {
+  state = { code: "lbn" };
+
+  componentDidMount() {
+    const read = () => {
+      const h = (location.hash || "").replace("#", "").toLowerCase();
+      if (h && D.some(d => d[0] === h)) this.setState({ code: h });
+      window.scrollTo({ top: 0 });
+    };
+    read();
+    this._onHash = read;
+    window.addEventListener("hashchange", this._onHash);
+
+    const setup = () => {
+      const nodes = Array.from(document.querySelectorAll("[data-rv]"));
+      nodes.forEach(el => {
+        if (el._init) return;
+        el._init = true;
+        el.style.opacity = "0";
+        el.style.transform = "translateY(28px)";
+        el.style.transition = "opacity .7s cubic-bezier(.2,.8,.25,1), transform .8s cubic-bezier(.2,.85,.25,1)";
+      });
+      nodes.forEach(n => {
+        const r = n.getBoundingClientRect();
+        if (!n._d && r.top < window.innerHeight * 0.94 && r.bottom > 0) {
+          n._d = true;
+          setTimeout(() => { n.style.opacity = "1"; n.style.transform = "none"; }, parseInt(n.getAttribute("data-rv-d") || "0", 10));
+        }
+      });
+    };
+    this._reveal = setup;
+    this._onScroll = () => { if (!this._raf) this._raf = requestAnimationFrame(() => { this._raf = null; setup(); }); };
+    window.addEventListener("scroll", this._onScroll, { passive: true });
+    window.addEventListener("resize", this._onScroll);
+    this._poll = setInterval(setup, 400);
+    setup();
+    this._onData = () => this.forceUpdate();
+    window.addEventListener("pp-data-ready", this._onData);
+    if (!window.PP_DATA) {
+      this._dataPoll = setInterval(() => { if (window.PP_DATA) { clearInterval(this._dataPoll); this.forceUpdate(); } }, 120);
+    }
+  }
+  componentWillUnmount() {
+    window.removeEventListener("hashchange", this._onHash);
+    window.removeEventListener("pp-data-ready", this._onData);
+    clearInterval(this._dataPoll);
+    window.removeEventListener("scroll", this._onScroll);
+    window.removeEventListener("resize", this._onScroll);
+    clearInterval(this._poll);
+  }
+
+  renderVals() {
+    const i = Math.max(0, D.findIndex(d => d[0] === this.state.code));
+    const d = D[i], rt = ROUTES[d[2]];
+    const related = D.filter(x => x[2] === d[2] && x[0] !== d[0]).slice(0, 4).map((x, k) => ({
+      name: x[1].toUpperCase(), med: x[3], identity: x[4],
+      stamp: "#" + String(D.findIndex(y => y[0] === x[0]) + 1).padStart(2, "0"),
+      href: "Destination-Page.dc.html#" + x[0], delay: String(k * 70)
+    }));
+    const dishShort = d[10].replace(" Burger", "");
+
+    const KINDS = {
+      veg: ["Veg burger", "#1f7a3d"], chicken: ["Chicken burger", "#ae1800"], beef: ["Beef burger", "#ae1800"],
+      fries: ["Loaded fries", "#8a6a00"], salad: ["Salad", "#1f7a3d"], cold: ["Cold country drink", "#1d5c9e"],
+      alcohol: ["Alcoholic country drink", "#7a2b8a"], hot: ["Hot drink", "#8a4a00"], dessert: ["Dessert", "#ae1800"]
+    };
+    const TAG_COLORS = {
+      "Vegetarian": "#1f7a3d", "Halal-friendly": "#1d5c9e", "No pork": "#605d5d",
+      "Contains pork": "#ae1800", "Alcohol-free": "#605d5d", "Contains alcohol": "#7a2b8a", "Contains nuts": "#8a4a00"
+    };
+    const eur = n => "€" + n.toFixed(2).replace(/\.00$/, ".0");
+    const DATA = window.PP_DATA;
+    const entry = DATA ? DATA.COUNTRIES.find(x => x.code === d[0]) : null;
+    const groupDefs = [
+      ["Burgers", YEL, INK], ["Loaded fries", CREAM, INK], ["Salads", "#e7e3dc", INK],
+      ["Drinks", BLU, "#fff"], ["Desserts", RED, "#fff"]
+    ];
+    const menuGroups = entry ? groupDefs.map(g => {
+      const items = entry.items.filter(i => i.group === g[0]);
+      return {
+        title: g[0], bg: g[1], fg: g[2], count: items.length + " on the card",
+        items: items.map(i => ({
+          name: i.name, desc: i.desc, price: eur(i.price),
+          kindLabel: KINDS[i.kind][0], kindColor: KINDS[i.kind][1],
+          tags: i.tags.map(t => ({ t, color: TAG_COLORS[t] || "#605d5d" }))
+        }))
+      };
+    }).filter(g => g.items.length) : [];
+    const comboLine = DATA
+      ? "Quick Bite €13–15 · Loaded Fries Combo €7 · Salad Combo €8 · Full Buffet €24–26 · alcoholic upgrade +€2.5 · hot drink +€2.0"
+      : "Loading the card…";
+
+    return {
+      menuGroups, comboLine,
+      name: d[1], nameUpper: d[1].toUpperCase(), med: d[3], identity: d[4], intro: d[5],
+      culture1: d[6], culture2: d[7], phrase: d[8], translit: d[9],
+      dish: d[10], dishLine: d[11], price: d[12], dishShort,
+      dietTags: d[18], routeName: rt[0], routeUpper: rt[0].toUpperCase(),
+      accent: rt[1], accentFg: rt[2],
+      stamp: "#" + String(i + 1).padStart(2, "0"),
+      slotHero: "cp-hero-" + d[0], slotDish: "cp-dish-" + d[0], slotNature: "cp-nat-" + d[0],
+      heroSlot: d[1] + " — its most recognisable street or coast",
+      heroCaption: d[1] + " · " + rt[0] + " Route · gate " + d[3],
+      dishSlot: d[10] + " — plated, close up",
+      natureSlot: d[14],
+      natureLabel: "THE LANDSCAPE",
+      cultureTitle: d[4].toUpperCase(),
+      quickFacts: [
+        { label: "Capital", value: d[15], color: CREAM, delay: "0" },
+        { label: "People", value: d[16], color: YEL, delay: "70" },
+        { label: "Water", value: d[17], color: CREAM, delay: "140" },
+        { label: "Passport stamp", value: "#" + String(i + 1).padStart(2, "0"), color: RED, delay: "210" }
+      ],
+      facts: d[13].map((f, k) => ({
+        n: String(k + 1), title: f[0], line: f[1],
+        bg: [YEL, RED, BLU][k % 3], fg: k === 0 ? INK : "#fff", delay: String(k * 80)
+      })),
+      pairings: [
+        { kind: "Side", name: "Route fries with " + d[4].split(" ")[0].toLowerCase() + " salt", price: "€4.50" },
+        { kind: "Drink", name: "House cooler of " + d[1], price: "€3.80" },
+        { kind: "Dessert", name: d[1] + " sweet of the week", price: "€5.50" }
+      ],
+      eqBars: Array.from({ length: 14 }, (_, k) => ({
+        color: k % 4 === 0 ? RED : k % 3 === 0 ? YEL : INK,
+        dur: (0.5 + (k % 6) * 0.14).toFixed(2) + "s",
+        delay: ((k % 7) * 0.08).toFixed(2) + "s"
+      })),
+      related
+    };
+  }
+}
+</script>
+</body>
+</html>

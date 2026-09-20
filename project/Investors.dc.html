@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="_ds/modernist-cf9009e6-65ae-4cc3-81bb-0a0e3ffc9a69/styles.css">
+<script src="./pp-data.js"></script>
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#ae1800;text-underline-offset:3px}
+a:hover{color:#ec3013}
+:focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+::selection{background:rgba(236,48,19,.28)}
+@keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+@keyframes ppGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes ppFade{from{opacity:0}to{opacity:1}}
+@keyframes ppLand{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+</style></helmet>
+
+<dc-import name="PP-Nav" active="Investors" hint-size="100%,136px"></dc-import>
+
+<sc-if value="{{ formOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:95;display:flex;align-items:center;justify-content:center;padding:24px;animation:ppFade .2s ease both">
+    <div onClick="{{ closeForm }}" style="position:absolute;inset:0;background:rgba(27,26,25,.7)"></div>
+    <div style="position:relative;width:min(560px,100%);max-height:88vh;overflow-y:auto;background:#f7f3ec;border:2px solid #1b1a19;box-shadow:18px 18px 0 rgba(27,26,25,.4);animation:ppLand .32s cubic-bezier(.2,.85,.25,1) both">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:#1b1a19;color:#f7f3ec;position:sticky;top:0">
+        <span style="display:flex;align-items:center;gap:9px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase"><span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Partner enquiry</span>
+        <button type="button" onClick="{{ closeForm }}" style="background:transparent;border:2px solid rgba(247,243,236,.5);color:#f7f3ec;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.14em;padding:8px 11px;cursor:pointer" style-hover="background:#ec3013;border-color:#ec3013">CLOSE ✕</button>
+      </div>
+      <sc-if value="{{ formSent }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:34px 24px 32px">
+          <div style="width:78px;height:78px;border:3px solid #ec3013;color:#ec3013;display:flex;align-items:center;justify-content:center;font:800 13px/1 'Archivo',sans-serif;transform:rotate(-10deg);margin-bottom:22px">FILED</div>
+          <h2 style="font:800 32px/1 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 10px">Enquiry filed.</h2>
+          <p style="font:400 14px/1.6 'Archivo',sans-serif;color:#605d5d;margin:0 0 22px">{{ sentSummary }}</p>
+          <button type="button" onClick="{{ closeForm }}" style="display:inline-flex;align-items:center;width:100%;padding:15px 18px;background:#1b1a19;border:0;color:#f7f3ec;font:800 14px/1.1 'Archivo',sans-serif;cursor:pointer" style-hover="background:#ec3013">Back to the numbers<span style="margin-left:auto">→</span></button>
+        </div>
+      </sc-if>
+      <sc-if value="{{ formEditing }}" hint-placeholder-val="{{ true }}">
+        <div style="padding:24px 22px 26px">
+          <h2 style="font:800 30px/1 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 8px">Explore the opportunity</h2>
+          <p style="font:400 13.5px/1.55 'Archivo',sans-serif;color:#605d5d;margin:0 0 22px">Tell us which scenario interests you and we'll send the deck, the model and the site pipeline under NDA.</p>
+          <sc-for list="{{ formFields }}" as="f" hint-placeholder-count="3">
+            <label style="display:block;margin-bottom:16px">
+              <span style="display:block;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:8px">{{ f.label }}</span>
+              <input type="text" value="{{ f.value }}" onInput="{{ f.set }}" placeholder="{{ f.ph }}" style="width:100%;background:transparent;border:0;border-bottom:2px solid #1b1a19;color:#1b1a19;font:800 16px/1.3 'Archivo',sans-serif;padding:0 0 8px;outline:none" />
+            </label>
+          </sc-for>
+          <div style="margin-bottom:18px">
+            <span style="display:block;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:10px">Scenario of interest</span>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ formScenarios }}" as="s" hint-placeholder-count="4">
+                <button type="button" onClick="{{ s.pick }}" style="padding:10px 12px;background:{{ s.bg }};border:2px solid #1b1a19;color:{{ s.fg }};font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em;cursor:pointer" style-hover="background:#f2b30c;color:#1b1a19">{{ s.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="margin-bottom:18px">
+            <span style="display:block;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:10px">Ticket size</span>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ formTickets }}" as="t" hint-placeholder-count="4">
+                <button type="button" onClick="{{ t.pick }}" style="padding:10px 12px;background:{{ t.bg }};border:2px solid #1b1a19;color:{{ t.fg }};font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em;cursor:pointer" style-hover="background:#2b76c9;color:#fff">{{ t.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="margin-bottom:18px">
+            <span style="display:block;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:10px">Structure</span>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ formStructures }}" as="t" hint-placeholder-count="3">
+                <button type="button" onClick="{{ t.pick }}" style="padding:10px 12px;background:{{ t.bg }};border:2px solid #1b1a19;color:{{ t.fg }};font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em;cursor:pointer" style-hover="background:#ec3013;color:#fff">{{ t.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <label style="display:block;margin-bottom:20px">
+            <span style="display:block;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:8px">Message</span>
+            <textarea rows="3" value="{{ message }}" onInput="{{ setMessage }}" placeholder="Anything you'd like us to cover first" style="width:100%;background:transparent;border:2px solid #1b1a19;color:#1b1a19;font:400 14px/1.5 'Archivo',sans-serif;padding:10px 12px;outline:none;resize:vertical"></textarea>
+          </label>
+          <button type="button" onClick="{{ submitForm }}" style="display:inline-flex;align-items:center;width:100%;padding:16px 18px;background:#ec3013;border:0;color:#fff;font:800 14.5px/1.1 'Archivo',sans-serif;cursor:pointer" style-hover="background:#1b1a19">Send the enquiry<span style="margin-left:auto">→</span></button>
+          <p style="font:400 11px/1.5 'Archivo',sans-serif;color:#7d7979;margin:14px 0 0">Front-end demo — nothing is transmitted. Reach us directly at invest@pattypassport.com.</p>
+        </div>
+      </sc-if>
+    </div>
+  </div>
+</sc-if>
+
+<section style="position:relative;background:#1b1a19;color:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(247,243,236,.07) 1px,transparent 1px);background-size:100% 64px"></div>
+  <div style="position:relative;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr)">
+    <div style="padding:58px 44px 52px;border-right:2px solid rgba(247,243,236,.3)">
+      <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#ec3013;color:#fff;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px">
+        <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Partners &amp; investors · 2026 round
+      </div>
+      <h1 data-rv="up" data-rv-d="70" style="font:800 clamp(42px,6.2vw,96px)/.89 'Archivo',sans-serif;letter-spacing:-.045em;margin:0 0 18px">WANT TO HELP<br>STEER THE<br><span style="color:#f2b30c">NEXT ROUTE?</span></h1>
+      <p data-rv="up" data-rv-d="130" style="font:400 clamp(15px,1.3vw,18.5px)/1.55 'Archivo',sans-serif;color:#bab6b6;max-width:56ch;margin:0 0 28px">A Mediterranean travel terminal you can eat in: twenty-one countries on one rotating menu, a passport that brings guests back twenty more times, and a building model that repeats. Every figure on this page is computed live from the category inputs in the business plan.</p>
+      <div data-rv="up" data-rv-d="180" style="display:flex;flex-wrap:wrap;gap:12px">
+        <button type="button" onClick="{{ openForm }}" style="display:inline-flex;align-items:center;min-width:250px;padding:16px 19px;background:#ec3013;border:0;color:#fff;font:800 14.5px/1.1 'Archivo',sans-serif;cursor:pointer" style-hover="background:#f2b30c;color:#1b1a19">Explore the Opportunity<span style="margin-left:auto">→</span></button>
+        <a href="#model" style="display:inline-flex;align-items:center;min-width:220px;padding:16px 19px;border:2px solid #f7f3ec;color:#f7f3ec;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#f7f3ec;color:#1b1a19">See the scenarios<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+    <div style="position:relative;min-height:430px;background:#2b76c9">
+      <image-slot id="inv-hero" shape="rect" fit="cover" placeholder="The terminal floor, full service, wide shot" style="position:absolute;inset:0"></image-slot>
+      <div style="position:absolute;left:0;right:0;bottom:0;padding:13px 18px;background:rgba(27,26,25,.92);font:600 9.5px/1.5 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;pointer-events:none">Leganés or Villaverde · 1,500–2,000 m² · ~240 seats · ~42 crew</div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#f2b30c;color:#1b1a19;border-bottom:2px solid #1b1a19">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))">
+    <sc-for list="{{ headline }}" as="h" hint-placeholder-count="5">
+      <div data-rv="up" data-rv-d="{{ h.delay }}" style="padding:24px 24px 26px;border-right:2px solid rgba(27,26,25,.3)">
+        <div style="font:800 clamp(24px,2.4vw,36px)/1 'Archivo',sans-serif;letter-spacing:-.035em">{{ h.n }}</div>
+        <div style="font:600 9.5px/1.45 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;margin-top:8px;opacity:.75">{{ h.label }}</div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+<!-- ░░ 7Ps ░░ -->
+<section id="sevenps" style="background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:62px 0 0">
+  <div style="max-width:1340px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:26px">
+      <div>
+        <div data-rv="up" style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#ae1800;margin-bottom:14px">The whole business, in one view</div>
+        <h2 data-rv="up" data-rv-d="60" style="font:800 clamp(30px,4.2vw,58px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0;max-width:16ch">BUSINESS MODEL IN 7Ps</h2>
+      </div>
+      <div data-rv="up" data-rv-d="110" style="display:flex;flex-wrap:wrap;gap:7px">
+        <sc-for list="{{ psTabs }}" as="t" hint-placeholder-count="7">
+          <button type="button" onClick="{{ t.pick }}" style="display:inline-flex;flex-direction:column;gap:4px;padding:10px 13px;background:{{ t.bg }};border:2px solid #1b1a19;color:{{ t.fg }};font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;text-align:left" style-hover="background:#f2b30c;color:#1b1a19">
+            <span style="font:600 8.5px/1 'Archivo',sans-serif;letter-spacing:.18em;opacity:.7">{{ t.id }}</span>{{ t.name }}
+          </button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  <div style="border-top:2px solid #1b1a19;background:#1b1a19;color:#f7f3ec">
+    <div style="max-width:1340px;margin:0 auto;padding:30px 32px 34px;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:40px;align-items:start">
+      <div>
+        <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:12px">
+          <span style="font:800 42px/1 'Archivo',sans-serif;letter-spacing:-.04em;color:#f2b30c">{{ psId }}</span>
+          <span style="font:600 10px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#bab6b6">Marketing mix</span>
+        </div>
+        <h3 style="font:800 clamp(28px,3.4vw,46px)/.98 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 14px">{{ psName }}</h3>
+        <p style="font:400 15px/1.6 'Archivo',sans-serif;color:#bab6b6;margin:0">{{ psSummary }}</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));border-top:2px solid #f7f3ec;border-left:2px solid #f7f3ec">
+        <sc-for list="{{ psCards }}" as="c" hint-placeholder-count="4">
+          <div style="border-right:2px solid #f7f3ec;border-bottom:2px solid #f7f3ec;padding:20px 18px 22px;background:{{ c.bg }};color:{{ c.fg }};display:flex;flex-direction:column;gap:9px;min-height:150px">
+            <span style="font:800 16px/1.12 'Archivo',sans-serif;letter-spacing:-.02em">{{ c.title }}</span>
+            <span style="font:400 12.5px/1.5 'Archivo',sans-serif;opacity:.85">{{ c.line }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ SCENARIO SELECTOR ░░ -->
+<section id="model" style="background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:62px 0 0">
+  <div style="max-width:1340px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:26px">
+      <div>
+        <div data-rv="up" style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#ae1800;margin-bottom:14px">Plot, plan and build-out · corrected ranges</div>
+        <h2 data-rv="up" data-rv-d="60" style="font:800 clamp(30px,4.2vw,58px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0;max-width:18ch">CHOOSE A SCENARIO. THE MODEL FOLLOWS.</h2>
+      </div>
+      <p data-rv="up" data-rv-d="110" style="font:400 14px/1.55 'Archivo',sans-serif;color:#605d5d;max-width:38ch;margin:0">Totals are summed in code from every category's own low and high bound — so the range is always internally consistent.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19">
+      <sc-for list="{{ scenarioCards }}" as="s" hint-placeholder-count="4">
+        <button type="button" onClick="{{ s.pick }}" style="border:0;border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:{{ s.bg }};color:{{ s.fg }};padding:22px 20px 24px;display:flex;flex-direction:column;gap:10px;min-height:215px;cursor:pointer;text-align:left" style-hover="background:#1b1a19;color:#f7f3ec">
+          <span style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+            <span style="font:800 22px/1 'Archivo',sans-serif;letter-spacing:-.03em">{{ s.label }}</span>
+            <span style="width:22px;height:22px;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font:800 10px/1 'Archivo',sans-serif">{{ s.tick }}</span>
+          </span>
+          <span style="font:600 9.5px/1.5 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.75">{{ s.site }} · {{ s.plot }} m² plot</span>
+          <span style="font:400 13px/1.5 'Archivo',sans-serif;opacity:.86">{{ s.building }} m² building · {{ s.parking }} parking</span>
+          <span style="margin-top:auto">
+            <span style="display:block;font:800 21px/1.05 'Archivo',sans-serif;letter-spacing:-.025em">{{ s.range }}</span>
+            <span style="display:block;font:600 9px/1.4 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.7;margin-top:5px">Corrected total investment</span>
+          </span>
+        </button>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="background:#1b1a19;color:#f7f3ec;border-top:2px solid #1b1a19;margin-top:34px">
+    <div style="max-width:1340px;margin:0 auto;padding:30px 32px 36px">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:22px">
+        <h3 style="font:800 clamp(22px,2.6vw,34px)/1 'Archivo',sans-serif;letter-spacing:-.03em;margin:0">{{ activeLabel }} — CAPEX BREAKDOWN</h3>
+        <span style="font:600 9.5px/1.5 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#7d7979;max-width:52ch;text-align:right">{{ activeNote }}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));border-top:2px solid #f7f3ec;border-left:2px solid #f7f3ec">
+        <div style="border-right:2px solid #f7f3ec;border-bottom:2px solid #f7f3ec;padding:20px 18px 22px">
+          <div style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#7d7979;margin-bottom:14px">Category ranges</div>
+          <sc-for list="{{ capexRows }}" as="c" hint-placeholder-count="7">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid rgba(247,243,236,.2)">
+              <span style="flex:1">
+                <span style="display:block;font:800 13px/1.2 'Archivo',sans-serif">{{ c.label }}</span>
+                <span style="display:block;font:400 10.5px/1.4 'Archivo',sans-serif;color:#7d7979;margin-top:3px">{{ c.note }}</span>
+              </span>
+              <span style="font:800 13.5px/1 'Archivo',sans-serif;color:#f2b30c;white-space:nowrap">{{ c.range }}</span>
+            </div>
+          </sc-for>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:16px 0 0;font:800 12px/1 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase">
+            <span>Total project</span><span style="font:800 19px/1 'Archivo',sans-serif;letter-spacing:-.02em;color:#f2b30c">{{ activeRange }}</span>
+          </div>
+        </div>
+
+        <div style="border-right:2px solid #f7f3ec;border-bottom:2px solid #f7f3ec;padding:20px 18px 22px;display:flex;flex-direction:column;gap:14px">
+          <div style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#7d7979">Footprint options</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ sizeToggles }}" as="t" hint-placeholder-count="2">
+              <button type="button" onClick="{{ t.pick }}" style="padding:11px 14px;background:{{ t.bg }};border:2px solid #f7f3ec;color:{{ t.fg }};font:800 11.5px/1 'Archivo',sans-serif;letter-spacing:.1em;cursor:pointer" style-hover="background:#f2b30c;border-color:#f2b30c;color:#1b1a19">{{ t.label }}</button>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;border-top:2px solid rgba(247,243,236,.3)">
+            <sc-for list="{{ footprintRows }}" as="f" hint-placeholder-count="6">
+              <span style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid rgba(247,243,236,.2)">
+                <span style="font:600 10.5px/1.3 'Archivo',sans-serif;letter-spacing:.11em;text-transform:uppercase;color:#bab6b6">{{ f.label }}</span>
+                <span style="font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.015em;text-align:right">{{ f.value }}</span>
+              </span>
+            </sc-for>
+          </div>
+          <div style="font:400 11.5px/1.55 'Archivo',sans-serif;color:#7d7979">{{ footprintNote }}</div>
+        </div>
+
+        <div style="border-right:2px solid #f7f3ec;border-bottom:2px solid #f7f3ec;padding:20px 18px 22px;display:flex;flex-direction:column;gap:14px;background:rgba(242,179,12,.08)">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px">
+            <span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#7d7979">Return · {{ caseName }}</span>
+            <span style="display:flex;gap:6px">
+              <sc-for list="{{ caseToggles }}" as="t" hint-placeholder-count="3">
+                <button type="button" onClick="{{ t.pick }}" style="padding:8px 10px;background:{{ t.bg }};border:2px solid #f7f3ec;color:{{ t.fg }};font:800 9.5px/1 'Archivo',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" style-hover="background:#f2b30c;border-color:#f2b30c;color:#1b1a19">{{ t.label }}</button>
+              </sc-for>
+            </span>
+          </div>
+          <div>
+            <div style="font:800 clamp(30px,3.6vw,48px)/1 'Archivo',sans-serif;letter-spacing:-.04em;color:#f2b30c">{{ annualProfit }}</div>
+            <div style="font:600 9.5px/1.4 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#bab6b6;margin-top:8px">Annual operating profit · {{ marginLabel }} margin</div>
+          </div>
+          <div style="height:10px;background:rgba(247,243,236,.2);overflow:hidden">
+            <div style="height:100%;width:{{ marginBar }};background:#f2b30c;transform-origin:left;animation:ppGrow .9s cubic-bezier(.2,.85,.25,1) both"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;border-top:2px solid rgba(247,243,236,.3)">
+            <sc-for list="{{ returnRows }}" as="r" hint-placeholder-count="5">
+              <span style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid rgba(247,243,236,.2)">
+                <span style="font:600 10px/1.3 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#bab6b6">{{ r.label }}</span>
+                <span style="font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.015em">{{ r.value }}</span>
+              </span>
+            </sc-for>
+          </div>
+          <div style="font:400 11px/1.5 'Archivo',sans-serif;color:#7d7979">{{ returnNote }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ BREAK-EVEN & SALES ░░ -->
+<section style="background:#e7e3dc;border-bottom:2px solid #1b1a19;padding:62px 0 68px">
+  <div style="max-width:1340px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:28px">
+      <h2 data-rv="up" style="font:800 clamp(30px,4vw,56px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0;max-width:18ch">BREAK-EVEN &amp; SALES</h2>
+      <p data-rv="up" data-rv-d="70" style="font:400 14.5px/1.55 'Archivo',sans-serif;color:#605d5d;max-width:42ch;margin:0">350 trading days a year. Food 30%, labour 30%, marketing 7% of revenue; fixed overhead €6,025 a month.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:34px;align-items:start">
+      <div style="border:2px solid #1b1a19;background:#f7f3ec">
+        <div style="display:grid;grid-template-columns:1.1fr .8fr .8fr 1fr;gap:0;padding:12px 16px;border-bottom:2px solid #1b1a19;font:600 9px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979">
+          <span>Scenario</span><span>Guests/day</span><span>Avg spend</span><span style="text-align:right">Annual revenue</span>
+        </div>
+        <sc-for list="{{ revenueCases }}" as="r" hint-placeholder-count="3">
+          <button type="button" onClick="{{ r.pick }}" style="display:grid;grid-template-columns:1.1fr .8fr .8fr 1fr;gap:0;align-items:center;width:100%;padding:15px 16px;border:0;border-bottom:2px solid rgba(27,26,25,.18);background:{{ r.bg }};color:{{ r.fg }};cursor:pointer;text-align:left" style-hover="background:#f2b30c;color:#1b1a19">
+            <span style="font:800 15px/1.1 'Archivo',sans-serif">{{ r.label }}</span>
+            <span style="font:600 13px/1 'Archivo',sans-serif">{{ r.guests }}</span>
+            <span style="font:600 13px/1 'Archivo',sans-serif">{{ r.spend }}</span>
+            <span style="font:800 16px/1 'Archivo',sans-serif;letter-spacing:-.02em;text-align:right">{{ r.revenue }}</span>
+          </button>
+        </sc-for>
+        <div style="padding:16px">
+          <div style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#7d7979;margin-bottom:14px">Annual P&amp;L · {{ caseName }}</div>
+          <sc-for list="{{ plRows }}" as="p" hint-placeholder-count="6">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid rgba(27,26,25,.18)">
+              <span style="font:600 12.5px/1.3 'Archivo',sans-serif;color:{{ p.color }}">{{ p.label }}</span>
+              <span style="font:800 14px/1 'Archivo',sans-serif;color:{{ p.color }}">{{ p.value }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19">
+        <sc-for list="{{ breakeven }}" as="b" hint-placeholder-count="4">
+          <div data-rv="up" data-rv-d="{{ b.delay }}" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:{{ b.bg }};color:{{ b.fg }};padding:20px 18px 22px;display:flex;flex-direction:column;gap:9px;min-height:170px">
+            <span style="font:800 clamp(22px,2.4vw,32px)/1 'Archivo',sans-serif;letter-spacing:-.035em">{{ b.value }}</span>
+            <span style="font:800 12px/1.2 'Archivo',sans-serif">{{ b.label }}</span>
+            <span style="font:400 11.5px/1.45 'Archivo',sans-serif;opacity:.8">{{ b.note }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ FUNDING ░░ -->
+<section style="background:#2b76c9;color:#fff;border-bottom:2px solid #1b1a19;padding:60px 0 66px">
+  <div style="max-width:1340px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:26px">
+      <h2 data-rv="up" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0;max-width:20ch">WHAT'S COMMITTED, WHAT'S OPEN</h2>
+      <p data-rv="up" data-rv-d="70" style="font:400 14.5px/1.55 'Archivo',sans-serif;max-width:40ch;margin:0;color:rgba(255,255,255,.92)">Founders' equity and the initial loan are already committed in every scenario. The gap is the conversation.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19">
+      <sc-for list="{{ funding }}" as="f" hint-placeholder-count="4">
+        <div data-rv="up" data-rv-d="{{ f.delay }}" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:{{ f.bg }};color:{{ f.fg }};padding:22px 20px 24px;display:flex;flex-direction:column;gap:9px;min-height:180px">
+          <span style="font:800 clamp(22px,2.4vw,32px)/1 'Archivo',sans-serif;letter-spacing:-.035em">{{ f.value }}</span>
+          <span style="font:800 13px/1.2 'Archivo',sans-serif">{{ f.label }}</span>
+          <span style="font:400 12px/1.45 'Archivo',sans-serif;opacity:.82">{{ f.note }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ ROLLOUT + MOAT ░░ -->
+<section style="background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:62px 0 68px">
+  <div style="max-width:1340px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:44px;align-items:start">
+    <div>
+      <h2 data-rv="up" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 18px;max-width:18ch">THE ROLLOUT, ROUTE BY ROUTE</h2>
+      <div style="display:flex;flex-direction:column;border-top:2px solid #1b1a19">
+        <sc-for list="{{ rollout }}" as="r" hint-placeholder-count="4">
+          <div data-rv="up" data-rv-d="{{ r.delay }}" style="display:flex;gap:16px;padding:17px 0;border-bottom:2px solid rgba(27,26,25,.22)">
+            <span style="width:64px;flex:none;font:800 14px/1.2 'Archivo',sans-serif;color:#ae1800">{{ r.year }}</span>
+            <span style="flex:1">
+              <span style="display:block;font:800 16px/1.2 'Archivo',sans-serif;margin-bottom:5px">{{ r.title }}</span>
+              <span style="display:block;font:400 13px/1.5 'Archivo',sans-serif;color:#605d5d">{{ r.line }}</span>
+            </span>
+            <span style="font:800 13px/1 'Archivo',sans-serif;white-space:nowrap;align-self:center">{{ r.count }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div>
+      <h2 data-rv="up" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 18px;max-width:18ch">WHY THIS DEFENDS ITSELF</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19">
+        <sc-for list="{{ moat }}" as="m" hint-placeholder-count="5">
+          <div data-rv="up" data-rv-d="{{ m.delay }}" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:#f7f3ec;padding:20px 18px 22px;display:flex;flex-direction:column;gap:10px;min-height:190px">
+            <span style="width:40px;height:40px;background:{{ m.bg }};color:{{ m.fg }};display:flex;align-items:center;justify-content:center;font:800 11px/1 'Archivo',sans-serif">{{ m.mark }}</span>
+            <span style="font:800 17px/1.08 'Archivo',sans-serif;letter-spacing:-.02em">{{ m.title }}</span>
+            <span style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d">{{ m.line }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="background:#ec3013;color:#fff;padding:64px 0 70px">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px">
+    <div style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:44px;align-items:end">
+      <div>
+        <h2 data-rv="up" style="font:800 clamp(32px,4.8vw,70px)/.92 'Archivo',sans-serif;letter-spacing:-.045em;margin:0 0 16px;max-width:15ch">LET'S TALK ABOUT THE NEXT TERMINAL.</h2>
+        <p data-rv="up" data-rv-d="80" style="font:400 16px/1.55 'Archivo',sans-serif;margin:0 0 28px;max-width:46ch">Full deck, financial model, site pipeline and operating playbook available under NDA. Tell us which scenario you want to look at and we'll bring the numbers behind it.</p>
+        <div data-rv="up" data-rv-d="140" style="display:flex;flex-wrap:wrap;gap:12px">
+          <button type="button" onClick="{{ openForm }}" style="display:inline-flex;align-items:center;min-width:280px;padding:18px 21px;background:#1b1a19;border:0;color:#f7f3ec;font:800 15.5px/1.1 'Archivo',sans-serif;cursor:pointer" style-hover="background:#f2b30c;color:#1b1a19">Request the investor deck<span style="margin-left:auto">→</span></button>
+          <a href="Our-Story.dc.html" style="display:inline-flex;align-items:center;min-width:220px;padding:18px 21px;border:2px solid #fff;color:#fff;text-decoration:none;font:800 15.5px/1.1 'Archivo',sans-serif" style-hover="background:#fff;color:#ec3013">Meet the founders<span style="margin-left:auto">→</span></a>
+        </div>
+      </div>
+      <div data-rv="up" data-rv-d="160" style="border:2px solid #1b1a19;background:#1b1a19;color:#f7f3ec">
+        <sc-for list="{{ contactFacts }}" as="f" hint-placeholder-count="5">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:15px 18px;border-bottom:1px solid rgba(247,243,236,.22)">
+            <span style="font:600 10px/1.3 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#bab6b6">{{ f.label }}</span>
+            <span style="font:800 16px/1 'Archivo',sans-serif;letter-spacing:-.015em;color:{{ f.color }};text-align:right">{{ f.value }}</span>
+          </div>
+        </sc-for>
+        <div style="padding:14px 18px;font:600 9.5px/1.5 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#7d7979">invest@pattypassport.com · +34 91 123 45 67</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<dc-import name="PP-Footer" hint-size="100%,420px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
+const RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
+
+const m = n => "€" + (n / 1000000).toFixed(2) + "m";
+const k = n => n >= 1000000 ? m(n) : "€" + Math.round(n / 1000) + "k";
+const eur0 = n => "€" + Math.round(n).toLocaleString("en-GB");
+
+class Component extends DCLogic {
+  state = {
+    scenario: "A1", revCase: "base", p: 0,
+    form: null, sent: false,
+    fName: "", fEmail: "", fPhone: "", fMessage: "",
+    fScenario: "A1", fTicket: "€250k – €500k", fStructure: "Equity"
+  };
+
+  componentDidMount() {
+    this._onData = () => this.forceUpdate();
+    window.addEventListener("pp-data-ready", this._onData);
+    if (!window.PP_DATA) this._dataPoll = setInterval(() => { if (window.PP_DATA) { clearInterval(this._dataPoll); this.forceUpdate(); } }, 120);
+    this._onKey = e => { if (e.key === "Escape") this.setState({ form: null }); };
+    window.addEventListener("keydown", this._onKey);
+
+    const run = () => {
+      Array.from(document.querySelectorAll("[data-rv]")).forEach(el => {
+        if (!el._init) {
+          el._init = true;
+          el.style.opacity = "0";
+          el.style.transform = "translateY(26px)";
+          el.style.transition = "opacity .7s cubic-bezier(.2,.8,.25,1), transform .8s cubic-bezier(.2,.85,.25,1)";
+        }
+        const r = el.getBoundingClientRect();
+        if (!el._d && r.top < window.innerHeight * 0.94 && r.bottom > 0) {
+          el._d = true;
+          setTimeout(() => { el.style.opacity = "1"; el.style.transform = "none"; }, parseInt(el.getAttribute("data-rv-d") || "0", 10));
+        }
+      });
+    };
+    this._onScroll = () => { if (!this._raf) this._raf = requestAnimationFrame(() => { this._raf = null; run(); }); };
+    window.addEventListener("scroll", this._onScroll, { passive: true });
+    window.addEventListener("resize", this._onScroll);
+    this._poll = setInterval(run, 400);
+    run();
+  }
+  componentWillUnmount() {
+    window.removeEventListener("pp-data-ready", this._onData);
+    window.removeEventListener("keydown", this._onKey);
+    window.removeEventListener("scroll", this._onScroll);
+    window.removeEventListener("resize", this._onScroll);
+    clearInterval(this._poll);
+    clearInterval(this._dataPoll);
+  }
+
+  renderVals() {
+    const D = window.PP_DATA;
+    const empty = {
+      headline: [], psTabs: [], psCards: [], scenarioCards: [], capexRows: [], footprintRows: [],
+      returnRows: [], revenueCases: [], plRows: [], breakeven: [], funding: [], rollout: [], moat: [],
+      contactFacts: [], formFields: [], formScenarios: [], formTickets: [], formStructures: [],
+      psId: "", psName: "Loading…", psSummary: "", activeLabel: "", activeNote: "", activeRange: "",
+      caseName: "", annualProfit: "", marginLabel: "", marginBar: "0%", returnNote: "", footprintNote: "",
+      sizeToggles: [], caseToggles: [], message: "", formOpen: false, formSent: false, formEditing: true,
+      sentSummary: "", openForm: () => {}, closeForm: () => {}, submitForm: () => {}, setMessage: () => {}
+    };
+    if (!D) return empty;
+
+    const S = D.SCENARIOS.find(s => s.key === this.state.scenario) || D.SCENARIOS[0];
+    const O = D.OPERATING;
+    const rc = O.revenueCases.find(r => r.key === this.state.revCase) || O.revenueCases[1];
+
+    const revenue = rc.guests * rc.spend * O.days;
+    const food = revenue * O.foodPct, labour = revenue * O.labourPct, marketing = revenue * O.marketingPct;
+    const fixed = O.fixedMonthly * 12;
+    const profit = revenue - food - labour - marketing - fixed;
+    const margin = profit / revenue;
+    const roiLow = profit / S.totalHigh, roiHigh = profit / S.totalLow, roiMid = profit / S.mid;
+    const paybackMid = S.mid / profit;
+    const gapLow = S.totalLow - D.FUNDING.committed, gapHigh = S.totalHigh - D.FUNDING.committed;
+
+    const variablePct = O.foodPct + O.labourPct + O.marketingPct;
+    const beMonthly = O.fixedMonthly / (1 - variablePct);
+    const beGuestsMonth = beMonthly / rc.spend;
+    const beGuestsDay = beGuestsMonth / (O.days / 12);
+
+    const ps = D.SEVEN_PS[this.state.p] || D.SEVEN_PS[0];
+    const cardTints = [CREAM, YEL, "#e7e3dc", "#fff"];
+
+    const siblings = D.SCENARIOS.filter(s => s.plan === S.plan);
+    const activeForm = this.state.form;
+
+    return {
+      headline: [
+        ["21", "Destinations on one menu"],
+        [S.building.toLocaleString("en-GB") + " m²", "Building in this scenario"],
+        [String(O.seats), "Seats at ~" + O.staff + " crew"],
+        [k(revenue), "Annual revenue · " + rc.label.toLowerCase()],
+        [S.label.replace("Plan ", ""), "Scenario selected"]
+      ].map((h, i) => ({ n: h[0], label: h[1], delay: String(i * 55) })),
+
+      /* ── 7Ps ── */
+      psTabs: D.SEVEN_PS.map((p, i) => ({
+        id: p.id, name: p.name,
+        bg: i === this.state.p ? INK : "transparent",
+        fg: i === this.state.p ? CREAM : INK,
+        pick: () => this.setState({ p: i })
+      })),
+      psId: ps.id, psName: ps.name.toUpperCase(), psSummary: ps.summary,
+      psCards: ps.cards.map((c, i) => ({ title: c.title, line: c.line, bg: cardTints[i % 4], fg: INK })),
+
+      /* ── Scenario selector ── */
+      scenarioCards: D.SCENARIOS.map(s => ({
+        label: s.label, site: s.site, plot: s.plot.toLocaleString("en-GB"),
+        building: s.building.toLocaleString("en-GB"),
+        parking: s.parking[0] === s.parking[1] ? s.parking[0] : s.parking[0] + "–" + s.parking[1],
+        range: m(s.totalLow) + " – " + m(s.totalHigh),
+        tick: s.key === S.key ? "✓" : "",
+        bg: s.key === S.key ? YEL : CREAM, fg: INK,
+        pick: () => this.setState({ scenario: s.key })
+      })),
+      activeLabel: S.label.toUpperCase() + " · " + S.site.toUpperCase(),
+      activeNote: S.note,
+      activeRange: m(S.totalLow) + " – " + m(S.totalHigh),
+      capexRows: S.categories.map(c => ({
+        label: c.label, note: c.note,
+        range: c.low === c.high ? k(c.low) : k(c.low) + " – " + k(c.high)
+      })),
+
+      sizeToggles: siblings.map(s => ({
+        label: s.building.toLocaleString("en-GB") + " m² building",
+        bg: s.key === S.key ? CREAM : "transparent",
+        fg: s.key === S.key ? INK : CREAM,
+        pick: () => this.setState({ scenario: s.key })
+      })),
+      footprintRows: [
+        ["Plot", S.plot.toLocaleString("en-GB") + " m²"],
+        ["Building footprint", S.building.toLocaleString("en-GB") + " m²"],
+        ["Left for exterior", (S.plot - S.building).toLocaleString("en-GB") + " m²"],
+        ["Parking spaces", S.parking[0] === S.parking[1] ? String(S.parking[0]) : S.parking[0] + "–" + S.parking[1]],
+        ["Garden / plaza", "~" + S.garden.toLocaleString("en-GB") + " m²"],
+        ["Trees & palms", S.trees[0] + "–" + S.trees[1]]
+      ].map(f => ({ label: f[0], value: f[1] })),
+      footprintNote: "Parking calculated at the plan's standard ~22 m² per space, circulation included.",
+
+      caseToggles: O.revenueCases.map(r => ({
+        label: r.label.replace(" case", ""),
+        bg: r.key === rc.key ? CREAM : "transparent",
+        fg: r.key === rc.key ? INK : CREAM,
+        pick: () => this.setState({ revCase: r.key })
+      })),
+      caseName: rc.label,
+      annualProfit: eur0(profit),
+      marginLabel: (margin * 100).toFixed(0) + "%",
+      marginBar: Math.max(4, Math.min(100, margin * 100 * 3)).toFixed(0) + "%",
+      returnRows: [
+        { label: "ROI at low investment", value: (roiHigh * 100).toFixed(1) + "%" },
+        { label: "ROI at mid investment", value: (roiMid * 100).toFixed(1) + "%" },
+        { label: "ROI at high investment", value: (roiLow * 100).toFixed(1) + "%" },
+        { label: "Payback at mid", value: paybackMid.toFixed(1) + " yrs" },
+        { label: "Capital gap after founders", value: m(gapLow) + " – " + m(gapHigh) }
+      ],
+      returnNote: "Mid investment = " + m(S.mid) + ", the midpoint of this scenario's corrected range. Every figure recalculates when you change scenario or sales case.",
+
+      /* ── Break-even ── */
+      revenueCases: O.revenueCases.map(r => ({
+        label: r.label, guests: String(r.guests), spend: "€" + r.spend,
+        revenue: k(r.guests * r.spend * O.days),
+        bg: r.key === rc.key ? YEL : "#f7f3ec", fg: INK,
+        pick: () => this.setState({ revCase: r.key })
+      })),
+      plRows: [
+        { label: "Revenue", value: eur0(revenue), color: INK },
+        { label: "Food & beverage (30%)", value: "−" + eur0(food), color: "#ae1800" },
+        { label: "Labour (30%)", value: "−" + eur0(labour), color: "#ae1800" },
+        { label: "Marketing (7%)", value: "−" + eur0(marketing), color: "#ae1800" },
+        { label: "Fixed overhead", value: "−" + eur0(fixed), color: "#ae1800" },
+        { label: "Operating profit", value: eur0(profit), color: INK }
+      ],
+      breakeven: [
+        [eur0(beMonthly), "Break-even revenue", "Per month, at " + (variablePct * 100).toFixed(0) + "% variable cost", CREAM, INK],
+        [Math.round(beGuestsMonth).toLocaleString("en-GB"), "Guests per month", "At €" + rc.spend + " average spend", YEL, INK],
+        [Math.round(beGuestsDay) + "/day", "Guests per day", "Against " + rc.guests + " in this sales case", "#e7e3dc", INK],
+        [(margin * 100).toFixed(0) + "%", "Operating margin", rc.label + ", " + O.days + " trading days", RED, "#fff"]
+      ].map((b, i) => ({ value: b[0], label: b[1], note: b[2], bg: b[3], fg: b[4], delay: String(i * 60) })),
+
+      funding: [
+        [eur0(D.FUNDING.equity), "Founders' equity", "Mazen €200k + Ahmed €200k", CREAM, INK],
+        [eur0(D.FUNDING.loan), "Initial bank loan", "Secured in Phase 1", "#e7e3dc", INK],
+        [eur0(D.FUNDING.committed), "Committed today", "Same in all four scenarios", YEL, INK],
+        [m(gapLow) + " – " + m(gapHigh), "Capital gap · " + S.label, "Corrected total less committed capital", INK, CREAM]
+      ].map((f, i) => ({ value: f[0], label: f[1], note: f[2], bg: f[3], fg: f[4], delay: String(i * 60) })),
+
+      rollout: [
+        ["2026", "Prove the terminal", "Gate one trading at full route rotation; passport programme and event calendar established.", "1 site"],
+        ["2027", "Second Madrid gate", "Repeat the format in the same city to test transferability and shared supply.", "2 sites"],
+        ["2028", "Coastal expansion", "Valencia and Barcelona — Mediterranean cities where the concept reads natively.", "4 sites"],
+        ["2029—30", "Iberian network", "Seville, Bilbao, Lisbon, plus first franchise conversations outside Iberia.", "7—9 sites"]
+      ].map((r, i) => ({ year: r[0], title: r[1], line: r[2], count: r[3], delay: String(i * 70) })),
+
+      moat: [
+        ["FM", "Format, not recipe", "A competitor can copy one burger. Copying twenty-one countries plus the passport plus the zones is a different project.", YEL, INK],
+        ["RT", "Retention by design", "The book gives a reason to come back twenty more times. Discount loyalty gives one.", RED, "#fff"],
+        ["CT", "Reusable content", "Playlists, cards and booklets produced once ship free to every future site.", BLU, "#fff"],
+        ["SU", "Single supply chain", "Shared proteins and bases across all twenty-one plates keep COGS flat as variety grows.", INK, CREAM],
+        ["BR", "Brand with a world", "Passport, terminal, crew, routes — a language guests understand on arrival.", "#e7e3dc", INK]
+      ].map((x, i) => ({ mark: x[0], title: x[1], line: x[2], bg: x[3], fg: x[4], delay: String(i * 60) })),
+
+      contactFacts: [
+        { label: "Scenario shown", value: S.label, color: YEL },
+        { label: "Total investment", value: m(S.totalLow) + "–" + m(S.totalHigh), color: CREAM },
+        { label: "Capital gap", value: m(gapLow) + "–" + m(gapHigh), color: CREAM },
+        { label: "Annual profit", value: eur0(profit), color: YEL },
+        { label: "Payback at mid", value: paybackMid.toFixed(1) + " yrs", color: RED }
+      ],
+
+      /* ── Enquiry form ── */
+      formOpen: !!activeForm,
+      formSent: !!activeForm && this.state.sent,
+      formEditing: !!activeForm && !this.state.sent,
+      openForm: () => this.setState({ form: true, sent: false, fScenario: S.key }),
+      closeForm: () => this.setState({ form: null, sent: false }),
+      formFields: [
+        ["Name", "fName", "Your name"],
+        ["Email", "fEmail", "you@example.com"],
+        ["Phone / WhatsApp", "fPhone", "+34 …"]
+      ].map(f => ({
+        label: f[0], ph: f[2], value: this.state[f[1]],
+        set: e => this.setState({ [f[1]]: e.target.value })
+      })),
+      formScenarios: D.SCENARIOS.map(s => ({
+        label: s.label.replace("Plan ", "") + " · " + s.site,
+        bg: this.state.fScenario === s.key ? INK : "transparent",
+        fg: this.state.fScenario === s.key ? CREAM : INK,
+        pick: () => this.setState({ fScenario: s.key })
+      })),
+      formTickets: ["Under €250k", "€250k – €500k", "€500k – €1m", "Over €1m"].map(t => ({
+        label: t,
+        bg: this.state.fTicket === t ? BLU : "transparent",
+        fg: this.state.fTicket === t ? "#fff" : INK,
+        pick: () => this.setState({ fTicket: t })
+      })),
+      formStructures: ["Equity", "Loan", "Site JV", "Undecided"].map(t => ({
+        label: t,
+        bg: this.state.fStructure === t ? RED : "transparent",
+        fg: this.state.fStructure === t ? "#fff" : INK,
+        pick: () => this.setState({ fStructure: t })
+      })),
+      message: this.state.fMessage,
+      setMessage: e => this.setState({ fMessage: e.target.value }),
+      submitForm: () => this.setState({ sent: true }),
+      sentSummary: (this.state.fName || "Thank you") + " — we'll send the deck for " +
+        this.state.fScenario + " (" + this.state.fTicket + ", " + this.state.fStructure.toLowerCase() +
+        ") to " + (this.state.fEmail || "the address you gave us") + ". This is a front-end demo, so write to invest@pattypassport.com to reach a human today."
+    };
+  }
+}
+</script>
+</body>
+</html>

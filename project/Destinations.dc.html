@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="_ds/modernist-cf9009e6-65ae-4cc3-81bb-0a0e3ffc9a69/styles.css">
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#ae1800;text-underline-offset:3px}
+a:hover{color:#ec3013}
+:focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+::selection{background:rgba(236,48,19,.28)}
+section{scroll-margin-top:150px}
+@keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+@keyframes ppDash{0%{background-position:0 0}100%{background-position:44px 0}}
+@keyframes ppTick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+</style></helmet>
+
+<dc-import name="PP-Nav" active="Destinations" hint-size="100%,130px"></dc-import>
+
+<section style="position:relative;background:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(43,118,201,.12) 1px,transparent 1px);background-size:98px 100%"></div>
+  <div style="position:relative;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(320px,.7fr)">
+    <div style="padding:60px 44px 48px;border-right:2px solid #1b1a19">
+      <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#ec3013;color:#fff;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:24px">
+        <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Departures board · 21 destinations
+      </div>
+      <h1 data-rv="up" data-rv-d="70" style="font:800 clamp(42px,6.4vw,96px)/.9 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 20px;text-wrap:balance">CHOOSE WHERE<br>THE TABLE<br><span style="color:#ec3013">TRAVELS TONIGHT.</span></h1>
+      <p data-rv="up" data-rv-d="130" style="font:400 clamp(15px,1.25vw,18px)/1.55 'Archivo',sans-serif;color:#444141;max-width:56ch;margin:0 0 30px">Twenty-one Mediterranean countries, grouped into five routes. Filter by route, read the identity line, then open the destination page for the full story — culture, plate, playlist and stamp.</p>
+      <div data-rv="up" data-rv-d="190" style="display:flex;flex-wrap:wrap;gap:12px">
+        <a href="Booking.dc.html" style="display:inline-flex;align-items:center;min-width:250px;padding:16px 19px;background:#ec3013;color:#fff;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#dd2b0f">Get your boarding pass<span style="margin-left:auto">→</span></a>
+        <a href="Menu.dc.html" style="display:inline-flex;align-items:center;min-width:210px;padding:16px 19px;border:2px solid #1b1a19;color:#1b1a19;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#f2b30c;border-color:#f2b30c">See the full menu<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+    <div style="position:relative;background:#2b76c9;min-height:420px">
+      <image-slot id="dst-hero" shape="rect" fit="cover" placeholder="Mediterranean coastline from the air — the whole sea" style="position:absolute;inset:0;opacity:.72"></image-slot>
+      <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.22) 1.5px,transparent 1.6px);background-size:30px 30px;pointer-events:none"></div>
+      <div style="position:absolute;left:0;right:0;bottom:0;padding:14px 18px;background:rgba(27,26,25,.92);color:#f7f3ec;font:600 9.5px/1.5 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;pointer-events:none">Five routes · twenty-one gates · one passport</div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#1b1a19;color:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="display:flex;width:max-content;animation:ppTick 52s linear infinite">
+    <sc-for list="{{ tickerRows }}" as="t" hint-placeholder-count="20">
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 24px;border-right:1px solid rgba(247,243,236,.22);white-space:nowrap">
+        <span style="font:800 14px/1 'Archivo',sans-serif">{{ t.name }}</span>
+        <span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;color:#bab6b6">{{ t.code }}</span>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+<section id="grid" style="background:#f7f3ec;border-bottom:2px solid #1b1a19">
+  <div data-sticky-under-nav="1" style="position:sticky;top:136px;z-index:40;background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:18px 44px;display:flex;flex-wrap:wrap;align-items:center;gap:10px">
+    <span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#7d7979;margin-right:6px">Filter by route</span>
+    <sc-for list="{{ filters }}" as="f" hint-placeholder-count="6">
+      <button type="button" onClick="{{ f.pick }}" style="padding:10px 13px;background:{{ f.bg }};border:2px solid #1b1a19;color:{{ f.fg }};font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer" style-hover="background:#f2b30c;color:#1b1a19">{{ f.label }}<span style="margin-left:8px;opacity:.6">{{ f.count }}</span></button>
+    </sc-for>
+    <span style="margin-left:auto;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979">{{ resultLabel }}</span>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));border-left:2px solid #1b1a19">
+    <sc-for list="{{ cards }}" as="c" hint-placeholder-count="9">
+      <a href="{{ c.href }}" style="display:flex;flex-direction:column;border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;text-decoration:none;color:#1b1a19;background:#f7f3ec;transition:background .2s ease" style-hover="background:#fff">
+        <div style="position:relative;height:210px;border-bottom:2px solid #1b1a19">
+          <image-slot id="{{ c.slotId }}" shape="rect" fit="cover" placeholder="{{ c.slot }}" style="position:absolute;inset:0"></image-slot>
+          <span style="position:absolute;left:0;top:0;padding:7px 10px;background:{{ c.bg }};color:{{ c.fg }};font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;pointer-events:none">{{ c.route }}</span>
+          <span style="position:absolute;right:10px;bottom:10px;width:46px;height:46px;border:2px solid #f7f3ec;background:rgba(27,26,25,.75);color:#f7f3ec;display:flex;align-items:center;justify-content:center;font:800 11px/1 'Archivo',sans-serif;transform:rotate(-9deg);pointer-events:none">{{ c.stamp }}</span>
+        </div>
+        <div style="padding:20px 18px 22px;display:flex;flex-direction:column;gap:10px;flex:1">
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+            <h3 style="font:800 26px/1 'Archivo',sans-serif;letter-spacing:-.025em;margin:0">{{ c.name }}</h3>
+            <span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;color:#7d7979">{{ c.code }}</span>
+          </div>
+          <div style="font:800 13.5px/1.3 'Archivo',sans-serif;color:#ae1800">{{ c.identity }}</div>
+          <p style="font:400 13px/1.5 'Archivo',sans-serif;color:#605d5d;margin:0">{{ c.line }}</p>
+          <div style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:12px;border-top:2px solid rgba(27,26,25,.18);font:600 10px/1 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase">
+            <span style="color:#605d5d">{{ c.dish }}</span>
+            <span style="display:inline-flex;align-items:center;gap:7px;font:800 11px/1 'Archivo',sans-serif;color:#1b1a19">{{ c.price }}<span>→</span></span>
+          </div>
+        </div>
+      </a>
+    </sc-for>
+  </div>
+</section>
+
+<section style="background:#e7e3dc;border-bottom:2px solid #1b1a19;padding:66px 0 72px">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px">
+    <h2 data-rv="up" style="font:800 clamp(30px,4vw,56px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 30px;max-width:20ch">HOW A DESTINATION WORKS</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19">
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+        <div data-rv="up" data-rv-d="{{ s.delay }}" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;padding:24px 20px 26px;background:#f7f3ec;display:flex;flex-direction:column;gap:11px;min-height:200px">
+          <span style="width:46px;height:46px;background:{{ s.bg }};color:{{ s.fg }};display:flex;align-items:center;justify-content:center;font:800 18px/1 'Archivo',sans-serif">{{ s.n }}</span>
+          <h3 style="font:800 20px/1.05 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">{{ s.title }}</h3>
+          <p style="font:400 13px/1.5 'Archivo',sans-serif;color:#605d5d;margin:0">{{ s.line }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<dc-import name="PP-Footer" hint-size="100%,420px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
+const RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
+const R = {
+  LEV: ["Levant", YEL, INK], AEG: ["Aegean", BLU, "#fff"],
+  IBL: ["Iberia & Latin", CREAM, INK], ADR: ["Adriatic", "#e7e3dc", INK], NAF: ["N. Africa", RED, "#fff"]
+};
+const COUNTRIES = [
+  ["LBN","Lebanon","LEV","MED-12","Land of the Phoenicians","Cedar mountains, souk smoke, toum and sumac — the loudest welcome on the sea.","Shish Tawouk Street Burger","€11.50"],
+  ["SYR","Syria","LEV","MED-13","The Oldest Kitchens","Aleppo pepper, pomegranate and a grill tradition older than most borders.","Aleppo Kebab Burger","€12.00"],
+  ["PSE","Palestine","LEV","MED-14","Olive, Thyme and Stone","Za'atar hillsides, taboon bread and the sweetest olive oil on the coast.","Musakhan Chicken Burger","€11.50"],
+  ["TUR","Türkiye","AEG","MED-21","The Bridge Between Continents","Two seas, two landmasses, and the grill culture that connects them.","Doner Chicken Burger","€11.50"],
+  ["CYP","Cyprus","AEG","MED-22","Island of Two Tables","Halloumi on the grill, mint in the salad, and a sea on every side.","Halloumi Grill Burger","€11.00"],
+  ["GRC","Greece","AEG","MED-23","Birthplace of the Open Sea","Six thousand islands, one horizon, a cuisine built on fire, lemon and patience.","Souvlaki Burger","€11.50"],
+  ["ITA","Italy","IBL","MED-31","The Art of Fewer Things","Three ingredients, done perfectly, repeated for two thousand years.","Parmigiana Beef Burger","€12.50"],
+  ["ESP","Spain","IBL","MED-32","Kingdom of the Long Table","Where lunch is an institution and heat comes from smoked paprika, not chilli.","Iberian Beef Burger","€13.00"],
+  ["FRA","France","IBL","MED-33","The Southern Kitchen","Provençal herbs, sea salt and butter that refuses to apologise.","Provence Beef Burger","€13.50"],
+  ["MCO","Monaco","IBL","MED-34","The Smallest Coastline","A harbour the size of a street, cooking above its weight since 1297.","Riviera Surf Burger","€14.00"],
+  ["MLT","Malta","IBL","MED-35","Fortress in the Middle","Limestone, rabbit stew and a language that belongs to nowhere else.","Maltese Rabbit Burger","€12.50"],
+  ["SVN","Slovenia","ADR","MED-41","Where the Alps Meet the Sea","Forty-six kilometres of coast and a kitchen borrowed from three neighbours.","Kranjska Sausage Burger","€12.00"],
+  ["HRV","Croatia","ADR","MED-42","A Thousand Islands of Stone","Karst cliffs, black risotto, and grill smoke over green water.","Peka Beef Burger","€12.50"],
+  ["BIH","Bosnia","ADR","MED-43","The Inland Coast","Ćevapi, kajmak and copper pots — the Adriatic's mountain kitchen.","Ćevapi Burger","€11.50"],
+  ["MNE","Montenegro","ADR","MED-44","Black Mountain, Blue Bay","Fjord light, smoked ham and the quietest gulf on the sea.","Njeguši Smoked Burger","€12.00"],
+  ["ALB","Albania","ADR","MED-45","The Undiscovered Shore","Byrek pastry, mountain yoghurt and a coastline Europe forgot.","Tavë Kosi Lamb Burger","€11.50"],
+  ["EGY","Egypt","NAF","MED-51","Gift of the River","Seven thousand years of street food perfected on one riverbank.","Hawawshi Burger","€13.00"],
+  ["LBY","Libya","NAF","MED-52","Desert Meets Harbour","Bazin, harissa and a coast where the Sahara touches the sea.","Libyan Spiced Lamb Burger","€12.50"],
+  ["TUN","Tunisia","NAF","MED-53","The Spice Crossroads","Harissa born here, brik pastry perfected here, olives everywhere.","Harissa Brik Burger","€12.00"],
+  ["DZA","Algeria","NAF","MED-54","The Widest Country","Mountain herbs, Saharan dates and a French-Ottoman kitchen of its own.","Algerian Merguez Burger","€12.00"],
+  ["MAR","Morocco","NAF","MED-55","Where the Desert Meets the Atlantic","Fondouks, tanneries and spice mountains — a kitchen that never rushes.","Tagine Beef Burger","€13.00"]
+];
+
+class Component extends DCLogic {
+  state = { filter: "ALL" };
+
+  componentDidMount() {
+    const nodes = Array.from(document.querySelectorAll("[data-rv]"));
+    nodes.forEach(el => {
+      el.style.opacity = "0";
+      el.style.transform = el.getAttribute("data-rv") === "left" ? "translateX(-30px)" : "translateY(28px)";
+      el.style.transition = "opacity .7s cubic-bezier(.2,.8,.25,1), transform .8s cubic-bezier(.2,.85,.25,1)";
+    });
+    const show = el => {
+      if (el._d) return;
+      el._d = true;
+      setTimeout(() => { el.style.opacity = "1"; el.style.transform = "none"; }, parseInt(el.getAttribute("data-rv-d") || "0", 10));
+    };
+    this._reveal = () => nodes.forEach(n => {
+      const r = n.getBoundingClientRect();
+      if (!n._d && r.top < window.innerHeight * 0.94 && r.bottom > 0) show(n);
+    });
+    this._onScroll = () => { if (!this._raf) this._raf = requestAnimationFrame(() => { this._raf = null; this._reveal(); }); };
+    window.addEventListener("scroll", this._onScroll, { passive: true });
+    window.addEventListener("resize", this._onScroll);
+    this._poll = setInterval(this._reveal, 400);
+    this._reveal();
+  }
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this._onScroll);
+    window.removeEventListener("resize", this._onScroll);
+    clearInterval(this._poll);
+  }
+
+  renderVals() {
+    const f = this.state.filter;
+    const list = f === "ALL" ? COUNTRIES : COUNTRIES.filter(c => c[2] === f);
+    const keys = ["ALL", "LEV", "AEG", "IBL", "ADR", "NAF"];
+    return {
+      tickerRows: COUNTRIES.concat(COUNTRIES).map(c => ({ name: c[1].toUpperCase(), code: c[3] })),
+      filters: keys.map(k => ({
+        label: k === "ALL" ? "All routes" : R[k][0],
+        count: String(k === "ALL" ? COUNTRIES.length : COUNTRIES.filter(c => c[2] === k).length),
+        bg: f === k ? INK : "transparent",
+        fg: f === k ? CREAM : INK,
+        pick: () => this.setState({ filter: k })
+      })),
+      resultLabel: list.length + " destinations shown",
+      cards: list.map((c, i) => ({
+        name: c[1].toUpperCase(), code: c[3], identity: c[4], line: c[5], dish: c[6], price: c[7],
+        route: R[c[2]][0].toUpperCase(), bg: R[c[2]][1], fg: R[c[2]][2],
+        stamp: "#" + String(COUNTRIES.findIndex(x => x[0] === c[0]) + 1).padStart(2, "0"),
+        href: "Destination-Page.dc.html#" + c[0].toLowerCase(),
+        slotId: "dst-" + c[0].toLowerCase(),
+        slot: c[1] + " — street scene or landscape"
+      })),
+      steps: [
+        ["1", "Pick the route", "Five chapters cross the sea. Start with the one that sounds like tonight.", RED, "#fff"],
+        ["2", "Open the destination", "Full page: culture, landscape, the plate, the playlist, the phrase.", YEL, INK],
+        ["3", "Check in at the desk", "Your boarding ticket prints with the table number and the gate.", BLU, "#fff"],
+        ["4", "Collect the stamp", "One country stamped per visit. The ladder starts at three.", INK, CREAM]
+      ].map((s, i) => ({ n: s[0], title: s[1], line: s[2], bg: s[3], fg: s[4], delay: String(i * 80) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

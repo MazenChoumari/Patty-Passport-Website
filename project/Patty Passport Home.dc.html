@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="_ds/modernist-cf9009e6-65ae-4cc3-81bb-0a0e3ffc9a69/styles.css">
+<script src="_ds/modernist-cf9009e6-65ae-4cc3-81bb-0a0e3ffc9a69/_ds_bundle.js"></script>
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#ae1800;text-underline-offset:3px}
+a:hover{color:#ec3013}
+:focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+::selection{background:rgba(236,48,19,.28)}
+section{scroll-margin-top:150px}
+@keyframes ppTick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+@keyframes ppDrift{0%{transform:translate3d(0,0,0) rotate(var(--r,0deg))}50%{transform:translate3d(0,-14px,0) rotate(calc(var(--r,0deg) + 1.2deg))}100%{transform:translate3d(0,0,0) rotate(var(--r,0deg))}}
+@keyframes ppEq{0%{height:14%}100%{height:100%}}
+@keyframes ppDash{0%{background-position:0 0}100%{background-position:44px 0}}
+@keyframes ppPulse{0%{opacity:.25;transform:scale(1)}100%{opacity:0;transform:scale(2.6)}}
+@keyframes ppSway{0%{transform:translateY(0)}50%{transform:translateY(-4px)}100%{transform:translateY(0)}}
+@keyframes ppFlowUp{0%{transform:translateY(0)}100%{transform:translateY(-50%)}}
+@keyframes ppFlowDown{0%{transform:translateY(-50%)}100%{transform:translateY(0)}}
+@keyframes ppFade{from{opacity:0}to{opacity:1}}
+@keyframes ppDots{0%,80%,100%{opacity:.2}40%{opacity:1}}
+</style></helmet>
+
+<div style="max-width:100%;overflow:hidden">
+
+<!-- ░░ FIXED NAV + ROUTE PROGRESS ░░ -->
+<div style="position:fixed;top:0;left:0;right:0;z-index:80;background:#f7f3ec;border-bottom:2px solid #1b1a19">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:18px;padding:11px 26px">
+    <a href="#top" style="display:flex;align-items:center;gap:13px;text-decoration:none;color:#1b1a19;flex:none">
+      <span style="position:relative;width:44px;height:44px;flex:none;background:#1b1a19;display:block">
+        <span style="position:absolute;left:4px;top:4px;right:4px;bottom:4px;border:2px solid #f7f3ec;display:block"></span>
+        <span style="position:absolute;left:9px;top:9px;width:26px;height:8px;background:#f2b30c;display:block"></span>
+        <span style="position:absolute;left:13px;top:11px;width:3px;height:3px;background:#1b1a19;display:block"></span>
+        <span style="position:absolute;left:20px;top:11px;width:3px;height:3px;background:#1b1a19;display:block"></span>
+        <span style="position:absolute;left:27px;top:11px;width:3px;height:3px;background:#1b1a19;display:block"></span>
+        <span style="position:absolute;left:9px;top:19px;width:26px;height:3px;background:#f7f3ec;display:block"></span>
+        <span style="position:absolute;left:9px;top:23px;width:26px;height:6px;background:#ec3013;display:block"></span>
+        <span style="position:absolute;left:9px;top:30px;width:26px;height:6px;background:#f2b30c;display:block"></span>
+        <span style="position:absolute;right:-7px;bottom:-7px;width:20px;height:20px;border:2px solid #ec3013;background:#f7f3ec;display:flex;align-items:center;justify-content:center;font:800 8px/1 'Archivo',sans-serif;color:#ec3013;transform:rotate(-12deg)">21</span>
+      </span>
+      <span>
+        <span style="display:block;font:800 17px/1 'Archivo',sans-serif;letter-spacing:-.02em">PATTY PASSPORT</span>
+        <span style="display:block;font:600 8.5px/1.5 'Archivo',sans-serif;letter-spacing:.17em;text-transform:uppercase;color:#7d7979">Order the Mediterranean to your table</span>
+      </span>
+    </a>
+
+    <div style="display:flex;align-items:center;gap:10px;flex:none;margin-left:auto">
+      <button type="button" onClick="{{ toggleMusic }}" style="display:inline-flex;align-items:center;gap:9px;padding:9px 12px;border:2px solid #1b1a19;background:transparent;color:#1b1a19;font:800 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;cursor:pointer;white-space:nowrap" style-hover="background:#f2b30c;border-color:#f2b30c">
+        <sc-if value="{{ musicOn }}" hint-placeholder-val="{{ false }}">
+          <span style="display:flex;align-items:flex-end;gap:2px;height:12px;width:14px">
+            <span style="flex:1;background:#ec3013;height:40%;animation:ppEq .62s ease-in-out infinite alternate"></span>
+            <span style="flex:1;background:#ec3013;height:80%;animation:ppEq .48s ease-in-out .1s infinite alternate"></span>
+            <span style="flex:1;background:#ec3013;height:55%;animation:ppEq .74s ease-in-out .2s infinite alternate"></span>
+          </span>
+        </sc-if>
+        <sc-if value="{{ musicOff }}" hint-placeholder-val="{{ true }}">
+          <span style="width:0;height:0;border-left:9px solid currentColor;border-top:6px solid transparent;border-bottom:6px solid transparent"></span>
+        </sc-if>
+        {{ musicLabel }}
+      </button>
+      <a href="My-Passport.dc.html" style="display:inline-flex;align-items:center;gap:8px;padding:10px 14px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap" style-hover="background:#ec3013">My Passport</a>
+      <button type="button" onClick="{{ openDrawer }}" style="display:inline-flex;align-items:center;gap:10px;padding:10px 13px;background:transparent;border:2px solid #1b1a19;color:#1b1a19;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;cursor:pointer" style-hover="background:#f2b30c;border-color:#f2b30c" style-active="background:#ec3013;border-color:#ec3013;color:#fff">
+        <span style="display:block;width:16px">
+          <span style="display:block;height:2px;background:currentColor;margin-bottom:3px"></span>
+          <span style="display:block;height:2px;background:currentColor;margin-bottom:3px"></span>
+          <span style="display:block;height:2px;background:currentColor"></span>
+        </span>All pages
+      </button>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:14px;padding:9px 26px;border-top:2px solid rgba(27,26,25,.16);overflow:hidden">
+    <span style="font:600 9px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#7d7979;flex:none">Quick gates</span>
+    <div style="display:flex;align-items:center;gap:8px;min-width:0;opacity:{{ navOpacity }};transition:opacity .24s ease">
+      <sc-for list="{{ navShortcuts }}" as="s" hint-placeholder-count="4">
+        <a href="{{ s.href }}" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid rgba(27,26,25,.2);text-decoration:none;color:#1b1a19;font:600 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap" style-hover="border-color:#ec3013;color:#ec3013">
+          <span style="width:6px;height:6px;flex:none;background:{{ s.dot }}"></span>{{ s.label }}
+        </a>
+      </sc-for>
+    </div>
+    <span style="margin-left:auto;flex:none;font:600 9px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979">{{ navPageLabel }}</span>
+  </div>
+  <sc-if value="{{ musicOn }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex;align-items:center;gap:12px;padding:8px 26px;background:#1b1a19;color:#f7f3ec;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase">
+      <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>
+      Now playing · Beirut Corniche, 7pm — Levant Route
+      <span style="margin-left:auto;color:#bab6b6">42 tracks</span>
+    </div>
+  </sc-if>
+  <div style="position:relative;height:5px;background:rgba(27,26,25,.14)">
+    <div data-route-fill="1" style="position:absolute;left:0;top:0;bottom:0;width:0;background:linear-gradient(90deg,#ec3013,#f2b30c)"></div>
+    <div data-route-plane="1" style="position:absolute;top:-11px;left:0;width:26px;height:26px;color:#1b1a19">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5a2.1 2.1 0 0 0-3-3L13 8 4.8 6.2a.5.5 0 0 0-.5.8l3.9 4.2-2.1 2.1-2.1-.4a.5.5 0 0 0-.5.8l2 2 2 2a.5.5 0 0 0 .8-.5l-.4-2.1 2.1-2.1 4.2 3.9a.5.5 0 0 0 .8-.5Z" fill="#f7f3ec"></path></svg>
+    </div>
+  </div>
+</div>
+<div style="height:130px"></div>
+
+<!-- ░░ MENU DRAWER ░░ -->
+<sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:90;display:flex;justify-content:flex-end">
+    <div onClick="{{ closeDrawer }}" style="position:absolute;inset:0;background:rgba(27,26,25,.62);animation:ppFade .22s ease both"></div>
+    <div data-drawer-panel="1" style="position:relative;width:min(430px,90vw);height:100%;background:#1b1a19;color:#f7f3ec;border-left:2px solid #1b1a19;overflow-y:auto;transform:{{ drawerX }};opacity:{{ drawerAlpha }};transition:transform .32s cubic-bezier(.2,.85,.25,1),opacity .28s ease">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:2px solid rgba(247,243,236,.3)">
+        <span style="font:800 11px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#f2b30c">Terminal directory</span>
+        <button type="button" onClick="{{ closeDrawer }}" style="background:transparent;border:2px solid rgba(247,243,236,.5);color:#f7f3ec;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.14em;padding:9px 12px;cursor:pointer" style-hover="background:#ec3013;border-color:#ec3013">CLOSE ✕</button>
+      </div>
+      <sc-for list="{{ drawerLinks }}" as="d" hint-placeholder-count="11">
+        <a href="{{ d.href }}" onClick="{{ closeDrawer }}" style="display:flex;align-items:baseline;gap:14px;padding:18px 24px;border-bottom:1px solid rgba(247,243,236,.22);text-decoration:none;color:#f7f3ec" style-hover="background:#ec3013;color:#fff">
+          <span style="font:600 10px/1 'Archivo',sans-serif;letter-spacing:.16em;color:#f2b30c;width:28px;flex:none">{{ d.n }}</span>
+          <span style="flex:1">
+            <span style="display:block;font:800 19px/1.1 'Archivo',sans-serif;letter-spacing:-.02em">{{ d.title }}</span>
+            <span style="display:block;font:400 12px/1.45 'Archivo',sans-serif;color:#bab6b6;margin-top:3px">{{ d.sub }}</span>
+          </span>
+          <span style="font:800 15px/1 'Archivo',sans-serif">→</span>
+        </a>
+      </sc-for>
+      <div style="padding:22px 24px;font:400 12px/1.6 'Archivo',sans-serif;color:#bab6b6">Leganés · Madrid<br>Open daily 12:00 — 00:00</div>
+    </div>
+  </div>
+</sc-if>
+
+<!-- ░░ 1 · HERO / CHECK-IN ░░ -->
+<section id="top" style="position:relative;background:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(43,118,201,.12) 1px,transparent 1px);background-size:98px 100%"></div>
+  <div data-par="0.12" style="position:absolute;right:-60px;top:60px;width:420px;height:420px;border:2px solid rgba(43,118,201,.35);border-radius:50%"></div>
+  <div data-par="0.2" style="position:absolute;right:70px;top:190px;width:250px;height:250px;border:2px solid rgba(242,179,12,.55);border-radius:50%"></div>
+
+  <div style="position:relative;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(360px,.75fr);gap:0;align-items:stretch">
+    <div style="padding:66px 44px 54px;border-right:2px solid #1b1a19">
+      <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#ec3013;color:#fff;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:26px">
+        <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Check-in desk open
+      </div>
+      <h1 data-rv="up" data-rv-d="80" style="font:800 clamp(52px,7.6vw,118px)/.89 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 22px;text-wrap:balance">YOU ARE NOT<br>ORDERING A BURGER.<br><span style="color:#ec3013">YOU ARE CHECKING IN<br>FOR A DESTINATION.</span></h1>
+      <p data-rv="up" data-rv-d="160" style="font:400 clamp(15px,1.3vw,19px)/1.5 'Archivo',sans-serif;color:#444141;max-width:560px;margin:0 0 34px;text-wrap:pretty">Twenty-one Mediterranean countries. One passport. Pick a destination at the desk, take your boarding ticket, and let the table travel — food, music, language, story, stamp.</p>
+      <div data-rv="up" data-rv-d="230" style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:44px">
+        <a href="Destinations.dc.html" style="display:inline-flex;align-items:center;min-width:280px;padding:17px 20px;background:#ec3013;color:#fff;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif;letter-spacing:-.01em" style-hover="background:#dd2b0f">Get Your Boarding Pass<span style="margin-left:auto;font-size:18px">→</span></a>
+        <a href="Destinations.dc.html" style="display:inline-flex;align-items:center;min-width:220px;padding:17px 20px;border:2px solid #1b1a19;color:#1b1a19;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" style-hover="background:#f2b30c;border-color:#f2b30c">Explore 21 Destinations</a>
+      </div>
+      <div data-rv="up" data-rv-d="300" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:2px solid #1b1a19">
+        <sc-for list="{{ heroStats }}" as="s" hint-placeholder-count="4">
+          <div style="padding:16px 14px 10px;border-right:1px solid rgba(27,26,25,.2)">
+            <div style="font:800 30px/1 'Archivo',sans-serif;letter-spacing:-.03em;color:{{ s.color }}">{{ s.n }}</div>
+            <div style="font:600 9.5px/1.4 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#605d5d;margin-top:5px">{{ s.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="position:relative;background:#2b76c9;overflow:hidden;min-height:680px">
+      <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.28) 1.5px,transparent 1.6px);background-size:26px 26px"></div>
+      <div style="position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:16px">
+        <div style="overflow:hidden">
+          <div style="display:flex;flex-direction:column;gap:14px;animation:ppFlowUp 44s linear infinite">
+            <sc-for list="{{ propsA }}" as="p" hint-placeholder-count="12">
+              <div style="flex:none;background:{{ p.bg }};color:{{ p.fg }};border:2px solid #1b1a19;box-shadow:8px 8px 0 rgba(27,26,25,.28);transform:rotate({{ p.r }});--r:{{ p.r }};animation:ppDrift {{ p.dur }} ease-in-out infinite;padding:12px 13px">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;font:800 8.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75;margin-bottom:8px"><span>{{ p.kind }}</span><span>{{ p.code }}</span></div>
+                <div style="font:800 19px/1.05 'Archivo',sans-serif;letter-spacing:-.02em">{{ p.big }}</div>
+                <div style="font:600 9px/1.4 'Archivo',sans-serif;letter-spacing:.11em;text-transform:uppercase;margin-top:6px;opacity:.8">{{ p.sub }}</div>
+                <div style="height:13px;margin-top:10px;background:repeating-linear-gradient(90deg,currentColor 0 2px,transparent 2px 5px,currentColor 5px 8px,transparent 8px 12px);opacity:.55"></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="overflow:hidden">
+          <div style="display:flex;flex-direction:column;gap:14px;animation:ppFlowDown 52s linear infinite">
+            <sc-for list="{{ propsB }}" as="p" hint-placeholder-count="12">
+              <div style="flex:none;background:{{ p.bg }};color:{{ p.fg }};border:2px solid #1b1a19;box-shadow:-8px 8px 0 rgba(27,26,25,.26);transform:rotate({{ p.r }});--r:{{ p.r }};animation:ppDrift {{ p.dur }} ease-in-out infinite;padding:12px 13px">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;font:800 8.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75;margin-bottom:8px"><span>{{ p.kind }}</span><span>{{ p.code }}</span></div>
+                <div style="font:800 19px/1.05 'Archivo',sans-serif;letter-spacing:-.02em">{{ p.big }}</div>
+                <div style="font:600 9px/1.4 'Archivo',sans-serif;letter-spacing:.11em;text-transform:uppercase;margin-top:6px;opacity:.8">{{ p.sub }}</div>
+                <div style="height:13px;margin-top:10px;background:repeating-linear-gradient(90deg,currentColor 0 2px,transparent 2px 5px,currentColor 5px 8px,transparent 8px 12px);opacity:.55"></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      <div style="position:absolute;left:0;right:0;top:0;height:70px;background:linear-gradient(#2b76c9,rgba(43,118,201,0));pointer-events:none"></div>
+      <div style="position:absolute;left:0;right:0;bottom:36px;height:120px;background:linear-gradient(rgba(43,118,201,0),#2b76c9);pointer-events:none"></div>
+      <div style="position:absolute;left:50%;top:46%;transform:translate(-50%,-50%) rotate(-11deg);width:132px;height:132px;border:3px solid #fff;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(43,118,201,.82);pointer-events:none">
+        <span style="position:absolute;inset:-3px;border:3px solid #fff;border-radius:50%;animation:ppPulse 3.4s ease-out infinite"></span>
+        <span style="font:800 28px/1 'Archivo',sans-serif">#01</span>
+        <span style="font:600 8.5px/1.4 'Archivo',sans-serif;letter-spacing:.18em">LEBANON</span>
+      </div>
+      <div style="position:absolute;left:0;right:0;bottom:0;padding:13px 18px;background:rgba(27,26,25,.92);color:#f7f3ec;font:600 9.5px/1.5 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase">Tickets, tags, stamps and language cards — twenty-one countries moving through the desk</div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 2 · TERMINAL STRIP ░░ -->
+<section id="terminal" style="background:#1b1a19;color:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="display:flex;width:max-content;animation:ppTick 46s linear infinite;border-bottom:2px solid rgba(247,243,236,.25)" data-ticker="1">
+    <sc-for list="{{ tickerRows }}" as="t" hint-placeholder-count="20">
+      <div style="display:flex;align-items:center;gap:12px;padding:13px 26px;border-right:1px solid rgba(247,243,236,.22);white-space:nowrap">
+        <span style="font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em">{{ t.name }}</span>
+        <span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;color:#bab6b6">{{ t.route }}</span>
+        <span style="font:800 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;padding:4px 7px;background:{{ t.bg }};color:{{ t.fg }}">{{ t.status }}</span>
+      </div>
+    </sc-for>
+  </div>
+  <div style="display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr)">
+    <div style="border-right:2px solid rgba(247,243,236,.25);padding:34px 44px 38px">
+      <div data-rv="up" style="display:flex;align-items:center;gap:10px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#f2b30c;margin-bottom:22px">
+        <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Departures · today
+      </div>
+      <div style="display:grid;grid-template-columns:78px minmax(0,1fr) 120px 118px;gap:0;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979;padding-bottom:10px;border-bottom:2px solid rgba(247,243,236,.25)">
+        <span>Time</span><span>Destination</span><span>Gate</span><span>Status</span>
+      </div>
+      <sc-for list="{{ board }}" as="b" hint-placeholder-count="5">
+        <div data-rv="left" data-rv-d="{{ b.delay }}" style="display:grid;grid-template-columns:78px minmax(0,1fr) 120px 118px;align-items:center;gap:0;padding:13px 0;border-bottom:1px solid rgba(247,243,236,.2)">
+          <span style="font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em;color:#f2b30c">{{ b.time }}</span>
+          <span style="font:800 17px/1.1 'Archivo',sans-serif;letter-spacing:-.02em">{{ b.dest }}</span>
+          <span style="font:600 10.5px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#bab6b6">{{ b.gate }}</span>
+          <span style="font:800 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;padding:5px 8px;background:{{ b.bg }};color:{{ b.fg }};justify-self:start">{{ b.status }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <div style="padding:34px 32px 38px;display:flex;flex-direction:column;gap:0">
+      <sc-for list="{{ terminalStats }}" as="s" hint-placeholder-count="4">
+        <div data-rv="right" data-rv-d="{{ s.delay }}" style="padding:15px 0;border-bottom:1px solid rgba(247,243,236,.2)">
+          <div style="font:800 34px/1 'Archivo',sans-serif;letter-spacing:-.035em;color:{{ s.color }}">{{ s.n }}</div>
+          <div style="font:600 9.5px/1.45 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#bab6b6;margin-top:6px">{{ s.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 3 · BOARDING PASS PRINT SEQUENCE ░░ -->
+<section id="pass" data-pass-sec="1" style="position:relative;background:#1b1a19;color:#f7f3ec;padding:86px 0 96px;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(247,243,236,.07) 1px,transparent 1px);background-size:100% 64px"></div>
+  <div style="position:relative;max-width:1040px;margin:0 auto;padding:0 32px;text-align:center">
+    <div data-rv="up" style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#f2b30c;margin-bottom:18px">At the desk · printing your ticket</div>
+    <h2 data-word-group="1" style="font:800 clamp(34px,4.6vw,66px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 auto 12px;max-width:16ch">
+      <sc-for list="{{ passTitleWords }}" as="w" hint-placeholder-count="4">
+        <span data-word="1" style="display:inline-block;margin-right:.24em;opacity:0;transform:translateY(16px)">{{ w.t }}</span>
+      </sc-for>
+    </h2>
+    <p data-rv="up" data-rv-d="120" style="font:400 15.5px/1.55 'Archivo',sans-serif;color:#bab6b6;max-width:56ch;margin:0 auto 46px">As you arrive, you check in at the desk, receive your boarding pass, and watch your route come to life. Keep scrolling to print it.</p>
+
+    <div style="position:relative;max-width:560px;margin:0 auto">
+      <div style="height:26px;background:#605d5d;border:2px solid #f7f3ec;border-bottom:0;position:relative;z-index:3">
+        <div style="position:absolute;left:14px;right:14px;top:9px;height:6px;background:#1b1a19"></div>
+      </div>
+      <div style="overflow:hidden;border:2px solid #f7f3ec;border-top:0;padding:0 0 0;background:rgba(247,243,236,.05)">
+        <div data-pass-card="1" style="background:#f7f3ec;color:#1b1a19;margin:0;transform:translateY(-100%);text-align:left">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:13px 18px;background:#ec3013;color:#fff">
+            <span style="font:800 12px/1 'Archivo',sans-serif;letter-spacing:.1em">PATTY PASSPORT ROUTES</span>
+            <span style="font:600 10px/1 'Archivo',sans-serif;letter-spacing:.16em">PP-LBN-2026</span>
+          </div>
+          <div style="padding:20px 18px 8px;display:grid;grid-template-columns:104px 1fr;row-gap:0">
+            <sc-for list="{{ passFields }}" as="f" hint-placeholder-count="6">
+              <div data-pass-row="{{ f.i }}" style="grid-column:1/3;display:grid;grid-template-columns:104px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.18);opacity:0">
+                <span style="font:600 10px/1.3 'Archivo',sans-serif;letter-spacing:.15em;text-transform:uppercase;color:#7d7979">{{ f.k }}</span>
+                <span style="font:800 15px/1.15 'Archivo',sans-serif;letter-spacing:-.01em">{{ f.v }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin:10px 0 0;border-top:2px dashed rgba(27,26,25,.45)"></div>
+          <div style="padding:16px 18px 20px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px">
+            <div style="flex:1">
+              <div style="font:600 9px/1.3 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979;margin-bottom:7px">Boarding number</div>
+              <div style="height:44px;overflow:hidden"><div data-pass-bar="1" style="height:100%;width:0;background:repeating-linear-gradient(90deg,#1b1a19 0 2px,transparent 2px 5px,#1b1a19 5px 9px,transparent 9px 13px)"></div></div>
+            </div>
+            <div data-pass-stamp="1" style="width:98px;height:98px;flex:none;border:3px solid #ec3013;color:#ec3013;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transform:rotate(-24deg) scale(2)">
+              <span style="font:800 21px/1 'Archivo',sans-serif">#01</span>
+              <span style="font:600 8px/1.4 'Archivo',sans-serif;letter-spacing:.16em">LEBANON</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:20px;display:flex;justify-content:center;gap:10px;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979">
+        <span data-pass-hint="1">Scroll to print</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 4 · MAP ░░ -->
+<section id="map" style="position:relative;background:#2b76c9;color:#fff;padding:90px 0 0;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.22) 1.5px,transparent 1.6px);background-size:30px 30px"></div>
+  <div style="position:relative;max-width:1180px;margin:0 auto;padding:0 32px">
+    <h2 data-word-group="1" style="font:800 clamp(38px,5.4vw,80px)/.96 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 26px;max-width:22ch">
+      <sc-for list="{{ mapWords }}" as="w" hint-placeholder-count="10">
+        <span data-word="1" style="display:inline-block;margin-right:.26em;opacity:0;transform:translateY(18px)">{{ w.t }}</span>
+      </sc-for>
+    </h2>
+    <div style="display:flex;flex-wrap:wrap;gap:26px;align-items:flex-end;justify-content:space-between;margin-bottom:34px">
+      <p data-rv="up" style="font:400 16px/1.55 'Archivo',sans-serif;max-width:46ch;margin:0;color:rgba(255,255,255,.92)">Five routes cross this sea. Every node is a kitchen, a playlist, a language and a stamp. Choose the node — the table becomes that place for an hour.</p>
+      <a href="Route-Map.dc.html" style="display:inline-flex;align-items:center;min-width:240px;padding:15px 19px;background:#f2b30c;color:#1b1a19;text-decoration:none;font:800 14px/1.1 'Archivo',sans-serif" style-hover="background:#fff">Open the Route Map<span style="margin-left:auto">→</span></a>
+    </div>
+  </div>
+  <div style="position:relative;max-width:1180px;margin:0 auto;padding:0 32px 78px">
+    <div style="position:relative;border:2px solid #1b1a19;background:rgba(27,26,25,.16);height:460px;overflow:hidden">
+      <image-slot id="pp-map-plate" shape="rect" fit="cover" placeholder="Drop the Mediterranean route map artwork" style="position:absolute;inset:0;opacity:.55"></image-slot>
+      <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.12) 0 1px,transparent 1px 58px),repeating-linear-gradient(90deg,rgba(255,255,255,.12) 0 1px,transparent 1px 58px);pointer-events:none"></div>
+      <div style="position:absolute;left:6%;right:6%;top:52%;height:2px;background-image:linear-gradient(90deg,#f2b30c 0 22px,transparent 22px 44px);background-size:44px 2px;animation:ppDash 1.6s linear infinite;pointer-events:none"></div>
+      <sc-for list="{{ mapNodes }}" as="n" hint-placeholder-count="8">
+        <div data-rv="scale" data-rv-d="{{ n.delay }}" style="position:absolute;left:{{ n.x }};top:{{ n.y }};transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:flex-start;gap:6px;pointer-events:none">
+          <span style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:{{ n.bg }};color:{{ n.fg }};border:2px solid #1b1a19;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;white-space:nowrap;animation:ppSway {{ n.sway }} ease-in-out infinite">{{ n.code }}<span style="font:600 9px/1;letter-spacing:.14em;opacity:.75">{{ n.region }}</span></span>
+          <span style="font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em;text-shadow:0 1px 0 rgba(27,26,25,.5)">{{ n.name }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 5 · ROUTE OVERVIEW + 6 · ROUTE CHAPTERS ░░ -->
+<section id="regions" style="background:#f7f3ec;border-bottom:2px solid #1b1a19">
+  <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:18px;padding:64px 44px 26px">
+    <h2 data-word-group="1" style="font:800 clamp(34px,4.4vw,62px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0;max-width:20ch">
+      <sc-for list="{{ routesTitleWords }}" as="w" hint-placeholder-count="7">
+        <span data-word="1" style="display:inline-block;margin-right:.24em;opacity:0;transform:translateY(16px)">{{ w.t }}</span>
+      </sc-for>
+    </h2>
+    <p data-rv="up" data-rv-d="90" style="font:400 14.5px/1.55 'Archivo',sans-serif;color:#605d5d;max-width:40ch;margin:0">We don't hand you a grid of twenty-one flags. You pick a route first — then the country inside it.</p>
+  </div>
+  <sc-for list="{{ regions }}" as="r" hint-placeholder-count="5">
+    <div data-rv="{{ r.rv }}" style="display:grid;grid-template-columns:{{ r.cols }};border-top:2px solid #1b1a19;background:{{ r.bg }};color:{{ r.fg }}">
+      <div style="order:{{ r.o1 }};padding:42px 40px;display:flex;flex-direction:column;justify-content:space-between;gap:26px;border-right:2px solid rgba(27,26,25,.35)">
+        <div>
+          <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:14px">
+            <span style="font:800 46px/1 'Archivo',sans-serif;letter-spacing:-.04em;opacity:.3">{{ r.num }}</span>
+            <span style="font:600 10px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase">{{ r.kicker }}</span>
+          </div>
+          <h3 style="font:800 clamp(30px,3.6vw,50px)/.98 'Archivo',sans-serif;letter-spacing:-.03em;margin:0 0 12px">{{ r.name }}</h3>
+          <p style="font:400 15px/1.55 'Archivo',sans-serif;margin:0;max-width:44ch;opacity:.86;text-wrap:pretty">{{ r.blurb }}</p>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ r.countries }}" as="c" hint-placeholder-count="4">
+            <a href="{{ c.href }}" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" style-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">{{ c.code }}<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">{{ c.name }}</span></a>
+          </sc-for>
+        </div>
+      </div>
+      <div style="order:{{ r.o2 }};position:relative;min-height:330px">
+        <image-slot id="{{ r.slotId }}" shape="rect" fit="cover" placeholder="{{ r.slot }}" style="position:absolute;inset:0"></image-slot>
+        <span style="position:absolute;right:18px;top:18px;font:800 12px/1 'Archivo',sans-serif;letter-spacing:.16em;padding:7px 10px;background:#1b1a19;color:#f7f3ec;pointer-events:none">{{ r.tag }}</span>
+      </div>
+    </div>
+  </sc-for>
+</section>
+
+<!-- ░░ COUNTRY IDENTITY CARDS ░░ -->
+<section id="identity" style="background:#1b1a19;color:#f7f3ec;padding:76px 0 82px;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="display:flex;flex-wrap:wrap-reverse;align-items:flex-end;justify-content:space-between;gap:20px;padding:0 44px 34px">
+    <p data-rv="left" style="font:400 15px/1.55 'Archivo',sans-serif;color:#bab6b6;max-width:42ch;margin:0">Not trivia. Identity. Each destination arrives with the line that defines it, the plate that proves it, and the phrase you'll say out loud.</p>
+    <h2 data-rv="right" style="font:800 clamp(34px,4.6vw,64px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0;text-align:right;max-width:20ch;margin-left:auto">EVERY COUNTRY HAS A HEADLINE.</h2>
+  </div>
+  <div style="display:flex;gap:0;width:max-content;animation:ppTick 64s linear infinite">
+    <sc-for list="{{ identityCards }}" as="c" hint-placeholder-count="12">
+      <div style="width:390px;flex:none;border:2px solid #f7f3ec;margin-right:-2px;background:#1b1a19">
+        <div style="position:relative;height:210px">
+          <image-slot id="{{ c.slotId }}" shape="rect" fit="cover" placeholder="{{ c.slot }}" style="position:absolute;inset:0"></image-slot>
+          <span style="position:absolute;left:14px;top:14px;width:52px;height:52px;border:2px solid {{ c.accent }};color:{{ c.accent }};background:rgba(27,26,25,.75);display:flex;align-items:center;justify-content:center;font:800 10px/1 'Archivo',sans-serif;letter-spacing:.06em;transform:rotate(-9deg);pointer-events:none">{{ c.stamp }}</span>
+        </div>
+        <div style="padding:20px 18px 22px;border-top:2px solid #f7f3ec">
+          <div style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:{{ c.accent }};margin-bottom:10px">{{ c.route }}</div>
+          <h3 style="font:800 27px/1 'Archivo',sans-serif;letter-spacing:-.025em;margin:0 0 8px">{{ c.name }}</h3>
+          <div style="font:800 14px/1.25 'Archivo',sans-serif;color:#f2b30c;margin-bottom:12px">{{ c.identity }}</div>
+          <p style="font:400 13px/1.5 'Archivo',sans-serif;color:#bab6b6;margin:0 0 14px;min-height:58px">{{ c.line }}</p>
+          <div style="display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(247,243,236,.25);padding-top:12px;font:600 10px/1 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase"><span style="color:#bab6b6">{{ c.hero }}</span><span style="color:#f7f3ec">{{ c.price }}</span></div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+<!-- ░░ 7 · SOUNDTRACK ░░ -->
+<section id="culture" style="background:#f7f3ec;padding:80px 0 84px;border-bottom:2px solid #1b1a19">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px">
+    <div style="display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:44px;align-items:start">
+      <div style="order:2">
+        <h2 data-word-group="1" style="font:800 clamp(32px,4.2vw,58px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 16px">
+          <sc-for list="{{ soundTitleWords }}" as="w" hint-placeholder-count="8">
+            <span data-word="1" style="display:inline-block;margin-right:.24em;opacity:0;transform:translateY(16px)">{{ w.t }}</span>
+          </sc-for>
+        </h2>
+        <p data-rv="right" data-rv-d="80" style="font:400 15px/1.55 'Archivo',sans-serif;color:#605d5d;margin:0 0 20px">Each zone plays its destination — curated, never autoplay, always linkable. Language card on the table, playlist in the air, story on the pack.</p>
+        <div data-rv="right" data-rv-d="140" style="border:2px solid #1b1a19;padding:18px">
+          <div style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#605d5d;margin-bottom:12px">Now playing · Levant Route</div>
+          <div style="display:flex;align-items:flex-end;gap:4px;height:70px;margin-bottom:14px">
+            <sc-for list="{{ eqBars }}" as="b" hint-placeholder-count="26">
+              <span style="flex:1;background:{{ b.color }};height:30%;animation:ppEq {{ b.dur }} ease-in-out {{ b.delay }} infinite alternate"></span>
+            </sc-for>
+          </div>
+          <div style="font:800 17px/1.1 'Archivo',sans-serif">BEIRUT CORNICHE, 7PM</div>
+          <div style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d">Oud, brass and slow drives along the sea — 42 tracks</div>
+        </div>
+      </div>
+      <div style="order:1;display:flex;flex-direction:column;gap:0;border-top:2px solid #1b1a19">
+        <sc-for list="{{ playlists }}" as="p" hint-placeholder-count="5">
+          <div data-rv="left" data-rv-d="{{ p.delay }}" style="display:flex;align-items:center;gap:14px;padding:15px 4px;border-bottom:2px solid rgba(27,26,25,.22)">
+            <span style="width:44px;height:44px;flex:none;background:{{ p.bg }};color:{{ p.fg }};display:flex;align-items:center;justify-content:center;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.06em">{{ p.code }}</span>
+            <span style="flex:1">
+              <span style="display:block;font:800 15px/1.15 'Archivo',sans-serif">{{ p.title }}</span>
+              <span style="display:block;font:400 12px/1.4 'Archivo',sans-serif;color:#605d5d">{{ p.sub }}</span>
+            </span>
+            <span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.12em;color:#7d7979">{{ p.len }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 8 · NATURE ROUTES ░░ -->
+<section id="nature" style="position:relative;background:#e7e3dc;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div data-par="0.08" style="position:absolute;right:-90px;top:-60px;width:360px;height:360px;border:2px solid rgba(27,26,25,.18);border-radius:50%"></div>
+  <div style="position:relative;max-width:1400px;margin:0 auto;padding:74px 44px 20px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px">
+      <div>
+        <div data-rv="up" style="display:inline-block;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;background:#1b1a19;color:#f2b30c;padding:7px 11px;margin-bottom:20px">Nature routes</div>
+        <h2 data-word-group="1" style="font:800 clamp(34px,4.8vw,70px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 14px;max-width:17ch">
+          <sc-for list="{{ natureTitleWords }}" as="w" hint-placeholder-count="5">
+            <span data-word="1" style="display:inline-block;margin-right:.24em;opacity:0;transform:translateY(16px)">{{ w.t }}</span>
+          </sc-for>
+        </h2>
+        <p data-rv="up" data-rv-d="130" style="font:400 16px/1.55 'Archivo',sans-serif;color:#444141;max-width:44ch;margin:0">Not just different destinations. Different worlds — the mountain, the island, the grove, the harbour and the desert that each kitchen grew out of.</p>
+      </div>
+      <div data-rv="up" data-rv-d="180" style="font:600 10px/1.7 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#605d5d;text-align:right">Landscape · climate · harvest<br>printed on every destination pack</div>
+    </div>
+  </div>
+  <div style="position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));border-top:2px solid #1b1a19;margin-top:44px">
+    <sc-for list="{{ natureRoutes }}" as="n" hint-placeholder-count="5">
+      <div data-rv="up" data-rv-d="{{ n.delay }}" style="border-right:2px solid #1b1a19;background:#f7f3ec;display:flex;flex-direction:column">
+        <div style="position:relative;height:250px;border-bottom:2px solid #1b1a19">
+          <image-slot id="{{ n.slotId }}" shape="rect" fit="cover" placeholder="{{ n.slot }}" style="position:absolute;inset:0"></image-slot>
+          <span style="position:absolute;left:0;top:0;padding:7px 10px;background:{{ n.bg }};color:{{ n.fg }};font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;pointer-events:none">{{ n.route }}</span>
+        </div>
+        <div style="padding:20px 18px 22px;display:flex;flex-direction:column;gap:12px;flex:1">
+          <h3 style="font:800 23px/1.02 'Archivo',sans-serif;letter-spacing:-.025em;margin:0">{{ n.title }}</h3>
+          <p style="font:400 13.5px/1.5 'Archivo',sans-serif;color:#605d5d;margin:0">{{ n.line }}</p>
+          <div style="margin-top:auto;display:flex;flex-direction:column;gap:0;border-top:2px solid rgba(27,26,25,.2)">
+            <sc-for list="{{ n.flora }}" as="f" hint-placeholder-count="3">
+              <span style="display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.16);font:600 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#1b1a19">
+                <span style="width:8px;height:8px;flex:none;background:{{ n.bg }}"></span>{{ f.t }}
+              </span>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+<!-- ░░ 9 · PASSPORT & REWARDS ░░ -->
+<section id="passport" style="position:relative;background:#f7f3ec;padding:82px 0 88px;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div data-par="0.1" style="position:absolute;left:-120px;bottom:-80px;width:420px;height:420px;border:2px solid rgba(236,48,19,.25);border-radius:50%"></div>
+  <div style="position:relative;max-width:1240px;margin:0 auto;padding:0 32px">
+    <div style="text-align:center;margin-bottom:46px">
+      <div data-rv="up" style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#ae1800;margin-bottom:16px">The passport</div>
+      <h2 data-word-group="1" style="font:800 clamp(36px,5vw,74px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 auto 14px;max-width:18ch">
+        <sc-for list="{{ passportTitleWords }}" as="w" hint-placeholder-count="6">
+          <span data-word="1" style="display:inline-block;margin-right:.24em;opacity:0;transform:translateY(16px)">{{ w.t }}</span>
+        </sc-for>
+      </h2>
+      <p data-rv="up" data-rv-d="130" style="font:400 15.5px/1.55 'Archivo',sans-serif;color:#605d5d;max-width:56ch;margin:0 auto">Every meal ends the same way: the crew stamps your page and asks where we're taking you next.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:0;border:2px solid #1b1a19;background:#fff">
+      <div style="padding:26px;border-right:2px solid #1b1a19">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px">
+          <span style="font:600 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d">{{ passportProgressLabel }}</span>
+          <span style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.12em;color:#ec3013">NEXT: SECRET BURGER</span>
+        </div>
+        <div style="position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(27,26,25,.35);border:2px solid #1b1a19">
+          <sc-for list="{{ stampCells }}" as="s" hint-placeholder-count="21">
+            <div style="position:relative;background:#f7f3ec;aspect-ratio:1/1;display:flex;flex-direction:column;justify-content:flex-end;padding:7px">
+              <span style="font:800 13px/1 'Archivo',sans-serif">{{ s.code }}</span>
+              <span style="font:400 8px/1.2 'Archivo',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#7d7979">{{ s.name }}</span>
+              <sc-if value="{{ s.stamped }}" hint-placeholder-val="{{ false }}">
+                <span data-rv="stamp" data-rv-d="{{ s.delay }}" style="position:absolute;top:6px;right:6px;width:40px;height:40px;border:2.5px solid #ec3013;color:#ec3013;display:flex;align-items:center;justify-content:center;font:800 9px/1 'Archivo',sans-serif;transform:rotate(-10deg)">{{ s.mark }}</span>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="padding:26px">
+        <div style="font:600 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:18px">Reward ladder</div>
+        <sc-for list="{{ ladder }}" as="l" hint-placeholder-count="4">
+          <div data-rv="left" data-rv-d="{{ l.delay }}" style="display:flex;align-items:center;gap:16px;padding:15px 0;border-bottom:2px solid rgba(27,26,25,.2)">
+            <span style="width:54px;height:54px;flex:none;background:{{ l.bg }};color:{{ l.fg }};display:flex;align-items:center;justify-content:center;font:800 20px/1 'Archivo',sans-serif">{{ l.n }}</span>
+            <span style="flex:1">
+              <span style="display:block;font:800 17px/1.1 'Archivo',sans-serif;letter-spacing:-.015em">{{ l.title }}</span>
+              <span style="display:block;font:400 12.5px/1.4 'Archivo',sans-serif;color:#605d5d;margin-top:3px">{{ l.sub }}</span>
+            </span>
+            <span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:{{ l.stateColor }}">{{ l.state }}</span>
+          </div>
+        </sc-for>
+        <a href="Rewards.dc.html" style="display:inline-flex;align-items:center;min-width:100%;margin-top:22px;padding:16px 18px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 14px/1.1 'Archivo',sans-serif" style-hover="background:#ec3013">Start my passport<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 10 · KIDS EXPLORER KIT ░░ -->
+<section id="kit" style="position:relative;background:#f2b30c;color:#1b1a19;padding:78px 0 86px;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:relative;max-width:1240px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:40px;align-items:center">
+    <div style="position:relative;min-height:460px">
+      <sc-for list="{{ kitObjects }}" as="k" hint-placeholder-count="5">
+        <div data-par="{{ k.par }}" style="position:absolute;left:{{ k.x }};top:{{ k.y }};width:{{ k.w }};background:{{ k.bg }};color:{{ k.fg }};border:2px solid #1b1a19;box-shadow:{{ k.shadow }};transform:rotate({{ k.r }});--r:{{ k.r }};animation:ppDrift {{ k.dur }} ease-in-out {{ k.delay }} infinite;padding:12px">
+          <div style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;margin-bottom:9px">{{ k.label }}</div>
+          <div style="position:relative;height:{{ k.h }}">
+            <image-slot id="{{ k.slotId }}" shape="rect" fit="cover" placeholder="{{ k.note }}" style="position:absolute;inset:0"></image-slot>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div>
+      <div data-rv="up" style="display:inline-block;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.22em;text-transform:uppercase;background:#1b1a19;color:#f2b30c;padding:7px 11px;margin-bottom:22px">Young explorers</div>
+      <h2 data-word-group="1" style="font:800 clamp(34px,4.8vw,68px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 18px;max-width:18ch">
+        <sc-for list="{{ kidsTitleWords }}" as="w" hint-placeholder-count="6">
+          <span data-word="1" style="display:inline-block;margin-right:.24em;opacity:0;transform:translateY(16px)">{{ w.t }}</span>
+        </sc-for>
+      </h2>
+      <p data-rv="up" data-rv-d="130" style="font:400 15.5px/1.55 'Archivo',sans-serif;margin:0 0 26px;max-width:46ch">A junior passport, a route booklet, a sticker sheet of flags, a postcard from the destination — and a crew host running the games at birthdays.</p>
+      <div data-rv="up" data-rv-d="190" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;border-top:2px solid #1b1a19;margin-bottom:26px">
+        <sc-for list="{{ kidPackages }}" as="p" hint-placeholder-count="2">
+          <div style="padding:18px 18px 20px;border-right:2px solid rgba(27,26,25,.3)">
+            <div style="font:800 26px/1 'Archivo',sans-serif;letter-spacing:-.03em">{{ p.price }}</div>
+            <div style="font:800 13px/1.2 'Archivo',sans-serif;margin:8px 0 6px">{{ p.name }}</div>
+            <div style="font:400 12px/1.45 'Archivo',sans-serif;opacity:.78">{{ p.detail }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px">
+        <a href="Events.dc.html" style="display:inline-flex;align-items:center;min-width:262px;padding:16px 19px;background:#ec3013;color:#fff;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#1b1a19">Plan a birthday journey<span style="margin-left:auto">→</span></a>
+        <a href="Junior-Explorers.dc.html" style="display:inline-flex;align-items:center;min-width:262px;padding:16px 19px;border:2px solid #1b1a19;color:#1b1a19;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#1b1a19;color:#f2b30c">Explore junior destinations<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 11 · ADULT TRAVEL KIT ░░ -->
+<section id="adultkit" style="position:relative;background:#f7f3ec;padding:78px 0 86px;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:relative;max-width:1240px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:44px;align-items:center">
+    <div>
+      <div data-rv="up" style="display:inline-block;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.22em;text-transform:uppercase;background:#1b1a19;color:#f7f3ec;padding:7px 11px;margin-bottom:22px">The adult travel kit</div>
+      <h2 data-word-group="1" style="font:800 clamp(34px,4.8vw,68px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 18px;max-width:16ch">
+        <sc-for list="{{ adultTitleWords }}" as="w" hint-placeholder-count="6">
+          <span data-word="1" style="display:inline-block;margin-right:.24em;opacity:0;transform:translateY(16px)">{{ w.t }}</span>
+        </sc-for>
+      </h2>
+      <p data-rv="up" data-rv-d="130" style="font:400 15.5px/1.55 'Archivo',sans-serif;color:#444141;margin:0 0 28px;max-width:46ch">Grown-up travellers get the full kit: the destination bag, the country booklet, the boarding ticket, the luggage tag and a card of phrases worth saying out loud before the plate lands.</p>
+      <div data-rv="up" data-rv-d="180" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));border-top:2px solid #1b1a19;margin-bottom:28px">
+        <sc-for list="{{ adultKitItems }}" as="a" hint-placeholder-count="4">
+          <div style="padding:16px 16px 18px;border-right:2px solid rgba(27,26,25,.25);border-bottom:2px solid rgba(27,26,25,.25)">
+            <div style="font:800 11px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:{{ a.color }};margin-bottom:9px">{{ a.label }}</div>
+            <div style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d">{{ a.detail }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <a href="Booking.dc.html" style="display:inline-flex;align-items:center;min-width:270px;padding:16px 19px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#ec3013">Reserve a travelling table<span style="margin-left:auto">→</span></a>
+    </div>
+    <div style="position:relative;min-height:470px">
+      <sc-for list="{{ adultObjects }}" as="k" hint-placeholder-count="4">
+        <div data-par="{{ k.par }}" style="position:absolute;left:{{ k.x }};top:{{ k.y }};width:{{ k.w }};background:{{ k.bg }};color:{{ k.fg }};border:2px solid #1b1a19;box-shadow:{{ k.shadow }};transform:rotate({{ k.r }});--r:{{ k.r }};animation:ppDrift {{ k.dur }} ease-in-out {{ k.delay }} infinite;padding:12px">
+          <div style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;margin-bottom:9px">{{ k.label }}</div>
+          <div style="position:relative;height:{{ k.h }}">
+            <image-slot id="{{ k.slotId }}" shape="rect" fit="cover" placeholder="{{ k.note }}" style="position:absolute;inset:0"></image-slot>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 12 · EVERYONE GETS A PASSPORT ░░ -->
+<section id="family" style="background:#2b76c9;color:#fff;padding:78px 0 84px;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:40px">
+      <h2 data-word-group="1" style="font:800 clamp(34px,4.8vw,70px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0;max-width:16ch">
+        <sc-for list="{{ familyTitleWords }}" as="w" hint-placeholder-count="6">
+          <span data-word="1" style="display:inline-block;margin-right:.24em;opacity:0;transform:translateY(16px)">{{ w.t }}</span>
+        </sc-for>
+      </h2>
+      <p data-rv="up" data-rv-d="90" style="font:400 15.5px/1.55 'Archivo',sans-serif;max-width:40ch;margin:0;color:rgba(255,255,255,.92)">Junior, Explorer or Family — the same book, sized to who is travelling. Stamps pool together, so the table climbs the ladder as one crew.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));border:2px solid #1b1a19">
+      <sc-for list="{{ passportTiers }}" as="t" hint-placeholder-count="3">
+        <div data-rv="up" data-rv-d="{{ t.delay }}" style="background:{{ t.bg }};color:{{ t.fg }};border-right:2px solid #1b1a19;padding:26px 22px 24px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+            <span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;opacity:.75">{{ t.who }}</span>
+            <span style="width:40px;height:40px;flex:none;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font:800 11px/1 'Archivo',sans-serif;transform:rotate(-8deg)">{{ t.mark }}</span>
+          </div>
+          <h3 style="font:800 30px/.98 'Archivo',sans-serif;letter-spacing:-.03em;margin:0">{{ t.name }}</h3>
+          <div style="display:flex;flex-direction:column;border-top:2px solid currentColor">
+            <sc-for list="{{ t.features }}" as="f" hint-placeholder-count="3">
+              <span style="padding:10px 0;border-bottom:1px solid currentColor;font:400 13px/1.4 'Archivo',sans-serif;opacity:.9">{{ f.t }}</span>
+            </sc-for>
+          </div>
+          <div style="margin-top:auto;font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em">{{ t.price }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 13 · INCLUSION / DIETARY ░░ -->
+<section id="welcome" style="background:#f7f3ec;padding:78px 0 84px;border-bottom:2px solid #1b1a19">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:38px">
+      <div>
+        <div data-rv="up" style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#ae1800;margin-bottom:16px">At every table</div>
+        <h2 data-word-group="1" style="font:800 clamp(34px,4.8vw,70px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0;max-width:16ch">
+          <sc-for list="{{ welcomeTitleWords }}" as="w" hint-placeholder-count="5">
+            <span data-word="1" style="display:inline-block;margin-right:.24em;opacity:0;transform:translateY(16px)">{{ w.t }}</span>
+          </sc-for>
+        </h2>
+      </div>
+      <p data-rv="up" data-rv-d="130" style="font:400 15.5px/1.55 'Archivo',sans-serif;color:#605d5d;max-width:42ch;margin:0">Every destination is cooked so nobody is left ordering the side salad. Pick a lane below and the menu opens already filtered.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19">
+      <sc-for list="{{ dietary }}" as="d" hint-placeholder-count="6">
+        <a href="{{ d.href }}" data-rv="up" data-rv-d="{{ d.delay }}" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;padding:22px 20px 24px;background:{{ d.bg }};color:{{ d.fg }};display:flex;flex-direction:column;gap:12px;min-height:212px;text-decoration:none;transition:background .2s ease,color .2s ease" style-hover="background:#1b1a19;color:#f7f3ec">
+          <span style="width:42px;height:42px;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font:800 13px/1 'Archivo',sans-serif;letter-spacing:.04em">{{ d.mark }}</span>
+          <h3 style="font:800 21px/1.05 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">{{ d.title }}</h3>
+          <p style="font:400 13px/1.5 'Archivo',sans-serif;margin:0;opacity:.85">{{ d.line }}</p>
+          <span style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.8">{{ d.tag }}<span style="font:800 14px/1 'Archivo',sans-serif">→</span></span>
+        </a>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 14 · MEET THE CREW ░░ -->
+<section id="crew" style="background:#1b1a19;color:#f7f3ec;padding:78px 0 84px;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="max-width:1300px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:38px">
+      <div>
+        <div data-rv="up" style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#f2b30c;margin-bottom:16px">On board today</div>
+        <h2 data-word-group="1" style="font:800 clamp(34px,4.8vw,70px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0;max-width:15ch">
+          <sc-for list="{{ crewTitleWords }}" as="w" hint-placeholder-count="6">
+            <span data-word="1" style="display:inline-block;margin-right:.24em;opacity:0;transform:translateY(16px)">{{ w.t }}</span>
+          </sc-for>
+        </h2>
+      </div>
+      <div data-rv="up" data-rv-d="130" style="display:flex;flex-direction:column;gap:14px;align-items:flex-start;max-width:42ch">
+        <p style="font:400 15.5px/1.55 'Archivo',sans-serif;color:#bab6b6;margin:0">Nobody here is "waitstaff". There's a host who reads the route, a desk that stamps your book, a guide who knows the country, and a kitchen that cooks it.</p>
+        <a href="Our-Story.dc.html" style="display:inline-flex;align-items:center;min-width:250px;padding:15px 18px;background:#f2b30c;color:#1b1a19;text-decoration:none;font:800 14px/1.1 'Archivo',sans-serif" style-hover="background:#ec3013;color:#fff">Meet the full crew<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));border-left:2px solid #f7f3ec;border-top:2px solid #f7f3ec">
+      <sc-for list="{{ crew }}" as="c" hint-placeholder-count="5">
+        <div data-rv="up" data-rv-d="{{ c.delay }}" style="border-right:2px solid #f7f3ec;border-bottom:2px solid #f7f3ec;display:flex;flex-direction:column">
+          <div style="position:relative;height:230px;border-bottom:2px solid #f7f3ec">
+            <image-slot id="{{ c.slotId }}" shape="rect" fit="cover" placeholder="{{ c.slot }}" style="position:absolute;inset:0"></image-slot>
+            <span style="position:absolute;right:0;bottom:0;padding:6px 9px;background:{{ c.bg }};color:{{ c.fg }};font:800 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;pointer-events:none">{{ c.code }}</span>
+          </div>
+          <div style="padding:18px 16px 20px;display:flex;flex-direction:column;gap:9px;flex:1">
+            <h3 style="font:800 20px/1.05 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">{{ c.role }}</h3>
+            <p style="font:400 13px/1.5 'Archivo',sans-serif;color:#bab6b6;margin:0">{{ c.line }}</p>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 15 · INVESTOR CTA ░░ -->
+<section id="invest" style="position:relative;background:#ec3013;color:#fff;padding:74px 0 78px;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(255,255,255,.14) 1px,transparent 1px);background-size:74px 100%"></div>
+  <div style="position:relative;max-width:1240px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:44px;align-items:end">
+    <div>
+      <div data-rv="up" style="display:inline-block;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;background:#1b1a19;color:#f2b30c;padding:7px 11px;margin-bottom:22px">Partners &amp; investors</div>
+      <h2 data-word-group="1" style="font:800 clamp(36px,5.2vw,78px)/.92 'Archivo',sans-serif;letter-spacing:-.045em;margin:0 0 18px;max-width:15ch">
+        <sc-for list="{{ investTitleWords }}" as="w" hint-placeholder-count="8">
+          <span data-word="1" style="display:inline-block;margin-right:.24em;opacity:0;transform:translateY(16px)">{{ w.t }}</span>
+        </sc-for>
+      </h2>
+      <p data-rv="up" data-rv-d="130" style="font:400 16px/1.55 'Archivo',sans-serif;margin:0 0 28px;max-width:46ch">One terminal in Leganés today. A route network of Mediterranean flagship venues next. The full model, unit economics and expansion map are ready for the people who want to fly it with us.</p>
+      <a href="Investors.dc.html" data-rv="up" data-rv-d="180" style="display:inline-flex;align-items:center;min-width:300px;padding:18px 21px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 15.5px/1.1 'Archivo',sans-serif" style-hover="background:#f2b30c;color:#1b1a19">Explore the Opportunity<span style="margin-left:auto">→</span></a>
+    </div>
+    <div data-rv="right" data-rv-d="120" style="border:2px solid #1b1a19;background:#1b1a19;color:#f7f3ec">
+      <sc-for list="{{ investorFacts }}" as="f" hint-placeholder-count="4">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:16px 18px;border-bottom:1px solid rgba(247,243,236,.22)">
+          <span style="font:600 10px/1.3 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#bab6b6">{{ f.label }}</span>
+          <span style="font:800 21px/1 'Archivo',sans-serif;letter-spacing:-.02em;color:{{ f.color }}">{{ f.value }}</span>
+        </div>
+      </sc-for>
+      <div style="padding:14px 18px;font:600 9.5px/1.5 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#7d7979">invest@pattypassport.com</div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 16 · ASK PATTY TOOTY ░░ -->
+<section id="tooty" style="position:relative;background:#e7e3dc;padding:78px 0 84px;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div data-par="0.08" style="position:absolute;left:-110px;top:-70px;width:340px;height:340px;border:2px solid rgba(43,118,201,.3);border-radius:50%"></div>
+  <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:46px;align-items:center">
+    <div>
+      <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#2b76c9;color:#fff;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px">
+        <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Concierge desk · always open
+      </div>
+      <h2 data-word-group="1" style="font:800 clamp(34px,4.8vw,70px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 18px;max-width:16ch">
+        <sc-for list="{{ tootyTitleWords }}" as="w" hint-placeholder-count="7">
+          <span data-word="1" style="display:inline-block;margin-right:.24em;opacity:0;transform:translateY(16px)">{{ w.t }}</span>
+        </sc-for>
+      </h2>
+      <p data-rv="up" data-rv-d="130" style="font:400 16px/1.55 'Archivo',sans-serif;color:#444141;margin:0 0 26px;max-width:46ch">Patty Tooty is the terminal's travel concierge. It picks your first destination, finds the dish that fits your table, points kids at the right route, explains how stamps and rewards work, and walks you to the page you actually needed.</p>
+      <div data-rv="up" data-rv-d="180" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));border-top:2px solid #1b1a19;margin-bottom:26px">
+        <sc-for list="{{ tootySkills }}" as="s" hint-placeholder-count="4">
+          <div style="padding:15px 14px 17px;border-right:2px solid rgba(27,26,25,.22);border-bottom:2px solid rgba(27,26,25,.22)">
+            <div style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:{{ s.color }};margin-bottom:8px">{{ s.label }}</div>
+            <div style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d">{{ s.detail }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <a href="Patty-Tooty.dc.html" style="display:inline-flex;align-items:center;min-width:280px;padding:16px 19px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#2b76c9">Ask Patty Tooty<span style="margin-left:auto">→</span></a>
+    </div>
+
+    <div data-rv="right" data-rv-d="90" style="border:2px solid #1b1a19;background:#f7f3ec;box-shadow:16px 16px 0 rgba(27,26,25,.22)">
+      <div style="display:flex;align-items:center;gap:13px;padding:14px 16px;background:#1b1a19;color:#f7f3ec">
+        <span style="position:relative;width:38px;height:38px;flex:none;background:#f2b30c;display:block">
+          <span style="position:absolute;left:5px;top:7px;width:28px;height:6px;background:#ec3013;display:block"></span>
+          <span style="position:absolute;left:5px;top:15px;width:28px;height:3px;background:#1b1a19;display:block"></span>
+          <span style="position:absolute;left:5px;top:20px;width:28px;height:6px;background:#ec3013;display:block"></span>
+          <span style="position:absolute;left:10px;bottom:4px;width:7px;height:4px;background:#1b1a19;display:block"></span>
+          <span style="position:absolute;right:10px;bottom:4px;width:7px;height:4px;background:#1b1a19;display:block"></span>
+        </span>
+        <span style="flex:1">
+          <span style="display:block;font:800 15px/1.1 'Archivo',sans-serif;letter-spacing:-.015em">PATTY TOOTY</span>
+          <span style="display:flex;align-items:center;gap:7px;font:600 9px/1.4 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#bab6b6;margin-top:3px"><span style="width:6px;height:6px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Destination concierge · online</span>
+        </span>
+        <span style="font:600 9px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#f2b30c">Gate 21</span>
+      </div>
+
+      <div style="padding:18px 16px;display:flex;flex-direction:column;gap:14px;background:repeating-linear-gradient(0deg,rgba(27,26,25,.05) 0 1px,transparent 1px 44px);min-height:330px">
+        <div style="display:flex;gap:11px;align-items:flex-start">
+          <span style="width:26px;height:26px;flex:none;background:#f2b30c;border:2px solid #1b1a19;display:flex;align-items:center;justify-content:center;font:800 9px/1 'Archivo',sans-serif">PT</span>
+          <span style="max-width:80%;background:#fff;border:2px solid #1b1a19;padding:12px 13px;font:400 13.5px/1.5 'Archivo',sans-serif">Welcome to the terminal. Twenty-one countries are boarding tonight — tell me who's at the table and I'll pick your route.</span>
+        </div>
+        <div style="display:flex;justify-content:flex-end">
+          <span style="max-width:78%;background:#2b76c9;color:#fff;border:2px solid #1b1a19;padding:12px 13px;font:400 13.5px/1.5 'Archivo',sans-serif">{{ tootyQuestion }}</span>
+        </div>
+        <div style="display:flex;gap:11px;align-items:flex-start">
+          <span style="width:26px;height:26px;flex:none;background:#f2b30c;border:2px solid #1b1a19;display:flex;align-items:center;justify-content:center;font:800 9px/1 'Archivo',sans-serif">PT</span>
+          <span style="max-width:84%;display:flex;flex-direction:column;gap:10px">
+            <span style="background:#fff;border:2px solid #1b1a19;padding:12px 13px;font:400 13.5px/1.5 'Archivo',sans-serif">{{ tootyAnswer }}</span>
+            <span style="display:flex;flex-wrap:wrap;gap:7px">
+              <sc-for list="{{ tootyPills }}" as="p" hint-placeholder-count="3">
+                <a href="{{ p.href }}" style="display:inline-flex;align-items:center;gap:7px;padding:8px 10px;background:{{ p.bg }};color:{{ p.fg }};border:2px solid #1b1a19;text-decoration:none;font:800 10px/1 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase" style-hover="background:#1b1a19;color:#f7f3ec">{{ p.label }}<span>→</span></a>
+              </sc-for>
+            </span>
+          </span>
+        </div>
+        <div style="display:flex;gap:11px;align-items:center;margin-top:auto">
+          <span style="width:26px;height:26px;flex:none;background:#f2b30c;border:2px solid #1b1a19;display:flex;align-items:center;justify-content:center;font:800 9px/1 'Archivo',sans-serif">PT</span>
+          <span style="display:flex;align-items:center;gap:5px;background:#fff;border:2px solid #1b1a19;padding:12px 13px">
+            <span style="width:6px;height:6px;background:#1b1a19;animation:ppDots 1.2s ease-in-out infinite"></span>
+            <span style="width:6px;height:6px;background:#1b1a19;animation:ppDots 1.2s ease-in-out .2s infinite"></span>
+            <span style="width:6px;height:6px;background:#1b1a19;animation:ppDots 1.2s ease-in-out .4s infinite"></span>
+          </span>
+        </div>
+      </div>
+
+      <div style="border-top:2px solid #1b1a19;padding:14px 16px">
+        <div style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:11px">Suggested questions</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ tootyChips }}" as="c" hint-placeholder-count="5">
+            <button type="button" onClick="{{ c.pick }}" style="padding:10px 12px;background:{{ c.bg }};border:2px solid #1b1a19;color:{{ c.fg }};font:600 11.5px/1 'Archivo',sans-serif;letter-spacing:.01em;cursor:pointer;text-align:left" style-hover="background:#f2b30c;color:#1b1a19">{{ c.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;border-top:2px solid #1b1a19;padding:12px 16px">
+        <input type="text" placeholder="Ask about a country, a dish, a table…" style="flex:1;min-width:0;background:transparent;border:0;border-bottom:2px solid rgba(27,26,25,.3);color:#1b1a19;font:400 13.5px/1.4 'Archivo',sans-serif;padding:7px 0;outline:none" />
+        <button type="button" style="padding:11px 14px;background:#ec3013;border:2px solid #1b1a19;color:#fff;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;cursor:pointer" style-hover="background:#1b1a19">Send</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 17 · CHECK-IN CONSOLE + FOOTER ░░ -->
+<section id="checkin" style="position:relative;background:#f7f3ec;padding:80px 0 0;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(27,26,25,.08) 1px,transparent 1px);background-size:74px 100%"></div>
+  <div style="position:relative;max-width:1240px;margin:0 auto;padding:0 32px 70px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:34px">
+      <h2 data-word-group="1" style="font:800 clamp(38px,5.6vw,86px)/.9 'Archivo',sans-serif;letter-spacing:-.045em;margin:0;max-width:16ch">
+        <sc-for list="{{ checkinTitleWords }}" as="w" hint-placeholder-count="4">
+          <span data-word="1" style="display:inline-block;margin-right:.24em;opacity:0;transform:translateY(16px)">{{ w.t }}</span>
+        </sc-for>
+      </h2>
+      <div data-rv="up" data-rv-d="80" style="font:600 10.5px/1.6 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;text-align:right;color:#605d5d">Leganés · Madrid<br>Open daily 12:00 — 00:00</div>
+    </div>
+    <div data-rv="up" data-rv-d="140" style="background:#1b1a19;border:2px solid #1b1a19;box-shadow:16px 16px 0 rgba(27,26,25,.22);color:#f7f3ec">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:2px solid rgba(247,243,236,.3);font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase">
+        <span style="display:flex;align-items:center;gap:9px"><span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Route selection console</span>
+        <span style="color:#bab6b6">Step 1 of 2</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));border-bottom:2px solid rgba(247,243,236,.3)">
+        <sc-for list="{{ consoleFields }}" as="f" hint-placeholder-count="4">
+          <label style="display:block;padding:18px 20px;border-right:2px solid rgba(247,243,236,.22)">
+            <span style="display:block;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#bab6b6;margin-bottom:10px">{{ f.label }}</span>
+            <input type="{{ f.type }}" value="{{ f.value }}" style="width:100%;background:transparent;border:0;border-bottom:2px solid #f2b30c;color:#f7f3ec;font:800 18px/1.2 'Archivo',sans-serif;padding:0 0 8px;outline:none" />
+          </label>
+        </sc-for>
+      </div>
+      <div style="padding:20px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between">
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ routeChips }}" as="c" hint-placeholder-count="5">
+            <button type="button" style="padding:10px 13px;background:transparent;border:2px solid rgba(247,243,236,.55);color:#f7f3ec;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;cursor:pointer" style-hover="background:#f2b30c;border-color:#f2b30c;color:#1b1a19">{{ c.label }}</button>
+          </sc-for>
+        </div>
+        <a href="Booking.dc.html" style="display:inline-flex;align-items:center;min-width:260px;padding:17px 20px;background:#ec3013;color:#fff;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" style-hover="background:#f2b30c;color:#1b1a19">Reserve Your Flight<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+  </div>
+  <div style="position:relative;background:#1b1a19;color:#f7f3ec;padding:44px 32px 30px;border-top:2px solid #1b1a19">
+    <div style="max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:26px;padding-bottom:26px;border-bottom:2px solid rgba(247,243,236,.25)">
+      <div>
+        <div style="font:800 15px/1 'Archivo',sans-serif;margin-bottom:10px">PATTY PASSPORT</div>
+        <div style="font:400 12.5px/1.6 'Archivo',sans-serif;color:#bab6b6">Parque Tecnológico de Leganés<br>Calle Innovación 12, 28918 Leganés, Madrid</div>
+      </div>
+      <div style="font:400 12.5px/1.6 'Archivo',sans-serif;color:#bab6b6">+34 91 123 45 67<br>WhatsApp +34 600 123 456<br>hello@pattypassport.com<br>invest@pattypassport.com</div>
+      <div style="font:400 12.5px/1.6 'Archivo',sans-serif;color:#bab6b6">Instagram · TikTok · X · Facebook<br>@pattypassport</div>
+      <div style="font:400 12.5px/1.6 'Archivo',sans-serif;color:#bab6b6">FAQ · Allergens<br>Privacy · Terms<br>Halal-friendly · Vegetarian · Alcohol-free lanes</div>
+    </div>
+    <div style="max-width:1240px;margin:22px auto 0;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#7d7979">© 2026 Patty Passport World S.L. All rights reserved.</div>
+  </div>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;motionLevel&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;full&quot;,&quot;reduced&quot;],&quot;default&quot;:&quot;full&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Motion&quot;},&quot;showTicker&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Motion&quot;},&quot;passportFilled&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:6,&quot;min&quot;:0,&quot;max&quot;:21,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Passport&quot;}}">
+const C = [
+  ["LBN","Lebanon","MED-12","Levant"],["SYR","Syria","MED-13","Levant"],["PSE","Palestine","MED-14","Levant"],
+  ["TUR","Türkiye","MED-21","Aegean"],["CYP","Cyprus","MED-22","Aegean"],["GRC","Greece","MED-23","Aegean"],
+  ["ITA","Italy","MED-31","Latin"],["ESP","Spain","MED-32","Iberia"],["FRA","France","MED-33","Latin"],
+  ["MCO","Monaco","MED-34","Riviera"],["MLT","Malta","MED-35","Islands"],["SVN","Slovenia","MED-41","Adriatic"],
+  ["HRV","Croatia","MED-42","Adriatic"],["BIH","Bosnia","MED-43","Adriatic"],["MNE","Montenegro","MED-44","Adriatic"],
+  ["ALB","Albania","MED-45","Adriatic"],["EGY","Egypt","MED-51","N. Africa"],["LBY","Libya","MED-52","N. Africa"],
+  ["TUN","Tunisia","MED-53","N. Africa"],["DZA","Algeria","MED-54","N. Africa"],["MAR","Morocco","MED-55","N. Africa"]
+];
+const RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
+const words = s => s.split(" ").map(t => ({ t }));
+
+class Component extends DCLogic {
+  state = { drawerOpen: false, drawerIn: false, musicOn: false, navPage: 0, navFade: 1, tooty: 0 };
+
+  componentDidMount() {
+    this._raf = null;
+    const reduced = (this.props.motionLevel || "full") === "reduced";
+    const ticker = document.querySelector("[data-ticker]");
+    if (ticker) {
+      if (this.props.showTicker === false) ticker.style.display = "none";
+      if (reduced) ticker.style.animationPlayState = "paused";
+    }
+    if (reduced) {
+      document.querySelectorAll("[style*='ppDrift'],[style*='ppPulse'],[style*='ppEq'],[style*='ppDash'],[style*='ppBlink'],[style*='ppSway'],[style*='ppFlow']")
+        .forEach(el => { el.style.animationPlayState = "paused"; });
+      document.querySelectorAll("[data-rv],[data-word]").forEach(el => {
+        el.removeAttribute("data-rv"); el.removeAttribute("data-word");
+        el.style.opacity = "1"; el.style.transform = "none";
+      });
+    } else {
+      this._navTimer = setInterval(() => {
+        this.setState({ navFade: 0 });
+        setTimeout(() => this.setState(s => ({ navPage: s.navPage + 1, navFade: 1 })), 260);
+      }, 4200);
+    }
+
+    const rvSetup = {
+      up: "translateY(30px)", left: "translateX(-34px)", right: "translateX(34px)",
+      scale: "scale(.82)", stamp: "rotate(-26deg) scale(2.1)"
+    };
+    const nodes = Array.from(document.querySelectorAll("[data-rv]"));
+    nodes.forEach(el => {
+      const kind = el.getAttribute("data-rv") || "up";
+      el._pp = { t: rvSetup[kind] || rvSetup.up, final: kind === "stamp" ? "rotate(-10deg)" : "none" };
+      el.style.opacity = "0";
+      el.style.transform = el._pp.t;
+      el.style.transition = "opacity .7s cubic-bezier(.2,.8,.25,1), transform .8s cubic-bezier(.2,.85,.25,1)";
+    });
+    const groups = Array.from(document.querySelectorAll("[data-word-group]"));
+    const showNode = el => {
+      if (el._ppDone) return;
+      el._ppDone = true;
+      const d = parseInt(el.getAttribute("data-rv-d") || "0", 10);
+      setTimeout(() => { el.style.opacity = "1"; el.style.transform = el._pp.final; }, d);
+    };
+    const showGroup = g => {
+      if (g._ppDone) return;
+      g._ppDone = true;
+      Array.from(g.querySelectorAll("[data-word]")).forEach((w, i) => {
+        w.style.transition = "opacity .5s ease, transform .6s cubic-bezier(.2,.85,.25,1)";
+        setTimeout(() => { w.style.opacity = "1"; w.style.transform = "translateY(0)"; }, i * 72);
+      });
+    };
+    const inView = el => {
+      const r = el.getBoundingClientRect();
+      if (!r.height && !r.width) return false;
+      return r.top < window.innerHeight * 0.94 && r.bottom > 0;
+    };
+    this._reveal = () => {
+      nodes.forEach(n => { if (!n._ppDone && inView(n)) showNode(n); });
+      groups.forEach(g => { if (!g._ppDone && inView(g)) showGroup(g); });
+    };
+    this._safety = setTimeout(() => {
+      nodes.forEach(n => { if (n.getBoundingClientRect().top < window.innerHeight) showNode(n); });
+      groups.forEach(g => { if (g.getBoundingClientRect().top < window.innerHeight) showGroup(g); });
+    }, 2600);
+
+    const fill = document.querySelector("[data-route-fill]");
+    const plane = document.querySelector("[data-route-plane]");
+    const sec = document.querySelector("[data-pass-sec]");
+    const card = document.querySelector("[data-pass-card]");
+    const rows = Array.from(document.querySelectorAll("[data-pass-row]"));
+    const bar = document.querySelector("[data-pass-bar]");
+    const stamp = document.querySelector("[data-pass-stamp]");
+    const hint = document.querySelector("[data-pass-hint]");
+    const pars = Array.from(document.querySelectorAll("[data-par]"));
+
+    const tick = () => {
+      this._raf = null;
+      if (this._reveal) this._reveal();
+      const doc = document.documentElement;
+      const max = Math.max(1, doc.scrollHeight - window.innerHeight);
+      const p = Math.min(1, Math.max(0, window.scrollY / max));
+      if (fill) fill.style.width = (p * 100) + "%";
+      if (plane) plane.style.left = "calc(" + (p * 100) + "% - 13px)";
+
+      if (sec && card) {
+        const r = sec.getBoundingClientRect();
+        const span = r.height + window.innerHeight * 0.65;
+        const q = Math.min(1, Math.max(0, (window.innerHeight * 0.85 - r.top) / span));
+        card.style.transform = "translateY(" + (-100 + Math.min(100, q * 165)) + "%)";
+        rows.forEach((row, i) => {
+          const start = 0.2 + i * 0.075;
+          const on = q > start;
+          row.style.transition = "opacity .45s ease, transform .5s ease";
+          row.style.opacity = on ? "1" : "0";
+          row.style.transform = on ? "none" : "translateX(-12px)";
+        });
+        if (bar) bar.style.width = Math.min(100, Math.max(0, (q - 0.68) / 0.16 * 100)) + "%";
+        if (stamp) {
+          const on = q > 0.86;
+          stamp.style.transition = "opacity .3s ease, transform .55s cubic-bezier(.2,1.1,.3,1)";
+          stamp.style.opacity = on ? "1" : "0";
+          stamp.style.transform = on ? "rotate(-11deg) scale(1)" : "rotate(-26deg) scale(2)";
+        }
+        if (hint) hint.textContent = q > 0.88 ? "Ticket printed · gate Levant Route" : "Scroll to print";
+      }
+
+      pars.forEach(el => {
+        const r = el.getBoundingClientRect();
+        const off = (r.top + r.height / 2 - window.innerHeight / 2) * parseFloat(el.getAttribute("data-par"));
+        el.style.translate = "0 " + (-off).toFixed(1) + "px";
+      });
+    };
+    this._onScroll = () => { if (!this._raf) this._raf = requestAnimationFrame(tick); };
+    this._onKey = e => { if (e.key === "Escape") this.setState({ drawerOpen: false }); };
+    window.addEventListener("scroll", this._onScroll, { passive: true });
+    window.addEventListener("resize", this._onScroll);
+    window.addEventListener("keydown", this._onKey);
+    tick();
+    this._poll = setInterval(() => { if (this._reveal) this._reveal(); }, 400);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this._onScroll);
+    window.removeEventListener("resize", this._onScroll);
+    window.removeEventListener("keydown", this._onKey);
+    clearInterval(this._navTimer);
+    clearInterval(this._poll);
+    clearTimeout(this._safety);
+  }
+
+  renderVals() {
+    const filled = Math.max(0, Math.min(21, this.props.passportFilled == null ? 6 : this.props.passportFilled));
+
+    const ticker = C.map((c, i) => ({
+      name: c[1].toUpperCase(), route: c[2],
+      status: i % 4 === 0 ? "BOARDING" : i % 3 === 0 ? "ON TIME" : "SERVING",
+      bg: i % 4 === 0 ? RED : i % 3 === 0 ? YEL : "rgba(247,243,236,.16)",
+      fg: i % 4 === 0 ? "#fff" : i % 3 === 0 ? INK : CREAM
+    }));
+
+    const propDefs = [
+      ["Boarding ticket", "MED-12", "LEBANON", "Gate Levant · Table 4", CREAM, INK],
+      ["Language card", "MED-23", "Καλώς ήρθατε", "Greece · Kalós irthate", "#fff", INK],
+      ["Luggage tag", "MED-55", "MAR · 55", "Morocco · N. Africa route", RED, "#fff"],
+      ["Gate call", "MED-32", "ESPAÑA", "Now boarding · Table 11", INK, CREAM],
+      ["Destination pack", "MED-21", "Hoş geldiniz", "Türkiye · two seas", YEL, INK],
+      ["Stamp receipt", "MED-31", "ITALIA", "Stamp #07 collected", CREAM, INK],
+      ["Boarding ticket", "MED-35", "MALTA", "Gate Islands · Table 2", "#fff", INK],
+      ["Language card", "MED-43", "Dobro došli", "Bosnia · Adriatic route", YEL, INK],
+      ["Luggage tag", "MED-51", "EGY · 51", "Egypt · gift of the river", INK, CREAM],
+      ["Gate call", "MED-42", "HRVATSKA", "Final call · Table 8", BLU, "#fff"],
+      ["Destination pack", "MED-14", "أهلا وسهلا", "Palestine · Levant route", CREAM, INK],
+      ["Stamp receipt", "MED-45", "SHQIPËRI", "Stamp #16 collected", RED, "#fff"]
+    ].map((p, i) => ({
+      kind: p[0], code: p[1], big: p[2], sub: p[3], bg: p[4], fg: p[5],
+      r: (i % 2 ? 1 : -1) * (1.5 + (i % 3)) + "deg", dur: (9 + (i % 5)) + "s"
+    }));
+    const half = Math.ceil(propDefs.length / 2);
+    const colA = propDefs.slice(0, half), colB = propDefs.slice(half);
+
+    const board = [
+      ["12:30", "LEBANON", "Levant · MED-12", "BOARDING", RED, "#fff"],
+      ["14:00", "GREECE", "Aegean · MED-23", "ON TIME", YEL, INK],
+      ["16:15", "MOROCCO", "N. Africa · MED-55", "SERVING", "rgba(247,243,236,.18)", CREAM],
+      ["19:40", "SPAIN", "Iberia · MED-32", "FINAL CALL", YEL, INK],
+      ["21:10", "TÜRKIYE", "Aegean · MED-21", "ON TIME", "rgba(247,243,236,.18)", CREAM]
+    ].map((b, i) => ({ time: b[0], dest: b[1], gate: b[2], status: b[3], bg: b[4], fg: b[5], delay: String(i * 70) }));
+
+    const terminalStats = [
+      ["21", "Destinations in rotation", YEL],
+      ["5", "Route zones in the hall", CREAM],
+      ["240", "Seats in the sky hall", CREAM],
+      ["1", "Passport to fill", RED]
+    ].map((s, i) => ({ n: s[0], label: s[1], color: s[2], delay: String(i * 80) }));
+
+    const regionDefs = [
+      ["01", "Chapter one", "LEVANT ROUTE", "Cedar mountains, souk smoke, toum and sumac. The loudest welcome on the sea.", ["LBN","SYR","PSE"], YEL, INK, "left", "Beirut street food at night — grill smoke, cedar hills"],
+      ["02", "Chapter two", "AEGEAN ROUTE", "Island light, oregano, charcoal and lemon. Slow lunches that run into evening.", ["TUR","CYP","GRC"], BLU, "#fff", "right", "Aegean island terrace — white stone, lemon trees, sea"],
+      ["03", "Chapter three", "IBERIA & LATIN ROUTE", "Plaza noise, bravas heat, olive oil and late dessert. Europe's warm south.", ["ESP","ITA","FRA","MCO","MLT"], CREAM, INK, "left", "Madrid plaza at golden hour — long tables, olive oil"],
+      ["04", "Chapter four", "ADRIATIC ROUTE", "Stone harbours, grill smoke, ajvar and walnut. The quiet coast that surprises.", ["SVN","HRV","BIH","MNE","ALB"], "#e7e3dc", INK, "right", "Dalmatian stone harbour — fishing boats, grilled fish"],
+      ["05", "Chapter five", "NORTH AFRICAN ROUTE", "Spice markets, mint tea, harissa and orange blossom. The sea's other shore.", ["EGY","LBY","TUN","DZA","MAR"], RED, "#fff", "left", "Marrakech spice market — pyramids of harissa and cumin"]
+    ];
+    const byCode = k => { const f = C.find(c => c[0] === k); return { code: f[0], name: f[1], href: "Destination-Page.dc.html#" + f[0].toLowerCase() }; };
+    const regions = regionDefs.map((r, i) => ({
+      num: r[0], kicker: r[1], name: r[2], blurb: r[3],
+      countries: r[4].map(byCode), bg: r[5], fg: r[6], rv: r[7],
+      cols: r[7] === "left" ? "minmax(0,1.05fr) minmax(0,.95fr)" : "minmax(0,.95fr) minmax(0,1.05fr)",
+      o1: r[7] === "left" ? 1 : 2, o2: r[7] === "left" ? 2 : 1,
+      tag: r[4].length + " DESTINATIONS",
+      slot: r[8], slotId: "pp-route-" + i
+    }));
+
+    const identity = [
+      ["LBN","LEBANON","Land of the Phoenicians","Alphabet exporters, cedar shipwrights, and the world's oldest continuously inhabited cities.","Shish Tawouk Street Burger","€11.50", YEL],
+      ["GRC","GREECE","Birthplace of the Open Sea","Six thousand islands, one horizon, and a cuisine built on fire, lemon and patience.","Souvlaki Burger","€11.50", BLU],
+      ["MAR","MOROCCO","Where the Desert Meets the Atlantic","Fondouks, tanneries and spice mountains — a kitchen that never rushes.","Tagine Beef Burger","€13.00", RED],
+      ["TUR","TÜRKIYE","The Bridge Between Continents","Two seas, two landmasses, and the grill culture that connects them.","Doner Chicken Burger","€11.50", YEL],
+      ["ESP","SPAIN","Kingdom of the Long Table","Where lunch is an institution and heat comes from smoked paprika, not chilli.","Iberian Beef Burger","€13.00", RED],
+      ["EGY","EGYPT","Gift of the River","Seven thousand years of street food perfected on one riverbank.","Hawawshi Burger","€13.00", BLU]
+    ];
+    const identityCards = identity.concat(identity).map((c, i) => ({
+      name: c[1], identity: c[2], line: c[3], hero: c[4], price: c[5], accent: c[6],
+      stamp: "#" + String((i % identity.length) + 1).padStart(2, "0"),
+      route: (C.find(x => x[0] === c[0]) || [,,"MED"])[3] + " Route",
+      slot: c[4] + " — plated, close up",
+      slotId: "pp-plate-" + i
+    }));
+
+    const stampCells = C.map((c, i) => ({
+      code: c[0], name: c[1], stamped: i < filled,
+      mark: "#" + String(i + 1).padStart(2, "0"), delay: String(80 + i * 45)
+    }));
+
+    const ladder = [
+      ["3", "Free country drink", "Three destinations stamped", YEL, INK],
+      ["5", "Free loaded fries", "Five destinations stamped", YEL, INK],
+      ["8", "Secret destination burger", "Eight destinations stamped", INK, CREAM],
+      ["21", "World Traveller buffet", "The whole sea, on the house", RED, "#fff"]
+    ].map((l, i) => {
+      const need = parseInt(l[0], 10), done = filled >= need;
+      return {
+        n: l[0], title: l[1], sub: l[2], bg: l[3], fg: l[4],
+        state: done ? "UNLOCKED" : (need - filled) + " TO GO",
+        stateColor: done ? "#ae1800" : "#605d5d", delay: String(i * 90)
+      };
+    });
+
+    const kitObjects = [
+      ["JUNIOR PASSPORT", "2%", "1%", "208px", CREAM, INK, "-5deg", "10s", "0s", "120px", "Junior passport cover in a child's hands", "0.1", "14px 14px 0 rgba(27,26,25,.3)"],
+      ["ROUTE BOOKLET", "45%", "15%", "226px", "#fff", INK, "4deg", "12s", ".8s", "140px", "Open route booklet, one page per route", "-0.12", "-12px 14px 0 rgba(27,26,25,.28)"],
+      ["FLAG STICKER SHEET", "8%", "45%", "198px", BLU, "#fff", "6deg", "11s", ".4s", "118px", "Sheet of 21 flag stickers, half peeled", "0.16", "12px 12px 0 rgba(27,26,25,.3)"],
+      ["EXPLORER TOTE", "50%", "58%", "188px", RED, "#fff", "-7deg", "13s", "1.2s", "110px", "Kids explorer tote bag with goodie contents", "-0.08", "-12px 12px 0 rgba(27,26,25,.3)"],
+      ["DESTINATION POSTCARD", "24%", "78%", "206px", "#e7e3dc", INK, "2deg", "9s", ".2s", "92px", "Stamped destination postcard on the table", "0.2", "12px 12px 0 rgba(27,26,25,.25)"]
+    ].map((k, i) => ({
+      label: k[0], x: k[1], y: k[2], w: k[3], bg: k[4], fg: k[5], r: k[6],
+      dur: k[7], delay: k[8], h: k[9], note: k[10], par: k[11], shadow: k[12], slotId: "pp-kid-" + i
+    }));
+
+    const adultObjects = [
+      ["DESTINATION BAG", "3%", "3%", "216px", INK, CREAM, "-4deg", "11s", "0s", "132px", "Canvas destination bag with route print", "0.12", "14px 14px 0 rgba(27,26,25,.22)"],
+      ["COUNTRY BOOKLET", "47%", "18%", "212px", CREAM, INK, "5deg", "13s", ".6s", "126px", "Country booklet open at Lebanon spread", "-0.1", "-12px 14px 0 rgba(27,26,25,.2)"],
+      ["LUGGAGE TAG", "6%", "52%", "186px", RED, "#fff", "7deg", "10s", ".3s", "104px", "Leather luggage tag stamped MED-12", "0.18", "12px 12px 0 rgba(27,26,25,.22)"],
+      ["PHRASE CARD", "48%", "66%", "198px", YEL, INK, "-6deg", "12s", "1s", "108px", "Phrase card — five words in the local language", "-0.07", "-12px 12px 0 rgba(27,26,25,.2)"]
+    ].map((k, i) => ({
+      label: k[0], x: k[1], y: k[2], w: k[3], bg: k[4], fg: k[5], r: k[6],
+      dur: k[7], delay: k[8], h: k[9], note: k[10], par: k[11], shadow: k[12], slotId: "pp-adult-" + i
+    }));
+
+    const adultKitItems = [
+      ["Destination bag", "Canvas, route-printed, yours to carry out.", "#ae1800"],
+      ["Country booklet", "Eight pages: history, map, market, recipe.", INK],
+      ["Boarding ticket & tag", "Printed at the desk with your table number.", "#ae1800"],
+      ["Phrase card", "Five words worth saying before the plate lands.", INK]
+    ].map(a => ({ label: a[0], detail: a[1], color: a[2] }));
+
+    const passportTiers = [
+      ["Ages 4 — 11", "JUNIOR PASSPORT", "JR", CREAM, INK, ["Sticker stamps and a colouring route map", "Kids combo unlocks at every destination", "Goodie bag at the third stamp"], "Free with a kids combo"],
+      ["Solo & couples", "EXPLORER PASSPORT", "EX", YEL, INK, ["Full 21-country stamp book", "Reward ladder from 3 to 21 stamps", "Country booklet with every new route"], "Free at check-in"],
+      ["Tables of 3+", "FAMILY PASSPORT", "FM", RED, "#fff", ["One book, stamps pooled across the table", "Shared ladder — unlock together, faster", "Birthday route night for the whole crew"], "Free · pools all seats"]
+    ].map((t, i) => ({
+      who: t[0], name: t[1], mark: t[2], bg: t[3], fg: t[4],
+      features: t[5].map(x => ({ t: x })), price: t[6], delay: String(i * 100)
+    }));
+
+    const natureRoutes = [
+      ["LEVANT", YEL, INK, "Cedar Highlands", "Snow on the mountain, citrus on the coast, and a valley of vines between them.", ["Cedar forest", "Citrus terraces", "Bekaa vineyards"], "Cedar forest on a Lebanese mountain slope"],
+      ["AEGEAN", BLU, "#fff", "Island Light", "Wind-shaped olive trees, white rock and the clearest water on the sea.", ["Wild oregano", "Olive groves", "Volcanic coastline"], "Aegean coastline with olive trees and white rock"],
+      ["IBERIA & LATIN", CREAM, INK, "The Long Grove", "Silver olive rows, orange streets and the smell of rosemary on hot stone.", ["Olive plains", "Orange orchards", "Rosemary scrub"], "Andalusian olive grove rows at golden hour"],
+      ["ADRIATIC", "#e7e3dc", INK, "Stone & Pine", "Karst cliffs dropping into green water, black pine and fig at the harbour wall.", ["Black pine", "Fig and walnut", "Karst cliffs"], "Croatian karst cliffs with pines above green water"],
+      ["N. AFRICA", RED, "#fff", "Desert Edge", "Date palms at the oasis, argan on the hills, mint in every glass.", ["Date palms", "Argan groves", "Mint gardens"], "Date palm oasis at the edge of the desert"]
+    ].map((n, i) => ({
+      route: n[0], bg: n[1], fg: n[2], title: n[3], line: n[4],
+      flora: n[5].map(x => ({ t: x })), slot: n[6], slotId: "pp-nature-" + i, delay: String(i * 80)
+    }));
+
+    const dietary = [
+      ["حلال", "Halal", "Halal-certified meat across every route, no exceptions and no separate menu.", "All 21 destinations", CREAM, INK, "Menu.dc.html"],
+      ["כשר", "Kosher-friendly", "Kosher-style preparation on request, with sealed suppliers listed at the desk.", "On request", "#e7e3dc", INK, "Menu.dc.html"],
+      ["VEG", "Vegetarian", "Every country has a vegetarian headline dish — not a substitution.", "21 dishes", YEL, INK, "Menu.dc.html"],
+      ["VGN", "Vegan", "Plant routes designed from the region's own cooking, dairy-free by origin.", "14 dishes", BLU, "#fff", "Menu.dc.html"],
+      ["ALG", "Allergy-aware", "Fourteen allergens mapped per dish, printed on the boarding ticket.", "Full matrix", CREAM, INK, "Menu.dc.html"],
+      ["FAM", "Family-friendly", "Kids portions, low-spice lanes, high chairs and an alcohol-free bar list.", "Every service", RED, "#fff", "Junior-Explorers.dc.html"]
+    ].map((d, i) => ({ mark: d[0], title: d[1], line: d[2], tag: d[3], bg: d[4], fg: d[5], href: d[6], delay: String(i * 70) }));
+
+    const crew = [
+      ["Route Host", "RH", "Greets the table, reads the route, and decides where you're flying tonight.", YEL, INK, "Route host welcoming guests at the door"],
+      ["Passport Desk", "PD", "Prints the boarding ticket, stamps the book, tracks the ladder.", RED, "#fff", "Crew member stamping a passport at the desk"],
+      ["Destination Guide", "DG", "Knows the country — the dish, the phrase, the story behind the plate.", BLU, "#fff", "Guide explaining a country card to guests"],
+      ["Kitchen Crew", "KC", "Cooks twenty-one countries without flattening any of them.", CREAM, INK, "Kitchen crew grilling at the pass"],
+      ["Table Captain", "TC", "Runs the service, the birthday games and the final stamp.", "#e7e3dc", INK, "Table captain serving a full family table"]
+    ].map((c, i) => ({
+      role: c[0], code: c[1], line: c[2], bg: c[3], fg: c[4], slot: c[5],
+      slotId: "pp-crew-" + i, delay: String(i * 80)
+    }));
+
+    const investorFacts = [
+      ["Flagship terminal", "Leganés", YEL],
+      ["Seats in the hall", "240", CREAM],
+      ["Destinations live", "21", CREAM],
+      ["Next routes planned", "4 cities", RED]
+    ].map(f => ({ label: f[0], value: f[1], color: f[2] }));
+
+    const playlists = [
+      ["LBN", "Beirut Corniche, 7pm", "Oud, brass, slow sea drives", "42 tracks", YEL, INK],
+      ["GRC", "Aegean Afternoon", "Bouzouki, ferry horns, island calm", "38 tracks", BLU, "#fff"],
+      ["MAR", "Medina After Dark", "Gnawa bass, hand drums, night market", "45 tracks", RED, "#fff"],
+      ["ESP", "Plaza Hour", "Flamenco guitar, brass, late sun", "36 tracks", INK, CREAM],
+      ["TUR", "Two Seas", "Saz, city pop, ferry rhythm", "40 tracks", "#e7e3dc", INK]
+    ].map((p, i) => ({ code: p[0], title: p[1], sub: p[2], len: p[3], bg: p[4], fg: p[5], delay: String(i * 80) }));
+
+    const eqBars = Array.from({ length: 26 }, (_, i) => ({
+      color: i % 5 === 0 ? RED : i % 3 === 0 ? YEL : "#d7d3d3",
+      dur: (0.5 + (i % 7) * 0.13).toFixed(2) + "s",
+      delay: ((i % 9) * 0.07).toFixed(2) + "s"
+    }));
+
+    const mapNodes = [
+      ["ESP","Spain","Iberia","8%","30%", CREAM, INK],
+      ["FRA","France","Latin","20%","14%", YEL, INK],
+      ["ITA","Italy","Latin","33%","26%", CREAM, INK],
+      ["HRV","Croatia","Adriatic","44%","12%", YEL, INK],
+      ["GRC","Greece","Aegean","55%","28%", CREAM, INK],
+      ["TUR","Türkiye","Aegean","70%","16%", YEL, INK],
+      ["LBN","Lebanon","Levant","84%","34%", RED, "#fff"],
+      ["EGY","Egypt","N. Africa","76%","72%", CREAM, INK],
+      ["TUN","Tunisia","N. Africa","44%","74%", YEL, INK],
+      ["MAR","Morocco","N. Africa","13%","78%", RED, "#fff"]
+    ].map((n, i) => ({
+      code: n[0], name: n[1], region: n[2], x: n[3], y: n[4], bg: n[5], fg: n[6],
+      delay: String(i * 70), sway: (4 + (i % 5) * 0.7).toFixed(1) + "s"
+    }));
+
+    const drawerLinks = [
+      ["01", "Destinations", "All 21 countries, route by route", "Destinations.dc.html"],
+      ["02", "Route map", "The Mediterranean network", "Route-Map.dc.html"],
+      ["03", "Menu", "Every dish, by destination", "Menu.dc.html"],
+      ["04", "Rewards & passport", "Stamps, ladder, unlockables", "Rewards.dc.html"],
+      ["05", "Events & birthdays", "Celebrations on any route", "Events.dc.html"],
+      ["06", "Junior explorers", "Kits, booklets, kids routes", "Junior-Explorers.dc.html"],
+      ["07", "Our story", "Why Patty Passport exists", "Our-Story.dc.html"],
+      ["08", "Ask Patty Tooty", "The destination concierge", "Patty-Tooty.dc.html"],
+      ["09", "Investors", "Steer the next route", "Investors.dc.html"],
+      ["10", "Different tables", "Halal, kosher, vegan, allergy-aware", "Menu.dc.html"],
+      ["11", "My passport", "Stamps, rewards, bookings", "My-Passport.dc.html"],
+      ["12", "Book a table", "Check in for a destination", "Booking.dc.html"]
+    ].map(d => ({ n: d[0], title: d[1], sub: d[2], href: d[3] }));
+
+    const shortcutDefs = [
+      ["Destinations", "Destinations.dc.html", RED], ["Route map", "Route-Map.dc.html", BLU], ["Menu", "Menu.dc.html", YEL],
+      ["Rewards", "Rewards.dc.html", RED], ["Events", "Events.dc.html", YEL], ["Kids", "Junior-Explorers.dc.html", BLU],
+      ["Our story", "Our-Story.dc.html", RED], ["Patty Tooty", "Patty-Tooty.dc.html", YEL], ["Investors", "Investors.dc.html", BLU],
+      ["Nature", "#nature", RED], ["Soundtrack", "#culture", YEL], ["Book", "Booking.dc.html", RED]
+    ].map(s => ({ label: s[0], href: s[1], dot: s[2] }));
+    const per = 4, pages = Math.ceil(shortcutDefs.length / per);
+    const pg = this.state.navPage % pages;
+    const navShortcuts = shortcutDefs.slice(pg * per, pg * per + per);
+
+    const tootyThreads = [
+      ["Which destination should I try first?",
+       "Start on the Levant Route — Lebanon, stamp #01. Loudest welcome on the sea, and the Shish Tawouk Street Burger is the dish most tables come back for.",
+       [["Open Lebanon", "Destination-Page.dc.html#lbn", YEL, INK], ["See the route map", "Route-Map.dc.html", CREAM, INK], ["Book table 4", "Booking.dc.html", RED, "#fff"]]],
+      ["Show me kid-friendly routes",
+       "Junior explorers travel best on the Aegean and Iberia routes — mild grills, lemon and fries. Every child gets a Junior Passport with sticker stamps, and birthdays get a crew host.",
+       [["Kids explorer kit", "Junior-Explorers.dc.html", YEL, INK], ["Junior Passport", "Rewards.dc.html", BLU, "#fff"], ["Plan a birthday", "Events.dc.html", RED, "#fff"]]],
+      ["Find me vegetarian options",
+       "All twenty-one countries have a vegetarian headline dish — not a substitution. Fourteen of them run fully vegan, built from the region's own cooking.",
+       [["Vegetarian lane", "Menu.dc.html", YEL, INK], ["Vegan lane", "Menu.dc.html", BLU, "#fff"], ["See all dishes", "Menu.dc.html", CREAM, INK]]],
+      ["How do passport rewards work?",
+       "Each meal earns one country stamp. Three stamps unlock a country drink, five loaded fries, eight the secret destination burger, twenty-one the World Traveller buffet.",
+       [["Reward ladder", "Rewards.dc.html", RED, "#fff"], ["Start my passport", "My-Passport.dc.html#join", CREAM, INK]]],
+      ["Help me book a birthday",
+       "Weekdays run the Little Explorer journey at €18 a child, weekends the World Explorer at €22 with a crew host, games and the birthday child's name on the departures board.",
+       [["Birthday packages", "Events.dc.html", YEL, INK], ["Reserve the table", "Booking.dc.html", RED, "#fff"]]]
+    ];
+    const ti = this.state.tooty % tootyThreads.length;
+    const thread = tootyThreads[ti];
+
+    return {
+      drawerOpen: this.state.drawerOpen,
+      drawerX: this.state.drawerIn ? "translateX(0)" : "translateX(16px)",
+      drawerAlpha: this.state.drawerIn ? "1" : "0.35",
+      openDrawer: () => {
+        this.setState({ drawerOpen: true, drawerIn: false });
+        setTimeout(() => this.setState({ drawerIn: true }), 20);
+      },
+      closeDrawer: () => this.setState({ drawerOpen: false, drawerIn: false }),
+      drawerLinks, navShortcuts,
+      navPageLabel: "Gate " + (pg + 1) + " / " + pages,
+      navOpacity: String(this.state.navFade),
+      musicOn: this.state.musicOn,
+      musicOff: !this.state.musicOn,
+      musicLabel: this.state.musicOn ? "Playing" : "Play the Mediterranean",
+      toggleMusic: () => this.setState(s => ({ musicOn: !s.musicOn })),
+      propsA: colA.concat(colA), propsB: colB.concat(colB),
+      heroStats: [
+        { n: "21", label: "Destinations", color: RED },
+        { n: "5", label: "Route zones", color: BLU },
+        { n: "240", label: "Seats in the sky hall", color: INK },
+        { n: "1", label: "Passport to fill", color: "#ae1800" }
+      ],
+      tickerRows: ticker.concat(ticker),
+      board, terminalStats,
+      passFields: [
+        { i: "0", k: "Destination", v: "LEBANON" },
+        { i: "1", k: "Route", v: "MED-12 · Levant" },
+        { i: "2", k: "Passenger", v: "MAZEN" },
+        { i: "3", k: "Seat", v: "TABLE 4" },
+        { i: "4", k: "Meal", v: "Beirut Street Shish Tawouk Combo" },
+        { i: "5", k: "Gate", v: "Levant Route" }
+      ],
+      passTitleWords: words("THE DESK PRINTS YOUR JOURNEY."),
+      mapWords: words("WHAT COUNTRY DO YOU WANT TO ORDER TO YOUR TABLE?"),
+      routesTitleWords: words("FIVE ROUTES. EACH ONE ITS OWN CHAPTER."),
+      soundTitleWords: words("THE ROUTE ARRIVES WITH ITS OWN SOUNDTRACK."),
+      natureTitleWords: words("EVERY ROUTE GROWS FROM SOMEWHERE."),
+      passportTitleWords: words("FILL THE BOOK. UNLOCK THE WORLD."),
+      kidsTitleWords: words("KIDS TRAVEL WITH THEIR OWN KIT."),
+      adultTitleWords: words("BOOK YOUR TABLE. PACK YOUR CURIOSITY."),
+      familyTitleWords: words("EVERYONE AT THE TABLE GETS A PASSPORT."),
+      welcomeTitleWords: words("DIFFERENT TABLES. ONE WARM WELCOME."),
+      crewTitleWords: words("MEET THE CREW ON YOUR ROUTE."),
+      investTitleWords: words("WANT TO HELP STEER THE NEXT ROUTE?"),
+      tootyTitleWords: words("NOT SURE WHERE TO HEAD? ASK PATTY TOOTY."),
+      checkinTitleWords: words("READY TO CHECK IN?"),
+      passportProgressLabel: "Passport spread · " + filled + " of 21",
+      mapNodes, regions, identityCards, stampCells, ladder, kitObjects,
+      kidPackages: [
+        { price: "€18", name: "Little Explorer · weekdays", detail: "Min. 8 kids · kids burger, fries, drink, mini dessert, 2h play area, 3 stamps, goodie bag." },
+        { price: "€22", name: "World Explorer · weekends", detail: "Min. 10 kids · full country combo for the birthday child, crew host, games, decor, name on screen." }
+      ],
+      adultObjects, adultKitItems, passportTiers, natureRoutes, dietary, crew, investorFacts,
+      playlists, eqBars,
+      tootySkills: [
+        { label: "Pick a destination", detail: "Reads your table and names the country to start with.", color: "#ae1800" },
+        { label: "Find the right dish", detail: "Halal, vegetarian, vegan, allergy-aware or kid-sized.", color: INK },
+        { label: "Explain the passport", detail: "Stamps, the ladder and what unlocks next.", color: "#ae1800" },
+        { label: "Walk you to the page", detail: "Routes, events, rewards, booking — one tap away.", color: INK }
+      ],
+      tootyQuestion: thread[0],
+      tootyAnswer: thread[1],
+      tootyPills: thread[2].map(p => ({ label: p[0], href: p[1], bg: p[2], fg: p[3] })),
+      tootyChips: tootyThreads.map((t, i) => ({
+        label: t[0],
+        bg: i === ti ? INK : "transparent",
+        fg: i === ti ? CREAM : INK,
+        pick: () => this.setState({ tooty: i })
+      })),
+      consoleFields: [
+        { label: "Destination", type: "text", value: "Lebanon · MED-12" },
+        { label: "Date", type: "text", value: "Fri 25 Sep 2026" },
+        { label: "Time", type: "text", value: "20:30" },
+        { label: "Travellers", type: "text", value: "4 adults · 2 kids" }
+      ],
+      routeChips: ["LEVANT","AEGEAN","IBERIA & LATIN","ADRIATIC","NORTH AFRICA"].map(label => ({ label }))
+    };
+  }
+}
+</script>
+</body>
+</html>

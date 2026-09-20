@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="_ds/modernist-cf9009e6-65ae-4cc3-81bb-0a0e3ffc9a69/styles.css">
+<script src="./pp-data.js"></script>
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#ae1800;text-underline-offset:3px}
+a:hover{color:#ec3013}
+:focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+::selection{background:rgba(236,48,19,.28)}
+@keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+@keyframes ppTick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+</style></helmet>
+
+<dc-import name="PP-Nav" active="Menu" hint-size="100%,136px"></dc-import>
+
+<section style="position:relative;background:#1b1a19;color:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(247,243,236,.07) 1px,transparent 1px);background-size:100% 64px"></div>
+  <div style="position:relative;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr)">
+    <div style="padding:58px 44px 52px;border-right:2px solid rgba(247,243,236,.3)">
+      <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#ec3013;color:#fff;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px">
+        <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>In-flight menu · {{ itemCount }} items across 21 destinations
+      </div>
+      <h1 data-rv="up" data-rv-d="70" style="font:800 clamp(42px,6.2vw,96px)/.9 'Archivo',sans-serif;letter-spacing:-.045em;margin:0 0 18px">EVERY DISH<br>HAS A<br><span style="color:#f2b30c">POSTCODE.</span></h1>
+      <p data-rv="up" data-rv-d="130" style="font:400 clamp(15px,1.25vw,18px)/1.55 'Archivo',sans-serif;color:#bab6b6;max-width:56ch;margin:0 0 28px">Every country carries the same full card — three burgers, two loaded fries, a salad, a cold country drink, an alcoholic one, a hot one and two desserts. One global price grid; only the flavours change.</p>
+      <div data-rv="up" data-rv-d="180" style="display:flex;flex-wrap:wrap;gap:12px">
+        <a href="Booking.dc.html" style="display:inline-flex;align-items:center;min-width:240px;padding:16px 19px;background:#ec3013;color:#fff;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#f2b30c;color:#1b1a19">Reserve a table<span style="margin-left:auto">→</span></a>
+        <a href="Destinations.dc.html" style="display:inline-flex;align-items:center;min-width:220px;padding:16px 19px;border:2px solid #f7f3ec;color:#f7f3ec;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#f7f3ec;color:#1b1a19">Browse destinations<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+    <div style="position:relative;min-height:400px">
+      <image-slot id="mn-hero" shape="rect" fit="cover" placeholder="Full table of Mediterranean burgers, fries and sides, overhead" style="position:absolute;inset:0"></image-slot>
+      <div style="position:absolute;left:0;right:0;bottom:0;padding:13px 18px;background:rgba(27,26,25,.92);font:600 9.5px/1.5 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;pointer-events:none">Burgers · loaded fries · salads · desserts · cold, hot and country drinks</div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#f2b30c;color:#1b1a19;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="display:flex;width:max-content;animation:ppTick 46s linear infinite">
+    <sc-for list="{{ tickerRows }}" as="t" hint-placeholder-count="20">
+      <div style="display:flex;align-items:center;gap:10px;padding:11px 22px;border-right:1px solid rgba(27,26,25,.3);white-space:nowrap;font:800 12px/1 'Archivo',sans-serif">{{ t.name }}<span style="font:600 9px/1;letter-spacing:.14em;opacity:.62">{{ t.price }}</span></div>
+    </sc-for>
+  </div>
+</section>
+
+<section style="background:#f7f3ec;border-bottom:2px solid #1b1a19">
+  <div data-sticky-under-nav="1" style="position:sticky;top:136px;z-index:40;background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:14px 44px;display:flex;flex-wrap:wrap;gap:14px;align-items:center">
+    <div style="display:flex;flex-wrap:wrap;gap:7px;align-items:center">
+      <span style="font:600 9px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#7d7979">Route</span>
+      <sc-for list="{{ routeFilters }}" as="f" hint-placeholder-count="6">
+        <button type="button" onClick="{{ f.pick }}" style="padding:9px 12px;background:{{ f.bg }};border:2px solid #1b1a19;color:{{ f.fg }};font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer" style-hover="background:#f2b30c;color:#1b1a19">{{ f.label }}</button>
+      </sc-for>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:7px;align-items:center">
+      <span style="font:600 9px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#7d7979">Course</span>
+      <sc-for list="{{ groupFilters }}" as="f" hint-placeholder-count="6">
+        <button type="button" onClick="{{ f.pick }}" style="padding:9px 12px;background:{{ f.bg }};border:2px solid #1b1a19;color:{{ f.fg }};font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer" style-hover="background:#ec3013;color:#fff">{{ f.label }}</button>
+      </sc-for>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:7px;align-items:center">
+      <span style="font:600 9px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#7d7979">Diet</span>
+      <sc-for list="{{ dietFilters }}" as="f" hint-placeholder-count="6">
+        <button type="button" onClick="{{ f.pick }}" style="padding:9px 12px;background:{{ f.bg }};border:2px solid #1b1a19;color:{{ f.fg }};font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer" style-hover="background:#2b76c9;color:#fff">{{ f.label }}</button>
+      </sc-for>
+    </div>
+    <span style="margin-left:auto;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979">{{ resultLabel }}</span>
+  </div>
+
+  <sc-for list="{{ countries }}" as="c" hint-placeholder-count="6">
+    <div style="border-bottom:2px solid #1b1a19">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px;padding:20px 44px;background:{{ c.bg }};color:{{ c.fg }};border-bottom:2px solid #1b1a19">
+        <span style="width:46px;height:46px;flex:none;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font:800 12px/1 'Archivo',sans-serif;transform:rotate(-9deg)">{{ c.stamp }}</span>
+        <span style="flex:1;min-width:200px">
+          <span style="display:block;font:800 clamp(24px,2.6vw,36px)/1 'Archivo',sans-serif;letter-spacing:-.03em">{{ c.name }}</span>
+          <span style="display:block;font:600 9.5px/1.5 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75;margin-top:5px">{{ c.route }} Route · {{ c.med }}</span>
+        </span>
+        <span style="font:400 13px/1.4 'Archivo',sans-serif;max-width:46ch;opacity:.9">{{ c.greeting }}</span>
+        <a href="{{ c.href }}" style="display:inline-flex;align-items:center;gap:9px;padding:11px 14px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase" style-hover="background:#ec3013">Country page<span>→</span></a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));border-left:2px solid #1b1a19">
+        <sc-for list="{{ c.items }}" as="i" hint-placeholder-count="11">
+          <div style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:#f7f3ec;padding:18px 17px 20px;display:flex;flex-direction:column;gap:9px;min-height:186px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+              <span style="font:600 9px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:{{ i.kindColor }}">{{ i.kindLabel }}</span>
+              <span style="font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em">{{ i.price }}</span>
+            </div>
+            <h3 style="font:800 17px/1.12 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">{{ i.name }}</h3>
+            <p style="font:400 12.5px/1.45 'Archivo',sans-serif;color:#605d5d;margin:0">{{ i.desc }}</p>
+            <div style="margin-top:auto;display:flex;flex-wrap:wrap;gap:5px;padding-top:10px;border-top:2px solid rgba(27,26,25,.16)">
+              <sc-for list="{{ i.tags }}" as="t" hint-placeholder-count="3">
+                <span style="padding:4px 7px;border:2px solid {{ t.border }};color:{{ t.color }};font:800 8.5px/1 'Archivo',sans-serif;letter-spacing:.11em;text-transform:uppercase">{{ t.t }}</span>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-for>
+</section>
+
+<section style="background:#e7e3dc;border-bottom:2px solid #1b1a19;padding:64px 0 70px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px">
+    <div style="display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:44px;align-items:start">
+      <div>
+        <h2 data-rv="up" style="font:800 clamp(30px,4vw,56px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 10px;max-width:20ch">COMBOS &amp; FULL BUFFETS</h2>
+        <p data-rv="up" data-rv-d="70" style="font:400 15px/1.55 'Archivo',sans-serif;color:#605d5d;margin:0 0 26px;max-width:52ch">Available in every country, at the same price everywhere. Each combo sits roughly 22–24% below the same items ordered separately.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19">
+          <sc-for list="{{ combos }}" as="c" hint-placeholder-count="9">
+            <div data-rv="up" data-rv-d="{{ c.delay }}" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:{{ c.bg }};color:{{ c.fg }};padding:18px 16px 20px;display:flex;flex-direction:column;gap:9px;min-height:165px">
+              <span style="font:600 9px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;opacity:.7">{{ c.group }}</span>
+              <span style="font:800 18px/1.08 'Archivo',sans-serif;letter-spacing:-.02em">{{ c.name }}</span>
+              <span style="font:400 12px/1.45 'Archivo',sans-serif;opacity:.85">{{ c.contents }}</span>
+              <span style="margin-top:auto;font:800 24px/1 'Archivo',sans-serif;letter-spacing:-.03em">{{ c.price }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <h2 data-rv="up" style="font:800 clamp(26px,3.2vw,42px)/.96 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 18px">THE PRICE GRID</h2>
+        <div style="border:2px solid #1b1a19;background:#f7f3ec">
+          <sc-for list="{{ priceGrid }}" as="p" hint-placeholder-count="12">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:12px 16px;border-bottom:1px solid rgba(27,26,25,.2)">
+              <span style="font:600 12.5px/1.3 'Archivo',sans-serif">{{ p.label }}</span>
+              <span style="font:800 15px/1 'Archivo',sans-serif;color:#ae1800">{{ p.price }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div data-rv="up" data-rv-d="90" style="margin-top:18px;border:2px solid #1b1a19;background:#1b1a19;color:#f7f3ec;padding:18px 16px">
+          <div style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#f2b30c;margin-bottom:12px">Upgrades &amp; minimums</div>
+          <sc-for list="{{ upgrades }}" as="u" hint-placeholder-count="2">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid rgba(247,243,236,.22);font:400 12.5px/1.4 'Archivo',sans-serif">{{ u.name }}<span style="font:800 13px/1 'Archivo',sans-serif;color:#f2b30c;white-space:nowrap">{{ u.price }}</span></div>
+          </sc-for>
+          <div style="padding-top:12px;font:600 10px/1.6 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#bab6b6">{{ minSpend }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#2b76c9;color:#fff;padding:62px 0 68px">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:26px">
+    <div>
+      <h2 data-rv="up" style="font:800 clamp(30px,4.2vw,58px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 14px;max-width:18ch">DIFFERENT TABLES. ONE WARM WELCOME.</h2>
+      <p data-rv="up" data-rv-d="80" style="font:400 15.5px/1.55 'Archivo',sans-serif;margin:0;max-width:50ch;color:rgba(255,255,255,.92)">Every item above carries its own tags — halal-friendly, no pork, vegetarian, alcohol-free, contains alcohol, contains nuts. Filter the board by diet and only what qualifies stays on it.</p>
+    </div>
+    <div data-rv="up" data-rv-d="140" style="display:flex;flex-wrap:wrap;gap:12px">
+      <a href="Patty-Tooty.dc.html" style="display:inline-flex;align-items:center;min-width:240px;padding:16px 19px;background:#f2b30c;color:#1b1a19;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#fff">Ask about a dish<span style="margin-left:auto">→</span></a>
+      <a href="Junior-Explorers.dc.html" style="display:inline-flex;align-items:center;min-width:220px;padding:16px 19px;border:2px solid #fff;color:#fff;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#fff;color:#2b76c9">The junior lane<span style="margin-left:auto">→</span></a>
+    </div>
+  </div>
+</section>
+
+<dc-import name="PP-Footer" hint-size="100%,420px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
+const RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
+const KINDS = {
+  veg: ["Veg burger", "#1f7a3d"], chicken: ["Chicken burger", "#ae1800"], beef: ["Beef burger", "#ae1800"],
+  fries: ["Loaded fries", "#8a6a00"], salad: ["Salad", "#1f7a3d"],
+  cold: ["Cold country drink", "#1d5c9e"], alcohol: ["Alcoholic country drink", "#7a2b8a"],
+  hot: ["Hot drink", "#8a4a00"], dessert: ["Dessert", "#ae1800"]
+};
+const TAG_COLORS = {
+  "Vegetarian": "#1f7a3d", "Halal-friendly": "#1d5c9e", "No pork": "#605d5d",
+  "Contains pork": "#ae1800", "Alcohol-free": "#605d5d", "Contains alcohol": "#7a2b8a",
+  "Contains nuts": "#8a4a00"
+};
+const eur = n => "€" + n.toFixed(2).replace(/\.00$/, ".0");
+
+class Component extends DCLogic {
+  state = { route: "ALL", group: "ALL", diet: "ALL", ready: false };
+
+  componentDidMount() {
+    const check = () => { if (window.PP_DATA && !this.state.ready) this.setState({ ready: true }); };
+    check();
+    this._dataPoll = setInterval(check, 120);
+    window.addEventListener("pp-data-ready", check);
+    this._onReady = check;
+
+    const run = () => {
+      Array.from(document.querySelectorAll("[data-rv]")).forEach(el => {
+        if (!el._init) {
+          el._init = true;
+          el.style.opacity = "0";
+          el.style.transform = "translateY(26px)";
+          el.style.transition = "opacity .7s cubic-bezier(.2,.8,.25,1), transform .8s cubic-bezier(.2,.85,.25,1)";
+        }
+        const r = el.getBoundingClientRect();
+        if (!el._d && r.top < window.innerHeight * 0.94 && r.bottom > 0) {
+          el._d = true;
+          setTimeout(() => { el.style.opacity = "1"; el.style.transform = "none"; }, parseInt(el.getAttribute("data-rv-d") || "0", 10));
+        }
+      });
+    };
+    this._onScroll = () => { if (!this._raf) this._raf = requestAnimationFrame(() => { this._raf = null; run(); }); };
+    window.addEventListener("scroll", this._onScroll, { passive: true });
+    window.addEventListener("resize", this._onScroll);
+    this._poll = setInterval(run, 400);
+    run();
+  }
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this._onScroll);
+    window.removeEventListener("resize", this._onScroll);
+    window.removeEventListener("pp-data-ready", this._onReady);
+    clearInterval(this._poll);
+    clearInterval(this._dataPoll);
+  }
+
+  renderVals() {
+    const D = window.PP_DATA;
+    if (!D) return { countries: [], combos: [], priceGrid: [], upgrades: [], tickerRows: [], routeFilters: [], groupFilters: [], dietFilters: [], resultLabel: "Loading the board…", itemCount: "—", minSpend: "" };
+
+    const { route, group, diet } = this.state;
+    const dietOk = it => {
+      if (diet === "ALL") return true;
+      if (diet === "VEG") return it.tags.indexOf("Vegetarian") > -1;
+      if (diet === "HAL") return it.tags.indexOf("Halal-friendly") > -1;
+      if (diet === "NOPORK") return it.tags.indexOf("No pork") > -1;
+      if (diet === "AF") return it.tags.indexOf("Alcohol-free") > -1;
+      if (diet === "NUTFREE") return it.tags.indexOf("Contains nuts") === -1;
+      return true;
+    };
+
+    const countries = D.COUNTRIES
+      .filter(c => route === "ALL" || c.routeKey === route)
+      .map(c => {
+        const items = c.items.filter(i => (group === "ALL" || i.group === group) && dietOk(i));
+        const r = D.ROUTES[c.routeKey];
+        return {
+          name: c.name.toUpperCase(), route: r.name, med: c.med, stamp: c.stamp,
+          greeting: c.greeting, bg: r.bg, fg: r.fg,
+          href: "Destination-Page.dc.html#" + c.code,
+          items: items.map(i => ({
+            name: i.name, desc: i.desc, price: eur(i.price),
+            kindLabel: KINDS[i.kind][0], kindColor: KINDS[i.kind][1],
+            tags: i.tags.map(t => ({ t, color: TAG_COLORS[t] || "#605d5d", border: "rgba(27,26,25,.28)" }))
+          })),
+          count: items.length
+        };
+      })
+      .filter(c => c.count > 0);
+
+    const shown = countries.reduce((a, c) => a + c.count, 0);
+    const total = D.COUNTRIES.reduce((a, c) => a + c.items.length, 0);
+
+    const rKeys = [["ALL", "All"], ["LEV", "Levant"], ["AEG", "Aegean"], ["IBL", "Iberia & Latin"], ["ADR", "Adriatic"], ["NAF", "N. Africa"]];
+    const gKeys = [["ALL", "All"], ["Burgers", "Burgers"], ["Loaded fries", "Loaded fries"], ["Salads", "Salads"], ["Desserts", "Desserts"], ["Drinks", "Drinks"]];
+    const dKeys = [["ALL", "All"], ["HAL", "Halal-friendly"], ["VEG", "Vegetarian"], ["NOPORK", "No pork"], ["AF", "Alcohol-free"], ["NUTFREE", "Nut-free"]];
+
+    const heroes = D.COUNTRIES.map(c => {
+      const hero = c.items.find(i => i.kind === c.heroKind) || c.items[1];
+      return { name: hero.name.toUpperCase(), price: eur(hero.price) };
+    });
+
+    return {
+      itemCount: String(total),
+      resultLabel: shown + " of " + total + " items shown",
+      tickerRows: heroes.concat(heroes),
+      routeFilters: rKeys.map(k => ({
+        label: k[1], bg: route === k[0] ? INK : "transparent", fg: route === k[0] ? CREAM : INK,
+        pick: () => this.setState({ route: k[0] })
+      })),
+      groupFilters: gKeys.map(k => ({
+        label: k[1], bg: group === k[0] ? RED : "transparent", fg: group === k[0] ? "#fff" : INK,
+        pick: () => this.setState({ group: k[0] })
+      })),
+      dietFilters: dKeys.map(k => ({
+        label: k[1], bg: diet === k[0] ? BLU : "transparent", fg: diet === k[0] ? "#fff" : INK,
+        pick: () => this.setState({ diet: k[0] })
+      })),
+      countries,
+      combos: D.COMBOS.map((c, i) => ({
+        name: c.name, contents: c.contents, price: eur(c.price), group: c.group,
+        bg: c.group === "Full Experience" ? YEL : c.group === "Quick Bite" ? CREAM : "#fff",
+        fg: INK, delay: String(i * 45)
+      })),
+      priceGrid: [
+        ["Veg burger", D.PRICES.vegBurger], ["Chicken burger", D.PRICES.chickenBurger], ["Beef burger", D.PRICES.beefBurger],
+        ["Regular fries", D.PRICES.regularFries], ["Loaded fries (country signature)", D.PRICES.loadedFries],
+        ["Salad (country iconic)", D.PRICES.salad], ["Dessert", D.PRICES.dessert],
+        ["Soft drink", D.PRICES.softDrink], ["Cold country drink", D.PRICES.coldDrink],
+        ["Local beer", D.PRICES.localBeer], ["Alcoholic country drink", D.PRICES.alcoholDrink],
+        ["Hot drink (coffee / tea)", D.PRICES.hotDrink]
+      ].map(p => ({ label: p[0], price: eur(p[1]) })),
+      upgrades: D.UPGRADES.map(u => ({ name: u.name, price: "+" + eur(u.price) })),
+      minSpend: "Minimum spend €" + D.MIN_SPEND.adult + " per adult · €" + D.MIN_SPEND.child + " per child"
+    };
+  }
+}
+</script>
+</body>
+</html>

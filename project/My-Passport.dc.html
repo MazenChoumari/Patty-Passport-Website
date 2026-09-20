@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="_ds/modernist-cf9009e6-65ae-4cc3-81bb-0a0e3ffc9a69/styles.css">
+<script src="./pp-data.js"></script>
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#ae1800;text-underline-offset:3px}
+a:hover{color:#ec3013}
+:focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+::selection{background:rgba(236,48,19,.28)}
+@keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+@keyframes ppFade{from{opacity:0}to{opacity:1}}
+@keyframes ppLand{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+</style></helmet>
+
+<dc-import name="PP-Nav" active="Rewards" hint-size="100%,136px"></dc-import>
+
+<sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:95;display:flex;align-items:center;justify-content:center;padding:24px;animation:ppFade .2s ease both">
+    <div onClick="{{ closeModal }}" style="position:absolute;inset:0;background:rgba(27,26,25,.68)"></div>
+    <div style="position:relative;width:min(460px,100%);background:#f7f3ec;border:2px solid #1b1a19;box-shadow:18px 18px 0 rgba(27,26,25,.4);animation:ppLand .32s cubic-bezier(.2,.85,.25,1) both">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:#1b1a19;color:#f7f3ec">
+        <span style="display:flex;align-items:center;gap:9px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase"><span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Passport desk</span>
+        <button type="button" onClick="{{ closeModal }}" style="background:transparent;border:2px solid rgba(247,243,236,.5);color:#f7f3ec;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.14em;padding:8px 11px;cursor:pointer" style-hover="background:#ec3013;border-color:#ec3013">CLOSE ✕</button>
+      </div>
+      <div style="padding:26px 22px 24px">
+        <h2 style="font:800 30px/1 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 8px">{{ modalTitle }}</h2>
+        <p style="font:400 13.5px/1.55 'Archivo',sans-serif;color:#605d5d;margin:0 0 22px">{{ modalLine }}</p>
+        <sc-for list="{{ modalFields }}" as="f" hint-placeholder-count="3">
+          <label style="display:block;margin-bottom:16px">
+            <span style="display:block;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:8px">{{ f.label }}</span>
+            <input type="{{ f.type }}" value="{{ f.value }}" onInput="{{ f.set }}" placeholder="{{ f.ph }}" style="width:100%;background:transparent;border:0;border-bottom:2px solid #1b1a19;color:#1b1a19;font:800 16px/1.3 'Archivo',sans-serif;padding:0 0 8px;outline:none" />
+          </label>
+        </sc-for>
+        <button type="button" onClick="{{ submitModal }}" style="display:inline-flex;align-items:center;width:100%;margin-top:6px;padding:16px 18px;background:#ec3013;border:0;color:#fff;font:800 14.5px/1.1 'Archivo',sans-serif;cursor:pointer" style-hover="background:#1b1a19">{{ modalCta }}<span style="margin-left:auto">→</span></button>
+        <button type="button" onClick="{{ toggleMode }}" style="display:block;width:100%;margin-top:14px;background:transparent;border:0;color:#ae1800;font:600 12.5px/1.4 'Archivo',sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer">{{ modalSwitch }}</button>
+        <p style="font:400 11px/1.5 'Archivo',sans-serif;color:#7d7979;margin:16px 0 0">Front-end demo — no account is created and nothing is stored on a server.</p>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ loggedOut }}" hint-placeholder-val="{{ true }}">
+  <section style="position:relative;background:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(236,48,19,.1) 1px,transparent 1px);background-size:98px 100%"></div>
+    <div style="position:relative;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr)">
+      <div style="padding:58px 44px 54px;border-right:2px solid #1b1a19">
+        <div style="display:inline-flex;align-items:center;gap:9px;background:#ec3013;color:#fff;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px">
+          <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>My passport · sign in
+        </div>
+        <h1 style="font:800 clamp(40px,5.8vw,88px)/.9 'Archivo',sans-serif;letter-spacing:-.045em;margin:0 0 18px;max-width:14ch">YOUR BOOK IS WAITING AT THE DESK.</h1>
+        <p style="font:400 clamp(15px,1.2vw,17.5px)/1.55 'Archivo',sans-serif;color:#444141;max-width:52ch;margin:0 0 28px">Create a Patty Passport to see the stamps you've collected, what the next reward unlocks, and the routes you have booked. Free, and the paper book comes with it at check-in.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:12px">
+          <button type="button" onClick="{{ openCreate }}" style="display:inline-flex;align-items:center;min-width:260px;padding:17px 20px;background:#ec3013;border:0;color:#fff;font:800 15px/1.1 'Archivo',sans-serif;cursor:pointer" style-hover="background:#1b1a19">Create my Patty Passport<span style="margin-left:auto">→</span></button>
+          <button type="button" onClick="{{ openLogin }}" style="display:inline-flex;align-items:center;min-width:200px;padding:17px 20px;border:2px solid #1b1a19;background:transparent;color:#1b1a19;font:800 15px/1.1 'Archivo',sans-serif;cursor:pointer" style-hover="background:#f2b30c;border-color:#f2b30c">Log in<span style="margin-left:auto">→</span></button>
+        </div>
+      </div>
+      <div style="position:relative;min-height:420px;background:#2b76c9">
+        <image-slot id="mp-hero" shape="rect" fit="cover" placeholder="Open passport booklet with stamps across the spread" style="position:absolute;inset:0"></image-slot>
+        <div style="position:absolute;left:0;right:0;bottom:0;padding:13px 18px;background:rgba(27,26,25,.92);color:#f7f3ec;font:600 9.5px/1.5 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;pointer-events:none">21 countries · 5 reward gates · nothing expires</div>
+      </div>
+    </div>
+  </section>
+</sc-if>
+
+<sc-if value="{{ loggedIn }}" hint-placeholder-val="{{ false }}">
+  <section style="background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:44px 0 50px">
+    <div style="max-width:1340px;margin:0 auto;padding:0 32px">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:20px;margin-bottom:32px">
+        <span style="position:relative;width:86px;height:86px;flex:none;border:2px solid #1b1a19">
+          <image-slot id="mp-avatar" shape="rect" fit="cover" placeholder="Your passport photo" style="position:absolute;inset:0"></image-slot>
+        </span>
+        <span style="flex:1;min-width:200px">
+          <span style="display:block;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#7d7979;margin-bottom:8px">Explorer Passport · PP-2026-{{ memberNo }}</span>
+          <span style="display:block;font:800 clamp(30px,4vw,56px)/.95 'Archivo',sans-serif;letter-spacing:-.04em">{{ displayName }}</span>
+        </span>
+        <span style="display:flex;flex-wrap:wrap;gap:10px">
+          <a href="Booking.dc.html" style="display:inline-flex;align-items:center;padding:14px 17px;background:#ec3013;color:#fff;text-decoration:none;font:800 13px/1.1 'Archivo',sans-serif" style-hover="background:#1b1a19">Book the next route<span style="margin-left:12px">→</span></a>
+          <button type="button" onClick="{{ logOut }}" style="padding:14px 17px;background:transparent;border:2px solid #1b1a19;color:#1b1a19;font:800 13px/1.1 'Archivo',sans-serif;cursor:pointer" style-hover="background:#f2b30c;border-color:#f2b30c">Log out</button>
+        </span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19;margin-bottom:34px">
+        <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+          <div style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:{{ s.bg }};color:{{ s.fg }};padding:20px 18px 22px">
+            <div style="font:800 34px/1 'Archivo',sans-serif;letter-spacing:-.035em">{{ s.n }}</div>
+            <div style="font:600 9.5px/1.45 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;margin-top:8px;opacity:.78">{{ s.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:36px;align-items:start">
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px">
+            <h2 style="font:800 clamp(22px,2.6vw,34px)/1 'Archivo',sans-serif;letter-spacing:-.03em;margin:0">YOUR STAMP SPREAD</h2>
+            <span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979">Tap a country to add or remove a stamp</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:2px;background:rgba(27,26,25,.35);border:2px solid #1b1a19">
+            <sc-for list="{{ cells }}" as="c" hint-placeholder-count="21">
+              <button type="button" onClick="{{ c.toggle }}" style="position:relative;background:{{ c.bg }};color:{{ c.fg }};aspect-ratio:1/1;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:9px;border:0;cursor:pointer;text-align:left" style-hover="background:#f2b30c;color:#1b1a19">
+                <span style="font:800 14px/1 'Archivo',sans-serif">{{ c.code }}</span>
+                <span style="font:400 8.5px/1.2 'Archivo',sans-serif;letter-spacing:.06em;text-transform:uppercase;opacity:.72">{{ c.name }}</span>
+                <sc-if value="{{ c.stamped }}" hint-placeholder-val="{{ false }}">
+                  <span style="position:absolute;top:8px;right:8px;width:40px;height:40px;border:2.5px solid #ec3013;color:#ec3013;display:flex;align-items:center;justify-content:center;font:800 9px/1 'Archivo',sans-serif;transform:rotate(-10deg)">{{ c.mark }}</span>
+                </sc-if>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div>
+          <h2 style="font:800 clamp(22px,2.6vw,34px)/1 'Archivo',sans-serif;letter-spacing:-.03em;margin:0 0 14px">REWARDS</h2>
+          <div style="border:2px solid #1b1a19;background:#fff">
+            <sc-for list="{{ ladder }}" as="l" hint-placeholder-count="5">
+              <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:2px solid rgba(27,26,25,.18)">
+                <span style="width:46px;height:46px;flex:none;background:{{ l.bg }};color:{{ l.fg }};display:flex;align-items:center;justify-content:center;font:800 17px/1 'Archivo',sans-serif">{{ l.n }}</span>
+                <span style="flex:1">
+                  <span style="display:block;font:800 15px/1.15 'Archivo',sans-serif">{{ l.title }}</span>
+                  <span style="display:block;font:400 11.5px/1.4 'Archivo',sans-serif;color:#605d5d;margin-top:3px">{{ l.sub }}</span>
+                </span>
+                <span style="font:600 9px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:{{ l.stateColor }};white-space:nowrap">{{ l.state }}</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <h2 style="font:800 clamp(22px,2.6vw,34px)/1 'Archivo',sans-serif;letter-spacing:-.03em;margin:28px 0 14px">UPCOMING</h2>
+          <div style="border:2px solid #1b1a19;background:#1b1a19;color:#f7f3ec">
+            <sc-for list="{{ bookings }}" as="b" hint-placeholder-count="2">
+              <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid rgba(247,243,236,.22)">
+                <span style="font:800 13px/1 'Archivo',sans-serif;color:#f2b30c;width:70px;flex:none">{{ b.time }}</span>
+                <span style="flex:1">
+                  <span style="display:block;font:800 14px/1.15 'Archivo',sans-serif">{{ b.what }}</span>
+                  <span style="display:block;font:400 11.5px/1.4 'Archivo',sans-serif;color:#bab6b6;margin-top:3px">{{ b.detail }}</span>
+                </span>
+              </div>
+            </sc-for>
+            <div style="padding:14px 16px">
+              <a href="Booking.dc.html" style="display:inline-flex;align-items:center;justify-content:space-between;width:100%;padding:12px 14px;background:#f2b30c;color:#1b1a19;text-decoration:none;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase" style-hover="background:#ec3013;color:#fff">Add a departure<span>→</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</sc-if>
+
+<dc-import name="PP-Footer" hint-size="100%,420px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
+const RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
+
+class Component extends DCLogic {
+  state = {
+    modal: null, mode: "create", name: "", email: "", pin: "",
+    user: null, stamps: ["lbn", "grc", "esp", "mar", "tur", "ita"]
+  };
+
+  componentDidMount() {
+    this._onData = () => this.forceUpdate();
+    window.addEventListener("pp-data-ready", this._onData);
+    if (!window.PP_DATA) this._poll = setInterval(() => { if (window.PP_DATA) { clearInterval(this._poll); this.forceUpdate(); } }, 120);
+    this._onKey = e => { if (e.key === "Escape") this.setState({ modal: null }); };
+    window.addEventListener("keydown", this._onKey);
+    if ((location.hash || "").toLowerCase() === "#join") this.setState({ modal: true, mode: "create" });
+  }
+  componentWillUnmount() {
+    window.removeEventListener("pp-data-ready", this._onData);
+    window.removeEventListener("keydown", this._onKey);
+    clearInterval(this._poll);
+  }
+
+  renderVals() {
+    const D = window.PP_DATA;
+    const countries = D ? D.COUNTRIES : [];
+    const filled = this.state.stamps.length;
+    const create = this.state.mode === "create";
+
+    const ladderDefs = [
+      [3, "Free country drink", "A cooler from the route you just landed in", YEL, INK],
+      [5, "Free loaded fries", "Traveller fries with kajmak, ajvar and crisp onion", YEL, INK],
+      [8, "Secret destination burger", "Off-menu, changes monthly", INK, CREAM],
+      [13, "Route night for two", "A hosted table with the destination guide", BLU, "#fff"],
+      [21, "World Traveller buffet", "The whole sea, on the house", RED, "#fff"]
+    ];
+    const next = ladderDefs.find(l => filled < l[0]);
+
+    return {
+      modalOpen: !!this.state.modal,
+      loggedIn: !!this.state.user,
+      loggedOut: !this.state.user,
+      openCreate: () => this.setState({ modal: true, mode: "create" }),
+      openLogin: () => this.setState({ modal: true, mode: "login" }),
+      closeModal: () => this.setState({ modal: null }),
+      toggleMode: () => this.setState({ mode: create ? "login" : "create" }),
+      modalTitle: create ? "Create your Patty Passport" : "Welcome back, traveller",
+      modalLine: create
+        ? "One book, twenty-one stamps, five reward gates. Free — the paper copy is handed over at the desk."
+        : "Sign in to see your stamps, rewards and upcoming departures.",
+      modalCta: create ? "Create my Patty Passport" : "Log in",
+      modalSwitch: create ? "Already have a passport? Log in instead" : "No passport yet? Create one instead",
+      modalFields: (create
+        ? [["Name", "text", "name", "Your name"], ["Email", "email", "email", "you@example.com"], ["PIN", "password", "pin", "4-digit PIN"]]
+        : [["Email", "email", "email", "you@example.com"], ["PIN", "password", "pin", "4-digit PIN"]]
+      ).map(f => ({
+        label: f[0], type: f[1], ph: f[3], value: this.state[f[2]],
+        set: e => this.setState({ [f[2]]: e.target.value })
+      })),
+      submitModal: () => this.setState({
+        modal: null,
+        user: { name: (this.state.name || "Traveller").trim() || "Traveller" }
+      }),
+      logOut: () => this.setState({ user: null, modal: null }),
+
+      displayName: this.state.user ? this.state.user.name.toUpperCase() : "",
+      memberNo: "0" + (100 + filled * 7),
+      stats: [
+        { n: String(filled), label: "Stamps collected", bg: CREAM, fg: INK },
+        { n: String(21 - filled), label: "Countries to go", bg: "#e7e3dc", fg: INK },
+        { n: next ? String(next[0] - filled) : "0", label: next ? "Stamps to the next reward" : "Book complete", bg: YEL, fg: INK },
+        { n: String(ladderDefs.filter(l => filled >= l[0]).length), label: "Rewards unlocked", bg: RED, fg: "#fff" }
+      ],
+      cells: countries.map(c => {
+        const on = this.state.stamps.indexOf(c.code) > -1;
+        return {
+          code: c.code.toUpperCase(), name: c.name, stamped: on, mark: c.stamp,
+          bg: on ? CREAM : "#efece6", fg: INK,
+          toggle: () => this.setState(s => ({
+            stamps: on ? s.stamps.filter(x => x !== c.code) : s.stamps.concat([c.code])
+          }))
+        };
+      }),
+      ladder: ladderDefs.map(l => {
+        const done = filled >= l[0];
+        return {
+          n: String(l[0]), title: l[1], sub: l[2], bg: l[3], fg: l[4],
+          state: done ? "Unlocked" : (l[0] - filled) + " to go",
+          stateColor: done ? "#ae1800" : "#7d7979"
+        };
+      }),
+      bookings: [
+        { time: "25 SEP", what: "Lebanon · MED-12", detail: "Table 4 · 4 adults, 2 kids · 20:30" },
+        { time: "11 OCT", what: "Morocco · MED-55", detail: "Table 9 · 2 travellers · 19:30" }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

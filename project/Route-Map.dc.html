@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="_ds/modernist-cf9009e6-65ae-4cc3-81bb-0a0e3ffc9a69/styles.css">
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#ae1800;text-underline-offset:3px}
+a:hover{color:#ec3013}
+:focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+::selection{background:rgba(236,48,19,.28)}
+@keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+@keyframes ppDash{0%{background-position:0 0}100%{background-position:44px 0}}
+@keyframes ppSway{0%{transform:translateY(0)}50%{transform:translateY(-4px)}100%{transform:translateY(0)}}
+@keyframes ppPulse{0%{opacity:.3;transform:scale(1)}100%{opacity:0;transform:scale(2.4)}}
+</style></helmet>
+
+<dc-import name="PP-Nav" active="Route map" hint-size="100%,130px"></dc-import>
+
+<section style="position:relative;background:#2b76c9;color:#fff;border-bottom:2px solid #1b1a19;overflow:hidden;padding:56px 0 0">
+  <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.22) 1.5px,transparent 1.6px);background-size:30px 30px"></div>
+  <div style="position:relative;max-width:1320px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:26px;margin-bottom:28px">
+      <div>
+        <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#1b1a19;color:#f2b30c;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px">
+          <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Live route network
+        </div>
+        <h1 data-rv="up" data-rv-d="70" style="font:800 clamp(40px,6vw,92px)/.9 'Archivo',sans-serif;letter-spacing:-.045em;margin:0 0 16px;max-width:15ch">FIVE ROUTES CROSS ONE SEA.</h1>
+        <p data-rv="up" data-rv-d="130" style="font:400 16px/1.55 'Archivo',sans-serif;max-width:48ch;margin:0;color:rgba(255,255,255,.92)">Pick a chapter on the legend and the map isolates it. Every node opens the destination page behind it — culture, plate, playlist, stamp.</p>
+      </div>
+      <div data-rv="up" data-rv-d="180" style="display:flex;flex-direction:column;gap:10px;min-width:240px">
+        <a href="Destinations.dc.html" style="display:inline-flex;align-items:center;padding:15px 18px;background:#f2b30c;color:#1b1a19;text-decoration:none;font:800 14px/1.1 'Archivo',sans-serif" style-hover="background:#fff">All 21 destinations<span style="margin-left:auto">→</span></a>
+        <a href="Menu.dc.html" style="display:inline-flex;align-items:center;padding:15px 18px;border:2px solid #fff;color:#fff;text-decoration:none;font:800 14px/1.1 'Archivo',sans-serif" style-hover="background:#fff;color:#2b76c9">Menu by route<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+  </div>
+  <div style="position:relative;max-width:1320px;margin:0 auto;padding:0 32px 26px">
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px">
+      <sc-for list="{{ legend }}" as="l" hint-placeholder-count="6">
+        <button type="button" onClick="{{ l.pick }}" style="display:inline-flex;align-items:center;gap:9px;padding:10px 13px;background:{{ l.bg }};border:2px solid #1b1a19;color:{{ l.fg }};font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer" style-hover="background:#f2b30c;color:#1b1a19">
+          <span style="width:9px;height:9px;background:{{ l.dot }};display:block"></span>{{ l.label }}<span style="opacity:.6">{{ l.count }}</span>
+        </button>
+      </sc-for>
+    </div>
+    <div style="position:relative;border:2px solid #1b1a19;background:rgba(27,26,25,.18);height:560px;overflow:hidden">
+      <image-slot id="rm-plate" shape="rect" fit="cover" placeholder="Mediterranean basin map artwork — coastline plate" style="position:absolute;inset:0;opacity:.5"></image-slot>
+      <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.1) 0 1px,transparent 1px 56px),repeating-linear-gradient(90deg,rgba(255,255,255,.1) 0 1px,transparent 1px 56px);pointer-events:none"></div>
+      <div style="position:absolute;left:5%;right:5%;top:50%;height:2px;background-image:linear-gradient(90deg,#f2b30c 0 22px,transparent 22px 44px);background-size:44px 2px;animation:ppDash 1.6s linear infinite;pointer-events:none"></div>
+      <sc-for list="{{ nodes }}" as="n" hint-placeholder-count="21">
+        <a href="{{ n.href }}" style="position:absolute;left:{{ n.x }};top:{{ n.y }};transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:flex-start;gap:5px;text-decoration:none;opacity:{{ n.op }};transition:opacity .3s ease">
+          <span style="display:flex;align-items:center;gap:7px;padding:6px 9px;background:{{ n.bg }};color:{{ n.fg }};border:2px solid #1b1a19;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.12em;white-space:nowrap;animation:ppSway {{ n.sway }} ease-in-out infinite">{{ n.code }}<span style="font:600 8.5px/1;letter-spacing:.14em;opacity:.75">{{ n.med }}</span></span>
+          <span style="font:800 13px/1 'Archivo',sans-serif;letter-spacing:-.01em;color:#fff;text-shadow:0 1px 0 rgba(27,26,25,.6)">{{ n.name }}</span>
+        </a>
+      </sc-for>
+      <div style="position:absolute;left:16px;bottom:16px;display:flex;align-items:center;gap:9px;padding:8px 11px;background:#1b1a19;color:#f7f3ec;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;pointer-events:none">
+        <span style="position:relative;width:9px;height:9px;background:#f2b30c;display:block"><span style="position:absolute;inset:0;border:2px solid #f2b30c;animation:ppPulse 2.6s ease-out infinite"></span></span>{{ activeLabel }}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#f7f3ec;border-bottom:2px solid #1b1a19">
+  <sc-for list="{{ chapters }}" as="c" hint-placeholder-count="5">
+    <div data-rv="up" style="display:grid;grid-template-columns:minmax(0,.42fr) minmax(0,1fr);border-top:2px solid #1b1a19;background:{{ c.bg }};color:{{ c.fg }}">
+      <div style="padding:34px 32px 36px;border-right:2px solid rgba(27,26,25,.35)">
+        <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:12px">
+          <span style="font:800 40px/1 'Archivo',sans-serif;letter-spacing:-.04em;opacity:.3">{{ c.num }}</span>
+          <span style="font:600 10px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase">{{ c.kicker }}</span>
+        </div>
+        <h3 style="font:800 clamp(26px,3vw,42px)/.98 'Archivo',sans-serif;letter-spacing:-.03em;margin:0 0 12px">{{ c.name }}</h3>
+        <p style="font:400 14px/1.55 'Archivo',sans-serif;margin:0 0 18px;opacity:.86;max-width:42ch">{{ c.blurb }}</p>
+        <div style="font:600 9.5px/1.6 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.75">{{ c.meta }}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))">
+        <sc-for list="{{ c.stops }}" as="s" hint-placeholder-count="4">
+          <a href="{{ s.href }}" style="padding:22px 20px 24px;border-right:1px solid rgba(27,26,25,.28);border-bottom:1px solid rgba(27,26,25,.28);text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;min-height:170px;transition:background .2s ease" style-hover="background:#1b1a19;color:#f7f3ec">
+            <span style="font:600 9px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.65">{{ s.med }}</span>
+            <span style="font:800 21px/1.02 'Archivo',sans-serif;letter-spacing:-.025em">{{ s.name }}</span>
+            <span style="font:400 12.5px/1.45 'Archivo',sans-serif;opacity:.82">{{ s.identity }}</span>
+            <span style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.12em">{{ s.stamp }}<span>→</span></span>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </sc-for>
+</section>
+
+<section style="background:#1b1a19;color:#f7f3ec;padding:62px 0 68px">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:26px">
+    <div>
+      <h2 data-rv="up" style="font:800 clamp(30px,4.2vw,58px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 14px;max-width:18ch">PLAN THE WHOLE SEA, ONE TABLE AT A TIME.</h2>
+      <p data-rv="up" data-rv-d="80" style="font:400 15.5px/1.55 'Archivo',sans-serif;color:#bab6b6;margin:0;max-width:46ch">Twenty-one stamps fills the book. The ladder starts at three, and the World Traveller buffet waits at the end of the map.</p>
+    </div>
+    <div data-rv="up" data-rv-d="140" style="display:flex;flex-wrap:wrap;gap:12px">
+      <a href="Rewards.dc.html" style="display:inline-flex;align-items:center;min-width:230px;padding:16px 19px;background:#f2b30c;color:#1b1a19;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#ec3013;color:#fff">How stamps work<span style="margin-left:auto">→</span></a>
+      <a href="Patty-Tooty.dc.html" style="display:inline-flex;align-items:center;min-width:230px;padding:16px 19px;border:2px solid #f7f3ec;color:#f7f3ec;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#f7f3ec;color:#1b1a19">Let Patty Tooty choose<span style="margin-left:auto">→</span></a>
+    </div>
+  </div>
+</section>
+
+<dc-import name="PP-Footer" hint-size="100%,420px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
+const RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
+const CH = [
+  ["LEV", "01", "Chapter one", "LEVANT ROUTE", "Cedar mountains, souk smoke, toum and sumac. The loudest welcome on the sea.", YEL, INK],
+  ["AEG", "02", "Chapter two", "AEGEAN ROUTE", "Island light, oregano, charcoal and lemon. Slow lunches that run into evening.", BLU, "#fff"],
+  ["IBL", "03", "Chapter three", "IBERIA & LATIN ROUTE", "Plaza noise, bravas heat, olive oil and late dessert. Europe's warm south.", CREAM, INK],
+  ["ADR", "04", "Chapter four", "ADRIATIC ROUTE", "Stone harbours, grill smoke, ajvar and walnut. The quiet coast that surprises.", "#e7e3dc", INK],
+  ["NAF", "05", "Chapter five", "NORTH AFRICAN ROUTE", "Spice markets, mint tea, harissa and orange blossom. The sea's other shore.", RED, "#fff"]
+];
+const N = [
+  ["esp","Spain","IBL","MED-32","Kingdom of the Long Table","7%","36%"],
+  ["mar","Morocco","NAF","MED-55","Desert Meets the Atlantic","9%","76%"],
+  ["dza","Algeria","NAF","MED-54","The Widest Country","26%","82%"],
+  ["fra","France","IBL","MED-33","The Southern Kitchen","19%","15%"],
+  ["mco","Monaco","IBL","MED-34","The Smallest Coastline","26%","24%"],
+  ["ita","Italy","IBL","MED-31","The Art of Fewer Things","33%","32%"],
+  ["tun","Tunisia","NAF","MED-53","The Spice Crossroads","40%","72%"],
+  ["mlt","Malta","IBL","MED-35","Fortress in the Middle","39%","55%"],
+  ["svn","Slovenia","ADR","MED-41","Alps Meet the Sea","38%","9%"],
+  ["hrv","Croatia","ADR","MED-42","A Thousand Islands","45%","17%"],
+  ["bih","Bosnia","ADR","MED-43","The Inland Coast","47%","28%"],
+  ["mne","Montenegro","ADR","MED-44","Black Mountain, Blue Bay","51%","35%"],
+  ["alb","Albania","ADR","MED-45","The Undiscovered Shore","54%","43%"],
+  ["lby","Libya","NAF","MED-52","Desert Meets Harbour","55%","82%"],
+  ["grc","Greece","AEG","MED-23","Birthplace of the Open Sea","60%","33%"],
+  ["tur","Türkiye","AEG","MED-21","Bridge Between Continents","74%","14%"],
+  ["cyp","Cyprus","AEG","MED-22","Island of Two Tables","80%","44%"],
+  ["egy","Egypt","NAF","MED-51","Gift of the River","76%","78%"],
+  ["lbn","Lebanon","LEV","MED-12","Land of the Phoenicians","88%","38%"],
+  ["syr","Syria","LEV","MED-13","The Oldest Kitchens","90%","26%"],
+  ["pse","Palestine","LEV","MED-14","Olive, Thyme and Stone","87%","50%"]
+];
+const ORDER = ["lbn","syr","pse","tur","cyp","grc","ita","esp","fra","mco","mlt","svn","hrv","bih","mne","alb","egy","lby","tun","dza","mar"];
+
+class Component extends DCLogic {
+  state = { route: "ALL" };
+
+  componentDidMount() {
+    const run = () => {
+      Array.from(document.querySelectorAll("[data-rv]")).forEach(el => {
+        if (!el._init) {
+          el._init = true;
+          el.style.opacity = "0";
+          el.style.transform = "translateY(26px)";
+          el.style.transition = "opacity .7s cubic-bezier(.2,.8,.25,1), transform .8s cubic-bezier(.2,.85,.25,1)";
+        }
+        const r = el.getBoundingClientRect();
+        if (!el._d && r.top < window.innerHeight * 0.94 && r.bottom > 0) {
+          el._d = true;
+          setTimeout(() => { el.style.opacity = "1"; el.style.transform = "none"; }, parseInt(el.getAttribute("data-rv-d") || "0", 10));
+        }
+      });
+    };
+    this._onScroll = () => { if (!this._raf) this._raf = requestAnimationFrame(() => { this._raf = null; run(); }); };
+    window.addEventListener("scroll", this._onScroll, { passive: true });
+    window.addEventListener("resize", this._onScroll);
+    this._poll = setInterval(run, 400);
+    run();
+  }
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this._onScroll);
+    window.removeEventListener("resize", this._onScroll);
+    clearInterval(this._poll);
+  }
+
+  renderVals() {
+    const act = this.state.route;
+    const stampOf = c => "#" + String(ORDER.indexOf(c) + 1).padStart(2, "0");
+    const chOf = k => CH.find(c => c[0] === k);
+    return {
+      legend: [["ALL", "All routes", INK]].concat(CH.map(c => [c[0], c[3].replace(" ROUTE", ""), c[5]])).map(l => ({
+        label: l[1],
+        dot: l[0] === "ALL" ? YEL : l[2],
+        count: l[0] === "ALL" ? String(N.length) : String(N.filter(n => n[2] === l[0]).length),
+        bg: act === l[0] ? INK : "transparent",
+        fg: act === l[0] ? CREAM : "#fff",
+        pick: () => this.setState({ route: l[0] })
+      })),
+      activeLabel: act === "ALL" ? "All five routes shown" : chOf(act)[3] + " isolated",
+      nodes: N.map((n, i) => {
+        const ch = chOf(n[2]);
+        const on = act === "ALL" || act === n[2];
+        return {
+          code: n[0].toUpperCase(), name: n[1], med: n[3], x: n[5], y: n[6],
+          bg: ch[5], fg: ch[6], op: on ? "1" : "0.22",
+          sway: (4 + (i % 5) * 0.6).toFixed(1) + "s",
+          href: "Destination-Page.dc.html#" + n[0]
+        };
+      }),
+      chapters: CH.filter(c => act === "ALL" || act === c[0]).map(c => ({
+        num: c[1], kicker: c[2], name: c[3], blurb: c[4], bg: c[5], fg: c[6],
+        meta: N.filter(n => n[2] === c[0]).length + " destinations · gates " + N.filter(n => n[2] === c[0])[0][3] + "—" + N.filter(n => n[2] === c[0]).slice(-1)[0][3],
+        stops: N.filter(n => n[2] === c[0]).map(n => ({
+          name: n[1].toUpperCase(), med: n[3], identity: n[4],
+          stamp: stampOf(n[0]), href: "Destination-Page.dc.html#" + n[0]
+        }))
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

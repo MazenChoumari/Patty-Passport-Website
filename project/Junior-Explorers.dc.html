@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="_ds/modernist-cf9009e6-65ae-4cc3-81bb-0a0e3ffc9a69/styles.css">
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#ae1800;text-underline-offset:3px}
+a:hover{color:#ec3013}
+:focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+::selection{background:rgba(236,48,19,.28)}
+@keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+@keyframes ppDrift{0%{transform:translate3d(0,0,0) rotate(var(--r,0deg))}50%{transform:translate3d(0,-14px,0) rotate(calc(var(--r,0deg) + 1.4deg))}100%{transform:translate3d(0,0,0) rotate(var(--r,0deg))}}
+</style></helmet>
+
+<dc-import name="PP-Nav" active="Kids" hint-size="100%,130px"></dc-import>
+
+<section style="position:relative;background:#f2b30c;color:#1b1a19;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(330px,.95fr)">
+    <div style="padding:58px 44px 52px;border-right:2px solid #1b1a19">
+      <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#1b1a19;color:#f2b30c;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px">
+        <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Junior gate · ages 4 to 11
+      </div>
+      <h1 data-rv="up" data-rv-d="70" style="font:800 clamp(42px,6.2vw,94px)/.9 'Archivo',sans-serif;letter-spacing:-.045em;margin:0 0 18px">SMALL TRAVELLERS.<br>REAL PASSPORTS.</h1>
+      <p data-rv="up" data-rv-d="130" style="font:400 clamp(15px,1.25vw,18px)/1.55 'Archivo',sans-serif;max-width:52ch;margin:0 0 28px">Every child at the table gets their own book, their own gate and their own stamp. The kit does the rest: a route booklet, a sheet of twenty-one flags, a postcard to send home and a word to learn before the plate lands.</p>
+      <div data-rv="up" data-rv-d="180" style="display:flex;flex-wrap:wrap;gap:12px">
+        <a href="Events.dc.html" style="display:inline-flex;align-items:center;min-width:250px;padding:16px 19px;background:#ec3013;color:#fff;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#1b1a19">Plan a kids journey<span style="margin-left:auto">→</span></a>
+        <a href="Menu.dc.html" style="display:inline-flex;align-items:center;min-width:220px;padding:16px 19px;border:2px solid #1b1a19;color:#1b1a19;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#1b1a19;color:#f2b30c">See the junior lane<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+    <div style="position:relative;min-height:470px">
+      <sc-for list="{{ kit }}" as="k" hint-placeholder-count="5">
+        <div style="position:absolute;left:{{ k.x }};top:{{ k.y }};width:{{ k.w }};background:{{ k.bg }};color:{{ k.fg }};border:2px solid #1b1a19;box-shadow:{{ k.shadow }};transform:rotate({{ k.r }});--r:{{ k.r }};animation:ppDrift {{ k.dur }} ease-in-out {{ k.delay }} infinite;padding:12px">
+          <div style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;margin-bottom:9px">{{ k.label }}</div>
+          <div style="position:relative;height:{{ k.h }}">
+            <image-slot id="{{ k.slotId }}" shape="rect" fit="cover" placeholder="{{ k.note }}" style="position:absolute;inset:0"></image-slot>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section style="background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:62px 0 68px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px">
+    <h2 data-rv="up" style="font:800 clamp(30px,4vw,56px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 10px;max-width:20ch">WHAT'S IN THE EXPLORER KIT</h2>
+    <p data-rv="up" data-rv-d="70" style="font:400 15px/1.55 'Archivo',sans-serif;color:#605d5d;margin:0 0 30px;max-width:52ch">Handed over at the desk with the junior boarding pass. Free with any kids combo — nothing to download, nothing to sign up for.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19">
+      <sc-for list="{{ kitItems }}" as="k" hint-placeholder-count="6">
+        <div data-rv="up" data-rv-d="{{ k.delay }}" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:{{ k.bg }};color:{{ k.fg }};padding:22px 20px 24px;display:flex;flex-direction:column;gap:11px;min-height:210px">
+          <span style="width:44px;height:44px;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font:800 12px/1 'Archivo',sans-serif;letter-spacing:.04em">{{ k.mark }}</span>
+          <h3 style="font:800 20px/1.05 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">{{ k.title }}</h3>
+          <p style="font:400 13px/1.5 'Archivo',sans-serif;margin:0;opacity:.85">{{ k.line }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section style="background:#2b76c9;color:#fff;border-bottom:2px solid #1b1a19;padding:64px 0 70px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:28px">
+      <h2 data-rv="up" style="font:800 clamp(30px,4.2vw,58px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0;max-width:18ch">JUNIOR ROUTES, PICKED FOR SMALL APPETITES</h2>
+      <a href="Destinations.dc.html" data-rv="up" data-rv-d="70" style="display:inline-flex;align-items:center;min-width:230px;padding:15px 18px;background:#f2b30c;color:#1b1a19;text-decoration:none;font:800 14px/1.1 'Archivo',sans-serif" style-hover="background:#fff">All destinations<span style="margin-left:auto">→</span></a>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19">
+      <sc-for list="{{ routes }}" as="r" hint-placeholder-count="4">
+        <a href="{{ r.href }}" data-rv="up" data-rv-d="{{ r.delay }}" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:#f7f3ec;color:#1b1a19;text-decoration:none;display:flex;flex-direction:column">
+          <div style="position:relative;height:180px;border-bottom:2px solid #1b1a19">
+            <image-slot id="{{ r.slotId }}" shape="rect" fit="cover" placeholder="{{ r.slot }}" style="position:absolute;inset:0"></image-slot>
+            <span style="position:absolute;left:0;top:0;padding:6px 10px;background:{{ r.bg }};color:{{ r.fg }};font:800 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;pointer-events:none">{{ r.tag }}</span>
+          </div>
+          <div style="padding:18px 17px 20px;display:flex;flex-direction:column;gap:9px;flex:1">
+            <h3 style="font:800 21px/1.02 'Archivo',sans-serif;letter-spacing:-.025em;margin:0">{{ r.name }}</h3>
+            <p style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d;margin:0">{{ r.line }}</p>
+            <span style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;padding-top:11px;border-top:2px solid rgba(27,26,25,.18);font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase">{{ r.dish }}<span>→</span></span>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section style="background:#e7e3dc;border-bottom:2px solid #1b1a19;padding:64px 0 70px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:44px;align-items:start">
+    <div>
+      <h2 data-rv="up" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 18px;max-width:18ch">THINGS THEY LEARN WITHOUT NOTICING</h2>
+      <div style="display:flex;flex-direction:column;border-top:2px solid #1b1a19">
+        <sc-for list="{{ learning }}" as="l" hint-placeholder-count="5">
+          <div data-rv="up" data-rv-d="{{ l.delay }}" style="display:flex;gap:16px;padding:16px 0;border-bottom:2px solid rgba(27,26,25,.2)">
+            <span style="width:44px;height:44px;flex:none;background:{{ l.bg }};color:{{ l.fg }};display:flex;align-items:center;justify-content:center;font:800 13px/1 'Archivo',sans-serif">{{ l.mark }}</span>
+            <span style="flex:1">
+              <span style="display:block;font:800 16px/1.2 'Archivo',sans-serif;margin-bottom:4px">{{ l.title }}</span>
+              <span style="display:block;font:400 13px/1.5 'Archivo',sans-serif;color:#605d5d">{{ l.line }}</span>
+            </span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div>
+      <h2 data-rv="up" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 18px;max-width:18ch">FOR THE GROWN-UPS AT THE TABLE</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19">
+        <sc-for list="{{ parents }}" as="p" hint-placeholder-count="4">
+          <div data-rv="up" data-rv-d="{{ p.delay }}" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:#f7f3ec;padding:20px 18px 22px;display:flex;flex-direction:column;gap:10px;min-height:180px">
+            <span style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:{{ p.color }}">{{ p.label }}</span>
+            <p style="font:400 13px/1.5 'Archivo',sans-serif;color:#605d5d;margin:0">{{ p.line }}</p>
+          </div>
+        </sc-for>
+      </div>
+      <a href="Events.dc.html" data-rv="up" data-rv-d="200" style="display:inline-flex;align-items:center;min-width:100%;margin-top:22px;padding:16px 19px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#ec3013">Book a birthday journey<span style="margin-left:auto">→</span></a>
+    </div>
+  </div>
+</section>
+
+<section style="background:#ec3013;color:#fff;padding:62px 0 68px">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:26px">
+    <div>
+      <h2 data-rv="up" style="font:800 clamp(30px,4.4vw,62px)/.93 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 14px;max-width:16ch">ONE BOOK PER CHILD. STAMPS POOL AS A FAMILY.</h2>
+      <p data-rv="up" data-rv-d="80" style="font:400 15.5px/1.55 'Archivo',sans-serif;margin:0;max-width:46ch">Junior stamps count towards the Family Passport ladder — so the table unlocks the secret burger together.</p>
+    </div>
+    <div data-rv="up" data-rv-d="140" style="display:flex;flex-wrap:wrap;gap:12px">
+      <a href="My-Passport.dc.html" style="display:inline-flex;align-items:center;min-width:240px;padding:17px 20px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" style-hover="background:#f2b30c;color:#1b1a19">Open a junior passport<span style="margin-left:auto">→</span></a>
+      <a href="Patty-Tooty.dc.html" style="display:inline-flex;align-items:center;min-width:230px;padding:17px 20px;border:2px solid #fff;color:#fff;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" style-hover="background:#fff;color:#ec3013">Ask about kids routes<span style="margin-left:auto">→</span></a>
+    </div>
+  </div>
+</section>
+
+<dc-import name="PP-Footer" hint-size="100%,420px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
+const RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
+
+class Component extends DCLogic {
+  componentDidMount() {
+    const run = () => {
+      Array.from(document.querySelectorAll("[data-rv]")).forEach(el => {
+        if (!el._init) {
+          el._init = true;
+          el.style.opacity = "0";
+          el.style.transform = "translateY(26px)";
+          el.style.transition = "opacity .7s cubic-bezier(.2,.8,.25,1), transform .8s cubic-bezier(.2,.85,.25,1)";
+        }
+        const r = el.getBoundingClientRect();
+        if (!el._d && r.top < window.innerHeight * 0.94 && r.bottom > 0) {
+          el._d = true;
+          setTimeout(() => { el.style.opacity = "1"; el.style.transform = "none"; }, parseInt(el.getAttribute("data-rv-d") || "0", 10));
+        }
+      });
+    };
+    this._onScroll = () => { if (!this._raf) this._raf = requestAnimationFrame(() => { this._raf = null; run(); }); };
+    window.addEventListener("scroll", this._onScroll, { passive: true });
+    window.addEventListener("resize", this._onScroll);
+    this._poll = setInterval(run, 400);
+    run();
+  }
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this._onScroll);
+    window.removeEventListener("resize", this._onScroll);
+    clearInterval(this._poll);
+  }
+
+  renderVals() {
+    return {
+      kit: [
+        ["JUNIOR PASSPORT", "3%", "2%", "206px", CREAM, INK, "-5deg", "10s", "0s", "118px", "Junior passport cover in a child's hands", "14px 14px 0 rgba(27,26,25,.3)"],
+        ["ROUTE BOOKLET", "46%", "14%", "220px", "#fff", INK, "4deg", "12s", ".8s", "136px", "Open route booklet, one page per route", "-12px 14px 0 rgba(27,26,25,.28)"],
+        ["FLAG STICKERS", "7%", "44%", "194px", BLU, "#fff", "6deg", "11s", ".4s", "114px", "Sheet of 21 flag stickers, half peeled", "12px 12px 0 rgba(27,26,25,.3)"],
+        ["EXPLORER TOTE", "50%", "56%", "186px", RED, "#fff", "-7deg", "13s", "1.2s", "108px", "Kids explorer tote bag with contents", "-12px 12px 0 rgba(27,26,25,.3)"],
+        ["POSTCARD HOME", "22%", "76%", "202px", "#e7e3dc", INK, "2deg", "9s", ".2s", "90px", "Stamped destination postcard on the table", "12px 12px 0 rgba(27,26,25,.25)"]
+      ].map((k, i) => ({
+        label: k[0], x: k[1], y: k[2], w: k[3], bg: k[4], fg: k[5], r: k[6],
+        dur: k[7], delay: k[8], h: k[9], note: k[10], shadow: k[11], slotId: "jr-kit-" + i
+      })),
+      kitItems: [
+        ["JR", "Junior Passport", "A real book with twenty-one pages and sticker stamps instead of ink — theirs to keep and fill.", CREAM, INK],
+        ["RB", "Route booklet", "One spread per route: the map, the flag, the word to learn and a puzzle to finish before food lands.", YEL, INK],
+        ["FS", "Flag sticker sheet", "Twenty-one flags. One goes in the book each visit; the rest end up on school folders.", BLU, "#fff"],
+        ["PC", "Postcard home", "Written at the table, stamped by the crew, posted by us if they want it sent.", RED, "#fff"],
+        ["WD", "Word of the destination", "One phrase in the local language, printed big. Saying it out loud earns the stamp.", CREAM, INK],
+        ["TT", "Explorer tote", "For birthdays and school journeys — the whole kit in a bag they carry out themselves.", "#e7e3dc", INK]
+      ].map((k, i) => ({ mark: k[0], title: k[1], line: k[2], bg: k[3], fg: k[4], delay: String(i * 65) })),
+      routes: [
+        ["grc", "GREECE", "Souvlaki, lemon and fries in the bun. No spice, no surprises, nothing green hidden in it.", "Junior souvlaki", YEL, INK, "Kids-sized souvlaki plate"],
+        ["ita", "ITALY", "Tomato, basil and cheese — the safest landing on the whole map, and still a real country.", "Mini parmigiana", CREAM, INK, "Kid-sized parmigiana burger"],
+        ["lbn", "LEBANON", "Grilled chicken, soft bread, garlic dialled right down for smaller travellers.", "Mini tawouk wrap", RED, "#fff", "Mini chicken tawouk wrap"],
+        ["esp", "SPAIN", "Mild beef, sweet pepper, manchego — plus patatas to share across the table.", "Junior Iberian", BLU, "#fff", "Kids Iberian burger with patatas"]
+      ].map((r, i) => ({
+        name: r[1], line: r[2], dish: r[3], bg: r[4], fg: r[5],
+        tag: "JUNIOR LANE", href: "Destination-Page.dc.html#" + r[0],
+        slotId: "jr-rt-" + r[0], slot: r[6], delay: String(i * 70)
+      })),
+      learning: [
+        ["21", "Where countries actually are", "The route map is a real map. By the fourth stamp they can point at the Adriatic.", YEL, INK],
+        ["AB", "Words in other languages", "One phrase per destination, said out loud at the table to earn the stamp.", RED, "#fff"],
+        ["FL", "Flags and what they mean", "The cedar, the crescent, the double eagle — every sticker comes with its one-line story.", BLU, "#fff"],
+        ["FD", "That food comes from somewhere", "Harissa is Tunisian. Halloumi is Cypriot. Nothing on the menu is from nowhere.", INK, CREAM],
+        ["TR", "How to try something new", "A stamp is a small reason to be brave about an unfamiliar plate.", YEL, INK]
+      ].map((l, i) => ({ mark: l[0], title: l[1], line: l[2], bg: l[3], fg: l[4], delay: String(i * 70) })),
+      parents: [
+        ["Allergy-aware", "Fourteen allergens mapped per dish and printed on the junior boarding pass.", "#ae1800"],
+        ["Low-spice by default", "Junior lane plates are built mild; heat arrives on the side, never in the patty.", INK],
+        ["High chairs & space", "Buggy parking at the gate, high chairs at every zone, changing table by the desk.", "#ae1800"],
+        ["Alcohol-free bar list", "A full list of coolers and mocktails so the whole table drinks the destination.", INK]
+      ].map((p, i) => ({ label: p[0], line: p[1], color: p[2], delay: String(i * 70) }))
+    };
+  }
+}
+</script>
+</body>
+</html>

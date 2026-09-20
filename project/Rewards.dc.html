@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="_ds/modernist-cf9009e6-65ae-4cc3-81bb-0a0e3ffc9a69/styles.css">
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#ae1800;text-underline-offset:3px}
+a:hover{color:#ec3013}
+:focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+::selection{background:rgba(236,48,19,.28)}
+@keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+@keyframes ppPulse{0%{opacity:.3;transform:scale(1)}100%{opacity:0;transform:scale(2.4)}}
+</style></helmet>
+
+<dc-import name="PP-Nav" active="Rewards" hint-size="100%,130px"></dc-import>
+
+<section style="position:relative;background:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(236,48,19,.1) 1px,transparent 1px);background-size:98px 100%"></div>
+  <div style="position:relative;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(330px,.85fr)">
+    <div style="padding:58px 44px 52px;border-right:2px solid #1b1a19">
+      <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#ec3013;color:#fff;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px">
+        <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Passport desk · stamps &amp; rewards
+      </div>
+      <h1 data-rv="up" data-rv-d="70" style="font:800 clamp(42px,6.2vw,96px)/.9 'Archivo',sans-serif;letter-spacing:-.045em;margin:0 0 18px">FILL THE BOOK.<br><span style="color:#ec3013">UNLOCK THE WORLD.</span></h1>
+      <p data-rv="up" data-rv-d="130" style="font:400 clamp(15px,1.25vw,18px)/1.55 'Archivo',sans-serif;color:#444141;max-width:54ch;margin:0 0 26px">One stamp per country, per visit. Three stamps buys the drink, five the fries, eight the secret burger, twenty-one the whole sea. No app, no points, no expiry — a paper book the crew stamps at the table.</p>
+      <div data-rv="up" data-rv-d="180" style="display:flex;flex-wrap:wrap;gap:12px">
+        <a href="My-Passport.dc.html#join" style="display:inline-flex;align-items:center;min-width:250px;padding:16px 19px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#ec3013">Start my passport<span style="margin-left:auto">→</span></a>
+        <a href="Destinations.dc.html" style="display:inline-flex;align-items:center;min-width:220px;padding:16px 19px;border:2px solid #1b1a19;color:#1b1a19;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#f2b30c;border-color:#f2b30c">Pick the next stamp<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+    <div style="position:relative;min-height:430px;background:#2b76c9">
+      <image-slot id="rw-hero" shape="rect" fit="cover" placeholder="Open passport booklet with stamps across the spread" style="position:absolute;inset:0"></image-slot>
+      <div style="position:absolute;right:24px;top:24px;width:112px;height:112px;border:3px solid #fff;color:#fff;background:rgba(27,26,25,.55);display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-11deg);pointer-events:none">
+        <span style="position:absolute;inset:-3px;border:3px solid #fff;border-radius:50%;animation:ppPulse 3.2s ease-out infinite"></span>
+        <span style="font:800 24px/1 'Archivo',sans-serif">{{ filledLabel }}</span>
+        <span style="font:600 8px/1.4 'Archivo',sans-serif;letter-spacing:.18em">STAMPED</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#1b1a19;color:#f7f3ec;border-bottom:2px solid #1b1a19;padding:60px 0 66px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:28px">
+      <h2 data-rv="up" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0;max-width:20ch">YOUR SPREAD, LIVE</h2>
+      <div data-rv="up" data-rv-d="70" style="display:flex;align-items:center;gap:12px">
+        <span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979">Try the progression</span>
+        <button type="button" onClick="{{ less }}" style="width:38px;height:38px;background:transparent;border:2px solid #f7f3ec;color:#f7f3ec;font:800 16px/1 'Archivo',sans-serif;cursor:pointer" style-hover="background:#ec3013;border-color:#ec3013">−</button>
+        <span style="font:800 22px/1 'Archivo',sans-serif;min-width:64px;text-align:center">{{ filledLabel }}</span>
+        <button type="button" onClick="{{ more }}" style="width:38px;height:38px;background:transparent;border:2px solid #f7f3ec;color:#f7f3ec;font:800 16px/1 'Archivo',sans-serif;cursor:pointer" style-hover="background:#f2b30c;border-color:#f2b30c;color:#1b1a19">+</button>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:2px;background:rgba(247,243,236,.3);border:2px solid #f7f3ec">
+      <sc-for list="{{ cells }}" as="c" hint-placeholder-count="21">
+        <a href="{{ c.href }}" style="position:relative;background:{{ c.bg }};aspect-ratio:1/1;display:flex;flex-direction:column;justify-content:flex-end;padding:9px;text-decoration:none;color:{{ c.fg }}" style-hover="background:#ec3013;color:#fff">
+          <span style="font:800 15px/1 'Archivo',sans-serif">{{ c.code }}</span>
+          <span style="font:400 8.5px/1.2 'Archivo',sans-serif;letter-spacing:.06em;text-transform:uppercase;opacity:.7">{{ c.name }}</span>
+          <sc-if value="{{ c.stamped }}" hint-placeholder-val="{{ false }}">
+            <span style="position:absolute;top:8px;right:8px;width:42px;height:42px;border:2.5px solid #ec3013;color:#ec3013;display:flex;align-items:center;justify-content:center;font:800 9.5px/1 'Archivo',sans-serif;transform:rotate(-10deg)">{{ c.mark }}</span>
+          </sc-if>
+        </a>
+      </sc-for>
+    </div>
+    <div style="margin-top:16px;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979">{{ progressLine }}</div>
+  </div>
+</section>
+
+<section style="background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:64px 0 70px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px">
+    <h2 data-rv="up" style="font:800 clamp(30px,4vw,56px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 30px;max-width:20ch">THE REWARD LADDER</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19">
+      <sc-for list="{{ ladder }}" as="l" hint-placeholder-count="5">
+        <div data-rv="up" data-rv-d="{{ l.delay }}" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:{{ l.cardBg }};color:{{ l.cardFg }};padding:24px 20px 26px;display:flex;flex-direction:column;gap:13px;min-height:250px">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+            <span style="width:56px;height:56px;flex:none;background:{{ l.bg }};color:{{ l.fg }};display:flex;align-items:center;justify-content:center;font:800 22px/1 'Archivo',sans-serif">{{ l.n }}</span>
+            <span style="font:600 9px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;padding:6px 8px;border:2px solid currentColor;opacity:.85">{{ l.state }}</span>
+          </div>
+          <h3 style="font:800 22px/1.03 'Archivo',sans-serif;letter-spacing:-.025em;margin:0">{{ l.title }}</h3>
+          <p style="font:400 13px/1.5 'Archivo',sans-serif;margin:0;opacity:.85">{{ l.line }}</p>
+          <span style="margin-top:auto;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.75">{{ l.sub }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section style="background:#e7e3dc;border-bottom:2px solid #1b1a19;padding:64px 0 70px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px">
+    <div style="display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:44px;align-items:start">
+      <div>
+        <h2 data-rv="up" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 18px;max-width:18ch">HOW IT WORKS AT THE TABLE</h2>
+        <div style="display:flex;flex-direction:column;border-top:2px solid #1b1a19">
+          <sc-for list="{{ steps }}" as="s" hint-placeholder-count="5">
+            <div data-rv="up" data-rv-d="{{ s.delay }}" style="display:flex;gap:16px;padding:17px 0;border-bottom:2px solid rgba(27,26,25,.2)">
+              <span style="width:42px;height:42px;flex:none;background:{{ s.bg }};color:{{ s.fg }};display:flex;align-items:center;justify-content:center;font:800 15px/1 'Archivo',sans-serif">{{ s.n }}</span>
+              <span style="flex:1">
+                <span style="display:block;font:800 16px/1.2 'Archivo',sans-serif;margin-bottom:5px">{{ s.title }}</span>
+                <span style="display:block;font:400 13px/1.5 'Archivo',sans-serif;color:#605d5d">{{ s.line }}</span>
+              </span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <h2 data-rv="up" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 18px;max-width:18ch">THREE BOOKS, ONE LADDER</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19">
+          <sc-for list="{{ tiers }}" as="t" hint-placeholder-count="3">
+            <div data-rv="up" data-rv-d="{{ t.delay }}" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:{{ t.bg }};color:{{ t.fg }};padding:20px 18px 22px;display:flex;flex-direction:column;gap:12px;min-height:250px">
+              <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+                <span style="font:600 9px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75">{{ t.who }}</span>
+                <span style="width:36px;height:36px;flex:none;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font:800 10px/1 'Archivo',sans-serif;transform:rotate(-8deg)">{{ t.mark }}</span>
+              </div>
+              <h3 style="font:800 21px/1 'Archivo',sans-serif;letter-spacing:-.025em;margin:0">{{ t.name }}</h3>
+              <div style="display:flex;flex-direction:column;border-top:2px solid currentColor">
+                <sc-for list="{{ t.features }}" as="f" hint-placeholder-count="3">
+                  <span style="padding:9px 0;border-bottom:1px solid currentColor;font:400 12px/1.4 'Archivo',sans-serif;opacity:.9">{{ f.t }}</span>
+                </sc-for>
+              </div>
+              <span style="margin-top:auto;font:800 13px/1 'Archivo',sans-serif">{{ t.price }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#ec3013;color:#fff;padding:62px 0 68px">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:26px">
+    <div>
+      <h2 data-rv="up" style="font:800 clamp(30px,4.4vw,62px)/.93 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 14px;max-width:16ch">YOUR FIRST STAMP IS WAITING.</h2>
+      <p data-rv="up" data-rv-d="80" style="font:400 15.5px/1.55 'Archivo',sans-serif;margin:0;max-width:44ch">Ask at the desk on your next visit. The book is free, the stamps are earned, and the ladder never resets.</p>
+    </div>
+    <div data-rv="up" data-rv-d="140" style="display:flex;flex-wrap:wrap;gap:12px">
+      <a href="Booking.dc.html" style="display:inline-flex;align-items:center;min-width:250px;padding:17px 20px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" style-hover="background:#f2b30c;color:#1b1a19">Reserve and collect<span style="margin-left:auto">→</span></a>
+      <a href="Junior-Explorers.dc.html" style="display:inline-flex;align-items:center;min-width:230px;padding:17px 20px;border:2px solid #fff;color:#fff;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" style-hover="background:#fff;color:#ec3013">Junior passport<span style="margin-left:auto">→</span></a>
+    </div>
+  </div>
+</section>
+
+<dc-import name="PP-Footer" hint-size="100%,420px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
+const RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
+const C = [
+  ["lbn","LBN","Lebanon"],["syr","SYR","Syria"],["pse","PSE","Palestine"],["tur","TUR","Türkiye"],
+  ["cyp","CYP","Cyprus"],["grc","GRC","Greece"],["ita","ITA","Italy"],["esp","ESP","Spain"],
+  ["fra","FRA","France"],["mco","MCO","Monaco"],["mlt","MLT","Malta"],["svn","SVN","Slovenia"],
+  ["hrv","HRV","Croatia"],["bih","BIH","Bosnia"],["mne","MNE","Montenegro"],["alb","ALB","Albania"],
+  ["egy","EGY","Egypt"],["lby","LBY","Libya"],["tun","TUN","Tunisia"],["dza","DZA","Algeria"],["mar","MAR","Morocco"]
+];
+
+class Component extends DCLogic {
+  state = { filled: 6 };
+
+  componentDidMount() {
+    const run = () => {
+      Array.from(document.querySelectorAll("[data-rv]")).forEach(el => {
+        if (!el._init) {
+          el._init = true;
+          el.style.opacity = "0";
+          el.style.transform = "translateY(26px)";
+          el.style.transition = "opacity .7s cubic-bezier(.2,.8,.25,1), transform .8s cubic-bezier(.2,.85,.25,1)";
+        }
+        const r = el.getBoundingClientRect();
+        if (!el._d && r.top < window.innerHeight * 0.94 && r.bottom > 0) {
+          el._d = true;
+          setTimeout(() => { el.style.opacity = "1"; el.style.transform = "none"; }, parseInt(el.getAttribute("data-rv-d") || "0", 10));
+        }
+      });
+    };
+    this._onScroll = () => { if (!this._raf) this._raf = requestAnimationFrame(() => { this._raf = null; run(); }); };
+    window.addEventListener("scroll", this._onScroll, { passive: true });
+    window.addEventListener("resize", this._onScroll);
+    this._poll = setInterval(run, 400);
+    run();
+  }
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this._onScroll);
+    window.removeEventListener("resize", this._onScroll);
+    clearInterval(this._poll);
+  }
+
+  renderVals() {
+    const f = this.state.filled;
+    const next = [3, 5, 8, 13, 21].find(n => n > f);
+    return {
+      filledLabel: f + "/21",
+      progressLine: next ? (next - f) + " more stamps to the next unlock · " + (21 - f) + " to the World Traveller buffet" : "Book complete — the whole sea, on the house",
+      more: () => this.setState(s => ({ filled: Math.min(21, s.filled + 1) })),
+      less: () => this.setState(s => ({ filled: Math.max(0, s.filled - 1) })),
+      cells: C.map((c, i) => ({
+        code: c[1], name: c[2], stamped: i < f,
+        mark: "#" + String(i + 1).padStart(2, "0"),
+        bg: i < f ? CREAM : "rgba(247,243,236,.08)",
+        fg: i < f ? INK : CREAM,
+        href: "Destination-Page.dc.html#" + c[0]
+      })),
+      ladder: [
+        [3, "Free country drink", "A cooler from the route you just landed in — mint tea, jallab, ayran or horchata.", YEL, INK],
+        [5, "Free loaded fries", "Traveller fries with kajmak, ajvar and crisp onion, on the house.", YEL, INK],
+        [8, "Secret destination burger", "Off-menu, changes monthly, only served to passport holders.", INK, CREAM],
+        [13, "Route night for two", "A hosted table on a route of your choice, with the destination guide.", BLU, "#fff"],
+        [21, "World Traveller buffet", "The whole sea, on the house, for your table.", RED, "#fff"]
+      ].map((l, i) => {
+        const done = f >= l[0];
+        return {
+          n: String(l[0]), title: l[1], line: l[2], bg: l[3], fg: l[4],
+          state: done ? "Unlocked" : (l[0] - f) + " to go",
+          sub: done ? "Claim at the desk" : "Stamp " + l[0] + " unlocks this",
+          cardBg: done ? "#fff" : CREAM, cardFg: INK,
+          delay: String(i * 70)
+        };
+      }),
+      steps: [
+        ["1", "Ask at the desk", "The book is free with any check-in. Your name goes on page one.", RED, "#fff"],
+        ["2", "Pick tonight's country", "Any of twenty-one. The boarding ticket prints with the gate on it.", YEL, INK],
+        ["3", "Eat the destination", "The signature plate of that country, cooked the way they cook it.", BLU, "#fff"],
+        ["4", "Get stamped", "The crew stamps the page before you leave — one country, one stamp.", INK, CREAM],
+        ["5", "Climb the ladder", "Rewards unlock automatically. Nothing expires, nothing resets.", YEL, INK]
+      ].map((s, i) => ({ n: s[0], title: s[1], line: s[2], bg: s[3], fg: s[4], delay: String(i * 70) })),
+      tiers: [
+        ["Ages 4 — 11", "JUNIOR", "JR", CREAM, INK, ["Sticker stamps, colouring route map", "Goodie bag at the third stamp", "Kids combo unlocks every gate"], "Free with a kids combo"],
+        ["Solo & couples", "EXPLORER", "EX", YEL, INK, ["Full 21-country stamp book", "Ladder from 3 to 21 stamps", "Country booklet each new route"], "Free at check-in"],
+        ["Tables of 3+", "FAMILY", "FM", RED, "#fff", ["One book, stamps pooled", "Shared ladder, faster unlocks", "Birthday route night included"], "Free · pools all seats"]
+      ].map((t, i) => ({
+        who: t[0], name: t[1], mark: t[2], bg: t[3], fg: t[4],
+        features: t[5].map(x => ({ t: x })), price: t[6], delay: String(i * 80)
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="_ds/modernist-cf9009e6-65ae-4cc3-81bb-0a0e3ffc9a69/styles.css">
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#ae1800;text-underline-offset:3px}
+a:hover{color:#ec3013}
+:focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+::selection{background:rgba(236,48,19,.28)}
+@keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+@keyframes ppDots{0%,80%,100%{opacity:.2}40%{opacity:1}}
+</style></helmet>
+
+<dc-import name="PP-Nav" active="Patty Tooty" hint-size="100%,130px"></dc-import>
+
+<section style="position:relative;background:#e7e3dc;border-bottom:2px solid #1b1a19;overflow:hidden;padding:52px 0 58px">
+  <div style="position:absolute;right:-90px;top:-70px;width:340px;height:340px;border:2px solid rgba(43,118,201,.3);border-radius:50%"></div>
+  <div style="position:relative;max-width:1340px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,.9fr) minmax(360px,1.1fr);gap:46px;align-items:center">
+    <div>
+      <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#2b76c9;color:#fff;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px">
+        <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Concierge desk · always open
+      </div>
+      <h1 data-rv="up" data-rv-d="70" style="font:800 clamp(40px,5.8vw,88px)/.9 'Archivo',sans-serif;letter-spacing:-.045em;margin:0 0 18px;max-width:14ch">NOT SURE WHERE TO HEAD?</h1>
+      <p data-rv="up" data-rv-d="130" style="font:400 clamp(15px,1.25vw,18px)/1.55 'Archivo',sans-serif;color:#444141;max-width:50ch;margin:0 0 26px">Patty Tooty is the terminal's travel concierge. Pick a thread on the right and it plans the visit: the country to start with, the plate that fits your table, the kids' route, how the stamps work, and the page you actually needed.</p>
+      <div data-rv="up" data-rv-d="180" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));border-top:2px solid #1b1a19">
+        <sc-for list="{{ skills }}" as="s" hint-placeholder-count="4">
+          <div style="padding:15px 14px 17px;border-right:2px solid rgba(27,26,25,.22);border-bottom:2px solid rgba(27,26,25,.22)">
+            <div style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:{{ s.color }};margin-bottom:8px">{{ s.label }}</div>
+            <div style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d">{{ s.detail }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div data-rv="up" data-rv-d="90" style="border:2px solid #1b1a19;background:#f7f3ec;box-shadow:16px 16px 0 rgba(27,26,25,.22)">
+      <div style="display:flex;align-items:center;gap:13px;padding:14px 16px;background:#1b1a19;color:#f7f3ec">
+        <span style="position:relative;width:40px;height:40px;flex:none;background:#f2b30c;display:block">
+          <span style="position:absolute;left:5px;top:7px;width:30px;height:7px;background:#ec3013;display:block"></span>
+          <span style="position:absolute;left:5px;top:16px;width:30px;height:3px;background:#1b1a19;display:block"></span>
+          <span style="position:absolute;left:5px;top:21px;width:30px;height:7px;background:#ec3013;display:block"></span>
+          <span style="position:absolute;left:10px;bottom:4px;width:8px;height:4px;background:#1b1a19;display:block"></span>
+          <span style="position:absolute;right:10px;bottom:4px;width:8px;height:4px;background:#1b1a19;display:block"></span>
+        </span>
+        <span style="flex:1">
+          <span style="display:block;font:800 16px/1.1 'Archivo',sans-serif;letter-spacing:-.015em">PATTY TOOTY</span>
+          <span style="display:flex;align-items:center;gap:7px;font:600 9px/1.4 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#bab6b6;margin-top:3px"><span style="width:6px;height:6px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Destination concierge · online</span>
+        </span>
+        <span style="font:600 9px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#f2b30c">Gate 21</span>
+      </div>
+
+      <div style="padding:18px 16px;display:flex;flex-direction:column;gap:14px;background:repeating-linear-gradient(0deg,rgba(27,26,25,.05) 0 1px,transparent 1px 44px);min-height:390px">
+        <div style="display:flex;gap:11px;align-items:flex-start">
+          <span style="width:26px;height:26px;flex:none;background:#f2b30c;border:2px solid #1b1a19;display:flex;align-items:center;justify-content:center;font:800 9px/1 'Archivo',sans-serif">PT</span>
+          <span style="max-width:80%;background:#fff;border:2px solid #1b1a19;padding:12px 13px;font:400 13.5px/1.5 'Archivo',sans-serif">Welcome to the terminal. Twenty-one countries are boarding tonight — tell me who's at the table and I'll pick your route.</span>
+        </div>
+        <div style="display:flex;justify-content:flex-end">
+          <span style="max-width:78%;background:#2b76c9;color:#fff;border:2px solid #1b1a19;padding:12px 13px;font:400 13.5px/1.5 'Archivo',sans-serif">{{ question }}</span>
+        </div>
+        <div style="display:flex;gap:11px;align-items:flex-start">
+          <span style="width:26px;height:26px;flex:none;background:#f2b30c;border:2px solid #1b1a19;display:flex;align-items:center;justify-content:center;font:800 9px/1 'Archivo',sans-serif">PT</span>
+          <span style="max-width:86%;display:flex;flex-direction:column;gap:10px">
+            <span style="background:#fff;border:2px solid #1b1a19;padding:12px 13px;font:400 13.5px/1.5 'Archivo',sans-serif">{{ answer }}</span>
+            <span style="background:#fff;border:2px solid #1b1a19;padding:12px 13px;font:400 13px/1.5 'Archivo',sans-serif;color:#605d5d">{{ followUp }}</span>
+            <span style="display:flex;flex-wrap:wrap;gap:7px">
+              <sc-for list="{{ pills }}" as="p" hint-placeholder-count="3">
+                <a href="{{ p.href }}" style="display:inline-flex;align-items:center;gap:7px;padding:9px 11px;background:{{ p.bg }};color:{{ p.fg }};border:2px solid #1b1a19;text-decoration:none;font:800 10px/1 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase" style-hover="background:#1b1a19;color:#f7f3ec">{{ p.label }}<span>→</span></a>
+              </sc-for>
+            </span>
+          </span>
+        </div>
+        <div style="display:flex;gap:11px;align-items:center;margin-top:auto">
+          <span style="width:26px;height:26px;flex:none;background:#f2b30c;border:2px solid #1b1a19;display:flex;align-items:center;justify-content:center;font:800 9px/1 'Archivo',sans-serif">PT</span>
+          <span style="display:flex;align-items:center;gap:5px;background:#fff;border:2px solid #1b1a19;padding:12px 13px">
+            <span style="width:6px;height:6px;background:#1b1a19;animation:ppDots 1.2s ease-in-out infinite"></span>
+            <span style="width:6px;height:6px;background:#1b1a19;animation:ppDots 1.2s ease-in-out .2s infinite"></span>
+            <span style="width:6px;height:6px;background:#1b1a19;animation:ppDots 1.2s ease-in-out .4s infinite"></span>
+          </span>
+        </div>
+      </div>
+
+      <div style="border-top:2px solid #1b1a19;padding:14px 16px">
+        <div style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:11px">Suggested questions</div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ chips }}" as="c" hint-placeholder-count="8">
+            <button type="button" onClick="{{ c.pick }}" style="padding:10px 12px;background:{{ c.bg }};border:2px solid #1b1a19;color:{{ c.fg }};font:600 11.5px/1 'Archivo',sans-serif;cursor:pointer;text-align:left" style-hover="background:#f2b30c;color:#1b1a19">{{ c.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;border-top:2px solid #1b1a19;padding:12px 16px">
+        <input type="text" placeholder="Ask about a country, a dish, a table…" style="flex:1;min-width:0;background:transparent;border:0;border-bottom:2px solid rgba(27,26,25,.3);color:#1b1a19;font:400 13.5px/1.4 'Archivo',sans-serif;padding:7px 0;outline:none" />
+        <button type="button" style="padding:11px 14px;background:#ec3013;border:2px solid #1b1a19;color:#fff;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;cursor:pointer" style-hover="background:#1b1a19">Send</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:62px 0 68px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px">
+    <h2 data-rv="up" style="font:800 clamp(30px,4vw,56px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 10px;max-width:22ch">WHAT PATTY TOOTY CAN ACTUALLY DO</h2>
+    <p data-rv="up" data-rv-d="70" style="font:400 15px/1.55 'Archivo',sans-serif;color:#605d5d;margin:0 0 30px;max-width:52ch">Six jobs, all of them ending somewhere useful — a destination page, a filtered menu, a booking, or a human at the desk.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19">
+      <sc-for list="{{ jobs }}" as="j" hint-placeholder-count="6">
+        <a href="{{ j.href }}" data-rv="up" data-rv-d="{{ j.delay }}" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:{{ j.bg }};color:{{ j.fg }};padding:22px 20px 24px;display:flex;flex-direction:column;gap:11px;min-height:215px;text-decoration:none;transition:background .2s ease" style-hover="background:#1b1a19;color:#f7f3ec">
+          <span style="width:42px;height:42px;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font:800 12px/1 'Archivo',sans-serif">{{ j.mark }}</span>
+          <h3 style="font:800 19px/1.06 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">{{ j.title }}</h3>
+          <p style="font:400 12.5px/1.5 'Archivo',sans-serif;margin:0;opacity:.86">{{ j.line }}</p>
+          <span style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase">{{ j.cta }}<span>→</span></span>
+        </a>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section style="background:#1b1a19;color:#f7f3ec;padding:60px 0 66px">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:26px">
+    <div>
+      <h2 data-rv="up" style="font:800 clamp(28px,4vw,56px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 14px;max-width:18ch">PREFER A HUMAN? THE DESK IS RIGHT THERE.</h2>
+      <p data-rv="up" data-rv-d="80" style="font:400 15.5px/1.55 'Archivo',sans-serif;color:#bab6b6;margin:0;max-width:46ch">Patty Tooty hands you to the Passport Desk whenever a person does it better — allergies, big groups, or someone who just wants to be told where to go.</p>
+    </div>
+    <div data-rv="up" data-rv-d="140" style="display:flex;flex-wrap:wrap;gap:12px">
+      <a href="Events.dc.html" style="display:inline-flex;align-items:center;min-width:230px;padding:17px 20px;background:#f2b30c;color:#1b1a19;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" style-hover="background:#ec3013;color:#fff">Talk about a group<span style="margin-left:auto">→</span></a>
+      <a href="Booking.dc.html" style="display:inline-flex;align-items:center;min-width:220px;padding:17px 20px;border:2px solid #f7f3ec;color:#f7f3ec;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" style-hover="background:#f7f3ec;color:#1b1a19">Just book a table<span style="margin-left:auto">→</span></a>
+    </div>
+  </div>
+</section>
+
+<dc-import name="PP-Footer" hint-size="100%,420px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
+const RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
+
+const THREADS = [
+  ["Which destination should I try first?",
+   "Start on the Levant Route — Lebanon, stamp #01. Loudest welcome on the sea, and the Shish Tawouk Street Burger is the plate most tables come back for.",
+   "If you'd rather start mild, Greece or Italy are the softest landings on the map.",
+   [["Open Lebanon", "Destination-Page.dc.html#lbn", YEL, INK], ["See the route map", "Route-Map.dc.html", CREAM, INK], ["Book a table", "Booking.dc.html", RED, "#fff"]]],
+  ["Show me kid-friendly routes",
+   "Junior explorers travel best on the Aegean and Iberia routes — mild grills, lemon and fries. Every child gets a Junior Passport with sticker stamps.",
+   "Birthdays add a crew host, the zone dressed for the country and the child's name on the departures board.",
+   [["Junior explorers", "Junior-Explorers.dc.html", YEL, INK], ["Kids journeys", "Events.dc.html", BLU, "#fff"], ["Junior lane menu", "Menu.dc.html", CREAM, INK]]],
+  ["Find me vegetarian options",
+   "All twenty-one countries have a vegetarian headline dish — not a substitution. Fourteen run fully vegan, built from the region's own cooking.",
+   "Filter the menu by lane and only the plates that qualify stay on the board.",
+   [["Vegetarian menu", "Menu.dc.html", YEL, INK], ["Cyprus halloumi route", "Destination-Page.dc.html#cyp", BLU, "#fff"]]],
+  ["I need halal across the whole table",
+   "Halal-certified meat runs across every route, with no separate menu and no exceptions. The desk holds the supplier certificates if you'd like to see them.",
+   "Levant and North African routes are the strongest starting points for a halal table.",
+   [["Halal plates", "Menu.dc.html", RED, "#fff"], ["Levant route", "Route-Map.dc.html", YEL, INK]]],
+  ["How do passport rewards work?",
+   "Each meal earns one country stamp. Three unlocks a country drink, five loaded fries, eight the secret destination burger, thirteen a hosted route night, twenty-one the World Traveller buffet.",
+   "Family Passports pool stamps across the table, so groups climb the ladder considerably faster.",
+   [["Reward ladder", "Rewards.dc.html", RED, "#fff"], ["Start my passport", "My-Passport.dc.html#join", CREAM, INK]]],
+  ["Help me book a birthday",
+   "Weekdays run the Little Explorer journey at €18 a child; weekends the World Explorer at €22 with a crew host, games and the birthday child's name on the board.",
+   "Family Reunion covers the grown-up version — one route, one long table, a shared Family Passport.",
+   [["Event packages", "Events.dc.html", YEL, INK], ["Reserve the table", "Booking.dc.html", RED, "#fff"]]],
+  ["What's the story behind all this?",
+   "Twenty-one Mediterranean countries that share a coastline and agree about almost nothing — including how to cook. We stopped averaging them into one beige menu.",
+   "The passport turns that variety into a reason to come back nineteen more times.",
+   [["Our story", "Our-Story.dc.html", BLU, "#fff"], ["All destinations", "Destinations.dc.html", CREAM, INK]]],
+  ["I'm interested in investing",
+   "One terminal operating in Leganés, four cities in the pipeline, and a format that repeats: 240 seats, twenty-one destinations, one reusable content library.",
+   "The live unit model, build-out costs and rollout plan are all on the investors page.",
+   [["Investor page", "Investors.dc.html", RED, "#fff"], ["Email the team", "mailto:invest@pattypassport.com", CREAM, INK]]]
+];
+
+class Component extends DCLogic {
+  state = { t: 0 };
+
+  componentDidMount() {
+    const run = () => {
+      Array.from(document.querySelectorAll("[data-rv]")).forEach(el => {
+        if (!el._init) {
+          el._init = true;
+          el.style.opacity = "0";
+          el.style.transform = "translateY(26px)";
+          el.style.transition = "opacity .7s cubic-bezier(.2,.8,.25,1), transform .8s cubic-bezier(.2,.85,.25,1)";
+        }
+        const r = el.getBoundingClientRect();
+        if (!el._d && r.top < window.innerHeight * 0.94 && r.bottom > 0) {
+          el._d = true;
+          setTimeout(() => { el.style.opacity = "1"; el.style.transform = "none"; }, parseInt(el.getAttribute("data-rv-d") || "0", 10));
+        }
+      });
+    };
+    this._onScroll = () => { if (!this._raf) this._raf = requestAnimationFrame(() => { this._raf = null; run(); }); };
+    window.addEventListener("scroll", this._onScroll, { passive: true });
+    window.addEventListener("resize", this._onScroll);
+    this._poll = setInterval(run, 400);
+    run();
+  }
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this._onScroll);
+    window.removeEventListener("resize", this._onScroll);
+    clearInterval(this._poll);
+  }
+
+  renderVals() {
+    const i = this.state.t % THREADS.length;
+    const th = THREADS[i];
+    return {
+      question: th[0], answer: th[1], followUp: th[2],
+      pills: th[3].map(p => ({ label: p[0], href: p[1], bg: p[2], fg: p[3] })),
+      chips: THREADS.map((t, k) => ({
+        label: t[0],
+        bg: k === i ? INK : "transparent",
+        fg: k === i ? CREAM : INK,
+        pick: () => this.setState({ t: k })
+      })),
+      skills: [
+        { label: "Pick a destination", detail: "Reads your table and names the country to start with.", color: "#ae1800" },
+        { label: "Find the right dish", detail: "Halal, vegetarian, vegan, allergy-aware or kid-sized.", color: INK },
+        { label: "Explain the passport", detail: "Stamps, the ladder and what unlocks next.", color: "#ae1800" },
+        { label: "Walk you to the page", detail: "Routes, events, rewards, booking — one tap away.", color: INK }
+      ],
+      jobs: [
+        ["DS", "Choose tonight's country", "Tell it who's eating and it narrows twenty-one down to one, with a reason.", "Browse destinations", "Destinations.dc.html", CREAM, INK],
+        ["MN", "Filter the menu", "Halal, vegetarian, vegan, pescatarian, junior — the board rebuilds around the answer.", "Open the menu", "Menu.dc.html", YEL, INK],
+        ["KD", "Plan for kids", "Mild routes, junior portions, sticker stamps, and what happens at a birthday.", "Junior explorers", "Junior-Explorers.dc.html", BLU, "#fff"],
+        ["RW", "Explain the rewards", "Which stamp unlocks what, and how pooling works for a family book.", "Reward ladder", "Rewards.dc.html", RED, "#fff"],
+        ["EV", "Size up a group", "Twelve people or a hundred and twenty — which package and which zone.", "Events & groups", "Events.dc.html", "#e7e3dc", INK],
+        ["RT", "Read the map", "Which chapter a country belongs to, and what else sits on that route.", "Route map", "Route-Map.dc.html", CREAM, INK]
+      ].map((j, k) => ({
+        mark: j[0], title: j[1], line: j[2], cta: j[3], href: j[4], bg: j[5], fg: j[6], delay: String(k * 65)
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

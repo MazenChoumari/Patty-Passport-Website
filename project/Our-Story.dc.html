@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="_ds/modernist-cf9009e6-65ae-4cc3-81bb-0a0e3ffc9a69/styles.css">
+<script src="./pp-data.js"></script>
+<script src="./image-slot.js"></script>
+<style>
+body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
+*,*::before,*::after{box-sizing:border-box}
+a{color:#ae1800;text-underline-offset:3px}
+a:hover{color:#ec3013}
+:focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+::selection{background:rgba(236,48,19,.28)}
+@keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+@keyframes ppTick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+</style></helmet>
+
+<dc-import name="PP-Nav" active="Story" hint-size="100%,130px"></dc-import>
+
+<section style="position:relative;background:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(43,118,201,.12) 1px,transparent 1px);background-size:98px 100%"></div>
+  <div style="position:relative;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr)">
+    <div style="padding:58px 44px 52px;border-right:2px solid #1b1a19">
+      <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#2b76c9;color:#fff;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px">
+        <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>The concept · why we exist
+      </div>
+      <h1 data-rv="up" data-rv-d="70" style="font:800 clamp(42px,6.2vw,96px)/.89 'Archivo',sans-serif;letter-spacing:-.045em;margin:0 0 18px">ONE SEA.<br>TWENTY-ONE<br><span style="color:#ec3013">WAYS TO EAT IT.</span></h1>
+      <p data-rv="up" data-rv-d="130" style="font:400 clamp(15px,1.3vw,18.5px)/1.55 'Archivo',sans-serif;color:#444141;max-width:56ch;margin:0 0 28px">The Mediterranean isn't a cuisine. It's twenty-one countries that happen to share a coastline and disagree about almost everything else — including how to cook. Patty Passport exists because that disagreement is the most interesting thing on the menu.</p>
+      <div data-rv="up" data-rv-d="180" style="display:flex;flex-wrap:wrap;gap:12px">
+        <a href="Destinations.dc.html" style="display:inline-flex;align-items:center;min-width:240px;padding:16px 19px;background:#ec3013;color:#fff;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#dd2b0f">Start with a destination<span style="margin-left:auto">→</span></a>
+        <a href="Investors.dc.html" style="display:inline-flex;align-items:center;min-width:220px;padding:16px 19px;border:2px solid #1b1a19;color:#1b1a19;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#f2b30c;border-color:#f2b30c">Partner with us<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+    <div style="position:relative;min-height:430px;background:#2b76c9">
+      <image-slot id="st-hero" shape="rect" fit="cover" placeholder="Mediterranean harbour at golden hour, wide and warm" style="position:absolute;inset:0"></image-slot>
+      <div style="position:absolute;left:0;right:0;bottom:0;padding:13px 18px;background:rgba(27,26,25,.92);color:#f7f3ec;font:600 9.5px/1.5 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;pointer-events:none">Twenty-one countries · one coastline · no house style</div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#1b1a19;color:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="display:flex;width:max-content;animation:ppTick 50s linear infinite;border-bottom:2px solid rgba(247,243,236,.25)">
+    <sc-for list="{{ tickerRows }}" as="t" hint-placeholder-count="20">
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 24px;border-right:1px solid rgba(247,243,236,.22);white-space:nowrap">
+        <span style="font:800 14px/1 'Archivo',sans-serif">{{ t.name }}</span>
+        <span style="font:600 9px/1 'Archivo',sans-serif;letter-spacing:.14em;color:#7d7979">{{ t.word }}</span>
+      </div>
+    </sc-for>
+  </div>
+  <div style="max-width:1240px;margin:0 auto;padding:60px 32px 66px">
+    <div style="display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:46px;align-items:start">
+      <h2 data-rv="up" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0;max-width:16ch">THE PROBLEM WITH "MEDITERRANEAN FOOD"</h2>
+      <div>
+        <p data-rv="up" data-rv-d="70" style="font:400 16px/1.65 'Archivo',sans-serif;color:#bab6b6;margin:0 0 18px">Walk into most Mediterranean restaurants and you get an average: some hummus, some feta, a bit of harissa, olives on everything. Twenty-one distinct food cultures flattened into one beige idea of "sunny".</p>
+        <p data-rv="up" data-rv-d="110" style="font:400 16px/1.65 'Archivo',sans-serif;color:#bab6b6;margin:0 0 18px">But Lebanese garlic sauce has nothing to do with Croatian ajvar. A Tunisian brik is not a Spanish tortilla. Bosnian ćevapi and Greek souvlaki both come off a grill and share nothing else.</p>
+        <p data-rv="up" data-rv-d="150" style="font:400 16px/1.65 'Archivo',sans-serif;color:#f7f3ec;margin:0">So we stopped averaging. Every country gets its own plate, its own page, its own playlist and its own stamp — and guests travel between them one visit at a time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:64px 0 70px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px">
+    <h2 data-rv="up" style="font:800 clamp(30px,4vw,56px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 10px;max-width:20ch">WHAT WE BELIEVE</h2>
+    <p data-rv="up" data-rv-d="70" style="font:400 15px/1.55 'Archivo',sans-serif;color:#605d5d;margin:0 0 30px;max-width:50ch">Five rules that decide everything else — the menu, the room, the crew, and what we refuse to do.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19">
+      <sc-for list="{{ values }}" as="v" hint-placeholder-count="5">
+        <div data-rv="up" data-rv-d="{{ v.delay }}" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:{{ v.bg }};color:{{ v.fg }};padding:24px 20px 26px;display:flex;flex-direction:column;gap:12px;min-height:240px">
+          <span style="font:800 40px/1 'Archivo',sans-serif;letter-spacing:-.04em;opacity:.35">{{ v.n }}</span>
+          <h3 style="font:800 21px/1.04 'Archivo',sans-serif;letter-spacing:-.025em;margin:0">{{ v.title }}</h3>
+          <p style="font:400 13px/1.5 'Archivo',sans-serif;margin:0;opacity:.86">{{ v.line }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section style="background:#e7e3dc;border-bottom:2px solid #1b1a19;padding:64px 0 70px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:46px;align-items:start">
+    <div>
+      <h2 data-rv="up" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 18px;max-width:18ch">HOW WE GOT HERE</h2>
+      <div style="display:flex;flex-direction:column;border-top:2px solid #1b1a19">
+        <sc-for list="{{ timeline }}" as="t" hint-placeholder-count="5">
+          <div data-rv="up" data-rv-d="{{ t.delay }}" style="display:flex;gap:16px;padding:17px 0;border-bottom:2px solid rgba(27,26,25,.22)">
+            <span style="width:56px;flex:none;font:800 14px/1.2 'Archivo',sans-serif;color:#ae1800">{{ t.year }}</span>
+            <span style="flex:1">
+              <span style="display:block;font:800 16px/1.2 'Archivo',sans-serif;margin-bottom:5px">{{ t.title }}</span>
+              <span style="display:block;font:400 13px/1.5 'Archivo',sans-serif;color:#605d5d">{{ t.line }}</span>
+            </span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div>
+      <div data-rv="up" style="position:relative;height:300px;border:2px solid #1b1a19;margin-bottom:22px">
+        <image-slot id="st-room" shape="rect" fit="cover" placeholder="The Leganés terminal floor mid-service, warm and busy" style="position:absolute;inset:0"></image-slot>
+        <span style="position:absolute;left:0;bottom:0;padding:7px 10px;background:#1b1a19;color:#f7f3ec;font:800 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;pointer-events:none">LEGANÉS · GATE ONE</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19">
+        <sc-for list="{{ mood }}" as="m" hint-placeholder-count="4">
+          <div data-rv="up" data-rv-d="{{ m.delay }}" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:#f7f3ec;padding:18px 16px 20px;display:flex;flex-direction:column;gap:8px;min-height:160px">
+            <span style="font:800 11px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:{{ m.color }}">{{ m.label }}</span>
+            <span style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d">{{ m.line }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="founders" style="background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:64px 0 70px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:30px">
+      <div>
+        <div data-rv="up" style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#ae1800;margin-bottom:14px">The founders</div>
+        <h2 data-rv="up" data-rv-d="60" style="font:800 clamp(30px,4.2vw,58px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0;max-width:18ch">TWO OPERATORS WHO ALREADY RUN RESTAURANTS.</h2>
+      </div>
+      <p data-rv="up" data-rv-d="110" style="font:400 14.5px/1.55 'Archivo',sans-serif;color:#605d5d;max-width:40ch;margin:0">Not a first venture. Patty Passport is what happens when two people who already do this for a living decide to build the thing they keep talking about.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19">
+      <sc-for list="{{ founders }}" as="f" hint-placeholder-count="2">
+        <div data-rv="up" data-rv-d="{{ f.delay }}" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:{{ f.bg }};color:{{ f.fg }};display:flex;flex-direction:column">
+          <div style="position:relative;height:330px;border-bottom:2px solid #1b1a19">
+            <image-slot id="{{ f.slotId }}" shape="rect" fit="cover" placeholder="{{ f.slot }}" style="position:absolute;inset:0"></image-slot>
+            <span style="position:absolute;left:0;top:0;padding:7px 11px;background:#1b1a19;color:#f7f3ec;font:800 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;pointer-events:none">{{ f.tag }}</span>
+          </div>
+          <div style="padding:24px 22px 26px;display:flex;flex-direction:column;gap:12px;flex:1">
+            <h3 style="font:800 clamp(24px,2.6vw,34px)/1 'Archivo',sans-serif;letter-spacing:-.03em;margin:0">{{ f.name }}</h3>
+            <div style="font:800 12px/1.3 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.8">{{ f.role }}</div>
+            <p style="font:400 14px/1.6 'Archivo',sans-serif;margin:0;opacity:.88">{{ f.bio }}</p>
+            <div style="margin-top:auto;display:flex;flex-direction:column;border-top:2px solid currentColor">
+              <sc-for list="{{ f.facts }}" as="x" hint-placeholder-count="3">
+                <span style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid currentColor;font:600 10px/1.4 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;opacity:.85">{{ x.k }}<span style="font:800 11px/1 'Archivo',sans-serif;text-align:right">{{ x.v }}</span></span>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div data-rv="up" data-rv-d="180" style="border:2px solid #1b1a19;border-top:0;background:#1b1a19;color:#f7f3ec;padding:28px 24px">
+      <p style="font:400 clamp(15px,1.5vw,20px)/1.55 'Archivo',sans-serif;margin:0;max-width:78ch">We met through running our own restaurants and businesses, and realised we shared the same spirit: connecting people, places and stories. Patty Passport is our decision to invest in a new idea — and to find partners and crew who share that spirit. People who believe a burger can be a destination, not just a quick bite.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:24px">
+        <a href="Investors.dc.html" style="display:inline-flex;align-items:center;min-width:250px;padding:16px 19px;background:#ec3013;color:#fff;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#f2b30c;color:#1b1a19">Partner with the founders<span style="margin-left:auto">→</span></a>
+        <a href="Booking.dc.html" style="display:inline-flex;align-items:center;min-width:220px;padding:16px 19px;border:2px solid #f7f3ec;color:#f7f3ec;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" style-hover="background:#f7f3ec;color:#1b1a19">Come and see it<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="hours" style="background:#f2b30c;color:#1b1a19;border-bottom:2px solid #1b1a19;padding:56px 0 62px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:40px;align-items:center">
+    <div>
+      <div data-rv="up" style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;margin-bottom:14px;opacity:.7">Hours &amp; opening</div>
+      <h2 data-rv="up" data-rv-d="60" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 14px;max-width:16ch">THE DESK IS OPEN EVERY DAY.</h2>
+      <p data-rv="up" data-rv-d="110" style="font:400 15px/1.6 'Archivo',sans-serif;margin:0;max-width:44ch;opacity:.85">Walk-ins welcome at any gate. Tables of six or more, birthdays and school journeys are worth booking ahead.</p>
+    </div>
+    <div data-rv="up" data-rv-d="140" style="border:2px solid #1b1a19;background:#f7f3ec">
+      <sc-for list="{{ hours }}" as="h" hint-placeholder-count="2">
+        <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:14px;padding:20px 22px;border-bottom:2px solid rgba(27,26,25,.2)">
+          <span style="font:800 17px/1.2 'Archivo',sans-serif;letter-spacing:-.015em">{{ h.days }}</span>
+          <span style="font:800 26px/1 'Archivo',sans-serif;letter-spacing:-.03em;color:#ae1800">{{ h.time }}</span>
+        </div>
+      </sc-for>
+      <div style="display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;padding:18px 22px">
+        <span style="font:600 10px/1.6 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#605d5d">Leganés · Madrid<br>Kitchen closes 45 minutes before the gate</span>
+        <a href="Booking.dc.html" style="display:inline-flex;align-items:center;gap:10px;padding:13px 16px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase" style-hover="background:#ec3013">Book a table<span>→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#2b76c9;color:#fff;border-bottom:2px solid #1b1a19;padding:64px 0 70px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:30px">
+      <h2 data-rv="up" style="font:800 clamp(30px,4.2vw,58px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0;max-width:18ch">THE CREW ON YOUR ROUTE</h2>
+      <p data-rv="up" data-rv-d="70" style="font:400 15px/1.55 'Archivo',sans-serif;max-width:40ch;margin:0;color:rgba(255,255,255,.92)">Nobody here is "waitstaff". Five roles, each with a job the guest can actually name.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19">
+      <sc-for list="{{ crew }}" as="c" hint-placeholder-count="5">
+        <div data-rv="up" data-rv-d="{{ c.delay }}" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:#f7f3ec;color:#1b1a19;display:flex;flex-direction:column">
+          <div style="position:relative;height:200px;border-bottom:2px solid #1b1a19">
+            <image-slot id="{{ c.slotId }}" shape="rect" fit="cover" placeholder="{{ c.slot }}" style="position:absolute;inset:0"></image-slot>
+            <span style="position:absolute;right:0;bottom:0;padding:6px 9px;background:{{ c.bg }};color:{{ c.fg }};font:800 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;pointer-events:none">{{ c.code }}</span>
+          </div>
+          <div style="padding:18px 16px 20px;display:flex;flex-direction:column;gap:9px;flex:1">
+            <h3 style="font:800 19px/1.05 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">{{ c.role }}</h3>
+            <p style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d;margin:0">{{ c.line }}</p>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section style="background:#1b1a19;color:#f7f3ec;padding:64px 0 70px">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:26px">
+    <div>
+      <h2 data-rv="up" style="font:800 clamp(30px,4.4vw,62px)/.93 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 14px;max-width:17ch">EVERY TABLE IS SOMEONE'S FIRST TRIP.</h2>
+      <p data-rv="up" data-rv-d="80" style="font:400 15.5px/1.55 'Archivo',sans-serif;color:#bab6b6;margin:0;max-width:48ch">Some guests have been to nineteen of these countries. Some have been to none. Both get the same book, the same stamp and the same story at the table.</p>
+    </div>
+    <div data-rv="up" data-rv-d="140" style="display:flex;flex-wrap:wrap;gap:12px">
+      <a href="Destinations.dc.html" style="display:inline-flex;align-items:center;min-width:240px;padding:17px 20px;background:#ec3013;color:#fff;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" style-hover="background:#f2b30c;color:#1b1a19">Choose your first country<span style="margin-left:auto">→</span></a>
+      <a href="Rewards.dc.html" style="display:inline-flex;align-items:center;min-width:220px;padding:17px 20px;border:2px solid #f7f3ec;color:#f7f3ec;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" style-hover="background:#f7f3ec;color:#1b1a19">How the passport works<span style="margin-left:auto">→</span></a>
+    </div>
+  </div>
+</section>
+
+<dc-import name="PP-Footer" hint-size="100%,420px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:900}}">
+const RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
+
+class Component extends DCLogic {
+  componentDidMount() {
+    const run = () => {
+      Array.from(document.querySelectorAll("[data-rv]")).forEach(el => {
+        if (!el._init) {
+          el._init = true;
+          el.style.opacity = "0";
+          el.style.transform = "translateY(26px)";
+          el.style.transition = "opacity .7s cubic-bezier(.2,.8,.25,1), transform .8s cubic-bezier(.2,.85,.25,1)";
+        }
+        const r = el.getBoundingClientRect();
+        if (!el._d && r.top < window.innerHeight * 0.94 && r.bottom > 0) {
+          el._d = true;
+          setTimeout(() => { el.style.opacity = "1"; el.style.transform = "none"; }, parseInt(el.getAttribute("data-rv-d") || "0", 10));
+        }
+      });
+    };
+    this._onScroll = () => { if (!this._raf) this._raf = requestAnimationFrame(() => { this._raf = null; run(); }); };
+    window.addEventListener("scroll", this._onScroll, { passive: true });
+    window.addEventListener("resize", this._onScroll);
+    this._poll = setInterval(run, 400);
+    run();
+  }
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this._onScroll);
+    window.removeEventListener("resize", this._onScroll);
+    clearInterval(this._poll);
+  }
+
+  renderVals() {
+    const words = [
+      ["LEBANON", "Marhaba"], ["SYRIA", "Ahlan wa sahlan"], ["PALESTINE", "Ahlan"], ["TÜRKIYE", "Hoş geldiniz"],
+      ["CYPRUS", "Kalos irthate"], ["GREECE", "Kalós irthate"], ["ITALY", "Benvenuti"], ["SPAIN", "Bienvenidos"],
+      ["FRANCE", "Bienvenue"], ["MONACO", "Benvenue"], ["MALTA", "Merħba"], ["SLOVENIA", "Dobrodošli"],
+      ["CROATIA", "Dobro došli"], ["BOSNIA", "Dobro došli"], ["MONTENEGRO", "Dobrodošli"], ["ALBANIA", "Mirë se vini"],
+      ["EGYPT", "Ahlan bik"], ["LIBYA", "Marhaban bik"], ["TUNISIA", "Ahlan wa sahlan"], ["ALGERIA", "Marhaba"], ["MOROCCO", "Marhaba"]
+    ].map(w => ({ name: w[0], word: w[1] }));
+
+    const founders = [
+      ["Mazen Choumari", "Co-Founder · Global Journeys Lead", CREAM, INK, "FOUNDER 01",
+       "Mazen runs restaurant and business operations today, and previously grew an electronics company between Spain and the UAE. He brings global trade, logistics and hospitality experience to Patty Passport.",
+       [["Focus", "Routes & supply"], ["Background", "Trade · logistics"], ["Based", "Madrid"]],
+       "Portrait of Mazen Choumari — founder headshot (to be supplied)"],
+      ["Ahmed Al Moutaz", "Co-Founder · Retail Experience Lead", YEL, INK, "FOUNDER 02",
+       "Ahmed owns and runs retail and restaurant businesses in Spain, with deep experience in high-street customers, visual merchandising and day-to-day operations. He brings the real-world restaurant perspective we need to make Patty Passport work in practice.",
+       [["Focus", "Guest experience"], ["Background", "Retail · operations"], ["Based", "Madrid"]],
+       "Portrait of Ahmed Al Moutaz — founder headshot (to be supplied)"]
+    ].map((f, i) => ({
+      name: f[0], role: f[1], bg: f[2], fg: f[3], tag: f[4], bio: f[5],
+      facts: f[6].map(x => ({ k: x[0], v: x[1] })),
+      slot: f[7], slotId: "st-founder-" + i, delay: String(i * 90)
+    }));
+
+    const hours = (window.PP_DATA && window.PP_DATA.HOURS) || [
+      { days: "Monday — Friday", time: "10:00 — 22:00" },
+      { days: "Weekends & holidays", time: "10:00 — 00:00" }
+    ];
+
+    return {
+      founders, hours,
+      tickerRows: words.concat(words),
+      values: [
+        ["01", "No house style", "We don't have a signature sauce that goes on everything. Each country cooks the way that country cooks.", CREAM, INK],
+        ["02", "Identity over trivia", "Not flags and fun facts. The line that actually defines a place, and the plate that proves it.", YEL, INK],
+        ["03", "Everyone travels", "Halal across every route, a vegetarian headline in all twenty-one, kosher-style on request, allergens printed.", RED, "#fff"],
+        ["04", "Paper over apps", "The passport is a real book. No download, no account, no points expiring quietly in the background.", BLU, "#fff"],
+        ["05", "The room is the story", "Zones, boards, tickets, stamps, playlists. If it doesn't help the table travel, it doesn't go in.", "#e7e3dc", INK]
+      ].map((v, i) => ({ n: v[0], title: v[1], line: v[2], bg: v[3], fg: v[4], delay: String(i * 70) })),
+      timeline: [
+        ["2022", "A kitchen argument", "A Lebanese cook and a Spanish cook spent a shift disagreeing about garlic. Both were right. That was the idea."],
+        ["2023", "Twenty-one plates", "Eighteen months developing one signature burger per Mediterranean country, tested on people from each of them."],
+        ["2024", "The passport", "The loyalty book replaced a points card in testing and doubled second visits within a month."],
+        ["2025", "Building the terminal", "Leganés site secured; five route zones, the check-in desk and the departures board designed as one system."],
+        ["2026", "Gate one opens", "240 seats, twenty-one destinations in rotation, and the first stamps in circulation."]
+      ].map((t, i) => ({ year: t[0], title: t[1], line: t[2], delay: String(i * 70) })),
+      mood: [
+        ["Terminal, not theme park", "Airport clarity — boards, gates, tickets — without a single costume.", "#ae1800"],
+        ["Loud where it matters", "Zones have their own soundtrack; the room between them stays conversational.", INK],
+        ["Print you keep", "Boarding passes, booklets, postcards. Most guests leave holding something.", "#ae1800"],
+        ["Warm, not precious", "Long tables, big portions, crew who talk to you. Nothing is plated with tweezers.", INK]
+      ].map((m, i) => ({ label: m[0], line: m[1], color: m[2], delay: String(i * 65) })),
+      crew: [
+        ["Route Host", "RH", "Greets the table, reads the route, and decides where you're flying tonight.", YEL, INK, "Route host welcoming guests at the door"],
+        ["Passport Desk", "PD", "Prints the boarding ticket, stamps the book, tracks the ladder.", RED, "#fff", "Crew member stamping a passport at the desk"],
+        ["Destination Guide", "DG", "Knows the country — the dish, the phrase, the story behind the plate.", BLU, "#fff", "Guide explaining a country card to guests"],
+        ["Kitchen Crew", "KC", "Cooks twenty-one countries without flattening any of them.", CREAM, INK, "Kitchen crew grilling at the pass"],
+        ["Table Captain", "TC", "Runs the service, the birthday games and the final stamp.", "#e7e3dc", INK, "Table captain serving a full family table"]
+      ].map((c, i) => ({
+        role: c[0], code: c[1], line: c[2], bg: c[3], fg: c[4], slot: c[5],
+        slotId: "st-crew-" + i, delay: String(i * 70)
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>
