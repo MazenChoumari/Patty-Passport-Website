@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <div style="display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);gap:36px;align-items:start">
+    <div class="pp-2col" style="display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);gap:36px;align-items:start">
       <div style="background:#1b1a19;border:2px solid #1b1a19;box-shadow:16px 16px 0 rgba(27,26,25,.22);color:#f7f3ec">
         <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:2px solid rgba(247,243,236,.3);font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase">
           <span style="display:flex;align-items:center;gap:9px"><span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Route selection console</span>
@@ -54,7 +54,10 @@
           <div style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#bab6b6;margin-bottom:12px">2 · Choose a destination</div>
           <div id="bk-country-chips" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px"></div>
 
-          <div style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#bab6b6;margin-bottom:12px">3 · Choose a departure time</div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:12px">
+            <span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#bab6b6">3 · Choose a departure time</span>
+            <span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#f2b30c" id="bk-hours-note"></span>
+          </div>
           <div id="bk-time-chips" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px"></div>
         </div>
 
@@ -65,7 +68,7 @@
           </label>
           <label style="display:block;padding:18px 20px;border-right:2px solid rgba(247,243,236,.22);border-bottom:1px solid rgba(247,243,236,.22)">
             <span style="display:block;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#bab6b6;margin-bottom:10px">Date</span>
-            <input type="text" id="bk-date" style="width:100%;background:transparent;border:0;border-bottom:2px solid #f2b30c;color:#f7f3ec;font:800 17px/1.2 'Archivo',sans-serif;padding:0 0 8px;outline:none" />
+            <input type="date" id="bk-date" style="width:100%;background:transparent;border:0;border-bottom:2px solid #f2b30c;color:#f7f3ec;font:800 17px/1.2 'Archivo',sans-serif;padding:0 0 8px;outline:none;color-scheme:dark" />
           </label>
           <label style="display:block;padding:18px 20px;border-right:2px solid rgba(247,243,236,.22);border-bottom:1px solid rgba(247,243,236,.22)">
             <span style="display:block;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#bab6b6;margin-bottom:10px">Travellers</span>
@@ -108,6 +111,7 @@
 <script src="js/data.js"></script>
 <script>window.PP_ACTIVE = "Book";</script>
 <script src="js/hover.js"></script>
+<script src="js/music.js"></script>
 <script src="js/nav.js"></script>
 <script src="js/footer.js"></script>
 <script src="js/booking.js"></script>

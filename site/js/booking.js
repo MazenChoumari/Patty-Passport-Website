@@ -7,11 +7,54 @@
    hash (e.g. booking.html#lbn) the same way destination.html does. */
 (function () {
   var RED = "#ec3013", YEL = "#f2b30c", INK = "#1b1a19", CREAM = "#f7f3ec";
-  var TIMES = ["12:30", "13:30", "14:30", "17:00", "18:30", "19:30", "20:30", "21:30"];
+  var WEEKDAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  var MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  function isoToday() {
+    var d = new Date();
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+  function parseIso(iso) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || "");
+    if (!m) return null;
+    return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  }
+  function isWeekend(dateObj) {
+    var day = dateObj.getDay();
+    return day === 0 || day === 6;
+  }
+  /* Business hours (master brief §3): weekdays 10:00-22:00, weekends &
+     holidays 10:00-00:00. No public-holiday calendar is wired up yet, so
+     "holiday" support means: swap a specific date to weekend hours by
+     adding its ISO string to HOLIDAYS below. */
+  var HOLIDAYS = [];
+  function rangeFor(dateObj) {
+    if (!dateObj) return { start: 10 * 60, end: 22 * 60, label: "Weekday · 10:00–22:00" };
+    var iso = dateObj.getFullYear() + "-" + String(dateObj.getMonth() + 1).padStart(2, "0") + "-" + String(dateObj.getDate()).padStart(2, "0");
+    var weekend = isWeekend(dateObj) || HOLIDAYS.indexOf(iso) > -1;
+    return weekend
+      ? { start: 10 * 60, end: 24 * 60, label: "Weekend & holiday hours · 10:00–00:00" }
+      : { start: 10 * 60, end: 22 * 60, label: "Weekday hours · 10:00–22:00" };
+  }
+  function fmtTime(mins) {
+    var h = Math.floor(mins / 60) % 24, m = mins % 60;
+    return String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0");
+  }
+  /* Every 30 minutes, last seating slot left 30 min before closing. */
+  function slotsFor(dateObj) {
+    var r = rangeFor(dateObj);
+    var out = [];
+    for (var t = r.start; t <= r.end - 30; t += 30) out.push(fmtTime(t));
+    return out;
+  }
+  function fmtDateLong(dateObj) {
+    if (!dateObj) return "";
+    return WEEKDAY_NAMES[dateObj.getDay()] + " " + dateObj.getDate() + " " + MONTH_NAMES[dateObj.getMonth()] + " " + dateObj.getFullYear();
+  }
 
   var state = {
     route: "LEV", country: "lbn", time: "20:30", guests: 4,
-    passenger: "", contact: "", date: "Fri 25 Sep 2026", booked: null
+    passenger: "", contact: "", date: isoToday(), booked: null
   };
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
@@ -51,8 +94,13 @@
       return '<button type="button" data-country="' + c.code + '" style="display:inline-flex;align-items:center;gap:8px;padding:10px 12px;background:' + (on ? RED : "transparent") + ';border:2px solid ' + (on ? RED : "rgba(247,243,236,.4)") + ';color:' + (on ? "#fff" : CREAM) + ';font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.06em;cursor:pointer" data-hover="background:#ec3013;border-color:#ec3013;color:#fff">' + esc(c.name) + '<span style="font:600 9px/1;letter-spacing:.14em;opacity:.7">' + esc(c.med) + '</span></button>';
     }).join("");
 
-    // Time chips
-    document.getElementById("bk-time-chips").innerHTML = TIMES.map(function (t) {
+    // Time chips — generated from the selected date's weekday/weekend hours
+    var dateObj = parseIso(state.date);
+    var range = rangeFor(dateObj);
+    var slots = slotsFor(dateObj);
+    if (slots.indexOf(state.time) === -1) state.time = slots[Math.min(slots.length - 1, Math.floor(slots.length / 2))];
+    document.getElementById("bk-hours-note").textContent = range.label;
+    document.getElementById("bk-time-chips").innerHTML = slots.map(function (t) {
       var on = state.time === t;
       return '<button type="button" data-time="' + t + '" style="padding:10px 13px;background:' + (on ? YEL : "transparent") + ';border:2px solid ' + (on ? YEL : "rgba(247,243,236,.4)") + ';color:' + (on ? INK : CREAM) + ';font:800 12px/1 \'Archivo\',sans-serif;letter-spacing:.04em;cursor:pointer" data-hover="background:#f2b30c;border-color:#f2b30c;color:#1b1a19">' + t + '</button>';
     }).join("");
@@ -62,13 +110,15 @@
     if (passengerEl.value !== state.passenger) passengerEl.value = state.passenger;
     var dateEl = document.getElementById("bk-date");
     if (dateEl.value !== state.date) dateEl.value = state.date;
+    dateEl.min = isoToday();
     var contactEl = document.getElementById("bk-contact");
     if (contactEl.value !== state.contact) contactEl.value = state.contact;
 
     document.getElementById("bk-guest-label").textContent = state.guests + (state.guests === 1 ? " traveller" : " travellers");
 
+    var dateLabel = dateObj ? fmtDateLong(dateObj) : state.date;
     document.getElementById("bk-summary-line").textContent = sel
-      ? sel.name + " · " + routeName + " Route · " + state.date + " at " + state.time + " · " + state.guests + " travelling"
+      ? sel.name + " · " + routeName + " Route · " + dateLabel + " at " + state.time + " · " + state.guests + " travelling"
       : "Choose a route to begin";
 
     // Ticket / empty state
@@ -78,7 +128,7 @@
         { k: "Destination", v: b.country.toUpperCase() },
         { k: "Route", v: b.med + " · " + b.route },
         { k: "Passenger", v: (state.passenger || "GUEST").toUpperCase() },
-        { k: "Departure", v: state.date + " · " + state.time },
+        { k: "Departure", v: dateLabel + " · " + state.time },
         { k: "Seat", v: "TABLE " + b.table + " · " + state.guests + " covers" },
         { k: "Gate", v: b.route + " Route" }
       ];
@@ -149,7 +199,7 @@
 
     document.getElementById("bk-passenger").oninput = function (e) { state.passenger = e.target.value; };
     document.getElementById("bk-contact").oninput = function (e) { state.contact = e.target.value; };
-    document.getElementById("bk-date").oninput = function (e) { state.date = e.target.value; };
+    document.getElementById("bk-date").onchange = function (e) { state.date = e.target.value; state.booked = null; render(); };
 
     document.getElementById("bk-more").onclick = function () { state.guests = Math.min(24, state.guests + 1); state.booked = null; render(); };
     document.getElementById("bk-fewer").onclick = function () { state.guests = Math.max(1, state.guests - 1); state.booked = null; render(); };

@@ -37,7 +37,7 @@
 <div id="dp-greeting" style="padding:20px 44px;background:#1b1a19;color:#f7f3ec;display:flex;flex-wrap:wrap;align-items:center;gap:18px;border-bottom:2px solid #1b1a19"></div>
 
 <section style="position:relative;border-bottom:2px solid #1b1a19;overflow:hidden">
-  <div id="dp-hero-bg" style="position:relative;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr)">
+  <div id="dp-hero-bg" class="pp-2col" style="position:relative;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr)">
     <div id="dp-hero-left" style="padding:58px 44px 52px;border-right:2px solid #1b1a19">
       <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#1b1a19;color:#f7f3ec;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px">
         <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span><span id="dp-stamp-route"></span>
@@ -67,7 +67,7 @@
 </section>
 
 <section style="background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:70px 0 76px">
-  <div style="max-width:1240px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:46px;align-items:start">
+  <div class="pp-2col" style="max-width:1240px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:46px;align-items:start">
     <div>
       <div data-rv="up" style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#ae1800;margin-bottom:16px">The culture</div>
       <h2 data-rv="up" data-rv-d="60" id="dp-culture-title" style="font:800 clamp(30px,4vw,56px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 20px;max-width:18ch"></h2>
@@ -98,7 +98,7 @@
       <h2 data-rv="up" style="font:800 clamp(30px,4.2vw,58px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0;max-width:18ch">WHAT ARRIVES AT THE TABLE</h2>
       <a href="menu.html" data-rv="up" data-rv-d="70" style="display:inline-flex;align-items:center;min-width:230px;padding:15px 18px;background:#f2b30c;color:#1b1a19;text-decoration:none;font:800 14px/1.1 'Archivo',sans-serif" data-hover="background:#ec3013;color:#fff">Full menu<span style="margin-left:auto">→</span></a>
     </div>
-    <div style="display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:0;border:2px solid #f7f3ec">
+    <div class="pp-2col" style="display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:0;border:2px solid #f7f3ec">
       <div style="position:relative;min-height:380px;border-right:2px solid #f7f3ec">
         <div class="pp-placeholder" id="dp-dish-slot" style="position:absolute;inset:0"><span></span></div>
         <span style="position:absolute;left:0;top:0;padding:8px 12px;background:#ec3013;color:#fff;font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;pointer-events:none">SIGNATURE PLATE</span>
@@ -164,6 +164,8 @@
 <script src="js/data.js"></script>
 <script>window.PP_ACTIVE = "Destinations";</script>
 <script src="js/hover.js"></script>
+<script src="js/reveal.js"></script>
+<script src="js/music.js"></script>
 <script src="js/nav.js"></script>
 <script src="js/footer.js"></script>
 <script src="js/destination.js"></script>

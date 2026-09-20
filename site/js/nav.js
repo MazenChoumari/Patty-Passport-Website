@@ -56,9 +56,16 @@
     return { pg, pages, slice: GATES.slice(pg * per, pg * per + per) };
   }
 
-  function render() {
-    const root = document.getElementById("pp-nav");
-    if (!root) return;
+  /* Bar (logo, buttons, quick gates, progress) and drawer (the "All
+     pages" overlay) are rendered into separate containers and never
+     torn down together. The gate-rotation timer and music toggle only
+     call renderBar(), so the drawer's DOM — and its scrim's one-shot
+     fade-in animation — is never rebuilt while it's open. Rebuilding it
+     on every 4.2s gate tick was exactly what caused the tint to flash
+     out to the page background and back in. */
+  function renderBar() {
+    const bar = document.getElementById("pp-nav-bar");
+    if (!bar) return;
     const { pg, pages, slice } = computeGates();
 
     const gatesHtml = slice.map(g => {
@@ -70,28 +77,6 @@
         + `<span style="width:6px;height:6px;flex:none;background:${g[2]}"></span>${g[0]}</a>`;
     }).join("");
 
-    const drawerLinksHtml = PAGES.map(p => {
-      const bg = active === p[1] ? "rgba(242,179,12,.14)" : "transparent";
-      return `<a href="${p[3]}" style="display:flex;align-items:baseline;gap:14px;padding:18px 24px;border-bottom:1px solid rgba(247,243,236,.22);text-decoration:none;color:#f7f3ec;background:${bg}" data-hover="background:#ec3013;color:#fff">`
-        + `<span style="font:600 10px/1 'Archivo',sans-serif;letter-spacing:.16em;color:#f2b30c;width:28px;flex:none">${p[0]}</span>`
-        + `<span style="flex:1"><span style="display:block;font:800 19px/1.1 'Archivo',sans-serif;letter-spacing:-.02em">${p[1]}</span>`
-        + `<span style="display:block;font:400 12px/1.45 'Archivo',sans-serif;color:#bab6b6;margin-top:3px">${p[2]}</span></span>`
-        + `<span style="font:800 15px/1 'Archivo',sans-serif">→</span></a>`;
-    }).join("");
-
-    const drawerHtml = state.drawerOpen ? `
-      <div style="position:fixed;inset:0;z-index:90;display:flex;justify-content:flex-end;font-family:'Archivo',system-ui,sans-serif">
-        <div id="pp-nav-scrim" style="position:absolute;inset:0;background:rgba(27,26,25,.62);animation:ppNavFade .22s ease both"></div>
-        <div style="position:relative;width:min(430px,90vw);height:100%;background:#1b1a19;color:#f7f3ec;border-left:2px solid #1b1a19;overflow-y:auto;transform:${state.drawerIn ? "translateX(0)" : "translateX(16px)"};opacity:${state.drawerIn ? "1" : "0.35"};transition:transform .32s cubic-bezier(.2,.85,.25,1),opacity .28s ease">
-          <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:2px solid rgba(247,243,236,.3)">
-            <span style="font:800 11px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#f2b30c">Terminal directory</span>
-            <button type="button" id="pp-nav-close" style="background:transparent;border:2px solid rgba(247,243,236,.5);color:#f7f3ec;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.14em;padding:9px 12px;cursor:pointer" data-hover="background:#ec3013;border-color:#ec3013">CLOSE ✕</button>
-          </div>
-          ${drawerLinksHtml}
-          <div style="padding:22px 24px;font:400 12px/1.6 'Archivo',sans-serif;color:#bab6b6">Leganés · Madrid<br>Open daily 12:00 — 00:00</div>
-        </div>
-      </div>` : "";
-
     const nowPlayingHtml = state.musicOn ? `
       <div style="display:flex;align-items:center;gap:12px;padding:8px 26px;background:#1b1a19;color:#f7f3ec;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase">
         <span style="width:7px;height:7px;background:#f2b30c;animation:ppNavBlink 1.3s steps(1) infinite"></span>
@@ -99,7 +84,7 @@
         <span style="margin-left:auto;color:#bab6b6">42 tracks</span>
       </div>` : "";
 
-    root.innerHTML = `
+    bar.innerHTML = `
       <div data-nav-root="1" style="position:fixed;top:0;left:0;right:0;z-index:80;background:#f7f3ec;border-bottom:2px solid #1b1a19;font-family:'Archivo',system-ui,sans-serif">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:18px;padding:11px 26px">
           <a href="index.html" style="display:flex;align-items:center;gap:13px;text-decoration:none;color:#1b1a19;flex:none">
@@ -149,21 +134,67 @@
           </div>
         </div>
       </div>
-      ${drawerHtml}
       <div data-nav-spacer="1" style="height:136px"></div>
     `;
 
-    root.querySelector("#pp-nav-music")?.addEventListener("click", () => { state.musicOn = !state.musicOn; render(); });
-    root.querySelector("#pp-nav-open")?.addEventListener("click", () => {
-      state.drawerOpen = true; state.drawerIn = false; render();
-      setTimeout(() => { state.drawerIn = true; render(); }, 20);
+    bar.querySelector("#pp-nav-music")?.addEventListener("click", () => { state.musicOn = !state.musicOn; renderBar(); toggleMusicPlayback(); });
+    bar.querySelector("#pp-nav-open")?.addEventListener("click", () => {
+      state.drawerOpen = true; state.drawerIn = false; renderDrawer();
+      setTimeout(() => { state.drawerIn = true; renderDrawer(); }, 20);
     });
-    const closeDrawer = () => { state.drawerOpen = false; state.drawerIn = false; render(); };
-    root.querySelector("#pp-nav-close")?.addEventListener("click", closeDrawer);
-    root.querySelector("#pp-nav-scrim")?.addEventListener("click", closeDrawer);
 
-    if (window.initHoverStyles) window.initHoverStyles(root);
+    if (window.initHoverStyles) window.initHoverStyles(bar);
     syncNavHeight();
+  }
+
+  function renderDrawer() {
+    const drawer = document.getElementById("pp-nav-drawer");
+    if (!drawer) return;
+
+    if (!state.drawerOpen) { drawer.innerHTML = ""; drawer._ppBuilt = false; return; }
+
+    const drawerLinksHtml = PAGES.map(p => {
+      const bg = active === p[1] ? "rgba(242,179,12,.14)" : "transparent";
+      return `<a href="${p[3]}" style="display:flex;align-items:baseline;gap:14px;padding:18px 24px;border-bottom:1px solid rgba(247,243,236,.22);text-decoration:none;color:#f7f3ec;background:${bg}" data-hover="background:#ec3013;color:#fff">`
+        + `<span style="font:600 10px/1 'Archivo',sans-serif;letter-spacing:.16em;color:#f2b30c;width:28px;flex:none">${p[0]}</span>`
+        + `<span style="flex:1"><span style="display:block;font:800 19px/1.1 'Archivo',sans-serif;letter-spacing:-.02em">${p[1]}</span>`
+        + `<span style="display:block;font:400 12px/1.45 'Archivo',sans-serif;color:#bab6b6;margin-top:3px">${p[2]}</span></span>`
+        + `<span style="font:800 15px/1 'Archivo',sans-serif">→</span></a>`;
+    }).join("");
+
+    // Only rebuild from scratch the first time the drawer opens in this
+    // session (drawerIn goes false -> true straight after); once it
+    // exists, later calls (e.g. the drawerIn transition tick) just flip
+    // the transform/opacity in place so the scrim's fade-in never restarts.
+    if (!drawer._ppBuilt || drawer._ppBuilt !== state.drawerOpen) {
+      drawer._ppBuilt = state.drawerOpen;
+      drawer.innerHTML = `
+        <div style="position:fixed;inset:0;z-index:90;display:flex;justify-content:flex-end;font-family:'Archivo',system-ui,sans-serif">
+          <div id="pp-nav-scrim" style="position:absolute;inset:0;background:rgba(27,26,25,.62);animation:ppNavFade .22s ease both"></div>
+          <div id="pp-nav-panel" style="position:relative;width:min(430px,90vw);height:100%;background:#1b1a19;color:#f7f3ec;border-left:2px solid #1b1a19;overflow-y:auto;transform:${state.drawerIn ? "translateX(0)" : "translateX(16px)"};opacity:${state.drawerIn ? "1" : "0.35"};transition:transform .32s cubic-bezier(.2,.85,.25,1),opacity .28s ease">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:2px solid rgba(247,243,236,.3)">
+              <span style="font:800 11px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#f2b30c">Terminal directory</span>
+              <button type="button" id="pp-nav-close" style="background:transparent;border:2px solid rgba(247,243,236,.5);color:#f7f3ec;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.14em;padding:9px 12px;cursor:pointer" data-hover="background:#ec3013;border-color:#ec3013">CLOSE ✕</button>
+            </div>
+            ${drawerLinksHtml}
+            <div style="padding:22px 24px;font:400 12px/1.6 'Archivo',sans-serif;color:#bab6b6">Leganés · Madrid<br>Mon—Fri 10:00 — 22:00<br>Weekends &amp; holidays 10:00 — 00:00</div>
+          </div>
+        </div>`;
+      const closeDrawer = () => { state.drawerOpen = false; state.drawerIn = false; renderDrawer(); };
+      drawer.querySelector("#pp-nav-close")?.addEventListener("click", closeDrawer);
+      drawer.querySelector("#pp-nav-scrim")?.addEventListener("click", closeDrawer);
+      if (window.initHoverStyles) window.initHoverStyles(drawer);
+    } else {
+      const panel = drawer.querySelector("#pp-nav-panel");
+      if (panel) {
+        panel.style.transform = state.drawerIn ? "translateX(0)" : "translateX(16px)";
+        panel.style.opacity = state.drawerIn ? "1" : "0.35";
+      }
+    }
+  }
+
+  function toggleMusicPlayback() {
+    if (window.PP_MUSIC) window.PP_MUSIC.toggle(state.musicOn);
   }
 
   let navH = 0;
@@ -190,16 +221,20 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    render();
+    const root = document.getElementById("pp-nav");
+    if (!root) return;
+    root.innerHTML = '<div id="pp-nav-bar"></div><div id="pp-nav-drawer"></div>';
+
+    renderBar();
     let raf = null;
     window.addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(() => { raf = null; tick(); }); }, { passive: true });
     window.addEventListener("resize", () => { tick(); syncNavHeight(); });
-    window.addEventListener("keydown", e => { if (e.key === "Escape" && state.drawerOpen) { state.drawerOpen = false; state.drawerIn = false; render(); } });
+    window.addEventListener("keydown", e => { if (e.key === "Escape" && state.drawerOpen) { state.drawerOpen = false; state.drawerIn = false; renderDrawer(); } });
     tick();
     setInterval(syncNavHeight, 350);
     setInterval(() => {
-      state.gateFade = 0; render();
-      setTimeout(() => { state.gatePage += 1; state.gateFade = 1; render(); }, 260);
+      state.gateFade = 0; renderBar();
+      setTimeout(() => { state.gatePage += 1; state.gateFade = 1; renderBar(); }, 260);
     }, 4200);
   });
 })();

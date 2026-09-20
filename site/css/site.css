@@ -10,6 +10,15 @@ body { margin: 0; }
 a { text-decoration: none; }
 button { font: inherit; }
 
+/* js/reveal.js's pre-reveal hidden state shifts left/right-direction
+   elements sideways by translateX(±32px) before they scroll into view
+   (see RV_FROM in reveal.js) — while still off-screen below the fold
+   this briefly widens the document's scrollable area by that same 32px,
+   even though nothing is actually visible there. Belt-and-braces: no
+   page should ever gain a horizontal scrollbar from an animation that
+   hasn't played yet, at any viewport size. */
+html, body { overflow-x: hidden; }
+
 /* — shared nav/footer animations (ported from PP-Nav.dc.html's inline <style>) — */
 @keyframes ppNavBlink { 0%, 55% { opacity: 1; } 56%, 100% { opacity: .15; } }
 @keyframes ppNavEq { 0% { height: 14%; } 100% { height: 100%; } }
@@ -21,11 +30,10 @@ button { font: inherit; }
    <span>Caption text</span></div> */
 .pp-placeholder {
   display: flex; align-items: center; justify-content: center; text-align: center;
-  background:
-    repeating-linear-gradient(135deg, rgba(27,26,25,.08) 0 10px, rgba(27,26,25,.03) 10px 20px),
-    #eae7e7;
-  border: 1.5px dashed rgba(27,26,25,.35);
-  color: #605d5d;
+  background-color: #dcd8d3;
+  background-image: repeating-linear-gradient(135deg, rgba(27,26,25,.1) 0 10px, rgba(27,26,25,.03) 10px 20px);
+  border: 1.5px dashed rgba(27,26,25,.4);
+  color: #444141;
   font: 600 11px/1.4 'Archivo', system-ui, sans-serif;
   letter-spacing: .04em;
   padding: 10px;
@@ -40,3 +48,51 @@ button { font: inherit; }
    the DOM; nothing to do by hand beyond setting data-hover="<css text>" or
    data-active="<css text>" alongside the base style attribute. */
 [data-hover], [data-active] { transition: background-color .15s ease, color .15s ease, border-color .15s ease; }
+
+/* — mobile layout (≤ 760px) —
+   Almost every fixed two-column hero/split layout site-wide is authored
+   inline as `grid-template-columns:minmax(0,Xfr) minmax(Ypx,Zfr)` (never
+   auto-fit, since the two sides are intentionally uneven on desktop) — the
+   one truly consistent pattern behind side-by-side content getting
+   squeezed unreadably narrow on a phone instead of stacking.
+
+   These elements carry a `.pp-2col` / `.pp-statgrid` class specifically
+   for this rule (added alongside the original inline style, every other
+   pixel of which is untouched). A plain `[style*="..."]` attribute
+   selector looked simpler but is NOT reliable here: js/reveal.js sets
+   el.style.opacity/.transform on every data-rv element, which makes the
+   browser rewrite that element's entire style attribute in a normalized
+   form ("grid-template-columns: minmax(0px, .95fr) ...", spaced and with
+   explicit "0px") — silently breaking any selector matching the original
+   compact text. Classes are immune to that rewrite. Grids already using
+   `repeat(auto-fit,minmax(...))` are already responsive and left alone.
+   `!important` is only to win over the inline style, not a specificity
+   fight with another rule. */
+@media (max-width: 760px) {
+  /* minmax(0,1fr), not bare 1fr: a plain 1fr track still has an implicit
+     auto (= content) minimum, so a single long unbreakable child (a
+     placeholder caption, a whitespace:nowrap badge) would silently
+     re-widen the "single column" past the viewport. minmax(0,1fr) removes
+     that floor. */
+  .pp-2col { grid-template-columns: minmax(0, 1fr) !important; }
+  .pp-2col > * { min-width: 0; }
+  .pp-statgrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+
+  /* Shared nav (js/nav.js) — the top row (logo + music/passport/all-pages
+     buttons) and the quick-gates strip are both fixed-width flex rows that
+     don't fit a phone screen as authored. Targeted by DOM position since
+     nav.js's markup has no classes to hook. */
+  [data-nav-root] > div:nth-child(1) {
+    flex-wrap: wrap !important;
+    row-gap: 8px;
+  }
+  [data-nav-root] > div:nth-child(1) > div:last-child {
+    margin-left: 0 !important;
+    flex-wrap: wrap;
+  }
+  [data-nav-root] > div:nth-child(2) {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  [data-nav-root] > div:nth-child(2) > span:first-child { display: none; }
+}

@@ -60,7 +60,10 @@
         + '<span style="display:inline-flex;align-items:center;gap:7px;font:800 11px/1 \'Archivo\',sans-serif;color:#1b1a19">' + eur(c.heroItem.price) + '<span>→</span></span></div>'
         + '</div>'
         + '<div class="pp-dst-greet">'
-        + '<span class="pp-dst-greet-flag">🏳️</span>'
+        + '<svg class="pp-dst-greet-flag" width="26" height="26" viewBox="0 0 24 24">'
+        + '<line x1="5" y1="2" x2="5" y2="22" stroke="#f7f3ec" stroke-width="2" stroke-linecap="round"/>'
+        + '<path d="M5 3 L20 3 L16 7 L20 11 L5 11 Z" fill="' + route.bg + '" stroke="#f7f3ec" stroke-width="1.6" stroke-linejoin="round"/>'
+        + '</svg>'
         + '<span style="font:800 20px/1.15 \'Archivo\',sans-serif;letter-spacing:-.02em">' + esc(c.nativePhrase) + '</span>'
         + '<span style="font:600 10px/1.4 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#bab6b6">' + esc(c.translit) + (english ? " · " + esc(english) : "") + '</span>'
         + '</div>'
@@ -72,35 +75,7 @@
     });
 
     if (window.initHoverStyles) window.initHoverStyles(document.body);
-    initScrollReveal();
-  }
-
-  function initScrollReveal() {
-    var nodes = Array.prototype.slice.call(document.querySelectorAll("[data-rv]"));
-    nodes.forEach(function (el) {
-      if (el._ppInit) return;
-      el._ppInit = true;
-      el.style.opacity = "0";
-      el.style.transform = el.getAttribute("data-rv") === "left" ? "translateX(-30px)" : "translateY(28px)";
-      el.style.transition = "opacity .7s cubic-bezier(.2,.8,.25,1), transform .8s cubic-bezier(.2,.85,.25,1)";
-    });
-    var check = function () {
-      nodes.forEach(function (n) {
-        var r = n.getBoundingClientRect();
-        if (!n._ppDone && r.top < window.innerHeight * 0.94 && r.bottom > 0) {
-          n._ppDone = true;
-          setTimeout(function () { n.style.opacity = "1"; n.style.transform = "none"; }, parseInt(n.getAttribute("data-rv-d") || "0", 10));
-        }
-      });
-    };
-    check();
-    if (!window._ppRevealBound) {
-      window._ppRevealBound = true;
-      var raf = null;
-      window.addEventListener("scroll", function () { if (!raf) raf = requestAnimationFrame(function () { raf = null; check(); }); }, { passive: true });
-      window.addEventListener("resize", check);
-      setInterval(check, 400);
-    }
+    if (window.PP_REVEAL) window.PP_REVEAL.init();
   }
 
   document.addEventListener("DOMContentLoaded", function () {

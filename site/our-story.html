@@ -25,7 +25,7 @@
 <!-- ── Hero: the concept ── -->
 <section style="position:relative;background:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">
   <div style="position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(43,118,201,.12) 1px,transparent 1px);background-size:98px 100%"></div>
-  <div style="position:relative;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr)">
+  <div class="pp-2col" style="position:relative;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr)">
     <div style="padding:58px 44px 52px;border-right:2px solid #1b1a19">
       <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#2b76c9;color:#fff;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px">
         <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>The concept · why we exist
@@ -48,7 +48,7 @@
 <section style="background:#1b1a19;color:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">
   <div id="st-ticker" style="display:flex;width:max-content;animation:ppTick 50s linear infinite;border-bottom:2px solid rgba(247,243,236,.25)"></div>
   <div style="max-width:1240px;margin:0 auto;padding:60px 32px 66px">
-    <div style="display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:46px;align-items:start">
+    <div class="pp-2col" style="display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:46px;align-items:start">
       <h2 data-rv="up" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0;max-width:16ch">THE PROBLEM WITH "MEDITERRANEAN FOOD"</h2>
       <div>
         <p data-rv="up" data-rv-d="70" style="font:400 16px/1.65 'Archivo',sans-serif;color:#bab6b6;margin:0 0 18px">Walk into most Mediterranean restaurants and you get an average: some hummus, some feta, a bit of harissa, olives on everything. Twenty-one distinct food cultures flattened into one beige idea of "sunny".</p>
@@ -70,7 +70,7 @@
 
 <!-- ── How we got here ── -->
 <section style="background:#e7e3dc;border-bottom:2px solid #1b1a19;padding:64px 0 70px">
-  <div style="max-width:1320px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:46px;align-items:start">
+  <div class="pp-2col" style="max-width:1320px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:46px;align-items:start">
     <div>
       <h2 data-rv="up" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 18px;max-width:18ch">HOW WE GOT HERE</h2>
       <div id="st-timeline" style="display:flex;flex-direction:column;border-top:2px solid #1b1a19"></div>
@@ -108,7 +108,7 @@
 
 <!-- ── Hours ── -->
 <section id="hours" style="background:#f2b30c;color:#1b1a19;border-bottom:2px solid #1b1a19;padding:56px 0 62px">
-  <div style="max-width:1320px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:40px;align-items:center">
+  <div class="pp-2col" style="max-width:1320px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:40px;align-items:center">
     <div>
       <div data-rv="up" style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;margin-bottom:14px;opacity:.7">Hours &amp; opening</div>
       <h2 data-rv="up" data-rv-d="60" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 14px;max-width:16ch">THE DESK IS OPEN EVERY DAY.</h2>
@@ -150,7 +150,7 @@
     <div data-rv="up" style="margin-top:32px;border:2px solid #1b1a19;background:#1b1a19;color:#f7f3ec;padding:28px 26px">
       <h3 style="font:800 21px/1.1 'Archivo',sans-serif;letter-spacing:-.02em;margin:0 0 6px">LEAVE A REVIEW</h3>
       <p style="font:400 13.5px/1.55 'Archivo',sans-serif;color:#bab6b6;margin:0 0 20px;max-width:60ch">Tell us about a crew member who made your visit. This demo review stays on this device only — nothing is sent to a server yet.</p>
-      <form id="st-review-form" style="display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,.8fr) minmax(0,1.6fr) auto;gap:12px;align-items:start">
+      <form id="st-review-form" class="pp-2col" style="display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,.8fr) minmax(0,1.6fr) auto;gap:12px;align-items:start">
         <label style="display:flex;flex-direction:column;gap:6px;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#bab6b6">Staff member
           <select id="st-review-select" required style="padding:12px 10px;border:2px solid #f7f3ec;background:#f7f3ec;color:#1b1a19;font:600 13px/1.2 'Archivo',sans-serif"></select>
         </label>
@@ -186,6 +186,8 @@
 <script src="js/data.js"></script>
 <script>window.PP_ACTIVE = "Story";</script>
 <script src="js/hover.js"></script>
+<script src="js/reveal.js"></script>
+<script src="js/music.js"></script>
 <script src="js/nav.js"></script>
 <script src="js/footer.js"></script>
 <script src="js/our-story.js"></script>

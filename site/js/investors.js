@@ -144,7 +144,7 @@
     }).join("");
 
     document.getElementById("inv-ps-panel").innerHTML =
-      '<div style="max-width:1340px;margin:0 auto;padding:30px 32px 34px;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:40px;align-items:start">'
+      '<div class="pp-2col" style="max-width:1340px;margin:0 auto;padding:30px 32px 34px;display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:40px;align-items:start">'
       + '<div>'
       + '<div style="display:flex;align-items:baseline;gap:12px;margin-bottom:12px">'
       + '<span style="font:800 42px/1 \'Archivo\',sans-serif;letter-spacing:-.04em;color:#f2b30c">' + ps.id + '</span>'
@@ -317,36 +317,7 @@
     renderFunding(v);
     renderContact(v);
     if (window.initHoverStyles) window.initHoverStyles(document.body);
-    initScrollReveal();
-  }
-
-  /* ── scroll reveal (same pattern as js/destination.js) ── */
-  function initScrollReveal() {
-    var nodes = Array.prototype.slice.call(document.querySelectorAll("[data-rv]"));
-    nodes.forEach(function (el) {
-      if (el._ppInit) return;
-      el._ppInit = true;
-      el.style.opacity = "0";
-      el.style.transform = "translateY(26px)";
-      el.style.transition = "opacity .7s cubic-bezier(.2,.8,.25,1), transform .8s cubic-bezier(.2,.85,.25,1)";
-    });
-    var check = function () {
-      nodes.forEach(function (n) {
-        var r = n.getBoundingClientRect();
-        if (!n._ppDone && r.top < window.innerHeight * 0.94 && r.bottom > 0) {
-          n._ppDone = true;
-          setTimeout(function () { n.style.opacity = "1"; n.style.transform = "none"; }, parseInt(n.getAttribute("data-rv-d") || "0", 10));
-        }
-      });
-    };
-    check();
-    if (!window._ppRevealBound) {
-      window._ppRevealBound = true;
-      var raf = null;
-      window.addEventListener("scroll", function () { if (!raf) raf = requestAnimationFrame(function () { raf = null; check(); }); }, { passive: true });
-      window.addEventListener("resize", check);
-      setInterval(check, 400);
-    }
+    if (window.PP_REVEAL) window.PP_REVEAL.init();
   }
 
   /* ── event delegation: clicks (act on data-act) and text-field input

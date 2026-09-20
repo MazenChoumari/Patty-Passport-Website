@@ -27,70 +27,15 @@
     "gh-checkin": "READY TO CHECK IN?"
   };
 
-  function initWordGroups() {
+  /* Sets each gh-* heading's plain text once; js/reveal.js wordifies it
+     into staggered spans and handles the (re-triggering) reveal. */
+  function setHeadlineText() {
     Object.keys(HEADLINES).forEach(function (id) {
       var el = document.getElementById(id);
-      if (!el || el._ppWords) return;
-      el._ppWords = true;
-      var words = HEADLINES[id].split(" ");
-      el.innerHTML = words.map(function (w, i) {
-        return '<span style="display:inline-block;opacity:0;transform:translateY(.4em);transition:opacity .5s cubic-bezier(.2,.8,.25,1) ' + (i * 0.05) + 's,transform .6s cubic-bezier(.2,.85,.25,1) ' + (i * 0.05) + 's">' + w + (i < words.length - 1 ? "&nbsp;" : "") + '</span>';
-      }).join("");
+      if (!el || el._ppTextSet) return;
+      el._ppTextSet = true;
+      el.textContent = HEADLINES[id];
     });
-  }
-
-  function revealWordGroup(el) {
-    if (el._ppRevealed) return;
-    el._ppRevealed = true;
-    Array.prototype.forEach.call(el.querySelectorAll("span"), function (s) {
-      s.style.opacity = "1";
-      s.style.transform = "none";
-    });
-  }
-
-  /* ── Generic scroll reveal: data-rv="up|left|right|scale", data-rv-d=ms delay ── */
-  var RV_FROM = {
-    up: "translateY(28px)",
-    left: "translateX(-32px)",
-    right: "translateX(32px)",
-    scale: "translate(-50%,-50%) scale(.88)"
-  };
-  function initScrollReveal() {
-    var nodes = Array.prototype.slice.call(document.querySelectorAll("[data-rv]"));
-    var headings = Array.prototype.slice.call(document.querySelectorAll("h2[data-word-group]"));
-    nodes.forEach(function (el) {
-      if (el._ppInit) return;
-      el._ppInit = true;
-      var dir = el.getAttribute("data-rv");
-      var base = RV_FROM[dir] || RV_FROM.up;
-      var isScale = dir === "scale";
-      el.style.opacity = "0";
-      if (!isScale) el.style.transform = base;
-      el.style.transition = "opacity .7s cubic-bezier(.2,.8,.25,1), transform .8s cubic-bezier(.2,.85,.25,1)";
-    });
-    function check() {
-      nodes.forEach(function (n) {
-        var r = n.getBoundingClientRect();
-        if (!n._ppDone && r.top < window.innerHeight * 0.94 && r.bottom > 0) {
-          n._ppDone = true;
-          var delay = parseInt(n.getAttribute("data-rv-d") || "0", 10);
-          setTimeout(function () {
-            n.style.opacity = "1";
-            var dir = n.getAttribute("data-rv");
-            n.style.transform = dir === "scale" ? "translate(-50%,-50%) scale(1)" : "none";
-          }, delay);
-        }
-      });
-      headings.forEach(function (h) {
-        var r = h.getBoundingClientRect();
-        if (r.top < window.innerHeight * 0.92 && r.bottom > 0) revealWordGroup(h);
-      });
-    }
-    check();
-    var raf = null;
-    window.addEventListener("scroll", function () { if (!raf) raf = requestAnimationFrame(function () { raf = null; check(); }); }, { passive: true });
-    window.addEventListener("resize", check);
-    setInterval(check, 400);
   }
 
   /* ── Background parallax circles: data-par="0.12" ── */
@@ -114,15 +59,49 @@
   function eur(n) { return "€" + n.toFixed(2).replace(/\.00$/, ".0"); }
 
   /* ── Hero flowing prop columns ── */
+  /* Boarding-ticket props for the hero's two flowing columns — ported
+     verbatim (kind/code/big/sub/colors/tilt) from the original design's
+     propDefs in Patty Passport Home.dc.html, made clickable into the
+     matching country page. */
   function renderHeroProps(countries) {
-    var half = Math.ceil(countries.length / 2);
-    var colA = countries.slice(0, half), colB = countries.slice(half);
-    function chip(c) {
-      return '<a href="destination.html#' + c.code + '" style="display:flex;align-items:center;gap:8px;padding:9px 11px;background:rgba(255,255,255,.94);color:#1b1a19;text-decoration:none;font:800 10.5px/1 \'Archivo\',sans-serif;letter-spacing:.06em;border:2px solid #1b1a19" data-hover="background:#f2b30c">'
-        + '<span style="width:8px;height:8px;flex:none;background:' + RED + '"></span>' + c.stamp + '&nbsp; ' + c.name.toUpperCase() + '</a>';
+    var byCode = {};
+    countries.forEach(function (c) { byCode[c.code] = c; });
+    var propDefs = [
+      ["Boarding ticket", "MED-12", "LEBANON", "Gate Levant · Table 4", CREAM, INK, "lbn"],
+      ["Language card", "MED-23", "Καλώς ήρθατε", "Greece · Kalós irthate", "#fff", INK, "grc"],
+      ["Luggage tag", "MED-55", "MAR · 55", "Morocco · N. Africa route", RED, "#fff", "mar"],
+      ["Gate call", "MED-32", "ESPAÑA", "Now boarding · Table 11", INK, CREAM, "esp"],
+      ["Destination pack", "MED-21", "Hoş geldiniz", "Türkiye · two seas", YEL, INK, "tur"],
+      ["Stamp receipt", "MED-31", "ITALIA", "Stamp #07 collected", CREAM, INK, "ita"],
+      ["Boarding ticket", "MED-35", "MALTA", "Gate Islands · Table 2", "#fff", INK, "mlt"],
+      ["Language card", "MED-43", "Dobro došli", "Bosnia · Adriatic route", YEL, INK, "bih"],
+      ["Luggage tag", "MED-51", "EGY · 51", "Egypt · gift of the river", INK, CREAM, "egy"],
+      ["Gate call", "MED-42", "HRVATSKA", "Final call · Table 8", BLU, "#fff", "hrv"],
+      ["Destination pack", "MED-14", "أهلا وسهلا", "Palestine · Levant route", CREAM, INK, "pse"],
+      ["Stamp receipt", "MED-45", "SHQIPËRI", "Stamp #16 collected", RED, "#fff", "alb"]
+    ].map(function (p, i) {
+      return {
+        kind: p[0], code: p[1], big: p[2], sub: p[3], bg: p[4], fg: p[5], href: p[6],
+        r: ((i % 2 ? 1 : -1) * (1.5 + (i % 3))) + "deg", dur: (9 + (i % 5)) + "s"
+      };
+    });
+    var half = Math.ceil(propDefs.length / 2);
+    var colA = propDefs.slice(0, half), colB = propDefs.slice(half);
+
+    function ticket(p, shadowDir) {
+      var country = byCode[p.href];
+      var href = country ? "destination.html#" + country.code : "destinations.html";
+      return '<a href="' + href + '" style="display:block;text-decoration:none;flex:none;background:' + p.bg + ';color:' + p.fg + ';border:2px solid #1b1a19;box-shadow:' + shadowDir + '8px 8px 0 rgba(27,26,25,.28);transform:rotate(' + p.r + ');--r:' + p.r + ';animation:ppDrift ' + p.dur + ' ease-in-out infinite;padding:12px 13px;cursor:pointer" data-hover="animation-play-state:paused;box-shadow:' + shadowDir + '11px 11px 0 rgba(27,26,25,.4)">'
+        + '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;font:800 8.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75;margin-bottom:8px"><span>' + p.kind + '</span><span>' + p.code + '</span></div>'
+        + '<div style="font:800 19px/1.05 \'Archivo\',sans-serif;letter-spacing:-.02em">' + p.big + '</div>'
+        + '<div style="font:600 9px/1.4 \'Archivo\',sans-serif;letter-spacing:.11em;text-transform:uppercase;margin-top:6px;opacity:.8">' + p.sub + '</div>'
+        + '<div style="height:13px;margin-top:10px;background:repeating-linear-gradient(90deg,currentColor 0 2px,transparent 2px 5px,currentColor 5px 8px,transparent 8px 12px);opacity:.55"></div>'
+        + '</a>';
     }
-    document.getElementById("pp-propsA").innerHTML = colA.map(chip).join("") + colA.map(chip).join("");
-    document.getElementById("pp-propsB").innerHTML = colB.map(chip).join("") + colB.map(chip).join("");
+    var htmlA = colA.map(function (p) { return ticket(p, ""); }).join("");
+    var htmlB = colB.map(function (p) { return ticket(p, "-"); }).join("");
+    document.getElementById("pp-propsA").innerHTML = htmlA + htmlA;
+    document.getElementById("pp-propsB").innerHTML = htmlB + htmlB;
   }
 
   /* ── Terminal departures ticker ── */
@@ -164,13 +143,43 @@
 
   /* ── Passport preview (fixed demo state: 6 of 21 stamped, matches the
      static reward-ladder copy already on the page: "8: 2 TO GO", "21: 15 TO GO") ── */
+  /* Garden of Destinations — one native tree per country (brief §5.10),
+     plaque colors cycling through the same four-color rotation the
+     original design's 8 example plaques used. */
+  var TREES = {
+    lbn: "Cedar", syr: "Pistachio tree", pse: "Olive tree", tur: "Hazelnut tree",
+    cyp: "Carob tree", grc: "Olive tree", ita: "Lemon tree", esp: "Orange tree",
+    fra: "Plane tree", mco: "Citrus tree", mlt: "Prickly pear", svn: "Linden tree",
+    hrv: "Black pine", bih: "Walnut tree", mne: "Olive tree", alb: "Olive tree",
+    egy: "Date palm", lby: "Date palm", tun: "Olive tree", dza: "Date palm", mar: "Orange tree"
+  };
+  var PLAQUE_COLORS = [
+    [YEL, INK], [RED, "#fff"], [BLU, "#fff"], ["#e7e3dc", INK]
+  ];
+  function renderGardenPlaques(countries) {
+    var el = document.getElementById("pp-garden-plaques");
+    if (!el) return;
+    el.innerHTML = countries.map(function (c, i) {
+      var col = PLAQUE_COLORS[i % PLAQUE_COLORS.length];
+      var tree = TREES[c.code] || "Olive tree";
+      return '<div data-rv="up" data-rv-d="' + ((i % 6) * 60) + '" style="border-right:2px solid rgba(247,243,236,.3);border-bottom:2px solid rgba(247,243,236,.3);padding:20px 18px 22px;background:' + col[0] + ';color:' + col[1] + '">'
+        + '<span style="font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75">Plaque ' + String(i + 1).padStart(2, "0") + '</span>'
+        + '<p style="font:600 15px/1.4 \'Archivo\',sans-serif;margin:8px 0 0">' + tree + ' — dedicated to ' + c.name + '.</p>'
+        + '</div>';
+    }).join("");
+  }
+
   function renderPassport(countries) {
     var STAMPED = 6;
-    document.getElementById("pp-passport-progress").textContent = STAMPED + " OF 21 STAMPED";
+    document.getElementById("pp-passport-progress").textContent = "Passport spread · " + STAMPED + " of 21";
     var grid = document.getElementById("pp-stamp-grid");
     grid.innerHTML = countries.map(function (c, i) {
       var on = i < STAMPED;
-      return '<div style="aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:' + (on ? "#1b1a19" : "#fff") + ';color:' + (on ? "#f2b30c" : "#c9c5c5") + ';font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.04em">' + (on ? c.stamp : "&middot;") + '</div>';
+      return '<div style="position:relative;background:#f7f3ec;aspect-ratio:1/1;display:flex;flex-direction:column;justify-content:flex-end;padding:7px">'
+        + '<span style="font:800 13px/1 \'Archivo\',sans-serif">' + c.code.toUpperCase() + '</span>'
+        + '<span style="font:400 8px/1.2 \'Archivo\',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#7d7979">' + c.name + '</span>'
+        + (on ? '<span style="position:absolute;top:6px;right:6px;width:40px;height:40px;border:2.5px solid #ec3013;color:#ec3013;display:flex;align-items:center;justify-content:center;font:800 9px/1 \'Archivo\',sans-serif;transform:rotate(-10deg)">' + c.stamp + '</span>' : "")
+        + '</div>';
     }).join("");
   }
 
@@ -305,8 +314,7 @@
 
   function boot() {
     var data = window.PP_DATA;
-    initWordGroups();
-    initScrollReveal();
+    setHeadlineText();
     initParallax();
     initBoardingPass();
     initRouteChips();
@@ -316,11 +324,13 @@
       renderIdentityTrack(data.COUNTRIES);
       renderCultureEq();
       renderPassport(data.COUNTRIES);
+      renderGardenPlaques(data.COUNTRIES);
       initTootyPreview(data);
       if (window.initHoverStyles) window.initHoverStyles(document.body);
     } else {
       window.addEventListener("pp-data-ready", boot, { once: true });
     }
+    if (window.PP_REVEAL) window.PP_REVEAL.init();
   }
 
   document.addEventListener("DOMContentLoaded", boot);

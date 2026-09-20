@@ -76,7 +76,7 @@
     if (state.user) return "";
     return '<section style="position:relative;background:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">'
       + '<div style="position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(236,48,19,.1) 1px,transparent 1px);background-size:98px 100%"></div>'
-      + '<div style="position:relative;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr)">'
+      + '<div class="pp-2col" style="position:relative;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr)">'
       + '<div style="padding:58px 44px 54px;border-right:2px solid #1b1a19">'
       + '<div style="display:inline-flex;align-items:center;gap:9px;background:#ec3013;color:#fff;padding:7px 12px;font:800 10.5px/1 \'Archivo\',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px">'
       + '<span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>My passport · sign in</div>'
@@ -160,7 +160,7 @@
 
       + '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19;margin-bottom:34px">' + statsHtml + '</div>'
 
-      + '<div style="display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:36px;align-items:start">'
+      + '<div class="pp-2col" style="display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:36px;align-items:start">'
       + '<div>'
       + '<div style="display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px">'
       + '<h2 style="font:800 clamp(22px,2.6vw,34px)/1 \'Archivo\',sans-serif;letter-spacing:-.03em;margin:0">YOUR STAMP SPREAD</h2>'

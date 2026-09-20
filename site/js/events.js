@@ -159,34 +159,6 @@
     };
   }
 
-  function initScrollReveal() {
-    var nodes = Array.prototype.slice.call(document.querySelectorAll("[data-rv]"));
-    nodes.forEach(function (el) {
-      if (el._ppInit) return;
-      el._ppInit = true;
-      el.style.opacity = "0";
-      el.style.transform = "translateY(26px)";
-      el.style.transition = "opacity .7s cubic-bezier(.2,.8,.25,1), transform .8s cubic-bezier(.2,.85,.25,1)";
-    });
-    var check = function () {
-      nodes.forEach(function (n) {
-        var r = n.getBoundingClientRect();
-        if (!n._ppDone && r.top < window.innerHeight * 0.94 && r.bottom > 0) {
-          n._ppDone = true;
-          setTimeout(function () { n.style.opacity = "1"; n.style.transform = "none"; }, parseInt(n.getAttribute("data-rv-d") || "0", 10));
-        }
-      });
-    };
-    check();
-    if (!window._ppRevealBound) {
-      window._ppRevealBound = true;
-      var raf = null;
-      window.addEventListener("scroll", function () { if (!raf) raf = requestAnimationFrame(function () { raf = null; check(); }); }, { passive: true });
-      window.addEventListener("resize", check);
-      setInterval(check, 400);
-    }
-  }
-
   function render() {
     renderFacts();
     renderPackages();
@@ -196,7 +168,7 @@
     renderOccasions();
     renderSubmit();
     if (window.initHoverStyles) window.initHoverStyles(document.body);
-    initScrollReveal();
+    if (window.PP_REVEAL) window.PP_REVEAL.init();
   }
 
   document.addEventListener("DOMContentLoaded", render);
