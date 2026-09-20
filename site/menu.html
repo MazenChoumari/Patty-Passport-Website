@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patty Passport — Menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/site.css">
+<style>
+  body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
+  *,*::before,*::after{box-sizing:border-box}
+  a{color:#ae1800;text-underline-offset:3px}
+  a:hover{color:#ec3013}
+  :focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+  ::selection{background:rgba(236,48,19,.28)}
+  @keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+  @keyframes ppTick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+</style>
+</head>
+<body>
+<div id="pp-nav"></div>
+
+<section style="position:relative;background:#1b1a19;color:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(247,243,236,.07) 1px,transparent 1px);background-size:100% 64px"></div>
+  <div style="position:relative;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr)">
+    <div style="padding:58px 44px 52px;border-right:2px solid rgba(247,243,236,.3)">
+      <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#ec3013;color:#fff;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px">
+        <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>In-flight menu · <span id="mn-item-count">231</span> items across 21 destinations
+      </div>
+      <h1 data-rv="up" data-rv-d="70" style="font:800 clamp(42px,6.2vw,96px)/.9 'Archivo',sans-serif;letter-spacing:-.045em;margin:0 0 18px">EVERY DISH<br>HAS A<br><span style="color:#f2b30c">POSTCODE.</span></h1>
+      <p data-rv="up" data-rv-d="130" style="font:400 clamp(15px,1.25vw,18px)/1.55 'Archivo',sans-serif;color:#bab6b6;max-width:56ch;margin:0 0 28px">Every country carries the same full card — three burgers, two loaded fries, a salad, a cold country drink, an alcoholic one, a hot one and two desserts. One global price grid; only the flavours change.</p>
+      <div data-rv="up" data-rv-d="180" style="display:flex;flex-wrap:wrap;gap:12px">
+        <a href="booking.html" style="display:inline-flex;align-items:center;min-width:240px;padding:16px 19px;background:#ec3013;color:#fff;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" data-hover="background:#f2b30c;color:#1b1a19">Reserve a table<span style="margin-left:auto">→</span></a>
+        <a href="destinations.html" style="display:inline-flex;align-items:center;min-width:220px;padding:16px 19px;border:2px solid #f7f3ec;color:#f7f3ec;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" data-hover="background:#f7f3ec;color:#1b1a19">Browse destinations<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+    <div style="position:relative;min-height:400px">
+      <div class="pp-placeholder" style="position:absolute;inset:0"><span>Full table of Mediterranean burgers, fries and sides, overhead</span></div>
+      <div style="position:absolute;left:0;right:0;bottom:0;padding:13px 18px;background:rgba(27,26,25,.92);font:600 9.5px/1.5 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;pointer-events:none">Burgers · loaded fries · salads · desserts · cold, hot and country drinks</div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#f2b30c;color:#1b1a19;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div id="mn-ticker" style="display:flex;width:max-content;animation:ppTick 46s linear infinite"></div>
+</section>
+
+<section style="background:#f7f3ec;border-bottom:2px solid #1b1a19">
+  <div id="mn-board"></div>
+</section>
+
+<section style="background:#e7e3dc;border-bottom:2px solid #1b1a19;padding:64px 0 70px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px">
+    <div style="display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:44px;align-items:start">
+      <div>
+        <h2 data-rv="up" style="font:800 clamp(30px,4vw,56px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 10px;max-width:20ch">COMBOS &amp; FULL BUFFETS</h2>
+        <p data-rv="up" data-rv-d="70" style="font:400 15px/1.55 'Archivo',sans-serif;color:#605d5d;margin:0 0 26px;max-width:52ch">Available in every country, at the same price everywhere. Each combo sits roughly 22–24% below the same items ordered separately.</p>
+        <div id="mn-combos" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19"></div>
+      </div>
+      <div>
+        <h2 data-rv="up" style="font:800 clamp(26px,3.2vw,42px)/.96 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 18px">THE PRICE GRID</h2>
+        <div id="mn-price-grid" style="border:2px solid #1b1a19;background:#f7f3ec"></div>
+        <div data-rv="up" data-rv-d="90" style="margin-top:18px;border:2px solid #1b1a19;background:#1b1a19;color:#f7f3ec;padding:18px 16px">
+          <div style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#f2b30c;margin-bottom:12px">Upgrades &amp; minimums</div>
+          <div id="mn-upgrades"></div>
+          <div id="mn-minspend" style="padding-top:12px;font:600 10px/1.6 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#bab6b6"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#2b76c9;color:#fff;padding:62px 0 68px">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:26px">
+    <div>
+      <h2 data-rv="up" style="font:800 clamp(30px,4.2vw,58px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 14px;max-width:18ch">DIFFERENT TABLES. ONE WARM WELCOME.</h2>
+      <p data-rv="up" data-rv-d="80" style="font:400 15.5px/1.55 'Archivo',sans-serif;margin:0;max-width:50ch;color:rgba(255,255,255,.92)">Every item above carries its own tags — halal-friendly, no pork, vegetarian, alcohol-free, contains alcohol, contains nuts. Filter the board by diet and only what qualifies stays on it.</p>
+    </div>
+    <div data-rv="up" data-rv-d="140" style="display:flex;flex-wrap:wrap;gap:12px">
+      <a href="patty-tooty.html" style="display:inline-flex;align-items:center;min-width:240px;padding:16px 19px;background:#f2b30c;color:#1b1a19;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" data-hover="background:#fff">Ask about a dish<span style="margin-left:auto">→</span></a>
+      <a href="junior-explorers.html" style="display:inline-flex;align-items:center;min-width:220px;padding:16px 19px;border:2px solid #fff;color:#fff;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" data-hover="background:#fff;color:#2b76c9">The junior lane<span style="margin-left:auto">→</span></a>
+    </div>
+  </div>
+</section>
+
+<div id="pp-footer"></div>
+
+<script src="js/data.js"></script>
+<script>window.PP_ACTIVE = "Menu";</script>
+<script src="js/hover.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/footer.js"></script>
+<script src="js/menu.js"></script>
+</body>
+</html>

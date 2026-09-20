@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patty Passport — Destinations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/site.css">
+<style>
+  body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
+  *,*::before,*::after{box-sizing:border-box}
+  a{color:#ae1800;text-underline-offset:3px}
+  a:hover{color:#ec3013}
+  :focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+  ::selection{background:rgba(236,48,19,.28)}
+  @keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+  @keyframes ppDash{0%{background-position:0 0}100%{background-position:44px 0}}
+  @keyframes ppTick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  @keyframes ppFlagWave{0%,100%{transform:rotate(0deg)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+  /* Card "selection" greeting reveal (brief §5.2/§4 "map highlight" + "welcome
+     animation with a greeting in the local language" — this page has no
+     interactive map of its own, so the moment lives on the card itself: the
+     native-language greeting slides up over the teaser on hover/focus, the
+     way it plays out for real once you land on the destination page). */
+  .pp-dst-card{position:relative}
+  .pp-dst-greet{position:absolute;left:0;right:0;bottom:0;top:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:4px;padding:20px 18px 22px;background:#1b1a19;color:#f7f3ec;opacity:0;transform:translateY(10px);transition:opacity .28s ease,transform .32s cubic-bezier(.2,.85,.25,1);pointer-events:none}
+  .pp-dst-card:hover .pp-dst-greet,.pp-dst-card:focus-visible .pp-dst-greet{opacity:1;transform:translateY(0)}
+  .pp-dst-greet-flag{font-size:26px;line-height:1;display:inline-block;animation:ppFlagWave 2.2s ease-in-out infinite;transform-origin:70% 90%}
+</style>
+</head>
+<body>
+<div id="pp-nav"></div>
+
+<section style="position:relative;background:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(43,118,201,.12) 1px,transparent 1px);background-size:98px 100%"></div>
+  <div style="position:relative;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(320px,.7fr)">
+    <div style="padding:60px 44px 48px;border-right:2px solid #1b1a19">
+      <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#ec3013;color:#fff;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:24px">
+        <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Departures board · 21 destinations
+      </div>
+      <h1 data-rv="up" data-rv-d="70" style="font:800 clamp(42px,6.4vw,96px)/.9 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 20px;text-wrap:balance">CHOOSE WHERE<br>THE TABLE<br><span style="color:#ec3013">TRAVELS TONIGHT.</span></h1>
+      <p data-rv="up" data-rv-d="130" style="font:400 clamp(15px,1.25vw,18px)/1.55 'Archivo',sans-serif;color:#444141;max-width:56ch;margin:0 0 30px">Twenty-one Mediterranean countries, grouped into five routes. Filter by route, read the identity line, then open the destination page for the full story — culture, plate, playlist and stamp.</p>
+      <div data-rv="up" data-rv-d="190" style="display:flex;flex-wrap:wrap;gap:12px">
+        <a href="booking.html" style="display:inline-flex;align-items:center;min-width:250px;padding:16px 19px;background:#ec3013;color:#fff;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" data-hover="background:#dd2b0f">Get your boarding pass<span style="margin-left:auto">→</span></a>
+        <a href="menu.html" style="display:inline-flex;align-items:center;min-width:210px;padding:16px 19px;border:2px solid #1b1a19;color:#1b1a19;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" data-hover="background:#f2b30c;border-color:#f2b30c">See the full menu<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+    <div style="position:relative;background:#2b76c9;min-height:420px">
+      <div class="pp-placeholder" style="position:absolute;inset:0;opacity:.72"><span>Mediterranean coastline from the air — the whole sea</span></div>
+      <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.22) 1.5px,transparent 1.6px);background-size:30px 30px;pointer-events:none"></div>
+      <div style="position:absolute;left:0;right:0;bottom:0;padding:14px 18px;background:rgba(27,26,25,.92);color:#f7f3ec;font:600 9.5px/1.5 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;pointer-events:none">Five routes · twenty-one gates · one passport</div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#1b1a19;color:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div id="dst-ticker" style="display:flex;width:max-content;animation:ppTick 52s linear infinite"></div>
+</section>
+
+<section id="grid" style="background:#f7f3ec;border-bottom:2px solid #1b1a19">
+  <div data-sticky-under-nav="1" style="position:sticky;top:136px;z-index:40;background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:18px 44px;display:flex;flex-wrap:wrap;align-items:center;gap:10px">
+    <span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#7d7979;margin-right:6px">Filter by route</span>
+    <span id="dst-filters" style="display:contents"></span>
+    <span style="margin-left:auto;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979" id="dst-result-label"></span>
+  </div>
+  <div id="dst-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));border-left:2px solid #1b1a19"></div>
+</section>
+
+<section style="background:#e7e3dc;border-bottom:2px solid #1b1a19;padding:66px 0 72px">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px">
+    <h2 data-rv="up" style="font:800 clamp(30px,4vw,56px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 30px;max-width:20ch">HOW A DESTINATION WORKS</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19">
+      <div data-rv="up" data-rv-d="0" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;padding:24px 20px 26px;background:#f7f3ec;display:flex;flex-direction:column;gap:11px;min-height:200px">
+        <span style="width:46px;height:46px;background:#ec3013;color:#fff;display:flex;align-items:center;justify-content:center;font:800 18px/1 'Archivo',sans-serif">1</span>
+        <h3 style="font:800 20px/1.05 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">Pick the route</h3>
+        <p style="font:400 13px/1.5 'Archivo',sans-serif;color:#605d5d;margin:0">Five chapters cross the sea. Start with the one that sounds like tonight.</p>
+      </div>
+      <div data-rv="up" data-rv-d="80" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;padding:24px 20px 26px;background:#f7f3ec;display:flex;flex-direction:column;gap:11px;min-height:200px">
+        <span style="width:46px;height:46px;background:#f2b30c;color:#1b1a19;display:flex;align-items:center;justify-content:center;font:800 18px/1 'Archivo',sans-serif">2</span>
+        <h3 style="font:800 20px/1.05 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">Open the destination</h3>
+        <p style="font:400 13px/1.5 'Archivo',sans-serif;color:#605d5d;margin:0">Full page: culture, landscape, the plate, the playlist, the phrase.</p>
+      </div>
+      <div data-rv="up" data-rv-d="160" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;padding:24px 20px 26px;background:#f7f3ec;display:flex;flex-direction:column;gap:11px;min-height:200px">
+        <span style="width:46px;height:46px;background:#2b76c9;color:#fff;display:flex;align-items:center;justify-content:center;font:800 18px/1 'Archivo',sans-serif">3</span>
+        <h3 style="font:800 20px/1.05 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">Check in at the desk</h3>
+        <p style="font:400 13px/1.5 'Archivo',sans-serif;color:#605d5d;margin:0">Your boarding ticket prints with the table number and the gate.</p>
+      </div>
+      <div data-rv="up" data-rv-d="240" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;padding:24px 20px 26px;background:#f7f3ec;display:flex;flex-direction:column;gap:11px;min-height:200px">
+        <span style="width:46px;height:46px;background:#1b1a19;color:#f7f3ec;display:flex;align-items:center;justify-content:center;font:800 18px/1 'Archivo',sans-serif">4</span>
+        <h3 style="font:800 20px/1.05 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">Collect the stamp</h3>
+        <p style="font:400 13px/1.5 'Archivo',sans-serif;color:#605d5d;margin:0">One country stamped per visit. The ladder starts at three.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="pp-footer"></div>
+
+<script src="js/data.js"></script>
+<script>window.PP_ACTIVE = "Destinations";</script>
+<script src="js/hover.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/footer.js"></script>
+<script src="js/destinations.js"></script>
+</body>
+</html>

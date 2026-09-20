@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patty Passport — Junior Explorers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/site.css">
+<style>
+  body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
+  *,*::before,*::after{box-sizing:border-box}
+  a{color:#ae1800;text-underline-offset:3px}
+  a:hover{color:#ec3013}
+  :focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+  ::selection{background:rgba(236,48,19,.28)}
+  @keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+  @keyframes ppDrift{0%{transform:translate3d(0,0,0) rotate(var(--r,0deg))}50%{transform:translate3d(0,-14px,0) rotate(calc(var(--r,0deg) + 1.4deg))}100%{transform:translate3d(0,0,0) rotate(var(--r,0deg))}}
+</style>
+</head>
+<body>
+<div id="pp-nav"></div>
+
+<section style="position:relative;background:#f2b30c;color:#1b1a19;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(330px,.95fr)">
+    <div style="padding:58px 44px 52px;border-right:2px solid #1b1a19">
+      <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#1b1a19;color:#f2b30c;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px">
+        <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Junior gate · ages 4 to 11
+      </div>
+      <h1 data-rv="up" data-rv-d="70" style="font:800 clamp(42px,6.2vw,94px)/.9 'Archivo',sans-serif;letter-spacing:-.045em;margin:0 0 18px">SMALL TRAVELLERS.<br>REAL PASSPORTS.</h1>
+      <p data-rv="up" data-rv-d="130" style="font:400 clamp(15px,1.25vw,18px)/1.55 'Archivo',sans-serif;max-width:52ch;margin:0 0 28px">Every child at the table gets their own book, their own gate and their own stamp. The kit does the rest: a route booklet, a sheet of twenty-one flags, a postcard to send home and a word to learn before the plate lands.</p>
+      <div data-rv="up" data-rv-d="180" style="display:flex;flex-wrap:wrap;gap:12px">
+        <a href="events.html" style="display:inline-flex;align-items:center;min-width:250px;padding:16px 19px;background:#ec3013;color:#fff;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" data-hover="background:#1b1a19">Plan a kids journey<span style="margin-left:auto">→</span></a>
+        <a href="menu.html" style="display:inline-flex;align-items:center;min-width:220px;padding:16px 19px;border:2px solid #1b1a19;color:#1b1a19;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" data-hover="background:#1b1a19;color:#f2b30c">See the junior lane<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+    <div id="jr-kit" style="position:relative;min-height:470px"></div>
+  </div>
+</section>
+
+<section style="background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:62px 0 68px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px">
+    <h2 data-rv="up" style="font:800 clamp(30px,4vw,56px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 10px;max-width:20ch">WHAT'S IN THE EXPLORER KIT</h2>
+    <p data-rv="up" data-rv-d="70" style="font:400 15px/1.55 'Archivo',sans-serif;color:#605d5d;margin:0 0 30px;max-width:52ch">Handed over at the desk with the junior boarding pass. Free with any kids combo — nothing to download, nothing to sign up for.</p>
+    <div id="jr-kit-items" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19"></div>
+  </div>
+</section>
+
+<section style="background:#2b76c9;color:#fff;border-bottom:2px solid #1b1a19;padding:64px 0 70px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:28px">
+      <h2 data-rv="up" style="font:800 clamp(30px,4.2vw,58px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0;max-width:18ch">JUNIOR ROUTES, PICKED FOR SMALL APPETITES</h2>
+      <a href="destinations.html" data-rv="up" data-rv-d="70" style="display:inline-flex;align-items:center;min-width:230px;padding:15px 18px;background:#f2b30c;color:#1b1a19;text-decoration:none;font:800 14px/1.1 'Archivo',sans-serif" data-hover="background:#fff">All destinations<span style="margin-left:auto">→</span></a>
+    </div>
+    <div id="jr-routes" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19"></div>
+  </div>
+</section>
+
+<section style="background:#e7e3dc;border-bottom:2px solid #1b1a19;padding:64px 0 70px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:44px;align-items:start">
+    <div>
+      <h2 data-rv="up" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 18px;max-width:18ch">THINGS THEY LEARN WITHOUT NOTICING</h2>
+      <div id="jr-learning" style="display:flex;flex-direction:column;border-top:2px solid #1b1a19"></div>
+    </div>
+    <div>
+      <h2 data-rv="up" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 18px;max-width:18ch">FOR THE GROWN-UPS AT THE TABLE</h2>
+      <div id="jr-parents" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19"></div>
+      <a href="events.html" data-rv="up" data-rv-d="200" style="display:inline-flex;align-items:center;min-width:100%;margin-top:22px;padding:16px 19px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" data-hover="background:#ec3013">Book a birthday journey<span style="margin-left:auto">→</span></a>
+    </div>
+  </div>
+</section>
+
+<section style="background:#ec3013;color:#fff;padding:62px 0 68px">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:26px">
+    <div>
+      <h2 data-rv="up" style="font:800 clamp(30px,4.4vw,62px)/.93 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 14px;max-width:16ch">ONE BOOK PER CHILD. STAMPS POOL AS A FAMILY.</h2>
+      <p data-rv="up" data-rv-d="80" style="font:400 15.5px/1.55 'Archivo',sans-serif;margin:0;max-width:46ch">Junior stamps count towards the Family Passport ladder — so the table unlocks the secret burger together.</p>
+    </div>
+    <div data-rv="up" data-rv-d="140" style="display:flex;flex-wrap:wrap;gap:12px">
+      <a href="my-passport.html" style="display:inline-flex;align-items:center;min-width:240px;padding:17px 20px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" data-hover="background:#f2b30c;color:#1b1a19">Open a junior passport<span style="margin-left:auto">→</span></a>
+      <a href="patty-tooty.html" style="display:inline-flex;align-items:center;min-width:230px;padding:17px 20px;border:2px solid #fff;color:#fff;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" data-hover="background:#fff;color:#ec3013">Ask about kids routes<span style="margin-left:auto">→</span></a>
+    </div>
+  </div>
+</section>
+
+<div id="pp-footer"></div>
+
+<script>window.PP_ACTIVE = "Kids";</script>
+<script src="js/hover.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/footer.js"></script>
+<script src="js/junior-explorers.js"></script>
+</body>
+</html>

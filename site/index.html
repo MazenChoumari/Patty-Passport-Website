@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patty Passport — Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/site.css">
+<style>
+  body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
+  *,*::before,*::after{box-sizing:border-box}
+  a{color:#ae1800;text-underline-offset:3px}
+  a:hover{color:#ec3013}
+  :focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+  ::selection{background:rgba(236,48,19,.28)}
+  section{scroll-margin-top:150px}
+  @keyframes ppTick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+  @keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+  @keyframes ppDrift{0%{transform:translate3d(0,0,0) rotate(var(--r,0deg))}50%{transform:translate3d(0,-14px,0) rotate(calc(var(--r,0deg) + 1.2deg))}100%{transform:translate3d(0,0,0) rotate(var(--r,0deg))}}
+  @keyframes ppEq{0%{height:14%}100%{height:100%}}
+  @keyframes ppDash{0%{background-position:0 0}100%{background-position:44px 0}}
+  @keyframes ppPulse{0%{opacity:.25;transform:scale(1)}100%{opacity:0;transform:scale(2.6)}}
+  @keyframes ppSway{0%{transform:translateY(0)}50%{transform:translateY(-4px)}100%{transform:translateY(0)}}
+  @keyframes ppFlowUp{0%{transform:translateY(0)}100%{transform:translateY(-50%)}}
+  @keyframes ppFlowDown{0%{transform:translateY(-50%)}100%{transform:translateY(0)}}
+  @keyframes ppDots{0%,80%,100%{opacity:.2}40%{opacity:1}}
+</style>
+</head>
+<body>
+<div id="pp-nav"></div>
+
+<!-- ░░ 1 · HERO / CHECK-IN ░░ -->
+<section id="top" style="position:relative;background:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(43,118,201,.12) 1px,transparent 1px);background-size:98px 100%"></div>
+  <div data-par="0.12" style="position:absolute;right:-60px;top:60px;width:420px;height:420px;border:2px solid rgba(43,118,201,.35);border-radius:50%"></div>
+  <div data-par="0.2" style="position:absolute;right:70px;top:190px;width:250px;height:250px;border:2px solid rgba(242,179,12,.55);border-radius:50%"></div>
+
+  <div style="position:relative;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(360px,.75fr);gap:0;align-items:stretch">
+    <div style="padding:66px 44px 54px;border-right:2px solid #1b1a19">
+      <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#ec3013;color:#fff;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:26px">
+        <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Check-in desk open
+      </div>
+      <h1 data-rv="up" data-rv-d="80" style="font:800 clamp(52px,7.6vw,118px)/.89 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 22px;text-wrap:balance">YOU ARE NOT<br>ORDERING A BURGER.<br><span style="color:#ec3013">YOU ARE CHECKING IN<br>FOR A DESTINATION.</span></h1>
+      <p data-rv="up" data-rv-d="160" style="font:400 clamp(15px,1.3vw,19px)/1.5 'Archivo',sans-serif;color:#444141;max-width:560px;margin:0 0 34px;text-wrap:pretty">Twenty-one Mediterranean countries. One passport. Pick a destination at the desk, take your boarding ticket, and let the table travel — food, music, language, story, stamp.</p>
+      <div data-rv="up" data-rv-d="230" style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:44px">
+        <a href="destinations.html" style="display:inline-flex;align-items:center;min-width:280px;padding:17px 20px;background:#ec3013;color:#fff;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif;letter-spacing:-.01em" data-hover="background:#dd2b0f">Get Your Boarding Pass<span style="margin-left:auto;font-size:18px">→</span></a>
+        <a href="destinations.html" style="display:inline-flex;align-items:center;min-width:220px;padding:17px 20px;border:2px solid #1b1a19;color:#1b1a19;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" data-hover="background:#f2b30c;border-color:#f2b30c">Explore 21 Destinations</a>
+      </div>
+      <div data-rv="up" data-rv-d="300" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:2px solid #1b1a19">
+        <div style="padding:16px 14px 10px;border-right:1px solid rgba(27,26,25,.2)"><div style="font:800 30px/1 'Archivo',sans-serif;letter-spacing:-.03em;color:#ec3013">21</div><div style="font:600 9.5px/1.4 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#605d5d;margin-top:5px">Destinations</div></div>
+        <div style="padding:16px 14px 10px;border-right:1px solid rgba(27,26,25,.2)"><div style="font:800 30px/1 'Archivo',sans-serif;letter-spacing:-.03em;color:#2b76c9">5</div><div style="font:600 9.5px/1.4 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#605d5d;margin-top:5px">Route zones</div></div>
+        <div style="padding:16px 14px 10px;border-right:1px solid rgba(27,26,25,.2)"><div style="font:800 30px/1 'Archivo',sans-serif;letter-spacing:-.03em;color:#1b1a19">240</div><div style="font:600 9.5px/1.4 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#605d5d;margin-top:5px">Seats in the sky hall</div></div>
+        <div style="padding:16px 14px 10px;border-right:1px solid rgba(27,26,25,.2)"><div style="font:800 30px/1 'Archivo',sans-serif;letter-spacing:-.03em;color:#ae1800">1</div><div style="font:600 9.5px/1.4 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#605d5d;margin-top:5px">Passport to fill</div></div>
+      </div>
+    </div>
+
+    <div style="position:relative;background:#2b76c9;overflow:hidden;min-height:680px">
+      <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.28) 1.5px,transparent 1.6px);background-size:26px 26px"></div>
+      <div style="position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:16px">
+        <div style="overflow:hidden"><div id="pp-propsA" style="display:flex;flex-direction:column;gap:14px;animation:ppFlowUp 44s linear infinite"></div></div>
+        <div style="overflow:hidden"><div id="pp-propsB" style="display:flex;flex-direction:column;gap:14px;animation:ppFlowDown 52s linear infinite"></div></div>
+      </div>
+      <div style="position:absolute;left:0;right:0;top:0;height:70px;background:linear-gradient(#2b76c9,rgba(43,118,201,0));pointer-events:none"></div>
+      <div style="position:absolute;left:0;right:0;bottom:36px;height:120px;background:linear-gradient(rgba(43,118,201,0),#2b76c9);pointer-events:none"></div>
+      <div style="position:absolute;left:50%;top:46%;transform:translate(-50%,-50%) rotate(-11deg);width:132px;height:132px;border:3px solid #fff;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(43,118,201,.82);pointer-events:none">
+        <span style="position:absolute;inset:-3px;border:3px solid #fff;border-radius:50%;animation:ppPulse 3.4s ease-out infinite"></span>
+        <span style="font:800 28px/1 'Archivo',sans-serif">#01</span>
+        <span style="font:600 8.5px/1.4 'Archivo',sans-serif;letter-spacing:.18em">LEBANON</span>
+      </div>
+      <div style="position:absolute;left:0;right:0;bottom:0;padding:13px 18px;background:rgba(27,26,25,.92);color:#f7f3ec;font:600 9.5px/1.5 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase">Tickets, tags, stamps and language cards — twenty-one countries moving through the desk</div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 2 · TERMINAL STRIP ░░ -->
+<section id="terminal" style="background:#1b1a19;color:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div id="pp-ticker-track" style="display:flex;width:max-content;animation:ppTick 46s linear infinite;border-bottom:2px solid rgba(247,243,236,.25)"></div>
+  <div style="display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,.65fr)">
+    <div style="border-right:2px solid rgba(247,243,236,.25);padding:34px 44px 38px">
+      <div data-rv="up" style="display:flex;align-items:center;gap:10px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#f2b30c;margin-bottom:22px">
+        <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Departures · today
+      </div>
+      <div style="display:grid;grid-template-columns:78px minmax(0,1fr) 120px 118px;gap:0;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979;padding-bottom:10px;border-bottom:2px solid rgba(247,243,236,.25)">
+        <span>Time</span><span>Destination</span><span>Gate</span><span>Status</span>
+      </div>
+      <div data-rv="left" style="display:grid;grid-template-columns:78px minmax(0,1fr) 120px 118px;align-items:center;gap:0;padding:13px 0;border-bottom:1px solid rgba(247,243,236,.2)"><span style="font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em;color:#f2b30c">12:30</span><span style="font:800 17px/1.1 'Archivo',sans-serif;letter-spacing:-.02em">LEBANON</span><span style="font:600 10.5px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#bab6b6">Levant · MED-12</span><span style="font:800 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;padding:5px 8px;background:#ec3013;color:#fff;justify-self:start">BOARDING</span></div>
+      <div data-rv="left" data-rv-d="70" style="display:grid;grid-template-columns:78px minmax(0,1fr) 120px 118px;align-items:center;gap:0;padding:13px 0;border-bottom:1px solid rgba(247,243,236,.2)"><span style="font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em;color:#f2b30c">14:00</span><span style="font:800 17px/1.1 'Archivo',sans-serif;letter-spacing:-.02em">GREECE</span><span style="font:600 10.5px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#bab6b6">Aegean · MED-23</span><span style="font:800 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;padding:5px 8px;background:#f2b30c;color:#1b1a19;justify-self:start">ON TIME</span></div>
+      <div data-rv="left" data-rv-d="140" style="display:grid;grid-template-columns:78px minmax(0,1fr) 120px 118px;align-items:center;gap:0;padding:13px 0;border-bottom:1px solid rgba(247,243,236,.2)"><span style="font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em;color:#f2b30c">16:15</span><span style="font:800 17px/1.1 'Archivo',sans-serif;letter-spacing:-.02em">MOROCCO</span><span style="font:600 10.5px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#bab6b6">N. Africa · MED-55</span><span style="font:800 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;padding:5px 8px;background:rgba(247,243,236,.18);color:#f7f3ec;justify-self:start">SERVING</span></div>
+      <div data-rv="left" data-rv-d="210" style="display:grid;grid-template-columns:78px minmax(0,1fr) 120px 118px;align-items:center;gap:0;padding:13px 0;border-bottom:1px solid rgba(247,243,236,.2)"><span style="font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em;color:#f2b30c">19:40</span><span style="font:800 17px/1.1 'Archivo',sans-serif;letter-spacing:-.02em">SPAIN</span><span style="font:600 10.5px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#bab6b6">Iberia · MED-32</span><span style="font:800 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;padding:5px 8px;background:#f2b30c;color:#1b1a19;justify-self:start">FINAL CALL</span></div>
+      <div data-rv="left" data-rv-d="280" style="display:grid;grid-template-columns:78px minmax(0,1fr) 120px 118px;align-items:center;gap:0;padding:13px 0;border-bottom:1px solid rgba(247,243,236,.2)"><span style="font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em;color:#f2b30c">21:10</span><span style="font:800 17px/1.1 'Archivo',sans-serif;letter-spacing:-.02em">TÜRKIYE</span><span style="font:600 10.5px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#bab6b6">Aegean · MED-21</span><span style="font:800 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;padding:5px 8px;background:rgba(247,243,236,.18);color:#f7f3ec;justify-self:start">ON TIME</span></div>
+    </div>
+    <div style="padding:34px 32px 38px;display:flex;flex-direction:column;gap:0">
+      <div data-rv="right" style="padding:15px 0;border-bottom:1px solid rgba(247,243,236,.2)"><div style="font:800 34px/1 'Archivo',sans-serif;letter-spacing:-.035em;color:#f2b30c">21</div><div style="font:600 9.5px/1.45 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#bab6b6;margin-top:6px">Destinations in rotation</div></div>
+      <div data-rv="right" data-rv-d="80" style="padding:15px 0;border-bottom:1px solid rgba(247,243,236,.2)"><div style="font:800 34px/1 'Archivo',sans-serif;letter-spacing:-.035em;color:#f7f3ec">5</div><div style="font:600 9.5px/1.45 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#bab6b6;margin-top:6px">Route zones in the hall</div></div>
+      <div data-rv="right" data-rv-d="160" style="padding:15px 0;border-bottom:1px solid rgba(247,243,236,.2)"><div style="font:800 34px/1 'Archivo',sans-serif;letter-spacing:-.035em;color:#f7f3ec">240</div><div style="font:600 9.5px/1.45 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#bab6b6;margin-top:6px">Seats in the sky hall</div></div>
+      <div data-rv="right" data-rv-d="240" style="padding:15px 0;border-bottom:1px solid rgba(247,243,236,.2)"><div style="font:800 34px/1 'Archivo',sans-serif;letter-spacing:-.035em;color:#ec3013">1</div><div style="font:600 9.5px/1.45 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#bab6b6;margin-top:6px">Passport to fill</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 3 · BOARDING PASS PRINT SEQUENCE ░░ -->
+<section id="pass" data-pass-sec="1" style="position:relative;background:#1b1a19;color:#f7f3ec;padding:86px 0 96px;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(247,243,236,.07) 1px,transparent 1px);background-size:100% 64px"></div>
+  <div style="position:relative;max-width:1040px;margin:0 auto;padding:0 32px;text-align:center">
+    <div data-rv="up" style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#f2b30c;margin-bottom:18px">At the desk · printing your ticket</div>
+    <h2 data-word-group="1" id="gh-pass" style="font:800 clamp(34px,4.6vw,66px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 auto 12px;max-width:16ch"></h2>
+    <p data-rv="up" data-rv-d="120" style="font:400 15.5px/1.55 'Archivo',sans-serif;color:#bab6b6;max-width:56ch;margin:0 auto 46px">As you arrive, you check in at the desk, receive your boarding pass, and watch your route come to life. Keep scrolling to print it.</p>
+
+    <div style="position:relative;max-width:560px;margin:0 auto">
+      <div style="height:26px;background:#605d5d;border:2px solid #f7f3ec;border-bottom:0;position:relative;z-index:3">
+        <div style="position:absolute;left:14px;right:14px;top:9px;height:6px;background:#1b1a19"></div>
+      </div>
+      <div style="overflow:hidden;border:2px solid #f7f3ec;border-top:0;padding:0 0 0;background:rgba(247,243,236,.05)">
+        <div data-pass-card="1" style="background:#f7f3ec;color:#1b1a19;margin:0;transform:translateY(-100%);text-align:left">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:13px 18px;background:#ec3013;color:#fff">
+            <span style="font:800 12px/1 'Archivo',sans-serif;letter-spacing:.1em">PATTY PASSPORT ROUTES</span>
+            <span style="font:600 10px/1 'Archivo',sans-serif;letter-spacing:.16em">PP-LBN-2026</span>
+          </div>
+          <div style="padding:20px 18px 8px;display:grid;grid-template-columns:104px 1fr;row-gap:0">
+            <div data-pass-row="1" style="grid-column:1/3;display:grid;grid-template-columns:104px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.18);opacity:0"><span style="font:600 10px/1.3 'Archivo',sans-serif;letter-spacing:.15em;text-transform:uppercase;color:#7d7979">Destination</span><span style="font:800 15px/1.15 'Archivo',sans-serif;letter-spacing:-.01em">LEBANON</span></div>
+            <div data-pass-row="2" style="grid-column:1/3;display:grid;grid-template-columns:104px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.18);opacity:0"><span style="font:600 10px/1.3 'Archivo',sans-serif;letter-spacing:.15em;text-transform:uppercase;color:#7d7979">Route</span><span style="font:800 15px/1.15 'Archivo',sans-serif;letter-spacing:-.01em">MED-12 · Levant</span></div>
+            <div data-pass-row="3" style="grid-column:1/3;display:grid;grid-template-columns:104px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.18);opacity:0"><span style="font:600 10px/1.3 'Archivo',sans-serif;letter-spacing:.15em;text-transform:uppercase;color:#7d7979">Passenger</span><span style="font:800 15px/1.15 'Archivo',sans-serif;letter-spacing:-.01em">MAZEN</span></div>
+            <div data-pass-row="4" style="grid-column:1/3;display:grid;grid-template-columns:104px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.18);opacity:0"><span style="font:600 10px/1.3 'Archivo',sans-serif;letter-spacing:.15em;text-transform:uppercase;color:#7d7979">Seat</span><span style="font:800 15px/1.15 'Archivo',sans-serif;letter-spacing:-.01em">TABLE 4</span></div>
+            <div data-pass-row="5" style="grid-column:1/3;display:grid;grid-template-columns:104px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.18);opacity:0"><span style="font:600 10px/1.3 'Archivo',sans-serif;letter-spacing:.15em;text-transform:uppercase;color:#7d7979">Meal</span><span style="font:800 15px/1.15 'Archivo',sans-serif;letter-spacing:-.01em">Beirut Street Shish Tawouk Combo</span></div>
+            <div data-pass-row="6" style="grid-column:1/3;display:grid;grid-template-columns:104px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.18);opacity:0"><span style="font:600 10px/1.3 'Archivo',sans-serif;letter-spacing:.15em;text-transform:uppercase;color:#7d7979">Gate</span><span style="font:800 15px/1.15 'Archivo',sans-serif;letter-spacing:-.01em">Levant Route</span></div>
+          </div>
+          <div style="margin:10px 0 0;border-top:2px dashed rgba(27,26,25,.45)"></div>
+          <div style="padding:16px 18px 20px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px">
+            <div style="flex:1">
+              <div style="font:600 9px/1.3 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979;margin-bottom:7px">Boarding number</div>
+              <div style="height:44px;overflow:hidden"><div data-pass-bar="1" style="height:100%;width:0;background:repeating-linear-gradient(90deg,#1b1a19 0 2px,transparent 2px 5px,#1b1a19 5px 9px,transparent 9px 13px)"></div></div>
+            </div>
+            <div data-pass-stamp="1" style="width:98px;height:98px;flex:none;border:3px solid #ec3013;color:#ec3013;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transform:rotate(-24deg) scale(2)">
+              <span style="font:800 21px/1 'Archivo',sans-serif">#01</span>
+              <span style="font:600 8px/1.4 'Archivo',sans-serif;letter-spacing:.16em">LEBANON</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:20px;display:flex;justify-content:center;gap:10px;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979">
+        <span data-pass-hint="1">Scroll to print</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 4 · MAP ░░ -->
+<section id="map" style="position:relative;background:#2b76c9;color:#fff;padding:90px 0 0;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.22) 1.5px,transparent 1.6px);background-size:30px 30px"></div>
+  <div style="position:relative;max-width:1180px;margin:0 auto;padding:0 32px">
+    <h2 data-word-group="1" id="gh-map" style="font:800 clamp(38px,5.4vw,80px)/.96 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 26px;max-width:22ch"></h2>
+    <div style="display:flex;flex-wrap:wrap;gap:26px;align-items:flex-end;justify-content:space-between;margin-bottom:34px">
+      <p data-rv="up" style="font:400 16px/1.55 'Archivo',sans-serif;max-width:46ch;margin:0;color:rgba(255,255,255,.92)">Five routes cross this sea. Every node is a kitchen, a playlist, a language and a stamp. Choose the node — the table becomes that place for an hour.</p>
+      <a href="route-map.html" style="display:inline-flex;align-items:center;min-width:240px;padding:15px 19px;background:#f2b30c;color:#1b1a19;text-decoration:none;font:800 14px/1.1 'Archivo',sans-serif" data-hover="background:#fff">Open the Route Map<span style="margin-left:auto">→</span></a>
+    </div>
+  </div>
+  <div style="position:relative;max-width:1180px;margin:0 auto;padding:0 32px 78px">
+    <div style="position:relative;border:2px solid #1b1a19;background:rgba(27,26,25,.16);height:460px;overflow:hidden">
+      <div class="pp-placeholder" style="position:absolute;inset:0;opacity:.55"><span>Drop the Mediterranean route map artwork</span></div>
+      <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.12) 0 1px,transparent 1px 58px),repeating-linear-gradient(90deg,rgba(255,255,255,.12) 0 1px,transparent 1px 58px);pointer-events:none"></div>
+      <div style="position:absolute;left:6%;right:6%;top:52%;height:2px;background-image:linear-gradient(90deg,#f2b30c 0 22px,transparent 22px 44px);background-size:44px 2px;animation:ppDash 1.6s linear infinite;pointer-events:none"></div>
+      <div data-rv="scale" style="position:absolute;left:8%;top:30%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:flex-start;gap:6px;pointer-events:none"><span style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#f7f3ec;color:#1b1a19;border:2px solid #1b1a19;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;white-space:nowrap;animation:ppSway 4.0s ease-in-out infinite">ESP<span style="font:600 9px/1;letter-spacing:.14em;opacity:.75">Iberia</span></span><span style="font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em;text-shadow:0 1px 0 rgba(27,26,25,.5)">Spain</span></div>
+      <div data-rv="scale" data-rv-d="70" style="position:absolute;left:20%;top:14%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:flex-start;gap:6px;pointer-events:none"><span style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#f2b30c;color:#1b1a19;border:2px solid #1b1a19;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;white-space:nowrap;animation:ppSway 4.7s ease-in-out infinite">FRA<span style="font:600 9px/1;letter-spacing:.14em;opacity:.75">Latin</span></span><span style="font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em;text-shadow:0 1px 0 rgba(27,26,25,.5)">France</span></div>
+      <div data-rv="scale" data-rv-d="140" style="position:absolute;left:33%;top:26%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:flex-start;gap:6px;pointer-events:none"><span style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#f7f3ec;color:#1b1a19;border:2px solid #1b1a19;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;white-space:nowrap;animation:ppSway 5.4s ease-in-out infinite">ITA<span style="font:600 9px/1;letter-spacing:.14em;opacity:.75">Latin</span></span><span style="font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em;text-shadow:0 1px 0 rgba(27,26,25,.5)">Italy</span></div>
+      <div data-rv="scale" data-rv-d="210" style="position:absolute;left:44%;top:12%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:flex-start;gap:6px;pointer-events:none"><span style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#f2b30c;color:#1b1a19;border:2px solid #1b1a19;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;white-space:nowrap;animation:ppSway 6.1s ease-in-out infinite">HRV<span style="font:600 9px/1;letter-spacing:.14em;opacity:.75">Adriatic</span></span><span style="font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em;text-shadow:0 1px 0 rgba(27,26,25,.5)">Croatia</span></div>
+      <div data-rv="scale" data-rv-d="280" style="position:absolute;left:55%;top:28%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:flex-start;gap:6px;pointer-events:none"><span style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#f7f3ec;color:#1b1a19;border:2px solid #1b1a19;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;white-space:nowrap;animation:ppSway 6.8s ease-in-out infinite">GRC<span style="font:600 9px/1;letter-spacing:.14em;opacity:.75">Aegean</span></span><span style="font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em;text-shadow:0 1px 0 rgba(27,26,25,.5)">Greece</span></div>
+      <div data-rv="scale" data-rv-d="350" style="position:absolute;left:70%;top:16%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:flex-start;gap:6px;pointer-events:none"><span style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#f2b30c;color:#1b1a19;border:2px solid #1b1a19;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;white-space:nowrap;animation:ppSway 4.0s ease-in-out infinite">TUR<span style="font:600 9px/1;letter-spacing:.14em;opacity:.75">Aegean</span></span><span style="font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em;text-shadow:0 1px 0 rgba(27,26,25,.5)">Türkiye</span></div>
+      <div data-rv="scale" data-rv-d="420" style="position:absolute;left:84%;top:34%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:flex-start;gap:6px;pointer-events:none"><span style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#ec3013;color:#fff;border:2px solid #1b1a19;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;white-space:nowrap;animation:ppSway 4.7s ease-in-out infinite">LBN<span style="font:600 9px/1;letter-spacing:.14em;opacity:.75">Levant</span></span><span style="font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em;text-shadow:0 1px 0 rgba(27,26,25,.5)">Lebanon</span></div>
+      <div data-rv="scale" data-rv-d="490" style="position:absolute;left:76%;top:72%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:flex-start;gap:6px;pointer-events:none"><span style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#f7f3ec;color:#1b1a19;border:2px solid #1b1a19;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;white-space:nowrap;animation:ppSway 5.4s ease-in-out infinite">EGY<span style="font:600 9px/1;letter-spacing:.14em;opacity:.75">N. Africa</span></span><span style="font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em;text-shadow:0 1px 0 rgba(27,26,25,.5)">Egypt</span></div>
+      <div data-rv="scale" data-rv-d="560" style="position:absolute;left:44%;top:74%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:flex-start;gap:6px;pointer-events:none"><span style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#f2b30c;color:#1b1a19;border:2px solid #1b1a19;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;white-space:nowrap;animation:ppSway 6.1s ease-in-out infinite">TUN<span style="font:600 9px/1;letter-spacing:.14em;opacity:.75">N. Africa</span></span><span style="font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em;text-shadow:0 1px 0 rgba(27,26,25,.5)">Tunisia</span></div>
+      <div data-rv="scale" data-rv-d="630" style="position:absolute;left:13%;top:78%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:flex-start;gap:6px;pointer-events:none"><span style="display:flex;align-items:center;gap:8px;padding:7px 10px;background:#ec3013;color:#fff;border:2px solid #1b1a19;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;white-space:nowrap;animation:ppSway 6.8s ease-in-out infinite">MAR<span style="font:600 9px/1;letter-spacing:.14em;opacity:.75">N. Africa</span></span><span style="font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em;text-shadow:0 1px 0 rgba(27,26,25,.5)">Morocco</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 5 · ROUTE OVERVIEW + ROUTE CHAPTERS ░░ -->
+<section id="regions" style="background:#f7f3ec;border-bottom:2px solid #1b1a19">
+  <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:18px;padding:64px 44px 26px">
+    <h2 data-word-group="1" id="gh-regions" style="font:800 clamp(34px,4.4vw,62px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0;max-width:20ch"></h2>
+    <p data-rv="up" data-rv-d="90" style="font:400 14.5px/1.55 'Archivo',sans-serif;color:#605d5d;max-width:40ch;margin:0">We don't hand you a grid of twenty-one flags. You pick a route first — then the country inside it.</p>
+  </div>
+
+  <div data-rv="left" style="display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);border-top:2px solid #1b1a19;background:#f2b30c;color:#1b1a19">
+    <div style="order:1;padding:42px 40px;display:flex;flex-direction:column;justify-content:space-between;gap:26px;border-right:2px solid rgba(27,26,25,.35)">
+      <div>
+        <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:14px"><span style="font:800 46px/1 'Archivo',sans-serif;letter-spacing:-.04em;opacity:.3">01</span><span style="font:600 10px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase">Chapter one</span></div>
+        <h3 style="font:800 clamp(30px,3.6vw,50px)/.98 'Archivo',sans-serif;letter-spacing:-.03em;margin:0 0 12px">LEVANT ROUTE</h3>
+        <p style="font:400 15px/1.55 'Archivo',sans-serif;margin:0;max-width:44ch;opacity:.86;text-wrap:pretty">Cedar mountains, souk smoke, toum and sumac. The loudest welcome on the sea.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <a href="destination.html#lbn" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" data-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">LBN<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">Lebanon</span></a>
+        <a href="destination.html#syr" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" data-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">SYR<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">Syria</span></a>
+        <a href="destination.html#pse" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" data-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">PSE<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">Palestine</span></a>
+      </div>
+    </div>
+    <div style="order:2;position:relative;min-height:330px">
+      <div class="pp-placeholder" style="position:absolute;inset:0"><span>Beirut street food at night — grill smoke, cedar hills</span></div>
+      <span style="position:absolute;right:18px;top:18px;font:800 12px/1 'Archivo',sans-serif;letter-spacing:.16em;padding:7px 10px;background:#1b1a19;color:#f7f3ec;pointer-events:none">3 DESTINATIONS</span>
+    </div>
+  </div>
+
+  <div data-rv="right" style="display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);border-top:2px solid #1b1a19;background:#2b76c9;color:#fff">
+    <div style="order:2;padding:42px 40px;display:flex;flex-direction:column;justify-content:space-between;gap:26px;border-right:2px solid rgba(27,26,25,.35)">
+      <div>
+        <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:14px"><span style="font:800 46px/1 'Archivo',sans-serif;letter-spacing:-.04em;opacity:.3">02</span><span style="font:600 10px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase">Chapter two</span></div>
+        <h3 style="font:800 clamp(30px,3.6vw,50px)/.98 'Archivo',sans-serif;letter-spacing:-.03em;margin:0 0 12px">AEGEAN ROUTE</h3>
+        <p style="font:400 15px/1.55 'Archivo',sans-serif;margin:0;max-width:44ch;opacity:.86;text-wrap:pretty">Island light, oregano, charcoal and lemon. Slow lunches that run into evening.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <a href="destination.html#tur" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" data-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">TUR<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">Türkiye</span></a>
+        <a href="destination.html#cyp" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" data-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">CYP<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">Cyprus</span></a>
+        <a href="destination.html#grc" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" data-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">GRC<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">Greece</span></a>
+      </div>
+    </div>
+    <div style="order:1;position:relative;min-height:330px">
+      <div class="pp-placeholder" style="position:absolute;inset:0"><span>Aegean island terrace — white stone, lemon trees, sea</span></div>
+      <span style="position:absolute;right:18px;top:18px;font:800 12px/1 'Archivo',sans-serif;letter-spacing:.16em;padding:7px 10px;background:#1b1a19;color:#f7f3ec;pointer-events:none">3 DESTINATIONS</span>
+    </div>
+  </div>
+
+  <div data-rv="left" style="display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);border-top:2px solid #1b1a19;background:#f7f3ec;color:#1b1a19">
+    <div style="order:1;padding:42px 40px;display:flex;flex-direction:column;justify-content:space-between;gap:26px;border-right:2px solid rgba(27,26,25,.35)">
+      <div>
+        <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:14px"><span style="font:800 46px/1 'Archivo',sans-serif;letter-spacing:-.04em;opacity:.3">03</span><span style="font:600 10px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase">Chapter three</span></div>
+        <h3 style="font:800 clamp(30px,3.6vw,50px)/.98 'Archivo',sans-serif;letter-spacing:-.03em;margin:0 0 12px">IBERIA &amp; LATIN ROUTE</h3>
+        <p style="font:400 15px/1.55 'Archivo',sans-serif;margin:0;max-width:44ch;opacity:.86;text-wrap:pretty">Plaza noise, bravas heat, olive oil and late dessert. Europe's warm south.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <a href="destination.html#esp" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" data-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">ESP<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">Spain</span></a>
+        <a href="destination.html#ita" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" data-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">ITA<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">Italy</span></a>
+        <a href="destination.html#fra" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" data-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">FRA<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">France</span></a>
+        <a href="destination.html#mco" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" data-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">MCO<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">Monaco</span></a>
+        <a href="destination.html#mlt" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" data-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">MLT<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">Malta</span></a>
+      </div>
+    </div>
+    <div style="order:2;position:relative;min-height:330px">
+      <div class="pp-placeholder" style="position:absolute;inset:0"><span>Madrid plaza at golden hour — long tables, olive oil</span></div>
+      <span style="position:absolute;right:18px;top:18px;font:800 12px/1 'Archivo',sans-serif;letter-spacing:.16em;padding:7px 10px;background:#1b1a19;color:#f7f3ec;pointer-events:none">5 DESTINATIONS</span>
+    </div>
+  </div>
+
+  <div data-rv="right" style="display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);border-top:2px solid #1b1a19;background:#e7e3dc;color:#1b1a19">
+    <div style="order:2;padding:42px 40px;display:flex;flex-direction:column;justify-content:space-between;gap:26px;border-right:2px solid rgba(27,26,25,.35)">
+      <div>
+        <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:14px"><span style="font:800 46px/1 'Archivo',sans-serif;letter-spacing:-.04em;opacity:.3">04</span><span style="font:600 10px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase">Chapter four</span></div>
+        <h3 style="font:800 clamp(30px,3.6vw,50px)/.98 'Archivo',sans-serif;letter-spacing:-.03em;margin:0 0 12px">ADRIATIC ROUTE</h3>
+        <p style="font:400 15px/1.55 'Archivo',sans-serif;margin:0;max-width:44ch;opacity:.86;text-wrap:pretty">Stone harbours, grill smoke, ajvar and walnut. The quiet coast that surprises.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <a href="destination.html#svn" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" data-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">SVN<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">Slovenia</span></a>
+        <a href="destination.html#hrv" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" data-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">HRV<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">Croatia</span></a>
+        <a href="destination.html#bih" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" data-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">BIH<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">Bosnia</span></a>
+        <a href="destination.html#mne" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" data-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">MNE<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">Montenegro</span></a>
+        <a href="destination.html#alb" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" data-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">ALB<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">Albania</span></a>
+      </div>
+    </div>
+    <div style="order:1;position:relative;min-height:330px">
+      <div class="pp-placeholder" style="position:absolute;inset:0"><span>Dalmatian stone harbour — fishing boats, grilled fish</span></div>
+      <span style="position:absolute;right:18px;top:18px;font:800 12px/1 'Archivo',sans-serif;letter-spacing:.16em;padding:7px 10px;background:#1b1a19;color:#f7f3ec;pointer-events:none">5 DESTINATIONS</span>
+    </div>
+  </div>
+
+  <div data-rv="left" style="display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);border-top:2px solid #1b1a19;background:#ec3013;color:#fff">
+    <div style="order:1;padding:42px 40px;display:flex;flex-direction:column;justify-content:space-between;gap:26px;border-right:2px solid rgba(27,26,25,.35)">
+      <div>
+        <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:14px"><span style="font:800 46px/1 'Archivo',sans-serif;letter-spacing:-.04em;opacity:.3">05</span><span style="font:600 10px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase">Chapter five</span></div>
+        <h3 style="font:800 clamp(30px,3.6vw,50px)/.98 'Archivo',sans-serif;letter-spacing:-.03em;margin:0 0 12px">NORTH AFRICAN ROUTE</h3>
+        <p style="font:400 15px/1.55 'Archivo',sans-serif;margin:0;max-width:44ch;opacity:.86;text-wrap:pretty">Spice markets, mint tea, harissa and orange blossom. The sea's other shore.</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px">
+        <a href="destination.html#egy" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" data-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">EGY<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">Egypt</span></a>
+        <a href="destination.html#lby" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" data-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">LBY<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">Libya</span></a>
+        <a href="destination.html#tun" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" data-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">TUN<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">Tunisia</span></a>
+        <a href="destination.html#dza" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" data-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">DZA<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">Algeria</span></a>
+        <a href="destination.html#mar" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid currentColor;text-decoration:none;color:inherit;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.1em" data-hover="background:#1b1a19;color:#f7f3ec;border-color:#1b1a19">MAR<span style="font:600 10px/1;letter-spacing:.06em;opacity:.8">Morocco</span></a>
+      </div>
+    </div>
+    <div style="order:2;position:relative;min-height:330px">
+      <div class="pp-placeholder" style="position:absolute;inset:0"><span>Marrakech spice market — pyramids of harissa and cumin</span></div>
+      <span style="position:absolute;right:18px;top:18px;font:800 12px/1 'Archivo',sans-serif;letter-spacing:.16em;padding:7px 10px;background:#1b1a19;color:#f7f3ec;pointer-events:none">5 DESTINATIONS</span>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ COUNTRY IDENTITY CARDS (data-driven carousel, all 21) ░░ -->
+<section id="identity" style="background:#1b1a19;color:#f7f3ec;padding:76px 0 82px;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="display:flex;flex-wrap:wrap-reverse;align-items:flex-end;justify-content:space-between;gap:20px;padding:0 44px 34px">
+    <p data-rv="left" style="font:400 15px/1.55 'Archivo',sans-serif;color:#bab6b6;max-width:42ch;margin:0">Not trivia. Identity. Each destination arrives with the line that defines it, the plate that proves it, and the phrase you'll say out loud.</p>
+    <h2 data-rv="right" style="font:800 clamp(34px,4.6vw,64px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0;text-align:right;max-width:20ch;margin-left:auto">EVERY COUNTRY HAS A HEADLINE.</h2>
+  </div>
+  <div id="pp-identity-track" style="display:flex;gap:0;width:max-content;animation:ppTick 96s linear infinite"></div>
+</section>
+
+<!-- ░░ 7 · SOUNDTRACK ░░ -->
+<section id="culture" style="background:#f7f3ec;padding:80px 0 84px;border-bottom:2px solid #1b1a19">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px">
+    <div style="display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:44px;align-items:start">
+      <div style="order:2">
+        <h2 data-word-group="1" id="gh-culture" style="font:800 clamp(32px,4.2vw,58px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 16px"></h2>
+        <p data-rv="right" data-rv-d="80" style="font:400 15px/1.55 'Archivo',sans-serif;color:#605d5d;margin:0 0 20px">Each zone plays its destination — curated, never autoplay, always linkable. Language card on the table, playlist in the air, story on the pack.</p>
+        <div data-rv="right" data-rv-d="140" style="border:2px solid #1b1a19;padding:18px">
+          <div style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#605d5d;margin-bottom:12px">Now playing · Levant Route</div>
+          <div id="pp-eqbars-culture" style="display:flex;align-items:flex-end;gap:4px;height:70px;margin-bottom:14px"></div>
+          <div style="font:800 17px/1.1 'Archivo',sans-serif">BEIRUT CORNICHE, 7PM</div>
+          <div style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d">Oud, brass and slow drives along the sea — 42 tracks</div>
+        </div>
+      </div>
+      <div style="order:1;display:flex;flex-direction:column;gap:0;border-top:2px solid #1b1a19">
+        <div data-rv="left" style="display:flex;align-items:center;gap:14px;padding:15px 4px;border-bottom:2px solid rgba(27,26,25,.22)"><span style="width:44px;height:44px;flex:none;background:#f2b30c;color:#1b1a19;display:flex;align-items:center;justify-content:center;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.06em">LBN</span><span style="flex:1"><span style="display:block;font:800 15px/1.15 'Archivo',sans-serif">Beirut Corniche, 7pm</span><span style="display:block;font:400 12px/1.4 'Archivo',sans-serif;color:#605d5d">Oud, brass, slow sea drives</span></span><span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.12em;color:#7d7979">42 tracks</span></div>
+        <div data-rv="left" data-rv-d="80" style="display:flex;align-items:center;gap:14px;padding:15px 4px;border-bottom:2px solid rgba(27,26,25,.22)"><span style="width:44px;height:44px;flex:none;background:#2b76c9;color:#fff;display:flex;align-items:center;justify-content:center;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.06em">GRC</span><span style="flex:1"><span style="display:block;font:800 15px/1.15 'Archivo',sans-serif">Aegean Afternoon</span><span style="display:block;font:400 12px/1.4 'Archivo',sans-serif;color:#605d5d">Bouzouki, ferry horns, island calm</span></span><span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.12em;color:#7d7979">38 tracks</span></div>
+        <div data-rv="left" data-rv-d="160" style="display:flex;align-items:center;gap:14px;padding:15px 4px;border-bottom:2px solid rgba(27,26,25,.22)"><span style="width:44px;height:44px;flex:none;background:#ec3013;color:#fff;display:flex;align-items:center;justify-content:center;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.06em">MAR</span><span style="flex:1"><span style="display:block;font:800 15px/1.15 'Archivo',sans-serif">Medina After Dark</span><span style="display:block;font:400 12px/1.4 'Archivo',sans-serif;color:#605d5d">Gnawa bass, hand drums, night market</span></span><span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.12em;color:#7d7979">45 tracks</span></div>
+        <div data-rv="left" data-rv-d="240" style="display:flex;align-items:center;gap:14px;padding:15px 4px;border-bottom:2px solid rgba(27,26,25,.22)"><span style="width:44px;height:44px;flex:none;background:#1b1a19;color:#f7f3ec;display:flex;align-items:center;justify-content:center;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.06em">ESP</span><span style="flex:1"><span style="display:block;font:800 15px/1.15 'Archivo',sans-serif">Plaza Hour</span><span style="display:block;font:400 12px/1.4 'Archivo',sans-serif;color:#605d5d">Flamenco guitar, brass, late sun</span></span><span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.12em;color:#7d7979">36 tracks</span></div>
+        <div data-rv="left" data-rv-d="320" style="display:flex;align-items:center;gap:14px;padding:15px 4px;border-bottom:2px solid rgba(27,26,25,.22)"><span style="width:44px;height:44px;flex:none;background:#e7e3dc;color:#1b1a19;display:flex;align-items:center;justify-content:center;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.06em">TUR</span><span style="flex:1"><span style="display:block;font:800 15px/1.15 'Archivo',sans-serif">Two Seas</span><span style="display:block;font:400 12px/1.4 'Archivo',sans-serif;color:#605d5d">Saz, city pop, ferry rhythm</span></span><span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.12em;color:#7d7979">40 tracks</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 8 · NATURE ROUTES ░░ -->
+<section id="nature" style="position:relative;background:#e7e3dc;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div data-par="0.08" style="position:absolute;right:-90px;top:-60px;width:360px;height:360px;border:2px solid rgba(27,26,25,.18);border-radius:50%"></div>
+  <div style="position:relative;max-width:1400px;margin:0 auto;padding:74px 44px 20px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px">
+      <div>
+        <div data-rv="up" style="display:inline-block;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;background:#1b1a19;color:#f2b30c;padding:7px 11px;margin-bottom:20px">Nature routes</div>
+        <h2 data-word-group="1" id="gh-nature" style="font:800 clamp(34px,4.8vw,70px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 14px;max-width:17ch"></h2>
+        <p data-rv="up" data-rv-d="130" style="font:400 16px/1.55 'Archivo',sans-serif;color:#444141;max-width:44ch;margin:0">Not just different destinations. Different worlds — the mountain, the island, the grove, the harbour and the desert that each kitchen grew out of.</p>
+      </div>
+      <div data-rv="up" data-rv-d="180" style="font:600 10px/1.7 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#605d5d;text-align:right">Landscape · climate · harvest<br>printed on every destination pack</div>
+    </div>
+  </div>
+  <div style="position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));border-top:2px solid #1b1a19;margin-top:44px">
+    <div data-rv="up" style="border-right:2px solid #1b1a19;background:#f7f3ec;display:flex;flex-direction:column">
+      <div style="position:relative;height:250px;border-bottom:2px solid #1b1a19"><div class="pp-placeholder" style="position:absolute;inset:0"><span>Cedar forest on a Lebanese mountain slope</span></div><span style="position:absolute;left:0;top:0;padding:7px 10px;background:#f2b30c;color:#1b1a19;font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;pointer-events:none">LEVANT</span></div>
+      <div style="padding:20px 18px 22px;display:flex;flex-direction:column;gap:12px;flex:1"><h3 style="font:800 23px/1.02 'Archivo',sans-serif;letter-spacing:-.025em;margin:0">Cedar Highlands</h3><p style="font:400 13.5px/1.5 'Archivo',sans-serif;color:#605d5d;margin:0">Snow on the mountain, citrus on the coast, and a valley of vines between them.</p>
+        <div style="margin-top:auto;display:flex;flex-direction:column;gap:0;border-top:2px solid rgba(27,26,25,.2)">
+          <span style="display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.16);font:600 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#1b1a19"><span style="width:8px;height:8px;flex:none;background:#f2b30c"></span>Cedar forest</span>
+          <span style="display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.16);font:600 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#1b1a19"><span style="width:8px;height:8px;flex:none;background:#f2b30c"></span>Citrus terraces</span>
+          <span style="display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.16);font:600 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#1b1a19"><span style="width:8px;height:8px;flex:none;background:#f2b30c"></span>Bekaa vineyards</span>
+        </div>
+      </div>
+    </div>
+    <div data-rv="up" data-rv-d="80" style="border-right:2px solid #1b1a19;background:#f7f3ec;display:flex;flex-direction:column">
+      <div style="position:relative;height:250px;border-bottom:2px solid #1b1a19"><div class="pp-placeholder" style="position:absolute;inset:0"><span>Aegean coastline with olive trees and white rock</span></div><span style="position:absolute;left:0;top:0;padding:7px 10px;background:#2b76c9;color:#fff;font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;pointer-events:none">AEGEAN</span></div>
+      <div style="padding:20px 18px 22px;display:flex;flex-direction:column;gap:12px;flex:1"><h3 style="font:800 23px/1.02 'Archivo',sans-serif;letter-spacing:-.025em;margin:0">Island Light</h3><p style="font:400 13.5px/1.5 'Archivo',sans-serif;color:#605d5d;margin:0">Wind-shaped olive trees, white rock and the clearest water on the sea.</p>
+        <div style="margin-top:auto;display:flex;flex-direction:column;gap:0;border-top:2px solid rgba(27,26,25,.2)">
+          <span style="display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.16);font:600 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#1b1a19"><span style="width:8px;height:8px;flex:none;background:#2b76c9"></span>Wild oregano</span>
+          <span style="display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.16);font:600 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#1b1a19"><span style="width:8px;height:8px;flex:none;background:#2b76c9"></span>Olive groves</span>
+          <span style="display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.16);font:600 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#1b1a19"><span style="width:8px;height:8px;flex:none;background:#2b76c9"></span>Volcanic coastline</span>
+        </div>
+      </div>
+    </div>
+    <div data-rv="up" data-rv-d="160" style="border-right:2px solid #1b1a19;background:#f7f3ec;display:flex;flex-direction:column">
+      <div style="position:relative;height:250px;border-bottom:2px solid #1b1a19"><div class="pp-placeholder" style="position:absolute;inset:0"><span>Andalusian olive grove rows at golden hour</span></div><span style="position:absolute;left:0;top:0;padding:7px 10px;background:#f7f3ec;color:#1b1a19;font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;pointer-events:none">IBERIA &amp; LATIN</span></div>
+      <div style="padding:20px 18px 22px;display:flex;flex-direction:column;gap:12px;flex:1"><h3 style="font:800 23px/1.02 'Archivo',sans-serif;letter-spacing:-.025em;margin:0">The Long Grove</h3><p style="font:400 13.5px/1.5 'Archivo',sans-serif;color:#605d5d;margin:0">Silver olive rows, orange streets and the smell of rosemary on hot stone.</p>
+        <div style="margin-top:auto;display:flex;flex-direction:column;gap:0;border-top:2px solid rgba(27,26,25,.2)">
+          <span style="display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.16);font:600 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#1b1a19"><span style="width:8px;height:8px;flex:none;background:#f7f3ec"></span>Olive plains</span>
+          <span style="display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.16);font:600 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#1b1a19"><span style="width:8px;height:8px;flex:none;background:#f7f3ec"></span>Orange orchards</span>
+          <span style="display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.16);font:600 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#1b1a19"><span style="width:8px;height:8px;flex:none;background:#f7f3ec"></span>Rosemary scrub</span>
+        </div>
+      </div>
+    </div>
+    <div data-rv="up" data-rv-d="240" style="border-right:2px solid #1b1a19;background:#f7f3ec;display:flex;flex-direction:column">
+      <div style="position:relative;height:250px;border-bottom:2px solid #1b1a19"><div class="pp-placeholder" style="position:absolute;inset:0"><span>Croatian karst cliffs with pines above green water</span></div><span style="position:absolute;left:0;top:0;padding:7px 10px;background:#e7e3dc;color:#1b1a19;font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;pointer-events:none">ADRIATIC</span></div>
+      <div style="padding:20px 18px 22px;display:flex;flex-direction:column;gap:12px;flex:1"><h3 style="font:800 23px/1.02 'Archivo',sans-serif;letter-spacing:-.025em;margin:0">Stone &amp; Pine</h3><p style="font:400 13.5px/1.5 'Archivo',sans-serif;color:#605d5d;margin:0">Karst cliffs dropping into green water, black pine and fig at the harbour wall.</p>
+        <div style="margin-top:auto;display:flex;flex-direction:column;gap:0;border-top:2px solid rgba(27,26,25,.2)">
+          <span style="display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.16);font:600 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#1b1a19"><span style="width:8px;height:8px;flex:none;background:#e7e3dc"></span>Black pine</span>
+          <span style="display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.16);font:600 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#1b1a19"><span style="width:8px;height:8px;flex:none;background:#e7e3dc"></span>Fig and walnut</span>
+          <span style="display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.16);font:600 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#1b1a19"><span style="width:8px;height:8px;flex:none;background:#e7e3dc"></span>Karst cliffs</span>
+        </div>
+      </div>
+    </div>
+    <div data-rv="up" data-rv-d="320" style="border-right:2px solid #1b1a19;background:#f7f3ec;display:flex;flex-direction:column">
+      <div style="position:relative;height:250px;border-bottom:2px solid #1b1a19"><div class="pp-placeholder" style="position:absolute;inset:0"><span>Date palm oasis at the edge of the desert</span></div><span style="position:absolute;left:0;top:0;padding:7px 10px;background:#ec3013;color:#fff;font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;pointer-events:none">N. AFRICA</span></div>
+      <div style="padding:20px 18px 22px;display:flex;flex-direction:column;gap:12px;flex:1"><h3 style="font:800 23px/1.02 'Archivo',sans-serif;letter-spacing:-.025em;margin:0">Desert Edge</h3><p style="font:400 13.5px/1.5 'Archivo',sans-serif;color:#605d5d;margin:0">Date palms at the oasis, argan on the hills, mint in every glass.</p>
+        <div style="margin-top:auto;display:flex;flex-direction:column;gap:0;border-top:2px solid rgba(27,26,25,.2)">
+          <span style="display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.16);font:600 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#1b1a19"><span style="width:8px;height:8px;flex:none;background:#ec3013"></span>Date palms</span>
+          <span style="display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.16);font:600 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#1b1a19"><span style="width:8px;height:8px;flex:none;background:#ec3013"></span>Argan groves</span>
+          <span style="display:flex;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid rgba(27,26,25,.16);font:600 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#1b1a19"><span style="width:8px;height:8px;flex:none;background:#ec3013"></span>Mint gardens</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ GARDEN OF DESTINATIONS (brief §5.10 — exterior/parking/tree-per-country, folded into Home) ░░ -->
+<section id="garden" style="position:relative;background:#1b1a19;color:#f7f3ec;padding:78px 0 84px;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:relative;max-width:1240px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:36px">
+      <div>
+        <div data-rv="up" style="display:inline-block;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;background:#f2b30c;color:#1b1a19;padding:7px 11px;margin-bottom:20px">At the terminal</div>
+        <h2 data-word-group="1" id="gh-garden" style="font:800 clamp(34px,4.8vw,66px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 14px;max-width:17ch"></h2>
+        <p data-rv="up" data-rv-d="130" style="font:400 15.5px/1.55 'Archivo',sans-serif;color:#bab6b6;max-width:52ch;margin:0">Outside the sky hall: forty to fifty parking spaces and a Mediterranean garden, one tree or palm planted per country, each with its own story plaque. Walk the row before check-in — it's the route map, growing.</p>
+      </div>
+      <div data-rv="up" data-rv-d="180" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:2px solid rgba(247,243,236,.3);min-width:300px">
+        <div style="padding:12px 16px 4px;border-right:1px solid rgba(247,243,236,.22)"><div style="font:800 26px/1 'Archivo',sans-serif;letter-spacing:-.02em;color:#f2b30c">40–50</div><div style="font:600 9px/1.4 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#bab6b6;margin-top:4px">Parking spaces</div></div>
+        <div style="padding:12px 16px 4px;border-right:1px solid rgba(247,243,236,.22)"><div style="font:800 26px/1 'Archivo',sans-serif;letter-spacing:-.02em;color:#f7f3ec">21</div><div style="font:600 9px/1.4 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#bab6b6;margin-top:4px">Trees, one per country</div></div>
+        <div style="padding:12px 16px 4px"><div style="font:800 26px/1 'Archivo',sans-serif;letter-spacing:-.02em;color:#ec3013">1</div><div style="font:600 9px/1.4 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#bab6b6;margin-top:4px">Plaza at the centre</div></div>
+      </div>
+    </div>
+
+    <div data-rv="up" data-rv-d="80" style="position:relative;height:220px;border:2px solid #f7f3ec;margin-bottom:0">
+      <div class="pp-placeholder" style="position:absolute;inset:0"><span>Aerial view of the garden — parking rows framing a tree-lined plaza</span></div>
+      <span style="position:absolute;left:0;top:0;padding:7px 10px;background:#f2b30c;color:#1b1a19;font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;pointer-events:none">EXTERIOR PLAN</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));border-left:2px solid rgba(247,243,236,.3);margin-top:0">
+      <div data-rv="up" style="border-right:2px solid rgba(247,243,236,.3);border-bottom:2px solid rgba(247,243,236,.3);padding:20px 18px 22px;background:#f2b30c;color:#1b1a19"><span style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.7">Plaque 01</span><p style="font:600 15px/1.4 'Archivo',sans-serif;margin:8px 0 0">Tree dedicated to Greece — olives, islands and stone.</p></div>
+      <div data-rv="up" data-rv-d="60" style="border-right:2px solid rgba(247,243,236,.3);border-bottom:2px solid rgba(247,243,236,.3);padding:20px 18px 22px;background:#ec3013;color:#fff"><span style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75">Plaque 02</span><p style="font:600 15px/1.4 'Archivo',sans-serif;margin:8px 0 0">Tree dedicated to Lebanon — cedars and mountains.</p></div>
+      <div data-rv="up" data-rv-d="120" style="border-right:2px solid rgba(247,243,236,.3);border-bottom:2px solid rgba(247,243,236,.3);padding:20px 18px 22px;background:#2b76c9;color:#fff"><span style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75">Plaque 03</span><p style="font:600 15px/1.4 'Archivo',sans-serif;margin:8px 0 0">Tree dedicated to Morocco — oranges and spices.</p></div>
+      <div data-rv="up" data-rv-d="180" style="border-right:2px solid rgba(247,243,236,.3);border-bottom:2px solid rgba(247,243,236,.3);padding:20px 18px 22px;background:#e7e3dc;color:#1b1a19"><span style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.7">Plaque 04</span><p style="font:600 15px/1.4 'Archivo',sans-serif;margin:8px 0 0">Tree dedicated to Spain — olive rows and long afternoons.</p></div>
+      <div data-rv="up" data-rv-d="240" style="border-right:2px solid rgba(247,243,236,.3);border-bottom:2px solid rgba(247,243,236,.3);padding:20px 18px 22px;background:#f7f3ec;color:#1b1a19"><span style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.7">Plaque 05</span><p style="font:600 15px/1.4 'Archivo',sans-serif;margin:8px 0 0">Tree dedicated to Türkiye — two seas and grill smoke.</p></div>
+      <div data-rv="up" data-rv-d="300" style="border-right:2px solid rgba(247,243,236,.3);border-bottom:2px solid rgba(247,243,236,.3);padding:20px 18px 22px;background:#f2b30c;color:#1b1a19"><span style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.7">Plaque 06</span><p style="font:600 15px/1.4 'Archivo',sans-serif;margin:8px 0 0">Tree dedicated to Croatia — black pine and karst stone.</p></div>
+      <div data-rv="up" data-rv-d="360" style="border-right:2px solid rgba(247,243,236,.3);border-bottom:2px solid rgba(247,243,236,.3);padding:20px 18px 22px;background:#ec3013;color:#fff"><span style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75">Plaque 07</span><p style="font:600 15px/1.4 'Archivo',sans-serif;margin:8px 0 0">Tree dedicated to Tunisia — harissa red and old olive groves.</p></div>
+      <div data-rv="up" data-rv-d="420" style="border-right:2px solid rgba(247,243,236,.3);border-bottom:2px solid rgba(247,243,236,.3);padding:20px 18px 22px;background:#2b76c9;color:#fff"><span style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75">Plaque 08</span><p style="font:600 15px/1.4 'Archivo',sans-serif;margin:8px 0 0">Tree dedicated to Egypt — palm fronds and river silt.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 9 · PASSPORT & REWARDS ░░ -->
+<section id="passport" style="position:relative;background:#f7f3ec;padding:82px 0 88px;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div data-par="0.1" style="position:absolute;left:-120px;bottom:-80px;width:420px;height:420px;border:2px solid rgba(236,48,19,.25);border-radius:50%"></div>
+  <div style="position:relative;max-width:1240px;margin:0 auto;padding:0 32px">
+    <div style="text-align:center;margin-bottom:46px">
+      <div data-rv="up" style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#ae1800;margin-bottom:16px">The passport</div>
+      <h2 data-word-group="1" id="gh-passport" style="font:800 clamp(36px,5vw,74px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 auto 14px;max-width:18ch"></h2>
+      <p data-rv="up" data-rv-d="130" style="font:400 15.5px/1.55 'Archivo',sans-serif;color:#605d5d;max-width:56ch;margin:0 auto">Every meal ends the same way: the crew stamps your page and asks where we're taking you next.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:0;border:2px solid #1b1a19;background:#fff">
+      <div style="padding:26px;border-right:2px solid #1b1a19">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px">
+          <span id="pp-passport-progress" style="font:600 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d"></span>
+          <span style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.12em;color:#ec3013">NEXT: SECRET BURGER</span>
+        </div>
+        <div id="pp-stamp-grid" style="position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(27,26,25,.35);border:2px solid #1b1a19"></div>
+      </div>
+      <div style="padding:26px">
+        <div style="font:600 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:18px">Reward ladder</div>
+        <div data-rv="left" style="display:flex;align-items:center;gap:16px;padding:15px 0;border-bottom:2px solid rgba(27,26,25,.2)"><span style="width:54px;height:54px;flex:none;background:#f2b30c;color:#1b1a19;display:flex;align-items:center;justify-content:center;font:800 20px/1 'Archivo',sans-serif">3</span><span style="flex:1"><span style="display:block;font:800 17px/1.1 'Archivo',sans-serif;letter-spacing:-.015em">Free country drink</span><span style="display:block;font:400 12.5px/1.4 'Archivo',sans-serif;color:#605d5d;margin-top:3px">Three destinations stamped</span></span><span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ae1800">UNLOCKED</span></div>
+        <div data-rv="left" data-rv-d="90" style="display:flex;align-items:center;gap:16px;padding:15px 0;border-bottom:2px solid rgba(27,26,25,.2)"><span style="width:54px;height:54px;flex:none;background:#f2b30c;color:#1b1a19;display:flex;align-items:center;justify-content:center;font:800 20px/1 'Archivo',sans-serif">5</span><span style="flex:1"><span style="display:block;font:800 17px/1.1 'Archivo',sans-serif;letter-spacing:-.015em">Free loaded fries</span><span style="display:block;font:400 12.5px/1.4 'Archivo',sans-serif;color:#605d5d;margin-top:3px">Five destinations stamped</span></span><span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ae1800">UNLOCKED</span></div>
+        <div data-rv="left" data-rv-d="180" style="display:flex;align-items:center;gap:16px;padding:15px 0;border-bottom:2px solid rgba(27,26,25,.2)"><span style="width:54px;height:54px;flex:none;background:#1b1a19;color:#f7f3ec;display:flex;align-items:center;justify-content:center;font:800 20px/1 'Archivo',sans-serif">8</span><span style="flex:1"><span style="display:block;font:800 17px/1.1 'Archivo',sans-serif;letter-spacing:-.015em">Secret destination burger</span><span style="display:block;font:400 12.5px/1.4 'Archivo',sans-serif;color:#605d5d;margin-top:3px">Eight destinations stamped</span></span><span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#605d5d">2 TO GO</span></div>
+        <div data-rv="left" data-rv-d="270" style="display:flex;align-items:center;gap:16px;padding:15px 0;border-bottom:2px solid rgba(27,26,25,.2)"><span style="width:54px;height:54px;flex:none;background:#ec3013;color:#fff;display:flex;align-items:center;justify-content:center;font:800 20px/1 'Archivo',sans-serif">21</span><span style="flex:1"><span style="display:block;font:800 17px/1.1 'Archivo',sans-serif;letter-spacing:-.015em">World Traveller buffet</span><span style="display:block;font:400 12.5px/1.4 'Archivo',sans-serif;color:#605d5d;margin-top:3px">The whole sea, on the house</span></span><span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#605d5d">15 TO GO</span></div>
+        <a href="rewards.html" style="display:inline-flex;align-items:center;min-width:100%;margin-top:22px;padding:16px 18px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 14px/1.1 'Archivo',sans-serif" data-hover="background:#ec3013">Start my passport<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 10 · KIDS EXPLORER KIT ░░ -->
+<section id="kit" style="position:relative;background:#f2b30c;color:#1b1a19;padding:78px 0 86px;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:relative;max-width:1240px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:40px;align-items:center">
+    <div style="position:relative;min-height:460px">
+      <div data-par="0.1" style="position:absolute;left:2%;top:1%;width:208px;background:#f7f3ec;color:#1b1a19;border:2px solid #1b1a19;box-shadow:14px 14px 0 rgba(27,26,25,.3);transform:rotate(-5deg);--r:-5deg;animation:ppDrift 10s ease-in-out 0s infinite;padding:12px"><div style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;margin-bottom:9px">JUNIOR PASSPORT</div><div style="position:relative;height:120px"><div class="pp-placeholder" style="position:absolute;inset:0"><span>Junior passport cover in a child's hands</span></div></div></div>
+      <div data-par="-0.12" style="position:absolute;left:45%;top:15%;width:226px;background:#fff;color:#1b1a19;border:2px solid #1b1a19;box-shadow:-12px 14px 0 rgba(27,26,25,.28);transform:rotate(4deg);--r:4deg;animation:ppDrift 12s ease-in-out .8s infinite;padding:12px"><div style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;margin-bottom:9px">ROUTE BOOKLET</div><div style="position:relative;height:140px"><div class="pp-placeholder" style="position:absolute;inset:0"><span>Open route booklet, one page per route</span></div></div></div>
+      <div data-par="0.16" style="position:absolute;left:8%;top:45%;width:198px;background:#2b76c9;color:#fff;border:2px solid #1b1a19;box-shadow:12px 12px 0 rgba(27,26,25,.3);transform:rotate(6deg);--r:6deg;animation:ppDrift 11s ease-in-out .4s infinite;padding:12px"><div style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;margin-bottom:9px">FLAG STICKER SHEET</div><div style="position:relative;height:118px"><div class="pp-placeholder" style="position:absolute;inset:0"><span>Sheet of 21 flag stickers, half peeled</span></div></div></div>
+      <div data-par="-0.08" style="position:absolute;left:50%;top:58%;width:188px;background:#ec3013;color:#fff;border:2px solid #1b1a19;box-shadow:-12px 12px 0 rgba(27,26,25,.3);transform:rotate(-7deg);--r:-7deg;animation:ppDrift 13s ease-in-out 1.2s infinite;padding:12px"><div style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;margin-bottom:9px">EXPLORER TOTE</div><div style="position:relative;height:110px"><div class="pp-placeholder" style="position:absolute;inset:0"><span>Kids explorer tote bag with goodie contents</span></div></div></div>
+      <div data-par="0.2" style="position:absolute;left:24%;top:78%;width:206px;background:#e7e3dc;color:#1b1a19;border:2px solid #1b1a19;box-shadow:12px 12px 0 rgba(27,26,25,.25);transform:rotate(2deg);--r:2deg;animation:ppDrift 9s ease-in-out .2s infinite;padding:12px"><div style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;margin-bottom:9px">DESTINATION POSTCARD</div><div style="position:relative;height:92px"><div class="pp-placeholder" style="position:absolute;inset:0"><span>Stamped destination postcard on the table</span></div></div></div>
+    </div>
+    <div>
+      <div data-rv="up" style="display:inline-block;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.22em;text-transform:uppercase;background:#1b1a19;color:#f2b30c;padding:7px 11px;margin-bottom:22px">Young explorers</div>
+      <h2 data-word-group="1" id="gh-kit" style="font:800 clamp(34px,4.8vw,68px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 18px;max-width:18ch"></h2>
+      <p data-rv="up" data-rv-d="130" style="font:400 15.5px/1.55 'Archivo',sans-serif;margin:0 0 26px;max-width:46ch">A junior passport, a route booklet, a sticker sheet of flags, a postcard from the destination — and a crew host running the games at birthdays.</p>
+      <div data-rv="up" data-rv-d="190" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;border-top:2px solid #1b1a19;margin-bottom:26px">
+        <div style="padding:18px 18px 20px;border-right:2px solid rgba(27,26,25,.3)"><div style="font:800 26px/1 'Archivo',sans-serif;letter-spacing:-.03em">€18</div><div style="font:800 13px/1.2 'Archivo',sans-serif;margin:8px 0 6px">Little Explorer · weekdays</div><div style="font:400 12px/1.45 'Archivo',sans-serif;opacity:.78">Min. 8 kids · kids burger, fries, drink, mini dessert, 2h play area, 3 stamps, goodie bag.</div></div>
+        <div style="padding:18px 18px 20px;border-right:2px solid rgba(27,26,25,.3)"><div style="font:800 26px/1 'Archivo',sans-serif;letter-spacing:-.03em">€22</div><div style="font:800 13px/1.2 'Archivo',sans-serif;margin:8px 0 6px">World Explorer · weekends</div><div style="font:400 12px/1.45 'Archivo',sans-serif;opacity:.78">Min. 10 kids · full country combo for the birthday child, crew host, games, decor, name on screen.</div></div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px">
+        <a href="events.html" style="display:inline-flex;align-items:center;min-width:262px;padding:16px 19px;background:#ec3013;color:#fff;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" data-hover="background:#1b1a19">Plan a birthday journey<span style="margin-left:auto">→</span></a>
+        <a href="junior-explorers.html" style="display:inline-flex;align-items:center;min-width:262px;padding:16px 19px;border:2px solid #1b1a19;color:#1b1a19;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" data-hover="background:#1b1a19;color:#f2b30c">Explore junior destinations<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 11 · ADULT TRAVEL KIT ░░ -->
+<section id="adultkit" style="position:relative;background:#f7f3ec;padding:78px 0 86px;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:relative;max-width:1240px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:44px;align-items:center">
+    <div>
+      <div data-rv="up" style="display:inline-block;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.22em;text-transform:uppercase;background:#1b1a19;color:#f7f3ec;padding:7px 11px;margin-bottom:22px">The adult travel kit</div>
+      <h2 data-word-group="1" id="gh-adultkit" style="font:800 clamp(34px,4.8vw,68px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 18px;max-width:16ch"></h2>
+      <p data-rv="up" data-rv-d="130" style="font:400 15.5px/1.55 'Archivo',sans-serif;color:#444141;margin:0 0 28px;max-width:46ch">Grown-up travellers get the full kit: the destination bag, the country booklet, the boarding ticket, the luggage tag and a card of phrases worth saying out loud before the plate lands.</p>
+      <div data-rv="up" data-rv-d="180" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));border-top:2px solid #1b1a19;margin-bottom:28px">
+        <div style="padding:16px 16px 18px;border-right:2px solid rgba(27,26,25,.25);border-bottom:2px solid rgba(27,26,25,.25)"><div style="font:800 11px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ae1800;margin-bottom:9px">Destination bag</div><div style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d">Canvas, route-printed, yours to carry out.</div></div>
+        <div style="padding:16px 16px 18px;border-right:2px solid rgba(27,26,25,.25);border-bottom:2px solid rgba(27,26,25,.25)"><div style="font:800 11px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#1b1a19;margin-bottom:9px">Country booklet</div><div style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d">Eight pages: history, map, market, recipe.</div></div>
+        <div style="padding:16px 16px 18px;border-right:2px solid rgba(27,26,25,.25);border-bottom:2px solid rgba(27,26,25,.25)"><div style="font:800 11px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ae1800;margin-bottom:9px">Boarding ticket &amp; tag</div><div style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d">Printed at the desk with your table number.</div></div>
+        <div style="padding:16px 16px 18px;border-right:2px solid rgba(27,26,25,.25);border-bottom:2px solid rgba(27,26,25,.25)"><div style="font:800 11px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#1b1a19;margin-bottom:9px">Phrase card</div><div style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d">Five words worth saying before the plate lands.</div></div>
+      </div>
+      <a href="booking.html" style="display:inline-flex;align-items:center;min-width:270px;padding:16px 19px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" data-hover="background:#ec3013">Reserve a travelling table<span style="margin-left:auto">→</span></a>
+    </div>
+    <div style="position:relative;min-height:470px">
+      <div data-par="0.12" style="position:absolute;left:3%;top:3%;width:216px;background:#1b1a19;color:#f7f3ec;border:2px solid #1b1a19;box-shadow:14px 14px 0 rgba(27,26,25,.22);transform:rotate(-4deg);--r:-4deg;animation:ppDrift 11s ease-in-out 0s infinite;padding:12px"><div style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;margin-bottom:9px">DESTINATION BAG</div><div style="position:relative;height:132px"><div class="pp-placeholder" style="position:absolute;inset:0"><span>Canvas destination bag with route print</span></div></div></div>
+      <div data-par="-0.1" style="position:absolute;left:47%;top:18%;width:212px;background:#f7f3ec;color:#1b1a19;border:2px solid #1b1a19;box-shadow:-12px 14px 0 rgba(27,26,25,.2);transform:rotate(5deg);--r:5deg;animation:ppDrift 13s ease-in-out .6s infinite;padding:12px"><div style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;margin-bottom:9px">COUNTRY BOOKLET</div><div style="position:relative;height:126px"><div class="pp-placeholder" style="position:absolute;inset:0"><span>Country booklet open at Lebanon spread</span></div></div></div>
+      <div data-par="0.18" style="position:absolute;left:6%;top:52%;width:186px;background:#ec3013;color:#fff;border:2px solid #1b1a19;box-shadow:12px 12px 0 rgba(27,26,25,.22);transform:rotate(7deg);--r:7deg;animation:ppDrift 10s ease-in-out .3s infinite;padding:12px"><div style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;margin-bottom:9px">LUGGAGE TAG</div><div style="position:relative;height:104px"><div class="pp-placeholder" style="position:absolute;inset:0"><span>Leather luggage tag stamped MED-12</span></div></div></div>
+      <div data-par="-0.07" style="position:absolute;left:48%;top:66%;width:198px;background:#f2b30c;color:#1b1a19;border:2px solid #1b1a19;box-shadow:-12px 12px 0 rgba(27,26,25,.2);transform:rotate(-6deg);--r:-6deg;animation:ppDrift 12s ease-in-out 1s infinite;padding:12px"><div style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;margin-bottom:9px">PHRASE CARD</div><div style="position:relative;height:108px"><div class="pp-placeholder" style="position:absolute;inset:0"><span>Phrase card — five words in the local language</span></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 12 · EVERYONE GETS A PASSPORT ░░ -->
+<section id="family" style="background:#2b76c9;color:#fff;padding:78px 0 84px;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:40px">
+      <h2 data-word-group="1" id="gh-family" style="font:800 clamp(34px,4.8vw,70px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0;max-width:16ch"></h2>
+      <p data-rv="up" data-rv-d="90" style="font:400 15.5px/1.55 'Archivo',sans-serif;max-width:40ch;margin:0;color:rgba(255,255,255,.92)">Junior, Explorer or Family — the same book, sized to who is travelling. Stamps pool together, so the table climbs the ladder as one crew.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));border:2px solid #1b1a19">
+      <div data-rv="up" style="background:#f7f3ec;color:#1b1a19;border-right:2px solid #1b1a19;padding:26px 22px 24px;display:flex;flex-direction:column;gap:16px"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px"><span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;opacity:.75">Ages 4 — 11</span><span style="width:40px;height:40px;flex:none;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font:800 11px/1 'Archivo',sans-serif;transform:rotate(-8deg)">JR</span></div><h3 style="font:800 30px/.98 'Archivo',sans-serif;letter-spacing:-.03em;margin:0">JUNIOR PASSPORT</h3><div style="display:flex;flex-direction:column;border-top:2px solid currentColor"><span style="padding:10px 0;border-bottom:1px solid currentColor;font:400 13px/1.4 'Archivo',sans-serif;opacity:.9">Sticker stamps and a colouring route map</span><span style="padding:10px 0;border-bottom:1px solid currentColor;font:400 13px/1.4 'Archivo',sans-serif;opacity:.9">Kids combo unlocks at every destination</span><span style="padding:10px 0;border-bottom:1px solid currentColor;font:400 13px/1.4 'Archivo',sans-serif;opacity:.9">Goodie bag at the third stamp</span></div><div style="margin-top:auto;font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em">Free with a kids combo</div></div>
+      <div data-rv="up" data-rv-d="100" style="background:#f2b30c;color:#1b1a19;border-right:2px solid #1b1a19;padding:26px 22px 24px;display:flex;flex-direction:column;gap:16px"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px"><span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;opacity:.75">Solo &amp; couples</span><span style="width:40px;height:40px;flex:none;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font:800 11px/1 'Archivo',sans-serif;transform:rotate(-8deg)">EX</span></div><h3 style="font:800 30px/.98 'Archivo',sans-serif;letter-spacing:-.03em;margin:0">EXPLORER PASSPORT</h3><div style="display:flex;flex-direction:column;border-top:2px solid currentColor"><span style="padding:10px 0;border-bottom:1px solid currentColor;font:400 13px/1.4 'Archivo',sans-serif;opacity:.9">Full 21-country stamp book</span><span style="padding:10px 0;border-bottom:1px solid currentColor;font:400 13px/1.4 'Archivo',sans-serif;opacity:.9">Reward ladder from 3 to 21 stamps</span><span style="padding:10px 0;border-bottom:1px solid currentColor;font:400 13px/1.4 'Archivo',sans-serif;opacity:.9">Country booklet with every new route</span></div><div style="margin-top:auto;font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em">Free at check-in</div></div>
+      <div data-rv="up" data-rv-d="200" style="background:#ec3013;color:#fff;border-right:2px solid #1b1a19;padding:26px 22px 24px;display:flex;flex-direction:column;gap:16px"><div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px"><span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;opacity:.75">Tables of 3+</span><span style="width:40px;height:40px;flex:none;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font:800 11px/1 'Archivo',sans-serif;transform:rotate(-8deg)">FM</span></div><h3 style="font:800 30px/.98 'Archivo',sans-serif;letter-spacing:-.03em;margin:0">FAMILY PASSPORT</h3><div style="display:flex;flex-direction:column;border-top:2px solid currentColor"><span style="padding:10px 0;border-bottom:1px solid currentColor;font:400 13px/1.4 'Archivo',sans-serif;opacity:.9">One book, stamps pooled across the table</span><span style="padding:10px 0;border-bottom:1px solid currentColor;font:400 13px/1.4 'Archivo',sans-serif;opacity:.9">Shared ladder — unlock together, faster</span><span style="padding:10px 0;border-bottom:1px solid currentColor;font:400 13px/1.4 'Archivo',sans-serif;opacity:.9">Birthday route night for the whole crew</span></div><div style="margin-top:auto;font:800 15px/1 'Archivo',sans-serif;letter-spacing:-.01em">Free · pools all seats</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 13 · INCLUSION / DIETARY ░░ -->
+<section id="welcome" style="background:#f7f3ec;padding:78px 0 84px;border-bottom:2px solid #1b1a19">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:38px">
+      <div>
+        <div data-rv="up" style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#ae1800;margin-bottom:16px">At every table</div>
+        <h2 data-word-group="1" id="gh-welcome" style="font:800 clamp(34px,4.8vw,70px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0;max-width:16ch"></h2>
+      </div>
+      <p data-rv="up" data-rv-d="130" style="font:400 15.5px/1.55 'Archivo',sans-serif;color:#605d5d;max-width:42ch;margin:0">Every destination is cooked so nobody is left ordering the side salad. Pick a lane below and the menu opens already filtered.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19">
+      <a href="menu.html" data-rv="up" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;padding:22px 20px 24px;background:#f7f3ec;color:#1b1a19;display:flex;flex-direction:column;gap:12px;min-height:212px;text-decoration:none;transition:background .2s ease,color .2s ease" data-hover="background:#1b1a19;color:#f7f3ec"><span style="width:42px;height:42px;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font:800 13px/1 'Archivo',sans-serif;letter-spacing:.04em">حلال</span><h3 style="font:800 21px/1.05 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">Halal</h3><p style="font:400 13px/1.5 'Archivo',sans-serif;margin:0;opacity:.85">Halal-certified meat across every route, no exceptions and no separate menu.</p><span style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.8">All 21 destinations<span style="font:800 14px/1 'Archivo',sans-serif">→</span></span></a>
+      <a href="menu.html" data-rv="up" data-rv-d="70" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;padding:22px 20px 24px;background:#e7e3dc;color:#1b1a19;display:flex;flex-direction:column;gap:12px;min-height:212px;text-decoration:none;transition:background .2s ease,color .2s ease" data-hover="background:#1b1a19;color:#f7f3ec"><span style="width:42px;height:42px;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font:800 13px/1 'Archivo',sans-serif;letter-spacing:.04em">כשר</span><h3 style="font:800 21px/1.05 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">Kosher-friendly</h3><p style="font:400 13px/1.5 'Archivo',sans-serif;margin:0;opacity:.85">Kosher-style preparation on request, with sealed suppliers listed at the desk.</p><span style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.8">On request<span style="font:800 14px/1 'Archivo',sans-serif">→</span></span></a>
+      <a href="menu.html" data-rv="up" data-rv-d="140" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;padding:22px 20px 24px;background:#f2b30c;color:#1b1a19;display:flex;flex-direction:column;gap:12px;min-height:212px;text-decoration:none;transition:background .2s ease,color .2s ease" data-hover="background:#1b1a19;color:#f7f3ec"><span style="width:42px;height:42px;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font:800 13px/1 'Archivo',sans-serif;letter-spacing:.04em">VEG</span><h3 style="font:800 21px/1.05 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">Vegetarian</h3><p style="font:400 13px/1.5 'Archivo',sans-serif;margin:0;opacity:.85">Every country has a vegetarian headline dish — not a substitution.</p><span style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.8">21 dishes<span style="font:800 14px/1 'Archivo',sans-serif">→</span></span></a>
+      <a href="menu.html" data-rv="up" data-rv-d="210" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;padding:22px 20px 24px;background:#2b76c9;color:#fff;display:flex;flex-direction:column;gap:12px;min-height:212px;text-decoration:none;transition:background .2s ease,color .2s ease" data-hover="background:#1b1a19;color:#f7f3ec"><span style="width:42px;height:42px;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font:800 13px/1 'Archivo',sans-serif;letter-spacing:.04em">VGN</span><h3 style="font:800 21px/1.05 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">Vegan</h3><p style="font:400 13px/1.5 'Archivo',sans-serif;margin:0;opacity:.85">Plant routes designed from the region's own cooking, dairy-free by origin.</p><span style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.8">14 dishes<span style="font:800 14px/1 'Archivo',sans-serif">→</span></span></a>
+      <a href="menu.html" data-rv="up" data-rv-d="280" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;padding:22px 20px 24px;background:#f7f3ec;color:#1b1a19;display:flex;flex-direction:column;gap:12px;min-height:212px;text-decoration:none;transition:background .2s ease,color .2s ease" data-hover="background:#1b1a19;color:#f7f3ec"><span style="width:42px;height:42px;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font:800 13px/1 'Archivo',sans-serif;letter-spacing:.04em">ALG</span><h3 style="font:800 21px/1.05 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">Allergy-aware</h3><p style="font:400 13px/1.5 'Archivo',sans-serif;margin:0;opacity:.85">Fourteen allergens mapped per dish, printed on the boarding ticket.</p><span style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.8">Full matrix<span style="font:800 14px/1 'Archivo',sans-serif">→</span></span></a>
+      <a href="junior-explorers.html" data-rv="up" data-rv-d="350" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;padding:22px 20px 24px;background:#ec3013;color:#fff;display:flex;flex-direction:column;gap:12px;min-height:212px;text-decoration:none;transition:background .2s ease,color .2s ease" data-hover="background:#1b1a19;color:#f7f3ec"><span style="width:42px;height:42px;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font:800 13px/1 'Archivo',sans-serif;letter-spacing:.04em">FAM</span><h3 style="font:800 21px/1.05 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">Family-friendly</h3><p style="font:400 13px/1.5 'Archivo',sans-serif;margin:0;opacity:.85">Kids portions, low-spice lanes, high chairs and an alcohol-free bar list.</p><span style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.8">Every service<span style="font:800 14px/1 'Archivo',sans-serif">→</span></span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 14 · MEET THE CREW ░░ -->
+<section id="crew" style="background:#1b1a19;color:#f7f3ec;padding:78px 0 84px;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="max-width:1300px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:38px">
+      <div>
+        <div data-rv="up" style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#f2b30c;margin-bottom:16px">On board today</div>
+        <h2 data-word-group="1" id="gh-crew" style="font:800 clamp(34px,4.8vw,70px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0;max-width:15ch"></h2>
+      </div>
+      <div data-rv="up" data-rv-d="130" style="display:flex;flex-direction:column;gap:14px;align-items:flex-start;max-width:42ch">
+        <p style="font:400 15.5px/1.55 'Archivo',sans-serif;color:#bab6b6;margin:0">Nobody here is "waitstaff". There's a host who reads the route, a desk that stamps your book, a guide who knows the country, and a kitchen that cooks it.</p>
+        <a href="our-story.html" style="display:inline-flex;align-items:center;min-width:250px;padding:15px 18px;background:#f2b30c;color:#1b1a19;text-decoration:none;font:800 14px/1.1 'Archivo',sans-serif" data-hover="background:#ec3013;color:#fff">Meet the full crew<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));border-left:2px solid #f7f3ec;border-top:2px solid #f7f3ec">
+      <div data-rv="up" style="border-right:2px solid #f7f3ec;border-bottom:2px solid #f7f3ec;display:flex;flex-direction:column"><div style="position:relative;height:230px;border-bottom:2px solid #f7f3ec"><div class="pp-placeholder" style="position:absolute;inset:0"><span>Route host welcoming guests at the door</span></div><span style="position:absolute;right:0;bottom:0;padding:6px 9px;background:#f2b30c;color:#1b1a19;font:800 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;pointer-events:none">RH</span></div><div style="padding:18px 16px 20px;display:flex;flex-direction:column;gap:9px;flex:1"><h3 style="font:800 20px/1.05 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">Route Host</h3><p style="font:400 13px/1.5 'Archivo',sans-serif;color:#bab6b6;margin:0">Greets the table, reads the route, and decides where you're flying tonight.</p></div></div>
+      <div data-rv="up" data-rv-d="80" style="border-right:2px solid #f7f3ec;border-bottom:2px solid #f7f3ec;display:flex;flex-direction:column"><div style="position:relative;height:230px;border-bottom:2px solid #f7f3ec"><div class="pp-placeholder" style="position:absolute;inset:0"><span>Crew member stamping a passport at the desk</span></div><span style="position:absolute;right:0;bottom:0;padding:6px 9px;background:#ec3013;color:#fff;font:800 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;pointer-events:none">PD</span></div><div style="padding:18px 16px 20px;display:flex;flex-direction:column;gap:9px;flex:1"><h3 style="font:800 20px/1.05 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">Passport Desk</h3><p style="font:400 13px/1.5 'Archivo',sans-serif;color:#bab6b6;margin:0">Prints the boarding ticket, stamps the book, tracks the ladder.</p></div></div>
+      <div data-rv="up" data-rv-d="160" style="border-right:2px solid #f7f3ec;border-bottom:2px solid #f7f3ec;display:flex;flex-direction:column"><div style="position:relative;height:230px;border-bottom:2px solid #f7f3ec"><div class="pp-placeholder" style="position:absolute;inset:0"><span>Guide explaining a country card to guests</span></div><span style="position:absolute;right:0;bottom:0;padding:6px 9px;background:#2b76c9;color:#fff;font:800 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;pointer-events:none">DG</span></div><div style="padding:18px 16px 20px;display:flex;flex-direction:column;gap:9px;flex:1"><h3 style="font:800 20px/1.05 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">Destination Guide</h3><p style="font:400 13px/1.5 'Archivo',sans-serif;color:#bab6b6;margin:0">Knows the country — the dish, the phrase, the story behind the plate.</p></div></div>
+      <div data-rv="up" data-rv-d="240" style="border-right:2px solid #f7f3ec;border-bottom:2px solid #f7f3ec;display:flex;flex-direction:column"><div style="position:relative;height:230px;border-bottom:2px solid #f7f3ec"><div class="pp-placeholder" style="position:absolute;inset:0"><span>Kitchen crew grilling at the pass</span></div><span style="position:absolute;right:0;bottom:0;padding:6px 9px;background:#f7f3ec;color:#1b1a19;font:800 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;pointer-events:none">KC</span></div><div style="padding:18px 16px 20px;display:flex;flex-direction:column;gap:9px;flex:1"><h3 style="font:800 20px/1.05 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">Kitchen Crew</h3><p style="font:400 13px/1.5 'Archivo',sans-serif;color:#bab6b6;margin:0">Cooks twenty-one countries without flattening any of them.</p></div></div>
+      <div data-rv="up" data-rv-d="320" style="border-right:2px solid #f7f3ec;border-bottom:2px solid #f7f3ec;display:flex;flex-direction:column"><div style="position:relative;height:230px;border-bottom:2px solid #f7f3ec"><div class="pp-placeholder" style="position:absolute;inset:0"><span>Table captain serving a full family table</span></div><span style="position:absolute;right:0;bottom:0;padding:6px 9px;background:#e7e3dc;color:#1b1a19;font:800 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;pointer-events:none">TC</span></div><div style="padding:18px 16px 20px;display:flex;flex-direction:column;gap:9px;flex:1"><h3 style="font:800 20px/1.05 'Archivo',sans-serif;letter-spacing:-.02em;margin:0">Table Captain</h3><p style="font:400 13px/1.5 'Archivo',sans-serif;color:#bab6b6;margin:0">Runs the service, the birthday games and the final stamp.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 15 · INVESTOR CTA ░░ -->
+<section id="invest" style="position:relative;background:#ec3013;color:#fff;padding:74px 0 78px;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(255,255,255,.14) 1px,transparent 1px);background-size:74px 100%"></div>
+  <div style="position:relative;max-width:1240px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:44px;align-items:end">
+    <div>
+      <div data-rv="up" style="display:inline-block;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;background:#1b1a19;color:#f2b30c;padding:7px 11px;margin-bottom:22px">Partners &amp; investors</div>
+      <h2 data-word-group="1" id="gh-invest" style="font:800 clamp(36px,5.2vw,78px)/.92 'Archivo',sans-serif;letter-spacing:-.045em;margin:0 0 18px;max-width:15ch"></h2>
+      <p data-rv="up" data-rv-d="130" style="font:400 16px/1.55 'Archivo',sans-serif;margin:0 0 28px;max-width:46ch">One terminal in Leganés today. A route network of Mediterranean flagship venues next. The full model, unit economics and expansion map are ready for the people who want to fly it with us.</p>
+      <a href="investors.html" data-rv="up" data-rv-d="180" style="display:inline-flex;align-items:center;min-width:300px;padding:18px 21px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 15.5px/1.1 'Archivo',sans-serif" data-hover="background:#f2b30c;color:#1b1a19">Explore the Opportunity<span style="margin-left:auto">→</span></a>
+    </div>
+    <div data-rv="right" data-rv-d="120" style="border:2px solid #1b1a19;background:#1b1a19;color:#f7f3ec">
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:16px 18px;border-bottom:1px solid rgba(247,243,236,.22)"><span style="font:600 10px/1.3 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#bab6b6">Flagship terminal</span><span style="font:800 21px/1 'Archivo',sans-serif;letter-spacing:-.02em;color:#f2b30c">Leganés</span></div>
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:16px 18px;border-bottom:1px solid rgba(247,243,236,.22)"><span style="font:600 10px/1.3 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#bab6b6">Seats in the hall</span><span style="font:800 21px/1 'Archivo',sans-serif;letter-spacing:-.02em;color:#f7f3ec">240</span></div>
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:16px 18px;border-bottom:1px solid rgba(247,243,236,.22)"><span style="font:600 10px/1.3 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#bab6b6">Destinations live</span><span style="font:800 21px/1 'Archivo',sans-serif;letter-spacing:-.02em;color:#f7f3ec">21</span></div>
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:16px 18px;border-bottom:1px solid rgba(247,243,236,.22)"><span style="font:600 10px/1.3 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#bab6b6">Next routes planned</span><span style="font:800 21px/1 'Archivo',sans-serif;letter-spacing:-.02em;color:#ec3013">4 cities</span></div>
+      <div style="padding:14px 18px;font:600 9.5px/1.5 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#7d7979">invest@pattypassport.com</div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 16 · ASK PATTY TOOTY ░░ -->
+<section id="tooty" style="position:relative;background:#e7e3dc;padding:78px 0 84px;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div data-par="0.08" style="position:absolute;left:-110px;top:-70px;width:340px;height:340px;border:2px solid rgba(43,118,201,.3);border-radius:50%"></div>
+  <div style="position:relative;max-width:1300px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:46px;align-items:center">
+    <div>
+      <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#2b76c9;color:#fff;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px">
+        <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Concierge desk · always open
+      </div>
+      <h2 data-word-group="1" id="gh-tooty" style="font:800 clamp(34px,4.8vw,70px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 18px;max-width:16ch"></h2>
+      <p data-rv="up" data-rv-d="130" style="font:400 16px/1.55 'Archivo',sans-serif;color:#444141;margin:0 0 26px;max-width:46ch">Patty Tooty is the terminal's travel concierge. It picks your first destination, finds the dish that fits your table, points kids at the right route, explains how stamps and rewards work, and walks you to the page you actually needed.</p>
+      <div data-rv="up" data-rv-d="180" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));border-top:2px solid #1b1a19;margin-bottom:26px">
+        <div style="padding:15px 14px 17px;border-right:2px solid rgba(27,26,25,.22);border-bottom:2px solid rgba(27,26,25,.22)"><div style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ae1800;margin-bottom:8px">Pick a destination</div><div style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d">Reads your table and names the country to start with.</div></div>
+        <div style="padding:15px 14px 17px;border-right:2px solid rgba(27,26,25,.22);border-bottom:2px solid rgba(27,26,25,.22)"><div style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#1b1a19;margin-bottom:8px">Find the right dish</div><div style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d">Halal, vegetarian, vegan, allergy-aware or kid-sized.</div></div>
+        <div style="padding:15px 14px 17px;border-right:2px solid rgba(27,26,25,.22);border-bottom:2px solid rgba(27,26,25,.22)"><div style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ae1800;margin-bottom:8px">Explain the passport</div><div style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d">Stamps, the ladder and what unlocks next.</div></div>
+        <div style="padding:15px 14px 17px;border-right:2px solid rgba(27,26,25,.22);border-bottom:2px solid rgba(27,26,25,.22)"><div style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#1b1a19;margin-bottom:8px">Walk you to the page</div><div style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d">Routes, events, rewards, booking — one tap away.</div></div>
+      </div>
+      <a href="patty-tooty.html" style="display:inline-flex;align-items:center;min-width:280px;padding:16px 19px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" data-hover="background:#2b76c9">Ask Patty Tooty<span style="margin-left:auto">→</span></a>
+    </div>
+
+    <div data-rv="right" data-rv-d="90" style="border:2px solid #1b1a19;background:#f7f3ec;box-shadow:16px 16px 0 rgba(27,26,25,.22)">
+      <div style="display:flex;align-items:center;gap:13px;padding:14px 16px;background:#1b1a19;color:#f7f3ec">
+        <span style="position:relative;width:38px;height:38px;flex:none;background:#f2b30c;display:block">
+          <span style="position:absolute;left:5px;top:7px;width:28px;height:6px;background:#ec3013;display:block"></span>
+          <span style="position:absolute;left:5px;top:15px;width:28px;height:3px;background:#1b1a19;display:block"></span>
+          <span style="position:absolute;left:5px;top:20px;width:28px;height:6px;background:#ec3013;display:block"></span>
+          <span style="position:absolute;left:10px;bottom:4px;width:7px;height:4px;background:#1b1a19;display:block"></span>
+          <span style="position:absolute;right:10px;bottom:4px;width:7px;height:4px;background:#1b1a19;display:block"></span>
+        </span>
+        <span style="flex:1">
+          <span style="display:block;font:800 15px/1.1 'Archivo',sans-serif;letter-spacing:-.015em">PATTY TOOTY</span>
+          <span style="display:flex;align-items:center;gap:7px;font:600 9px/1.4 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#bab6b6;margin-top:3px"><span style="width:6px;height:6px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Destination concierge · online</span>
+        </span>
+        <span style="font:600 9px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#f2b30c">Gate 21</span>
+      </div>
+
+      <div style="padding:18px 16px;display:flex;flex-direction:column;gap:14px;background:repeating-linear-gradient(0deg,rgba(27,26,25,.05) 0 1px,transparent 1px 44px);min-height:330px">
+        <div style="display:flex;gap:11px;align-items:flex-start">
+          <span style="width:26px;height:26px;flex:none;background:#f2b30c;border:2px solid #1b1a19;display:flex;align-items:center;justify-content:center;font:800 9px/1 'Archivo',sans-serif">PT</span>
+          <span style="max-width:80%;background:#fff;border:2px solid #1b1a19;padding:12px 13px;font:400 13.5px/1.5 'Archivo',sans-serif">Welcome to the terminal. Twenty-one countries are boarding tonight — tell me who's at the table and I'll pick your route.</span>
+        </div>
+        <div style="display:flex;justify-content:flex-end">
+          <span id="pp-tooty-question" style="max-width:78%;background:#2b76c9;color:#fff;border:2px solid #1b1a19;padding:12px 13px;font:400 13.5px/1.5 'Archivo',sans-serif"></span>
+        </div>
+        <div style="display:flex;gap:11px;align-items:flex-start">
+          <span style="width:26px;height:26px;flex:none;background:#f2b30c;border:2px solid #1b1a19;display:flex;align-items:center;justify-content:center;font:800 9px/1 'Archivo',sans-serif">PT</span>
+          <span style="max-width:84%;display:flex;flex-direction:column;gap:10px">
+            <span id="pp-tooty-answer" style="background:#fff;border:2px solid #1b1a19;padding:12px 13px;font:400 13.5px/1.5 'Archivo',sans-serif"></span>
+            <span id="pp-tooty-pills" style="display:flex;flex-wrap:wrap;gap:7px"></span>
+          </span>
+        </div>
+        <div style="display:flex;gap:11px;align-items:center;margin-top:auto">
+          <span style="width:26px;height:26px;flex:none;background:#f2b30c;border:2px solid #1b1a19;display:flex;align-items:center;justify-content:center;font:800 9px/1 'Archivo',sans-serif">PT</span>
+          <span style="display:flex;align-items:center;gap:5px;background:#fff;border:2px solid #1b1a19;padding:12px 13px">
+            <span style="width:6px;height:6px;background:#1b1a19;animation:ppDots 1.2s ease-in-out infinite"></span>
+            <span style="width:6px;height:6px;background:#1b1a19;animation:ppDots 1.2s ease-in-out .2s infinite"></span>
+            <span style="width:6px;height:6px;background:#1b1a19;animation:ppDots 1.2s ease-in-out .4s infinite"></span>
+          </span>
+        </div>
+      </div>
+
+      <div style="border-top:2px solid #1b1a19;padding:14px 16px">
+        <div style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:11px">Suggested questions</div>
+        <div id="pp-tooty-chips" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;border-top:2px solid #1b1a19;padding:12px 16px">
+        <input type="text" placeholder="Ask about a country, a dish, a table…" style="flex:1;min-width:0;background:transparent;border:0;border-bottom:2px solid rgba(27,26,25,.3);color:#1b1a19;font:400 13.5px/1.4 'Archivo',sans-serif;padding:7px 0;outline:none" />
+        <button type="button" style="padding:11px 14px;background:#ec3013;border:2px solid #1b1a19;color:#fff;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;cursor:pointer" data-hover="background:#1b1a19">Send</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ 17 · CHECK-IN CONSOLE ░░ -->
+<section id="checkin" style="position:relative;background:#f7f3ec;padding:80px 0 70px;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(27,26,25,.08) 1px,transparent 1px);background-size:74px 100%"></div>
+  <div style="position:relative;max-width:1240px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:34px">
+      <h2 data-word-group="1" id="gh-checkin" style="font:800 clamp(38px,5.6vw,86px)/.9 'Archivo',sans-serif;letter-spacing:-.045em;margin:0;max-width:16ch"></h2>
+      <div data-rv="up" data-rv-d="80" style="font:600 10.5px/1.6 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;text-align:right;color:#605d5d">Leganés · Madrid<br>Open daily 12:00 — 00:00</div>
+    </div>
+    <div data-rv="up" data-rv-d="140" style="background:#1b1a19;border:2px solid #1b1a19;box-shadow:16px 16px 0 rgba(27,26,25,.22);color:#f7f3ec">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:2px solid rgba(247,243,236,.3);font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase">
+        <span style="display:flex;align-items:center;gap:9px"><span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Route selection console</span>
+        <span style="color:#bab6b6">Step 1 of 2</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));border-bottom:2px solid rgba(247,243,236,.3)">
+        <label style="display:block;padding:18px 20px;border-right:2px solid rgba(247,243,236,.22)"><span style="display:block;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#bab6b6;margin-bottom:10px">Destination</span><input type="text" value="Lebanon · MED-12" style="width:100%;background:transparent;border:0;border-bottom:2px solid #f2b30c;color:#f7f3ec;font:800 18px/1.2 'Archivo',sans-serif;padding:0 0 8px;outline:none" /></label>
+        <label style="display:block;padding:18px 20px;border-right:2px solid rgba(247,243,236,.22)"><span style="display:block;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#bab6b6;margin-bottom:10px">Date</span><input type="text" value="Fri 25 Sep 2026" style="width:100%;background:transparent;border:0;border-bottom:2px solid #f2b30c;color:#f7f3ec;font:800 18px/1.2 'Archivo',sans-serif;padding:0 0 8px;outline:none" /></label>
+        <label style="display:block;padding:18px 20px;border-right:2px solid rgba(247,243,236,.22)"><span style="display:block;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#bab6b6;margin-bottom:10px">Time</span><input type="text" value="20:30" style="width:100%;background:transparent;border:0;border-bottom:2px solid #f2b30c;color:#f7f3ec;font:800 18px/1.2 'Archivo',sans-serif;padding:0 0 8px;outline:none" /></label>
+        <label style="display:block;padding:18px 20px;border-right:2px solid rgba(247,243,236,.22)"><span style="display:block;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#bab6b6;margin-bottom:10px">Travellers</span><input type="text" value="4 adults · 2 kids" style="width:100%;background:transparent;border:0;border-bottom:2px solid #f2b30c;color:#f7f3ec;font:800 18px/1.2 'Archivo',sans-serif;padding:0 0 8px;outline:none" /></label>
+      </div>
+      <div style="padding:20px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between">
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <button type="button" style="padding:10px 13px;background:transparent;border:2px solid rgba(247,243,236,.55);color:#f7f3ec;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;cursor:pointer" data-hover="background:#f2b30c;border-color:#f2b30c;color:#1b1a19">LEVANT</button>
+          <button type="button" style="padding:10px 13px;background:transparent;border:2px solid rgba(247,243,236,.55);color:#f7f3ec;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;cursor:pointer" data-hover="background:#f2b30c;border-color:#f2b30c;color:#1b1a19">AEGEAN</button>
+          <button type="button" style="padding:10px 13px;background:transparent;border:2px solid rgba(247,243,236,.55);color:#f7f3ec;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;cursor:pointer" data-hover="background:#f2b30c;border-color:#f2b30c;color:#1b1a19">IBERIA &amp; LATIN</button>
+          <button type="button" style="padding:10px 13px;background:transparent;border:2px solid rgba(247,243,236,.55);color:#f7f3ec;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;cursor:pointer" data-hover="background:#f2b30c;border-color:#f2b30c;color:#1b1a19">ADRIATIC</button>
+          <button type="button" style="padding:10px 13px;background:transparent;border:2px solid rgba(247,243,236,.55);color:#f7f3ec;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;cursor:pointer" data-hover="background:#f2b30c;border-color:#f2b30c;color:#1b1a19">NORTH AFRICA</button>
+        </div>
+        <a href="booking.html" style="display:inline-flex;align-items:center;min-width:260px;padding:17px 20px;background:#ec3013;color:#fff;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" data-hover="background:#f2b30c;color:#1b1a19">Reserve Your Flight<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="pp-footer"></div>
+
+<script src="js/data.js"></script>
+<script>window.PP_ACTIVE = "Home terminal";</script>
+<script src="js/hover.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/footer.js"></script>
+<script src="js/index.js"></script>
+</body>
+</html>

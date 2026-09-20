@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patty Passport — My Passport</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/site.css">
+<style>
+  body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
+  *,*::before,*::after{box-sizing:border-box}
+  a{color:#ae1800;text-underline-offset:3px}
+  a:hover{color:#ec3013}
+  :focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+  ::selection{background:rgba(236,48,19,.28)}
+  @keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+  @keyframes ppFade{from{opacity:0}to{opacity:1}}
+  @keyframes ppLand{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div id="pp-nav"></div>
+
+<div id="mp-app"></div>
+
+<div id="pp-footer"></div>
+
+<script src="js/data.js"></script>
+<script>window.PP_ACTIVE = "My passport";</script>
+<script src="js/hover.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/footer.js"></script>
+<script src="js/my-passport.js"></script>
+<script src="js/patty-tooty-widget.js"></script>
+</body>
+</html>

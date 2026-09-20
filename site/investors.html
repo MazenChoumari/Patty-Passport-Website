@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patty Passport — Investors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/site.css">
+<style>
+  body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
+  *,*::before,*::after{box-sizing:border-box}
+  a{color:#ae1800;text-underline-offset:3px}
+  a:hover{color:#ec3013}
+  :focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+  ::selection{background:rgba(236,48,19,.28)}
+  @keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+  @keyframes ppGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+  @keyframes ppFade{from{opacity:0}to{opacity:1}}
+  @keyframes ppLand{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div id="pp-nav"></div>
+
+<!-- ░░ Investor enquiry modal — built entirely by js/investors.js ░░ -->
+<div id="inv-modal"></div>
+
+<!-- ░░ HERO ░░ -->
+<section style="position:relative;background:#1b1a19;color:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(247,243,236,.07) 1px,transparent 1px);background-size:100% 64px"></div>
+  <div style="position:relative;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(320px,.8fr)">
+    <div style="padding:58px 44px 52px;border-right:2px solid rgba(247,243,236,.3)">
+      <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#ec3013;color:#fff;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px">
+        <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Partners &amp; investors · 2026 round
+      </div>
+      <h1 data-rv="up" data-rv-d="70" style="font:800 clamp(42px,6.2vw,96px)/.89 'Archivo',sans-serif;letter-spacing:-.045em;margin:0 0 18px">WANT TO HELP<br>STEER THE<br><span style="color:#f2b30c">NEXT ROUTE?</span></h1>
+      <p data-rv="up" data-rv-d="130" style="font:400 clamp(15px,1.3vw,18.5px)/1.55 'Archivo',sans-serif;color:#bab6b6;max-width:56ch;margin:0 0 28px">A Mediterranean travel terminal you can eat in: twenty-one countries on one rotating menu, a passport that brings guests back twenty more times, and a building model that repeats. Every figure on this page is computed live from the category inputs in the business plan.</p>
+      <div data-rv="up" data-rv-d="180" style="display:flex;flex-wrap:wrap;gap:12px">
+        <button type="button" id="inv-open-form-hero" style="display:inline-flex;align-items:center;min-width:250px;padding:16px 19px;background:#ec3013;border:0;color:#fff;font:800 14.5px/1.1 'Archivo',sans-serif;cursor:pointer" data-hover="background:#f2b30c;color:#1b1a19" data-act="open-form">Explore the Opportunity<span style="margin-left:auto">→</span></button>
+        <a href="#model" style="display:inline-flex;align-items:center;min-width:220px;padding:16px 19px;border:2px solid #f7f3ec;color:#f7f3ec;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" data-hover="background:#f7f3ec;color:#1b1a19">See the scenarios<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+    <div style="position:relative;min-height:430px;background:#2b76c9">
+      <div class="pp-placeholder" style="position:absolute;inset:0"><span>The terminal floor, full service, wide shot</span></div>
+      <div style="position:absolute;left:0;right:0;bottom:0;padding:13px 18px;background:rgba(27,26,25,.92);font:600 9.5px/1.5 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase;pointer-events:none">Leganés or Villaverde · 1,500–2,000 m² · ~240 seats · ~42 crew</div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ HEADLINE STATS ░░ -->
+<section style="background:#f2b30c;color:#1b1a19;border-bottom:2px solid #1b1a19">
+  <div id="inv-headline" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))"></div>
+</section>
+
+<!-- ░░ 7Ps ░░ -->
+<section id="sevenps" style="background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:62px 0 0">
+  <div style="max-width:1340px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:26px">
+      <div>
+        <div data-rv="up" style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#ae1800;margin-bottom:14px">The whole business, in one view</div>
+        <h2 data-rv="up" data-rv-d="60" style="font:800 clamp(30px,4.2vw,58px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0;max-width:16ch">BUSINESS MODEL IN 7Ps</h2>
+      </div>
+      <div id="inv-ps-tabs" data-rv="up" data-rv-d="110" style="display:flex;flex-wrap:wrap;gap:7px"></div>
+    </div>
+  </div>
+  <div id="inv-ps-panel" style="border-top:2px solid #1b1a19;background:#1b1a19;color:#f7f3ec"></div>
+</section>
+
+<!-- ░░ SCENARIO SELECTOR ░░ -->
+<section id="model" style="background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:62px 0 0">
+  <div style="max-width:1340px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:26px">
+      <div>
+        <div data-rv="up" style="font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#ae1800;margin-bottom:14px">Plot, plan and build-out · corrected ranges</div>
+        <h2 data-rv="up" data-rv-d="60" style="font:800 clamp(30px,4.2vw,58px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0;max-width:18ch">CHOOSE A SCENARIO. THE MODEL FOLLOWS.</h2>
+      </div>
+      <p data-rv="up" data-rv-d="110" style="font:400 14px/1.55 'Archivo',sans-serif;color:#605d5d;max-width:38ch;margin:0">Totals are summed in code from every category's own low and high bound — so the range is always internally consistent.</p>
+    </div>
+    <div id="inv-scenario-cards" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19"></div>
+  </div>
+
+  <div style="background:#1b1a19;color:#f7f3ec;border-top:2px solid #1b1a19;margin-top:34px">
+    <div style="max-width:1340px;margin:0 auto;padding:30px 32px 36px">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:22px">
+        <h3 id="inv-active-label" style="font:800 clamp(22px,2.6vw,34px)/1 'Archivo',sans-serif;letter-spacing:-.03em;margin:0"></h3>
+        <span id="inv-active-note" style="font:600 9.5px/1.5 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#7d7979;max-width:52ch;text-align:right"></span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));border-top:2px solid #f7f3ec;border-left:2px solid #f7f3ec">
+        <div style="border-right:2px solid #f7f3ec;border-bottom:2px solid #f7f3ec;padding:20px 18px 22px">
+          <div style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#7d7979;margin-bottom:14px">Category ranges</div>
+          <div id="inv-capex-rows"></div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:16px 0 0;font:800 12px/1 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase">
+            <span>Total project</span><span id="inv-active-range" style="font:800 19px/1 'Archivo',sans-serif;letter-spacing:-.02em;color:#f2b30c"></span>
+          </div>
+        </div>
+
+        <div style="border-right:2px solid #f7f3ec;border-bottom:2px solid #f7f3ec;padding:20px 18px 22px;display:flex;flex-direction:column;gap:14px">
+          <div style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#7d7979">Footprint options</div>
+          <div id="inv-size-toggles" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+          <div id="inv-footprint-rows" style="display:flex;flex-direction:column;border-top:2px solid rgba(247,243,236,.3)"></div>
+          <div style="font:400 11.5px/1.55 'Archivo',sans-serif;color:#7d7979">Parking calculated at the plan's standard ~22 m² per space, circulation included.</div>
+        </div>
+
+        <div style="border-right:2px solid #f7f3ec;border-bottom:2px solid #f7f3ec;padding:20px 18px 22px;display:flex;flex-direction:column;gap:14px;background:rgba(242,179,12,.08)">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px">
+            <span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#7d7979">Return · <span id="inv-case-name"></span></span>
+            <span id="inv-case-toggles" style="display:flex;gap:6px"></span>
+          </div>
+          <div>
+            <div id="inv-annual-profit" style="font:800 clamp(30px,3.6vw,48px)/1 'Archivo',sans-serif;letter-spacing:-.04em;color:#f2b30c"></div>
+            <div style="font:600 9.5px/1.4 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#bab6b6;margin-top:8px">Annual operating profit · <span id="inv-margin-label"></span> margin</div>
+          </div>
+          <div style="height:10px;background:rgba(247,243,236,.2);overflow:hidden">
+            <div id="inv-margin-bar" style="height:100%;width:0%;background:#f2b30c;transform-origin:left;animation:ppGrow .9s cubic-bezier(.2,.85,.25,1) both"></div>
+          </div>
+          <div id="inv-return-rows" style="display:flex;flex-direction:column;border-top:2px solid rgba(247,243,236,.3)"></div>
+          <div id="inv-return-note" style="font:400 11px/1.5 'Archivo',sans-serif;color:#7d7979"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ BREAK-EVEN & SALES ░░ -->
+<section style="background:#e7e3dc;border-bottom:2px solid #1b1a19;padding:62px 0 68px">
+  <div style="max-width:1340px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:28px">
+      <h2 data-rv="up" style="font:800 clamp(30px,4vw,56px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0;max-width:18ch">BREAK-EVEN &amp; SALES</h2>
+      <p data-rv="up" data-rv-d="70" style="font:400 14.5px/1.55 'Archivo',sans-serif;color:#605d5d;max-width:42ch;margin:0">350 trading days a year. Food 30%, labour 30%, marketing 7% of revenue; fixed overhead €6,025 a month.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:34px;align-items:start">
+      <div style="border:2px solid #1b1a19;background:#f7f3ec">
+        <div style="display:grid;grid-template-columns:1.1fr .8fr .8fr 1fr;gap:0;padding:12px 16px;border-bottom:2px solid #1b1a19;font:600 9px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979">
+          <span>Scenario</span><span>Guests/day</span><span>Avg spend</span><span style="text-align:right">Annual revenue</span>
+        </div>
+        <div id="inv-revenue-cases"></div>
+        <div style="padding:16px">
+          <div style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#7d7979;margin-bottom:14px">Annual P&amp;L · <span id="inv-pl-casename"></span></div>
+          <div id="inv-pl-rows"></div>
+        </div>
+      </div>
+      <div id="inv-breakeven" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ░░ FUNDING ░░ -->
+<section style="background:#2b76c9;color:#fff;border-bottom:2px solid #1b1a19;padding:60px 0 66px">
+  <div style="max-width:1340px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:26px">
+      <h2 data-rv="up" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0;max-width:20ch">WHAT'S COMMITTED, WHAT'S OPEN</h2>
+      <p data-rv="up" data-rv-d="70" style="font:400 14.5px/1.55 'Archivo',sans-serif;max-width:40ch;margin:0;color:rgba(255,255,255,.92)">Founders' equity and the initial loan are already committed in every scenario. The gap is the conversation.</p>
+    </div>
+    <div id="inv-funding" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19"></div>
+  </div>
+</section>
+
+<!-- ░░ ROLLOUT + MOAT ░░ -->
+<section style="background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:62px 0 68px">
+  <div style="max-width:1340px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:44px;align-items:start">
+    <div>
+      <h2 data-rv="up" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 18px;max-width:18ch">THE ROLLOUT, ROUTE BY ROUTE</h2>
+      <div style="display:flex;flex-direction:column;border-top:2px solid #1b1a19">
+        <div data-rv="up" data-rv-d="0" style="display:flex;gap:16px;padding:17px 0;border-bottom:2px solid rgba(27,26,25,.22)">
+          <span style="width:64px;flex:none;font:800 14px/1.2 'Archivo',sans-serif;color:#ae1800">2026</span>
+          <span style="flex:1">
+            <span style="display:block;font:800 16px/1.2 'Archivo',sans-serif;margin-bottom:5px">Prove the terminal</span>
+            <span style="display:block;font:400 13px/1.5 'Archivo',sans-serif;color:#605d5d">Gate one trading at full route rotation; passport programme and event calendar established.</span>
+          </span>
+          <span style="font:800 13px/1 'Archivo',sans-serif;white-space:nowrap;align-self:center">1 site</span>
+        </div>
+        <div data-rv="up" data-rv-d="70" style="display:flex;gap:16px;padding:17px 0;border-bottom:2px solid rgba(27,26,25,.22)">
+          <span style="width:64px;flex:none;font:800 14px/1.2 'Archivo',sans-serif;color:#ae1800">2027</span>
+          <span style="flex:1">
+            <span style="display:block;font:800 16px/1.2 'Archivo',sans-serif;margin-bottom:5px">Second Madrid gate</span>
+            <span style="display:block;font:400 13px/1.5 'Archivo',sans-serif;color:#605d5d">Repeat the format in the same city to test transferability and shared supply.</span>
+          </span>
+          <span style="font:800 13px/1 'Archivo',sans-serif;white-space:nowrap;align-self:center">2 sites</span>
+        </div>
+        <div data-rv="up" data-rv-d="140" style="display:flex;gap:16px;padding:17px 0;border-bottom:2px solid rgba(27,26,25,.22)">
+          <span style="width:64px;flex:none;font:800 14px/1.2 'Archivo',sans-serif;color:#ae1800">2028</span>
+          <span style="flex:1">
+            <span style="display:block;font:800 16px/1.2 'Archivo',sans-serif;margin-bottom:5px">Coastal expansion</span>
+            <span style="display:block;font:400 13px/1.5 'Archivo',sans-serif;color:#605d5d">Valencia and Barcelona — Mediterranean cities where the concept reads natively.</span>
+          </span>
+          <span style="font:800 13px/1 'Archivo',sans-serif;white-space:nowrap;align-self:center">4 sites</span>
+        </div>
+        <div data-rv="up" data-rv-d="210" style="display:flex;gap:16px;padding:17px 0;border-bottom:2px solid rgba(27,26,25,.22)">
+          <span style="width:64px;flex:none;font:800 14px/1.2 'Archivo',sans-serif;color:#ae1800">2029—30</span>
+          <span style="flex:1">
+            <span style="display:block;font:800 16px/1.2 'Archivo',sans-serif;margin-bottom:5px">Iberian network</span>
+            <span style="display:block;font:400 13px/1.5 'Archivo',sans-serif;color:#605d5d">Seville, Bilbao, Lisbon, plus first franchise conversations outside Iberia.</span>
+          </span>
+          <span style="font:800 13px/1 'Archivo',sans-serif;white-space:nowrap;align-self:center">7—9 sites</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h2 data-rv="up" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 18px;max-width:18ch">WHY THIS DEFENDS ITSELF</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19">
+        <div data-rv="up" data-rv-d="0" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:#f7f3ec;padding:20px 18px 22px;display:flex;flex-direction:column;gap:10px;min-height:190px">
+          <span style="width:40px;height:40px;background:#f2b30c;color:#1b1a19;display:flex;align-items:center;justify-content:center;font:800 11px/1 'Archivo',sans-serif">FM</span>
+          <span style="font:800 17px/1.08 'Archivo',sans-serif;letter-spacing:-.02em">Format, not recipe</span>
+          <span style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d">A competitor can copy one burger. Copying twenty-one countries plus the passport plus the zones is a different project.</span>
+        </div>
+        <div data-rv="up" data-rv-d="60" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:#f7f3ec;padding:20px 18px 22px;display:flex;flex-direction:column;gap:10px;min-height:190px">
+          <span style="width:40px;height:40px;background:#ec3013;color:#fff;display:flex;align-items:center;justify-content:center;font:800 11px/1 'Archivo',sans-serif">RT</span>
+          <span style="font:800 17px/1.08 'Archivo',sans-serif;letter-spacing:-.02em">Retention by design</span>
+          <span style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d">The book gives a reason to come back twenty more times. Discount loyalty gives one.</span>
+        </div>
+        <div data-rv="up" data-rv-d="120" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:#f7f3ec;padding:20px 18px 22px;display:flex;flex-direction:column;gap:10px;min-height:190px">
+          <span style="width:40px;height:40px;background:#2b76c9;color:#fff;display:flex;align-items:center;justify-content:center;font:800 11px/1 'Archivo',sans-serif">CT</span>
+          <span style="font:800 17px/1.08 'Archivo',sans-serif;letter-spacing:-.02em">Reusable content</span>
+          <span style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d">Playlists, cards and booklets produced once ship free to every future site.</span>
+        </div>
+        <div data-rv="up" data-rv-d="180" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:#f7f3ec;padding:20px 18px 22px;display:flex;flex-direction:column;gap:10px;min-height:190px">
+          <span style="width:40px;height:40px;background:#1b1a19;color:#f7f3ec;display:flex;align-items:center;justify-content:center;font:800 11px/1 'Archivo',sans-serif">SU</span>
+          <span style="font:800 17px/1.08 'Archivo',sans-serif;letter-spacing:-.02em">Single supply chain</span>
+          <span style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d">Shared proteins and bases across all twenty-one plates keep COGS flat as variety grows.</span>
+        </div>
+        <div data-rv="up" data-rv-d="240" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:#f7f3ec;padding:20px 18px 22px;display:flex;flex-direction:column;gap:10px;min-height:190px">
+          <span style="width:40px;height:40px;background:#e7e3dc;color:#1b1a19;display:flex;align-items:center;justify-content:center;font:800 11px/1 'Archivo',sans-serif">BR</span>
+          <span style="font:800 17px/1.08 'Archivo',sans-serif;letter-spacing:-.02em">Brand with a world</span>
+          <span style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d">Passport, terminal, crew, routes — a language guests understand on arrival.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="background:#ec3013;color:#fff;padding:64px 0 70px">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px">
+    <div style="display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:44px;align-items:end">
+      <div>
+        <h2 data-rv="up" style="font:800 clamp(32px,4.8vw,70px)/.92 'Archivo',sans-serif;letter-spacing:-.045em;margin:0 0 16px;max-width:15ch">LET'S TALK ABOUT THE NEXT TERMINAL.</h2>
+        <p data-rv="up" data-rv-d="80" style="font:400 16px/1.55 'Archivo',sans-serif;margin:0 0 28px;max-width:46ch">Full deck, financial model, site pipeline and operating playbook available under NDA. Tell us which scenario you want to look at and we'll bring the numbers behind it.</p>
+        <div data-rv="up" data-rv-d="140" style="display:flex;flex-wrap:wrap;gap:12px">
+          <button type="button" id="inv-open-form-contact" style="display:inline-flex;align-items:center;min-width:280px;padding:18px 21px;background:#1b1a19;border:0;color:#f7f3ec;font:800 15.5px/1.1 'Archivo',sans-serif;cursor:pointer" data-hover="background:#f2b30c;color:#1b1a19" data-act="open-form">Request the investor deck<span style="margin-left:auto">→</span></button>
+          <a href="our-story.html" style="display:inline-flex;align-items:center;min-width:220px;padding:18px 21px;border:2px solid #fff;color:#fff;text-decoration:none;font:800 15.5px/1.1 'Archivo',sans-serif" data-hover="background:#fff;color:#ec3013">Meet the founders<span style="margin-left:auto">→</span></a>
+        </div>
+      </div>
+      <div data-rv="up" data-rv-d="160" style="border:2px solid #1b1a19;background:#1b1a19;color:#f7f3ec">
+        <div id="inv-contact-facts"></div>
+        <div style="padding:14px 18px;font:600 9.5px/1.5 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#7d7979">invest@pattypassport.com · +34 91 123 45 67</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="pp-footer"></div>
+
+<script src="js/data.js"></script>
+<script>window.PP_ACTIVE = "Investors";</script>
+<script src="js/hover.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/footer.js"></script>
+<script src="js/investors.js"></script>
+</body>
+</html>

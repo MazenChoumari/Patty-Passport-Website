@@ -1,0 +1,42 @@
+/* Patty Passport — site-wide rules shared across pages.
+   Page-specific visuals stay inline (ported directly from the Claude Design
+   prototype) to preserve the exact look; this file only holds things that
+   must exist before any page-specific script runs: keyframes, the
+   placeholder-image pattern, and the hover/active state helper classes. */
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; }
+a { text-decoration: none; }
+button { font: inherit; }
+
+/* — shared nav/footer animations (ported from PP-Nav.dc.html's inline <style>) — */
+@keyframes ppNavBlink { 0%, 55% { opacity: 1; } 56%, 100% { opacity: .15; } }
+@keyframes ppNavEq { 0% { height: 14%; } 100% { height: 100%; } }
+@keyframes ppNavFade { from { opacity: 0; } to { opacity: 1; } }
+
+/* — placeholder image pattern, used everywhere a real photo is still missing —
+   replaces the design tool's <image-slot> (which only works inside Claude
+   Design itself). Usage: <div class="pp-placeholder" style="aspect-ratio:4/3">
+   <span>Caption text</span></div> */
+.pp-placeholder {
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  background:
+    repeating-linear-gradient(135deg, rgba(27,26,25,.08) 0 10px, rgba(27,26,25,.03) 10px 20px),
+    #eae7e7;
+  border: 1.5px dashed rgba(27,26,25,.35);
+  color: #605d5d;
+  font: 600 11px/1.4 'Archivo', system-ui, sans-serif;
+  letter-spacing: .04em;
+  padding: 10px;
+  width: 100%;
+  overflow: hidden;
+}
+.pp-placeholder span { max-width: 22ch; }
+
+/* — data-hover / data-active: inline style swap on interaction, replacing the
+   design tool's non-standard style-hover / style-active attributes. See
+   js/hover.js. Elements get this attribute automatically when hover.js scans
+   the DOM; nothing to do by hand beyond setting data-hover="<css text>" or
+   data-active="<css text>" alongside the base style attribute. */
+[data-hover], [data-active] { transition: background-color .15s ease, color .15s ease, border-color .15s ease; }
