@@ -68,4 +68,22 @@
       applyState(on);
     }
   };
+
+  /* Fix for the "first click doesn't start music" bug: browsers only allow
+     player.playVideo() to actually start audio when it's called synchronously
+     inside a real click handler. If the YouTube API/player is only created
+     on that first click (as above), player.playVideo() ends up firing later
+     from an async network/script-load callback instead — no longer inside
+     the click's call stack — so browsers silently block it. Toggling off
+     then on again "fixes" it only because, by then, the player already
+     exists, so the second click's playVideo() call is synchronous again.
+     Loading the API and creating the (paused) player ahead of time, as soon
+     as the page is ready, means the very first click also calls
+     player.playVideo() synchronously from within the click handler, so it
+     starts reliably every time. */
+  if (document.body) {
+    loadApi();
+  } else {
+    document.addEventListener("DOMContentLoaded", loadApi);
+  }
 })();
