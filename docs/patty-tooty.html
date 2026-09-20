@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patty Passport — Ask Patty Tooty</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/site.css">
+<style>
+  body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
+  *,*::before,*::after{box-sizing:border-box}
+  a{color:#ae1800;text-underline-offset:3px}
+  a:hover{color:#ec3013}
+  :focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+  ::selection{background:rgba(236,48,19,.28)}
+  @keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+  @keyframes ppDots{0%,80%,100%{opacity:.2}40%{opacity:1}}
+</style>
+</head>
+<body>
+<div id="pp-nav"></div>
+
+<section style="position:relative;background:#e7e3dc;border-bottom:2px solid #1b1a19;overflow:hidden;padding:52px 0 58px">
+  <div style="position:absolute;right:-90px;top:-70px;width:340px;height:340px;border:2px solid rgba(43,118,201,.3);border-radius:50%"></div>
+  <div class="pp-2col" style="position:relative;max-width:1340px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,.9fr) minmax(360px,1.1fr);gap:46px;align-items:center">
+    <div>
+      <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#2b76c9;color:#fff;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px">
+        <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Concierge desk · always open
+      </div>
+      <h1 data-rv="up" data-rv-d="70" style="font:800 clamp(40px,5.8vw,88px)/.9 'Archivo',sans-serif;letter-spacing:-.045em;margin:0 0 18px;max-width:14ch">NOT SURE WHERE TO HEAD?</h1>
+      <p data-rv="up" data-rv-d="130" style="font:400 clamp(15px,1.25vw,18px)/1.55 'Archivo',sans-serif;color:#444141;max-width:50ch;margin:0 0 26px">Patty Tooty is the terminal's travel concierge — a playful burger-planet mascot with a tiny passport, headphones and sneakers. Pick a thread on the right, or ask your own question: the country to start with, the plate that fits your table, the kids' route, how the stamps work, and the page you actually needed.</p>
+      <div data-rv="up" data-rv-d="160" style="display:flex;gap:16px;align-items:center;margin-bottom:18px">
+        <div class="pp-placeholder" style="width:96px;height:96px;flex:none;border:2px solid #1b1a19"><span>Patty Tooty — burger-planet mascot, tiny passport, headphones, sneakers</span></div>
+        <p style="font:400 12.5px/1.5 'Archivo',sans-serif;color:#605d5d;margin:0;max-width:32ch">That's Patty Tooty. Round like a burger bun, headphones always on, sneakers always laced for the next route.</p>
+      </div>
+      <div data-rv="up" data-rv-d="180" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));border-top:2px solid #1b1a19">
+        <div id="pt-skills"></div>
+      </div>
+    </div>
+
+    <div data-rv="up" data-rv-d="90" style="border:2px solid #1b1a19;background:#f7f3ec;box-shadow:16px 16px 0 rgba(27,26,25,.22)">
+      <div style="display:flex;align-items:center;gap:13px;padding:14px 16px;background:#1b1a19;color:#f7f3ec">
+        <span style="position:relative;width:40px;height:40px;flex:none;background:#f2b30c;display:block">
+          <span style="position:absolute;left:5px;top:7px;width:30px;height:7px;background:#ec3013;display:block"></span>
+          <span style="position:absolute;left:5px;top:16px;width:30px;height:3px;background:#1b1a19;display:block"></span>
+          <span style="position:absolute;left:5px;top:21px;width:30px;height:7px;background:#ec3013;display:block"></span>
+          <span style="position:absolute;left:10px;bottom:4px;width:8px;height:4px;background:#1b1a19;display:block"></span>
+          <span style="position:absolute;right:10px;bottom:4px;width:8px;height:4px;background:#1b1a19;display:block"></span>
+        </span>
+        <span style="flex:1">
+          <span style="display:block;font:800 16px/1.1 'Archivo',sans-serif;letter-spacing:-.015em">PATTY TOOTY</span>
+          <span style="display:flex;align-items:center;gap:7px;font:600 9px/1.4 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#bab6b6;margin-top:3px"><span style="width:6px;height:6px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Destination concierge · online</span>
+        </span>
+        <span style="font:600 9px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#f2b30c">Gate 21</span>
+      </div>
+
+      <div id="pt-thread" style="padding:18px 16px;display:flex;flex-direction:column;gap:14px;background:repeating-linear-gradient(0deg,rgba(27,26,25,.05) 0 1px,transparent 1px 44px);min-height:390px"></div>
+
+      <div style="border-top:2px solid #1b1a19;padding:14px 16px">
+        <div style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:11px">Suggested questions</div>
+        <div id="pt-chips" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+      </div>
+      <form id="pt-form" style="display:flex;align-items:center;gap:10px;border-top:2px solid #1b1a19;padding:12px 16px">
+        <input type="text" id="pt-input" placeholder="Ask about a country, a dish, a table…" style="flex:1;min-width:0;background:transparent;border:0;border-bottom:2px solid rgba(27,26,25,.3);color:#1b1a19;font:400 13.5px/1.4 'Archivo',sans-serif;padding:7px 0;outline:none" />
+        <button type="submit" style="padding:11px 14px;background:#ec3013;border:2px solid #1b1a19;color:#fff;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;cursor:pointer" data-hover="background:#1b1a19">Send</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section style="background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:62px 0 68px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px">
+    <h2 data-rv="up" style="font:800 clamp(30px,4vw,56px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 10px;max-width:22ch">WHAT PATTY TOOTY CAN ACTUALLY DO</h2>
+    <p data-rv="up" data-rv-d="70" style="font:400 15px/1.55 'Archivo',sans-serif;color:#605d5d;margin:0 0 30px;max-width:52ch">Six jobs, all of them ending somewhere useful — a destination page, a filtered menu, a booking, or a human at the desk.</p>
+    <div id="pt-jobs" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19"></div>
+  </div>
+</section>
+
+<section style="background:#1b1a19;color:#f7f3ec;padding:60px 0 66px">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:26px">
+    <div>
+      <h2 data-rv="up" style="font:800 clamp(28px,4vw,56px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 14px;max-width:18ch">PREFER A HUMAN? THE DESK IS RIGHT THERE.</h2>
+      <p data-rv="up" data-rv-d="80" style="font:400 15.5px/1.55 'Archivo',sans-serif;color:#bab6b6;margin:0;max-width:46ch">Patty Tooty hands you to the Passport Desk whenever a person does it better — allergies, big groups, or someone who just wants to be told where to go.</p>
+    </div>
+    <div data-rv="up" data-rv-d="140" style="display:flex;flex-wrap:wrap;gap:12px">
+      <a href="events.html" style="display:inline-flex;align-items:center;min-width:230px;padding:17px 20px;background:#f2b30c;color:#1b1a19;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" data-hover="background:#ec3013;color:#fff">Talk about a group<span style="margin-left:auto">→</span></a>
+      <a href="booking.html" style="display:inline-flex;align-items:center;min-width:220px;padding:17px 20px;border:2px solid #f7f3ec;color:#f7f3ec;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" data-hover="background:#f7f3ec;color:#1b1a19">Just book a table<span style="margin-left:auto">→</span></a>
+    </div>
+  </div>
+</section>
+
+<div id="pp-footer"></div>
+
+<script src="js/data.js"></script>
+<script>window.PP_ACTIVE = "Patty Tooty";</script>
+<script src="js/hover.js"></script>
+<script src="js/reveal.js"></script>
+<script src="js/music.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/footer.js"></script>
+<script src="js/patty-tooty.js"></script>
+</body>
+</html>

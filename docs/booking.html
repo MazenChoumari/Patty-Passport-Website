@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patty Passport — Book a Table</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/site.css">
+<style>
+  body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
+  *,*::before,*::after{box-sizing:border-box}
+  a{color:#ae1800;text-underline-offset:3px}
+  a:hover{color:#ec3013}
+  :focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+  ::selection{background:rgba(236,48,19,.28)}
+  @keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+  @keyframes ppLand{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+  @keyframes ppStamp{from{opacity:0;transform:rotate(-26deg) scale(2)}to{opacity:1;transform:rotate(-11deg) scale(1)}}
+</style>
+</head>
+<body>
+<div id="pp-nav"></div>
+
+<section style="position:relative;background:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(27,26,25,.08) 1px,transparent 1px);background-size:74px 100%"></div>
+  <div style="position:relative;max-width:1340px;margin:0 auto;padding:52px 32px 58px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:30px">
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:9px;background:#ec3013;color:#fff;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px">
+          <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Check-in desk · open now
+        </div>
+        <h1 style="font:800 clamp(40px,5.8vw,88px)/.9 'Archivo',sans-serif;letter-spacing:-.045em;margin:0 0 14px;max-width:15ch">READY TO CHECK IN?</h1>
+        <p style="font:400 clamp(15px,1.2vw,17.5px)/1.55 'Archivo',sans-serif;color:#444141;max-width:52ch;margin:0">Choose the time, the destination and who's travelling. The desk prints a boarding pass with your name, your gate and your table.</p>
+      </div>
+      <div style="font:600 10.5px/1.7 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;text-align:right;color:#605d5d">
+        <div id="bk-hours"></div>
+        <span style="display:block;margin-top:6px">Leganés · Madrid</span>
+      </div>
+    </div>
+
+    <div class="pp-2col" style="display:grid;grid-template-columns:minmax(0,1.25fr) minmax(320px,.75fr);gap:36px;align-items:start">
+      <div style="background:#1b1a19;border:2px solid #1b1a19;box-shadow:16px 16px 0 rgba(27,26,25,.22);color:#f7f3ec">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:2px solid rgba(247,243,236,.3);font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase">
+          <span style="display:flex;align-items:center;gap:9px"><span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Route selection console</span>
+          <span style="color:#bab6b6" id="bk-step-label"></span>
+        </div>
+
+        <div style="padding:20px 20px 4px">
+          <div style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#bab6b6;margin-bottom:12px">1 · Choose a route</div>
+          <div id="bk-route-chips" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px"></div>
+
+          <div style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#bab6b6;margin-bottom:12px">2 · Choose a destination</div>
+          <div id="bk-country-chips" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px"></div>
+
+          <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:12px">
+            <span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#bab6b6">3 · Choose a departure time</span>
+            <span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#f2b30c" id="bk-hours-note"></span>
+          </div>
+          <div id="bk-time-chips" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px"></div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));border-top:2px solid rgba(247,243,236,.3)">
+          <label style="display:block;padding:18px 20px;border-right:2px solid rgba(247,243,236,.22);border-bottom:1px solid rgba(247,243,236,.22)">
+            <span style="display:block;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#bab6b6;margin-bottom:10px">Passenger name</span>
+            <input type="text" id="bk-passenger" placeholder="Who's travelling" style="width:100%;background:transparent;border:0;border-bottom:2px solid #f2b30c;color:#f7f3ec;font:800 17px/1.2 'Archivo',sans-serif;padding:0 0 8px;outline:none" />
+          </label>
+          <label style="display:block;padding:18px 20px;border-right:2px solid rgba(247,243,236,.22);border-bottom:1px solid rgba(247,243,236,.22)">
+            <span style="display:block;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#bab6b6;margin-bottom:10px">Date</span>
+            <input type="date" id="bk-date" style="width:100%;background:transparent;border:0;border-bottom:2px solid #f2b30c;color:#f7f3ec;font:800 17px/1.2 'Archivo',sans-serif;padding:0 0 8px;outline:none;color-scheme:dark" />
+          </label>
+          <label style="display:block;padding:18px 20px;border-right:2px solid rgba(247,243,236,.22);border-bottom:1px solid rgba(247,243,236,.22)">
+            <span style="display:block;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#bab6b6;margin-bottom:10px">Travellers</span>
+            <span style="display:flex;align-items:center;gap:10px">
+              <button type="button" id="bk-fewer" style="width:34px;height:34px;flex:none;background:transparent;border:2px solid #f7f3ec;color:#f7f3ec;font:800 15px/1 'Archivo',sans-serif;cursor:pointer" data-hover="background:#ec3013;border-color:#ec3013">−</button>
+              <span style="font:800 17px/1 'Archivo',sans-serif;flex:1" id="bk-guest-label"></span>
+              <button type="button" id="bk-more" style="width:34px;height:34px;flex:none;background:transparent;border:2px solid #f7f3ec;color:#f7f3ec;font:800 15px/1 'Archivo',sans-serif;cursor:pointer" data-hover="background:#f2b30c;border-color:#f2b30c;color:#1b1a19">+</button>
+            </span>
+          </label>
+          <label style="display:block;padding:18px 20px;border-right:2px solid rgba(247,243,236,.22);border-bottom:1px solid rgba(247,243,236,.22)">
+            <span style="display:block;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#bab6b6;margin-bottom:10px">Email or phone</span>
+            <input type="text" id="bk-contact" placeholder="How we confirm" style="width:100%;background:transparent;border:0;border-bottom:2px solid #f2b30c;color:#f7f3ec;font:800 17px/1.2 'Archivo',sans-serif;padding:0 0 8px;outline:none" />
+          </label>
+        </div>
+
+        <div style="padding:20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between">
+          <span style="font:600 10px/1.5 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#7d7979;max-width:42ch" id="bk-summary-line"></span>
+          <button type="button" id="bk-reserve" style="display:inline-flex;align-items:center;min-width:260px;padding:17px 20px;background:#ec3013;border:0;color:#fff;font:800 15px/1.1 'Archivo',sans-serif;cursor:pointer" data-hover="background:#f2b30c;color:#1b1a19">Reserve Your Flight<span style="margin-left:auto">→</span></button>
+        </div>
+      </div>
+
+      <div>
+        <div id="bk-ticket"></div>
+        <div id="bk-empty"></div>
+
+        <div style="margin-top:22px;border:2px solid #1b1a19;background:#e7e3dc;padding:18px 16px">
+          <div style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#605d5d;margin-bottom:12px">Booking something bigger?</div>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <a href="events.html" style="display:inline-flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase" data-hover="background:#ec3013">Birthdays &amp; groups<span>→</span></a>
+            <a href="junior-explorers.html" style="display:inline-flex;align-items:center;justify-content:space-between;padding:12px 14px;border:2px solid #1b1a19;color:#1b1a19;text-decoration:none;font:800 11px/1 'Archivo',sans-serif;letter-spacing:.12em;text-transform:uppercase" data-hover="background:#f2b30c;border-color:#f2b30c">Kids journeys<span>→</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="pp-footer"></div>
+
+<script src="js/data.js"></script>
+<script>window.PP_ACTIVE = "Book";</script>
+<script src="js/hover.js"></script>
+<script src="js/music.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/footer.js"></script>
+<script src="js/booking.js"></script>
+<script src="js/patty-tooty-widget.js"></script>
+</body>
+</html>

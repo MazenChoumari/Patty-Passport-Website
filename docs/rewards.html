@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patty Passport — Rewards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/site.css">
+<style>
+  body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
+  *,*::before,*::after{box-sizing:border-box}
+  a{color:#ae1800;text-underline-offset:3px}
+  a:hover{color:#ec3013}
+  :focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+  ::selection{background:rgba(236,48,19,.28)}
+  @keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+  @keyframes ppPulse{0%{opacity:.3;transform:scale(1)}100%{opacity:0;transform:scale(2.4)}}
+</style>
+</head>
+<body>
+<div id="pp-nav"></div>
+
+<section style="position:relative;background:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(236,48,19,.1) 1px,transparent 1px);background-size:98px 100%"></div>
+  <div class="pp-2col" style="position:relative;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(330px,.85fr)">
+    <div style="padding:58px 44px 52px;border-right:2px solid #1b1a19">
+      <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#ec3013;color:#fff;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:22px">
+        <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Passport desk · stamps &amp; rewards
+      </div>
+      <h1 data-rv="up" data-rv-d="70" style="font:800 clamp(42px,6.2vw,96px)/.9 'Archivo',sans-serif;letter-spacing:-.045em;margin:0 0 18px">FILL THE BOOK.<br><span style="color:#ec3013">UNLOCK THE WORLD.</span></h1>
+      <p data-rv="up" data-rv-d="130" style="font:400 clamp(15px,1.25vw,18px)/1.55 'Archivo',sans-serif;color:#444141;max-width:54ch;margin:0 0 26px">One stamp per country, per visit. Three stamps buys the drink, five the fries, eight the secret burger, twenty-one the whole sea. No app, no points, no expiry — a paper book the crew stamps at the table.</p>
+      <div data-rv="up" data-rv-d="180" style="display:flex;flex-wrap:wrap;gap:12px">
+        <a href="my-passport.html#join" style="display:inline-flex;align-items:center;min-width:250px;padding:16px 19px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" data-hover="background:#ec3013">Start my passport<span style="margin-left:auto">→</span></a>
+        <a href="destinations.html" style="display:inline-flex;align-items:center;min-width:220px;padding:16px 19px;border:2px solid #1b1a19;color:#1b1a19;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" data-hover="background:#f2b30c;border-color:#f2b30c">Pick the next stamp<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+    <div style="position:relative;min-height:430px;background:#2b76c9">
+      <div class="pp-placeholder" style="position:absolute;inset:0"><span>Open passport booklet with stamps across the spread</span></div>
+      <div style="position:absolute;right:24px;top:24px;width:112px;height:112px;border:3px solid #fff;color:#fff;background:rgba(27,26,25,.55);display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-11deg);pointer-events:none">
+        <span style="position:absolute;inset:-3px;border:3px solid #fff;border-radius:50%;animation:ppPulse 3.2s ease-out infinite"></span>
+        <span id="rw-hero-label" style="font:800 24px/1 'Archivo',sans-serif">6/21</span>
+        <span style="font:600 8px/1.4 'Archivo',sans-serif;letter-spacing:.18em">STAMPED</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#1b1a19;color:#f7f3ec;border-bottom:2px solid #1b1a19;padding:60px 0 66px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:28px">
+      <h2 data-rv="up" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0;max-width:20ch">YOUR SPREAD, LIVE</h2>
+      <div data-rv="up" data-rv-d="70" style="display:flex;align-items:center;gap:12px">
+        <span style="font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979">Try the progression</span>
+        <button type="button" id="rw-less" style="width:38px;height:38px;background:transparent;border:2px solid #f7f3ec;color:#f7f3ec;font:800 16px/1 'Archivo',sans-serif;cursor:pointer" data-hover="background:#ec3013;border-color:#ec3013">−</button>
+        <span id="rw-filled-label" style="font:800 22px/1 'Archivo',sans-serif;min-width:64px;text-align:center">6/21</span>
+        <button type="button" id="rw-more" style="width:38px;height:38px;background:transparent;border:2px solid #f7f3ec;color:#f7f3ec;font:800 16px/1 'Archivo',sans-serif;cursor:pointer" data-hover="background:#f2b30c;border-color:#f2b30c;color:#1b1a19">+</button>
+      </div>
+    </div>
+    <div style="margin-bottom:16px;display:flex;flex-wrap:wrap;gap:8px" id="rw-presets"></div>
+    <div id="rw-cells" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:2px;background:rgba(247,243,236,.3);border:2px solid #f7f3ec"></div>
+    <div id="rw-progress-line" style="margin-top:16px;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979"></div>
+  </div>
+</section>
+
+<section style="background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:64px 0 70px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px">
+    <h2 data-rv="up" style="font:800 clamp(30px,4vw,56px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 30px;max-width:20ch">THE REWARD LADDER</h2>
+    <div id="rw-ladder" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19"></div>
+  </div>
+</section>
+
+<section style="background:#e7e3dc;border-bottom:2px solid #1b1a19;padding:64px 0 70px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px">
+    <div class="pp-2col" style="display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:44px;align-items:start">
+      <div>
+        <h2 data-rv="up" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 18px;max-width:18ch">HOW IT WORKS AT THE TABLE</h2>
+        <div id="rw-steps" style="display:flex;flex-direction:column;border-top:2px solid #1b1a19"></div>
+      </div>
+      <div>
+        <h2 data-rv="up" style="font:800 clamp(28px,3.8vw,52px)/.95 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 18px;max-width:18ch">THREE BOOKS, ONE LADDER</h2>
+        <div id="rw-tiers" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));border-top:2px solid #1b1a19;border-left:2px solid #1b1a19"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#ec3013;color:#fff;padding:62px 0 68px">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:26px">
+    <div>
+      <h2 data-rv="up" style="font:800 clamp(30px,4.4vw,62px)/.93 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 14px;max-width:16ch">YOUR FIRST STAMP IS WAITING.</h2>
+      <p data-rv="up" data-rv-d="80" style="font:400 15.5px/1.55 'Archivo',sans-serif;margin:0;max-width:44ch">Ask at the desk on your next visit. The book is free, the stamps are earned, and the ladder never resets.</p>
+    </div>
+    <div data-rv="up" data-rv-d="140" style="display:flex;flex-wrap:wrap;gap:12px">
+      <a href="booking.html" style="display:inline-flex;align-items:center;min-width:250px;padding:17px 20px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" data-hover="background:#f2b30c;color:#1b1a19">Reserve and collect<span style="margin-left:auto">→</span></a>
+      <a href="junior-explorers.html" style="display:inline-flex;align-items:center;min-width:230px;padding:17px 20px;border:2px solid #fff;color:#fff;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" data-hover="background:#fff;color:#ec3013">Junior passport<span style="margin-left:auto">→</span></a>
+    </div>
+  </div>
+</section>
+
+<div id="pp-footer"></div>
+
+<script>window.PP_ACTIVE = "Rewards";</script>
+<script src="js/hover.js"></script>
+<script src="js/reveal.js"></script>
+<script src="js/music.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/footer.js"></script>
+<script src="js/rewards.js"></script>
+<script src="js/patty-tooty-widget.js"></script>
+</body>
+</html>

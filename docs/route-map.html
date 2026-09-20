@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patty Passport — Route Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/site.css">
+<style>
+  body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
+  *,*::before,*::after{box-sizing:border-box}
+  a{color:#ae1800;text-underline-offset:3px}
+  a:hover{color:#ec3013}
+  :focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+  ::selection{background:rgba(236,48,19,.28)}
+  @keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+  @keyframes ppDash{0%{background-position:0 0}100%{background-position:44px 0}}
+  @keyframes ppSway{0%{transform:translateY(0)}50%{transform:translateY(-4px)}100%{transform:translateY(0)}}
+  @keyframes ppPulse{0%{opacity:.3;transform:scale(1)}100%{opacity:0;transform:scale(2.4)}}
+  @keyframes ppGlowPulse{0%,100%{box-shadow:0 0 0 0 rgba(242,179,12,.65)}50%{box-shadow:0 0 0 9px rgba(242,179,12,0)}}
+  /* #<code> deep-link highlight, set on the matching node + stop card by
+     route-map.js when location.hash names a country (see destination.html's
+     "See the route map" link). */
+  .pp-rm-highlight{outline:3px solid #f2b30c;outline-offset:3px;animation:ppGlowPulse 1.8s ease-out infinite}
+</style>
+</head>
+<body>
+<div id="pp-nav"></div>
+
+<section style="position:relative;background:#2b76c9;color:#fff;border-bottom:2px solid #1b1a19;overflow:hidden;padding:56px 0 0">
+  <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.22) 1.5px,transparent 1.6px);background-size:30px 30px"></div>
+  <div style="position:relative;max-width:1320px;margin:0 auto;padding:0 32px">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:26px;margin-bottom:28px">
+      <div>
+        <div data-rv="up" style="display:inline-flex;align-items:center;gap:9px;background:#1b1a19;color:#f2b30c;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px">
+          <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Live route network
+        </div>
+        <h1 data-rv="up" data-rv-d="70" style="font:800 clamp(40px,6vw,92px)/.9 'Archivo',sans-serif;letter-spacing:-.045em;margin:0 0 16px;max-width:15ch">FIVE ROUTES CROSS ONE SEA.</h1>
+        <p data-rv="up" data-rv-d="130" style="font:400 16px/1.55 'Archivo',sans-serif;max-width:48ch;margin:0;color:rgba(255,255,255,.92)">Pick a chapter on the legend and the map isolates it. Every node opens the destination page behind it — culture, plate, playlist, stamp.</p>
+      </div>
+      <div data-rv="up" data-rv-d="180" style="display:flex;flex-direction:column;gap:10px;min-width:240px">
+        <a href="destinations.html" style="display:inline-flex;align-items:center;padding:15px 18px;background:#f2b30c;color:#1b1a19;text-decoration:none;font:800 14px/1.1 'Archivo',sans-serif" data-hover="background:#fff">All 21 destinations<span style="margin-left:auto">→</span></a>
+        <a href="menu.html" style="display:inline-flex;align-items:center;padding:15px 18px;border:2px solid #fff;color:#fff;text-decoration:none;font:800 14px/1.1 'Archivo',sans-serif" data-hover="background:#fff;color:#2b76c9">Menu by route<span style="margin-left:auto">→</span></a>
+      </div>
+    </div>
+  </div>
+  <div style="position:relative;max-width:1320px;margin:0 auto;padding:0 32px 26px">
+    <div id="rm-legend" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px"></div>
+    <div style="position:relative;border:2px solid #1b1a19;background:rgba(27,26,25,.18);height:560px;overflow:hidden">
+      <div class="pp-placeholder" style="position:absolute;inset:0;opacity:.5"><span>Mediterranean basin map artwork — coastline plate</span></div>
+      <div style="position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.1) 0 1px,transparent 1px 56px),repeating-linear-gradient(90deg,rgba(255,255,255,.1) 0 1px,transparent 1px 56px);pointer-events:none"></div>
+      <div style="position:absolute;left:5%;right:5%;top:50%;height:2px;background-image:linear-gradient(90deg,#f2b30c 0 22px,transparent 22px 44px);background-size:44px 2px;animation:ppDash 1.6s linear infinite;pointer-events:none"></div>
+      <div id="rm-nodes"></div>
+      <div style="position:absolute;left:16px;bottom:16px;display:flex;align-items:center;gap:9px;padding:8px 11px;background:#1b1a19;color:#f7f3ec;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;pointer-events:none">
+        <span style="position:relative;width:9px;height:9px;background:#f2b30c;display:block"><span style="position:absolute;inset:0;border:2px solid #f2b30c;animation:ppPulse 2.6s ease-out infinite"></span></span><span id="rm-active-label"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#f7f3ec;border-bottom:2px solid #1b1a19">
+  <div id="rm-chapters"></div>
+</section>
+
+<section style="background:#1b1a19;color:#f7f3ec;padding:62px 0 68px">
+  <div style="max-width:1240px;margin:0 auto;padding:0 32px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:26px">
+    <div>
+      <h2 data-rv="up" style="font:800 clamp(30px,4.2vw,58px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 14px;max-width:18ch">PLAN THE WHOLE SEA, ONE TABLE AT A TIME.</h2>
+      <p data-rv="up" data-rv-d="80" style="font:400 15.5px/1.55 'Archivo',sans-serif;color:#bab6b6;margin:0;max-width:46ch">Twenty-one stamps fills the book. The ladder starts at three, and the World Traveller buffet waits at the end of the map.</p>
+    </div>
+    <div data-rv="up" data-rv-d="140" style="display:flex;flex-wrap:wrap;gap:12px">
+      <a href="rewards.html" style="display:inline-flex;align-items:center;min-width:230px;padding:16px 19px;background:#f2b30c;color:#1b1a19;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" data-hover="background:#ec3013;color:#fff">How stamps work<span style="margin-left:auto">→</span></a>
+      <a href="patty-tooty.html" style="display:inline-flex;align-items:center;min-width:230px;padding:16px 19px;border:2px solid #f7f3ec;color:#f7f3ec;text-decoration:none;font:800 14.5px/1.1 'Archivo',sans-serif" data-hover="background:#f7f3ec;color:#1b1a19">Let Patty Tooty choose<span style="margin-left:auto">→</span></a>
+    </div>
+  </div>
+</section>
+
+<div id="pp-footer"></div>
+
+<script src="js/data.js"></script>
+<script>window.PP_ACTIVE = "Route map";</script>
+<script src="js/hover.js"></script>
+<script src="js/reveal.js"></script>
+<script src="js/music.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/footer.js"></script>
+<script src="js/route-map.js"></script>
+<script src="js/patty-tooty-widget.js"></script>
+</body>
+</html>
