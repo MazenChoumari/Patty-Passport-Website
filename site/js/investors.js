@@ -17,6 +17,23 @@
     fScenario: "A1", fTicket: "€250k – €500k", fStructure: "Equity"
   };
 
+  /* ── product positioning map — category-level estimates for illustration
+     only, not published or verified market prices (master brief §20).
+     Sources consulted for category description (not exact pricing):
+     Goiko goiko.com/es/en · Foster's Hollywood fostershollywood.es
+     VIPS vips.es · Burger King burgerking.es/en/menu
+     Carl's Jr. carlsjr.es/productos-carls-jr · TGB (weur-cdn.carta.menu)
+     McDonald's mcdonalds.es */
+  var POSITIONING = [
+    { name: "McDonald's", x: 18, y: 12 },
+    { name: "Burger King", x: 22, y: 15 },
+    { name: "TGB", x: 28, y: 20 },
+    { name: "Carl's Jr.", x: 38, y: 18 },
+    { name: "VIPS", x: 45, y: 32 },
+    { name: "Foster's Hollywood", x: 50, y: 48 },
+    { name: "Goiko", x: 68, y: 50 }
+  ];
+
   /* ── derive every number the page shows from PP_DATA + current state ── */
   function derive() {
     var D = window.PP_DATA;
@@ -232,6 +249,96 @@
     document.getElementById("inv-return-note").textContent = "Mid investment = " + m(S.mid) + ", the midpoint of this scenario's corrected range. Every figure recalculates when you change scenario or sales case.";
   }
 
+  /* ── product positioning map ── */
+  function renderPositioning() {
+    var root = document.getElementById("inv-positioning-map");
+    if (!root) return;
+    var dots = POSITIONING.map(function (c) {
+      return '<div style="position:absolute;left:' + c.x + '%;top:' + (100 - c.y) + '%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:5px">'
+        + '<span style="width:11px;height:11px;border-radius:50%;background:#bab6b6;border:2px solid #1b1a19"></span>'
+        + '<span style="font:700 9.5px/1.15 \'Archivo\',sans-serif;color:#f7f3ec;white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.6)">' + esc(c.name) + '</span>'
+        + '</div>';
+    }).join("");
+    var pp = '<div style="position:absolute;left:58%;top:' + (100 - 78) + '%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;z-index:2">'
+      + '<span id="inv-pos-mascot" style="width:38px;height:38px;border-radius:50%;background:#f2b30c;border:3px solid #f7f3ec;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px rgba(242,179,12,.28)"></span>'
+      + '<span style="font:800 10.5px/1.15 \'Archivo\',sans-serif;color:#f2b30c;white-space:nowrap;text-align:center">PATTY PASSPORT<br><span style="font:600 8.5px/1.3 \'Archivo\',sans-serif;color:#bab6b6;letter-spacing:.06em;text-transform:uppercase">Fair price · high immersion</span></span>'
+      + '</div>';
+    root.innerHTML = dots + pp;
+    var mascot = document.getElementById("inv-pos-mascot");
+    if (mascot && window.PP_TOOTY_ICON) mascot.innerHTML = window.PP_TOOTY_ICON(24);
+  }
+
+  /* ── break-even chart (SVG visuals only — all labels are real HTML text
+     below it, so nothing shrinks unreadable on narrow screens) ── */
+  function renderBreakevenChart(v) {
+    var root = document.getElementById("inv-be-chart");
+    if (!root) return;
+    var O = v.O, rc = v.rc;
+    var monthsPerYear = 12, dayFactor = O.days / monthsPerYear;
+
+    function revMonth(guestsDay, spend) { return guestsDay * spend * dayFactor; }
+    function tcMonth(guestsDay, spend) { return O.fixedMonthly + v.variablePct * revMonth(guestsDay, spend); }
+
+    var xMaxCase = Math.max.apply(null, O.revenueCases.map(function (c) { return c.guests; }));
+    var xMax = Math.max(xMaxCase, v.beGuestsDay) * 1.18;
+    var yMax = Math.max(revMonth(xMax, rc.spend), Math.max.apply(null, O.revenueCases.map(function (c) { return revMonth(c.guests, c.spend); }))) * 1.1;
+
+    var padL = 8, padR = 4, padT = 6, padB = 8, vbW = 100, vbH = 62;
+    function sx(g) { return padL + (g / xMax) * (vbW - padL - padR); }
+    function sy(rev) { return (vbH - padB) - (rev / yMax) * (vbH - padB - padT); }
+
+    var revLine = "M " + sx(0) + "," + sy(0) + " L " + sx(xMax) + "," + sy(revMonth(xMax, rc.spend));
+    var tcLine = "M " + sx(0) + "," + sy(O.fixedMonthly) + " L " + sx(xMax) + "," + sy(tcMonth(xMax, rc.spend));
+    var fixedLine = "M " + sx(0) + "," + sy(O.fixedMonthly) + " L " + sx(xMax) + "," + sy(O.fixedMonthly);
+
+    var beX = sx(v.beGuestsDay), beY = sy(v.beMonthly);
+    var lossPath = "M " + sx(0) + "," + sy(O.fixedMonthly) + " L " + beX + "," + beY + " L " + sx(0) + "," + sy(0) + " Z";
+    var profitPath = "M " + beX + "," + beY + " L " + sx(xMax) + "," + sy(revMonth(xMax, rc.spend)) + " L " + sx(xMax) + "," + sy(tcMonth(xMax, rc.spend)) + " Z";
+
+    var caseDots = O.revenueCases.map(function (c) {
+      var on = c.key === rc.key;
+      var cx = sx(c.guests), cy = sy(revMonth(c.guests, c.spend));
+      return '<circle cx="' + cx + '" cy="' + cy + '" r="' + (on ? 2.2 : 1.5) + '" fill="' + (on ? YEL : BLU) + '" stroke="' + INK + '" stroke-width="0.5"/>';
+    }).join("");
+
+    var svg = '<svg viewBox="0 0 ' + vbW + ' ' + vbH + '" role="img" aria-label="Break-even chart: revenue and total cost by guests per day, current scenario ' + esc(rc.label) + '" style="display:block;width:100%;height:auto;background:#fff;border:2px solid #1b1a19">'
+      + '<path d="' + lossPath + '" fill="' + RED + '" fill-opacity="0.14"/>'
+      + '<path d="' + profitPath + '" fill="' + YEL + '" fill-opacity="0.22"/>'
+      + '<path d="' + fixedLine + '" fill="none" stroke="#7d7979" stroke-width="0.5" stroke-dasharray="1.4,1.4"/>'
+      + '<path d="' + tcLine + '" fill="none" stroke="' + RED + '" stroke-width="0.9"/>'
+      + '<path d="' + revLine + '" fill="none" stroke="' + INK + '" stroke-width="0.9"/>'
+      + '<line x1="' + beX + '" y1="' + beY + '" x2="' + beX + '" y2="' + sy(0) + '" stroke="' + INK + '" stroke-width="0.4" stroke-dasharray="1,1"/>'
+      + caseDots
+      + '<circle cx="' + beX + '" cy="' + beY + '" r="2.4" fill="' + INK + '" stroke="#fff" stroke-width="0.8"/>'
+      + '<line x1="' + sx(0) + '" y1="' + sy(0) + '" x2="' + sx(xMax) + '" y2="' + sy(0) + '" stroke="' + INK + '" stroke-width="0.6"/>'
+      + '<line x1="' + sx(0) + '" y1="' + padT + '" x2="' + sx(0) + '" y2="' + sy(0) + '" stroke="' + INK + '" stroke-width="0.6"/>'
+      + '</svg>';
+
+    var legend = '<div style="display:flex;flex-wrap:wrap;gap:14px 20px;margin-top:14px;font:600 10.5px/1.3 \'Archivo\',sans-serif">'
+      + '<span style="display:inline-flex;align-items:center;gap:6px"><span style="width:16px;height:3px;background:' + INK + ';display:inline-block"></span>Revenue line</span>'
+      + '<span style="display:inline-flex;align-items:center;gap:6px"><span style="width:16px;height:3px;background:' + RED + ';display:inline-block"></span>Total cost line</span>'
+      + '<span style="display:inline-flex;align-items:center;gap:6px"><span style="width:16px;height:0;border-top:2px dashed #7d7979;display:inline-block"></span>Fixed cost line</span>'
+      + '<span style="display:inline-flex;align-items:center;gap:6px"><span style="width:9px;height:9px;border-radius:50%;background:' + INK + ';display:inline-block"></span>Break-even intersection</span>'
+      + '<span style="display:inline-flex;align-items:center;gap:6px"><span style="width:9px;height:9px;border-radius:50%;background:' + YEL + ';border:1px solid ' + INK + ';display:inline-block"></span>Base-case operating point</span>'
+      + '<span style="display:inline-flex;align-items:center;gap:6px"><span style="width:9px;height:9px;border-radius:50%;background:' + BLU + ';display:inline-block"></span>Low / high sales scenarios</span>'
+      + '</div>';
+
+    var facts = '<dl style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px 20px;margin:18px 0 0;padding-top:16px;border-top:1px solid rgba(27,26,25,.18)">'
+      + [
+        ["Break-even (monthly)", eur0(v.beMonthly) + "/month"],
+        ["Break-even (annual)", eur0(v.beMonthly * 12) + "/year"],
+        ["Guests needed", Math.round(v.beGuestsDay) + "/day · " + Math.round(v.beGuestsMonth) + "/month"],
+        ["At variable cost", (v.variablePct * 100).toFixed(0) + "% of revenue"]
+      ].map(function (f) {
+        return '<div><dt style="font:600 9px/1.3 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#7d7979;margin:0 0 3px">' + f[0] + '</dt><dd style="font:800 15px/1.15 \'Archivo\',sans-serif;letter-spacing:-.015em;margin:0">' + f[1] + '</dd></div>';
+      }).join("")
+      + '</dl>';
+
+    var note = '<p style="font:400 11.5px/1.55 \'Archivo\',sans-serif;color:#7d7979;margin:16px 0 0;max-width:70ch">Planning model only. Break-even depends on actual rent, staffing, trading days, mix, taxes, financing and final site design.</p>';
+
+    root.innerHTML = svg + legend + facts + note;
+  }
+
   /* ── break-even & sales ── */
   function renderBreakeven(v) {
     var O = v.O, rc = v.rc;
@@ -314,6 +421,8 @@
     renderPs(v);
     renderScenario(v);
     renderBreakeven(v);
+    renderBreakevenChart(v);
+    renderPositioning();
     renderFunding(v);
     renderContact(v);
     if (window.initHoverStyles) window.initHoverStyles(document.body);
