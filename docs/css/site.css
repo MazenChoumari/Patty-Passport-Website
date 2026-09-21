@@ -78,6 +78,14 @@ html, body { overflow-x: hidden; }
   .pp-2col > * { min-width: 0; }
   .pp-statgrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
 
+  /* Kids menu route cards (js/junior-explorers.js) — minmax(420px,1fr)
+     is a hard floor: on a phone-width viewport the "1fr" side can't
+     shrink below it, so the whole grid silently blows out past the
+     screen edge. body's overflow-x:hidden then clips it rather than
+     making it scrollable, so the missing width never shows up as a
+     scrollbar — it just cuts text off with no visible cause. */
+  #jr-routes { grid-template-columns: minmax(0, 1fr) !important; }
+
   /* Mediterranean map nodes (js/med-map.js consumers: index.js,
      route-map.js) — at phone width, 21 badges with a route-name subline
      and a full country name below crowd into an unreadable, untappable
