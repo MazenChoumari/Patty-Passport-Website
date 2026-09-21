@@ -68,7 +68,7 @@
         + (c.nativePhrase ? '<span dir="auto" style="display:block;font:800 20px/1.3 \'Archivo\',sans-serif;letter-spacing:-.02em;overflow-wrap:anywhere">' + esc(c.nativePhrase) + '</span>' : "")
         + (translitParts[0] ? '<span style="display:block;font:800 11px/1.5 \'Archivo\',sans-serif;letter-spacing:.06em;color:#f2b30c;overflow-wrap:anywhere">' + esc(translitParts[0]) + '</span>' : "")
         + (translitParts[1] ? '<span style="display:block;font:600 10px/1.5 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#bab6b6;overflow-wrap:anywhere">' + esc(translitParts[1]) + '</span>' : "")
-        + (english ? '<span style="display:block;font:400 11.5px/1.5 \'Archivo\',sans-serif;color:#bab6b6;margin-top:2px;overflow-wrap:anywhere">' + esc(english) + '</span>' : "")
+        + (english ? '<span style="display:block;font:400 11.5px/1.5 \'Archivo\',sans-serif;color:#bab6b6;margin-top:5px;overflow-wrap:anywhere">' + esc(english) + '</span>' : "")
         + '</div>'
         + '</a>';
     }).join("");

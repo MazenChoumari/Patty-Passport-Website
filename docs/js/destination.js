@@ -57,11 +57,11 @@
       + '<line x1="5" y1="2" x2="5" y2="22" stroke="#f7f3ec" stroke-width="2" stroke-linecap="round"/>'
       + '<path d="M5 3 L20 3 L16 7 L20 11 L5 11 Z" fill="' + route.bg + '" stroke="#f7f3ec" stroke-width="1.6" stroke-linejoin="round"/>'
       + '</svg>'
-      + '<span style="min-width:0;flex:1 1 260px;display:flex;flex-direction:column;gap:4px">'
+      + '<span style="min-width:0;flex:1 1 260px;display:flex;flex-direction:column;gap:6px">'
       + (d.nativePhrase ? '<span dir="auto" style="display:block;font:800 22px/1.3 \'Archivo\',sans-serif;overflow-wrap:anywhere">' + esc(d.nativePhrase) + '</span>' : "")
       + (pronunciation ? '<span style="display:block;font:800 12.5px/1.5 \'Archivo\',sans-serif;letter-spacing:.05em;color:#f2b30c;overflow-wrap:anywhere">' + esc(pronunciation) + '</span>' : "")
       + (meaning ? '<span style="display:block;font:600 11px/1.5 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#bab6b6;overflow-wrap:anywhere">' + esc(meaning) + '</span>' : "")
-      + (message ? '<span style="display:block;font:400 13px/1.5 \'Archivo\',sans-serif;color:#bab6b6;margin-top:2px;overflow-wrap:anywhere">' + esc(message) + '</span>' : "")
+      + (message ? '<span style="display:block;font:400 13px/1.5 \'Archivo\',sans-serif;color:#bab6b6;margin-top:4px;overflow-wrap:anywhere">' + esc(message) + '</span>' : "")
       + '</span>'
       + '<span style="margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:2px solid ' + route.bg + ';color:' + route.bg + ';font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap">'
       + '<span style="width:7px;height:7px;background:' + route.bg + ';flex:none"></span>You are here — ' + esc(route.name) + ' Route</span>';
