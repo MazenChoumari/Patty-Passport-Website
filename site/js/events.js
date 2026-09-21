@@ -171,5 +171,5 @@
     if (window.PP_REVEAL) window.PP_REVEAL.init();
   }
 
-  document.addEventListener("DOMContentLoaded", render);
+  window.PP_READY(render);
 })();

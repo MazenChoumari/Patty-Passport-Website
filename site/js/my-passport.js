@@ -240,9 +240,11 @@
     });
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  window.PP_READY(function () {
     if ((location.hash || "").toLowerCase() === "#join") { state.modal = true; state.mode = "create"; }
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && state.modal) { state.modal = null; render(); } });
+    function onKeydown(e) { if (e.key === "Escape" && state.modal) { state.modal = null; render(); } }
+    document.addEventListener("keydown", onKeydown);
+    if (window.PP_TRACK) window.PP_TRACK(function () { document.removeEventListener("keydown", onKeydown); });
     render();
     if (!window.PP_DATA) {
       var poll = setInterval(function () { if (window.PP_DATA) { clearInterval(poll); render(); } }, 60);

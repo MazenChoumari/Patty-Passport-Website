@@ -78,7 +78,7 @@
     if (window.PP_REVEAL) window.PP_REVEAL.init();
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  window.PP_READY(function () {
     render();
     if (!window.PP_DATA) {
       var poll = setInterval(function () { if (window.PP_DATA) { clearInterval(poll); render(); } }, 60);

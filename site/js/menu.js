@@ -170,7 +170,7 @@
     if (window.PP_REVEAL) window.PP_REVEAL.init();
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  window.PP_READY(function () {
     var board = document.getElementById("mn-board");
     if (board) {
       board.addEventListener("click", function (e) {

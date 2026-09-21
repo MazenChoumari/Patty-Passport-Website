@@ -111,7 +111,7 @@
     if (window.PP_REVEAL) window.PP_REVEAL.init();
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  window.PP_READY(function () {
     document.getElementById("rw-more").addEventListener("click", function () { setFilled(state.filled + 1); });
     document.getElementById("rw-less").addEventListener("click", function () { setFilled(state.filled - 1); });
     document.getElementById("rw-presets").addEventListener("click", function (e) {

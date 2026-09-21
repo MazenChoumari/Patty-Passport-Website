@@ -35,7 +35,7 @@
   ];
 
   const state = { drawerOpen: false, drawerIn: false, musicOn: false, gatePage: 0, gateFade: 1 };
-  const active = window.PP_ACTIVE || "";
+  let active = window.PP_ACTIVE || "";
 
   function eqBars() {
     return '<span style="display:flex;align-items:flex-end;gap:2px;height:12px;width:14px">'
@@ -220,7 +220,20 @@
     if (plane) plane.style.left = "calc(" + (p * 100) + "% - 13px)";
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  /* The nav is a persistent, single-instance script — js/router.js never
+     re-runs it on a client-side page change — so "current page" can't
+     stay a value frozen from whichever page happened to load first.
+     The router calls this after every swap with the new page's
+     PP_ACTIVE value so gate/drawer highlighting stays correct. */
+  window.PP_NAV = {
+    setActive(next) {
+      active = next || "";
+      renderBar();
+      if (state.drawerOpen) renderDrawer();
+    }
+  };
+
+  window.PP_READY(() => {
     const root = document.getElementById("pp-nav");
     if (!root) return;
     root.innerHTML = '<div id="pp-nav-bar"></div><div id="pp-nav-drawer"></div>';
