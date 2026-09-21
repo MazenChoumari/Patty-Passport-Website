@@ -5,7 +5,7 @@
 (function () {
   var RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
 
-  var state = { occasion: "Birthday" };
+  var state = { occasion: "Birthday", package: null };
 
   var FACTS = [
     ["8—120", "Guests per departure", YEL],
@@ -51,18 +51,26 @@
     return { label: p[0], x: p[1], y: p[2], w: p[3], bg: p[4], fg: p[5], r: p[6], dur: p[7], delay: p[8], h: p[9], note: p[10], shadow: p[11], slotId: "ev-prop-" + i };
   });
 
-  var FIELD_IDS = ["ev-f-name", "ev-f-contact", "ev-f-occasion", "ev-f-guests", "ev-f-date", "ev-f-dest"];
+  var FIELD_IDS = {
+    name: "ev-f-name", email: "ev-f-email", phone: "ev-f-phone",
+    date: "ev-f-date", time: "ev-f-time", adults: "ev-f-adults", children: "ev-f-children",
+    dest: "ev-f-dest", food: "ev-f-food", notes: "ev-f-notes"
+  };
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
   function fieldsData() {
     return [
-      { id: FIELD_IDS[0], label: "Your name", ph: "Who's organising" },
-      { id: FIELD_IDS[1], label: "Email or phone", ph: "How we reach you" },
-      { id: FIELD_IDS[2], label: "Occasion", ph: state.occasion },
-      { id: FIELD_IDS[3], label: "Guests", ph: "e.g. 14 adults, 6 kids" },
-      { id: FIELD_IDS[4], label: "Preferred date", ph: "Fri 25 Sep 2026" },
-      { id: FIELD_IDS[5], label: "Destination", ph: "Lebanon · MED-12, or let us pick" }
+      { id: FIELD_IDS.name, label: "Full name *", ph: "Who's organising", type: "text" },
+      { id: FIELD_IDS.email, label: "Email *", ph: "you@example.com", type: "email" },
+      { id: FIELD_IDS.phone, label: "Phone", ph: "Optional", type: "tel" },
+      { id: FIELD_IDS.date, label: "Preferred date *", ph: "Fri 25 Sep 2026", type: "text" },
+      { id: FIELD_IDS.time, label: "Preferred time *", ph: "e.g. 19:30", type: "text" },
+      { id: FIELD_IDS.adults, label: "Adults *", ph: "e.g. 14", type: "number" },
+      { id: FIELD_IDS.children, label: "Children", ph: "e.g. 6", type: "number" },
+      { id: FIELD_IDS.dest, label: "Route or country interest", ph: "Lebanon · MED-12, or let us pick", type: "text" },
+      { id: FIELD_IDS.food, label: "Food preferences & allergies", ph: "Halal, vegetarian, nut allergy…", type: "text", full: true },
+      { id: FIELD_IDS.notes, label: "Message / notes", ph: "Anything else the crew should know", type: "textarea", full: true }
     ];
   }
 
@@ -91,9 +99,15 @@
             + '<span style="width:7px;height:7px;flex:none;background:currentColor;margin-top:5px"></span>' + esc(i) + '</span>';
         }).join("")
         + '</div>'
-        + '<a href="#enquiry" style="margin-top:auto;display:inline-flex;align-items:center;justify-content:space-between;padding:13px 15px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 11.5px/1 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase" data-hover="background:#ec3013">Enquire<span>→</span></a>'
+        + '<a href="#enquiry" data-enquire-pkg="' + esc(p.name) + '" style="margin-top:auto;display:inline-flex;align-items:center;justify-content:space-between;padding:13px 15px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 11.5px/1 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase" data-hover="background:#ec3013">Enquire<span>→</span></a>'
         + '</div></div>';
     }).join("");
+    Array.prototype.forEach.call(document.querySelectorAll("#ev-packages [data-enquire-pkg]"), function (a) {
+      a.addEventListener("click", function () {
+        state.package = a.getAttribute("data-enquire-pkg");
+        renderPackageContext();
+      });
+    });
   }
 
   function renderTimeline() {
@@ -117,10 +131,29 @@
 
   function renderFields() {
     document.getElementById("ev-fields").innerHTML = fieldsData().map(function (f) {
-      return '<label style="display:block;padding:18px 20px;border-right:2px solid rgba(247,243,236,.22);border-bottom:1px solid rgba(247,243,236,.22)">'
+      var control = f.type === "textarea"
+        ? '<textarea id="' + f.id + '" rows="2" placeholder="' + esc(f.ph) + '" style="width:100%;background:transparent;border:0;border-bottom:2px solid #f2b30c;color:#f7f3ec;font:600 14px/1.4 \'Archivo\',sans-serif;padding:0 0 8px;outline:none;resize:vertical" data-field></textarea>'
+        : '<input type="' + f.type + '" id="' + f.id + '" placeholder="' + esc(f.ph) + '"' + (f.type === "number" ? ' min="0" step="1"' : '') + ' style="width:100%;background:transparent;border:0;border-bottom:2px solid #f2b30c;color:#f7f3ec;font:800 16px/1.2 \'Archivo\',sans-serif;padding:0 0 8px;outline:none" data-field />';
+      return '<label style="display:block;padding:18px 20px;border-right:2px solid rgba(247,243,236,.22);border-bottom:1px solid rgba(247,243,236,.22);' + (f.full ? "grid-column:1/-1" : "") + '">'
         + '<span style="display:block;font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#bab6b6;margin-bottom:10px">' + esc(f.label) + '</span>'
-        + '<input type="text" id="' + f.id + '" placeholder="' + esc(f.ph) + '" style="width:100%;background:transparent;border:0;border-bottom:2px solid #f2b30c;color:#f7f3ec;font:800 16px/1.2 \'Archivo\',sans-serif;padding:0 0 8px;outline:none" /></label>';
+        + control
+        + '<span data-field-error style="display:none;color:#ec3013;font:600 10.5px/1.4 \'Archivo\',sans-serif;margin-top:6px"></span></label>';
     }).join("");
+  }
+
+  function renderPackageContext() {
+    var el = document.getElementById("ev-pkg-context");
+    if (!el) return;
+    if (state.package) {
+      el.style.display = "flex";
+      el.innerHTML = '<span>Enquiring about: <strong>' + esc(state.package) + '</strong></span>'
+        + '<button type="button" id="ev-pkg-clear" style="background:transparent;border:0;color:#f2b30c;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;text-decoration:underline">Clear</button>';
+      var clearBtn = document.getElementById("ev-pkg-clear");
+      if (clearBtn) clearBtn.addEventListener("click", function () { state.package = null; render(); });
+    } else {
+      el.style.display = "none";
+      el.innerHTML = "";
+    }
   }
 
   function renderOccasions() {
@@ -137,25 +170,75 @@
     });
   }
 
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  function fieldEl(id) { return document.getElementById(id); }
+  function fieldLabel(id) { var el = fieldEl(id); return el && el.closest("label"); }
+  function setFieldError(id, msg) {
+    var label = fieldLabel(id);
+    if (!label) return;
+    var input = fieldEl(id);
+    var err = label.querySelector("[data-field-error]");
+    if (msg) {
+      input.style.borderBottomColor = "#ec3013";
+      if (err) { err.textContent = msg; err.style.display = "block"; }
+    } else {
+      input.style.borderBottomColor = "#f2b30c";
+      if (err) { err.style.display = "none"; err.textContent = ""; }
+    }
+  }
+
   function renderSubmit() {
     var btn = document.getElementById("ev-submit");
     btn.onclick = function () {
-      var name = (document.getElementById(FIELD_IDS[0]).value || "Guest").trim();
-      var contact = (document.getElementById(FIELD_IDS[1]).value || "").trim();
-      var guests = (document.getElementById(FIELD_IDS[3]).value || "your group").trim();
-      var date = (document.getElementById(FIELD_IDS[4]).value || "a date to confirm").trim();
-      var dest = (document.getElementById(FIELD_IDS[5]).value || "a destination we'll help pick").trim();
+      var name = (fieldEl(FIELD_IDS.name).value || "").trim();
+      var email = (fieldEl(FIELD_IDS.email).value || "").trim();
+      var phone = (fieldEl(FIELD_IDS.phone).value || "").trim();
+      var date = (fieldEl(FIELD_IDS.date).value || "").trim();
+      var time = (fieldEl(FIELD_IDS.time).value || "").trim();
+      var adultsRaw = (fieldEl(FIELD_IDS.adults).value || "").trim();
+      var childrenRaw = (fieldEl(FIELD_IDS.children).value || "").trim();
+      var dest = (fieldEl(FIELD_IDS.dest).value || "").trim();
+      var food = (fieldEl(FIELD_IDS.food).value || "").trim();
+      var notes = (fieldEl(FIELD_IDS.notes).value || "").trim();
+
+      [FIELD_IDS.name, FIELD_IDS.email, FIELD_IDS.date, FIELD_IDS.time, FIELD_IDS.adults].forEach(function (id) { setFieldError(id, ""); });
+
+      var errors = [];
+      if (!name) { errors.push("Add your name."); setFieldError(FIELD_IDS.name, "Required"); }
+      if (!email) { errors.push("Add an email so the crew can confirm."); setFieldError(FIELD_IDS.email, "Required"); }
+      else if (!EMAIL_RE.test(email)) { errors.push("That email address doesn't look right."); setFieldError(FIELD_IDS.email, "Check this address"); }
+      if (!date) { errors.push("Add a preferred date."); setFieldError(FIELD_IDS.date, "Required"); }
+      if (!time) { errors.push("Add a preferred time."); setFieldError(FIELD_IDS.time, "Required"); }
+      var adults = adultsRaw === "" ? NaN : parseInt(adultsRaw, 10);
+      var children = childrenRaw === "" ? 0 : parseInt(childrenRaw, 10);
+      if (adultsRaw === "" || isNaN(adults) || adults < 0) { errors.push("Adults must be a number (0 or more)."); setFieldError(FIELD_IDS.adults, "Required"); }
+      else if (children < 0 || isNaN(children)) { errors.push("Children must be a number (0 or more)."); }
+      else if (adults + children < 1) { errors.push("Add at least one guest."); setFieldError(FIELD_IDS.adults, "At least 1 guest total"); }
+
       var fb = document.getElementById("ev-feedback");
-      if (!contact) {
-        fb.style.display = "block";
+      fb.style.display = "block";
+      if (errors.length) {
+        fb.style.background = "rgba(236,48,19,.12)";
         fb.style.color = "#ec3013";
-        fb.textContent = "Add an email or phone so the crew can confirm your flight plan.";
+        fb.innerHTML = '<strong style="display:block;margin-bottom:6px">Please fix the following:</strong><ul style="margin:0;padding-left:18px">' + errors.map(function (e) { return "<li>" + esc(e) + "</li>"; }).join("") + "</ul>";
         return;
       }
+
+      var totalGuests = adults + children;
+      var guestLine = adults + " adult" + (adults === 1 ? "" : "s") + (children ? ", " + children + " child" + (children === 1 ? "" : "ren") : "");
       var ref = "PP-EV-" + Math.floor(1000 + Math.random() * 9000);
-      fb.style.display = "block";
+      fb.style.background = "rgba(242,179,12,.12)";
       fb.style.color = "#f2b30c";
-      fb.textContent = "Flight plan filed, " + name + " — reference " + ref + ". " + state.occasion + " for " + guests + ", " + date + ", " + dest + ". We'll confirm at " + contact + " within one working day. (Front-end demo — nothing was actually sent.)";
+      fb.innerHTML = '<strong style="display:block;margin-bottom:6px">Flight plan filed — reference ' + esc(ref) + '</strong>'
+        + '<span style="display:block;color:#f7f3ec;opacity:.9">' + esc(name) + (state.package ? " · " + esc(state.package) : " · " + esc(state.occasion))
+        + " · " + esc(guestLine) + " (" + totalGuests + " total)"
+        + " · " + esc(date) + " at " + esc(time)
+        + (dest ? " · " + esc(dest) : "")
+        + (food ? " · " + esc(food) : "")
+        + (notes ? " · “" + esc(notes) + "”" : "") + "</span>"
+        + '<span style="display:block;margin-top:8px">We’ll confirm at ' + esc(email) + (phone ? " or " + esc(phone) : "") + ' within one working day.</span>'
+        + '<span style="display:block;margin-top:4px;color:#bab6b6;font:400 11.5px/1.5 \'Archivo\',sans-serif">Front-end demo — this form does not send anything yet. Prefer email right now? Write to <a href="mailto:events@pattypassport.com" style="color:#f2b30c">events@pattypassport.com</a>.</span>';
     };
   }
 
@@ -165,6 +248,7 @@
     renderTimeline();
     renderProps();
     renderFields();
+    renderPackageContext();
     renderOccasions();
     renderSubmit();
     if (window.initHoverStyles) window.initHoverStyles(document.body);
