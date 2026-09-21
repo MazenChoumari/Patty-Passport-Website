@@ -43,6 +43,7 @@
       var route = routes[c.routeKey];
       var greetingParts = (c.greeting || "").split(" — ");
       var english = greetingParts[1] || "";
+      var translitParts = (c.translit || "").split(" · ");
       return '<a href="destination.html#' + c.code + '" class="pp-dst-card" style="display:flex;flex-direction:column;border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;text-decoration:none;color:#1b1a19;background:#f7f3ec;transition:background .2s ease" data-hover="background:#fff">'
         + '<div style="position:relative;height:210px;border-bottom:2px solid #1b1a19">'
         + '<div class="pp-placeholder" style="position:absolute;inset:0"><span>' + esc(c.name) + ' — street scene or landscape</span></div>'
@@ -64,8 +65,10 @@
         + '<line x1="5" y1="2" x2="5" y2="22" stroke="#f7f3ec" stroke-width="2" stroke-linecap="round"/>'
         + '<path d="M5 3 L20 3 L16 7 L20 11 L5 11 Z" fill="' + route.bg + '" stroke="#f7f3ec" stroke-width="1.6" stroke-linejoin="round"/>'
         + '</svg>'
-        + '<span style="font:800 20px/1.15 \'Archivo\',sans-serif;letter-spacing:-.02em">' + esc(c.nativePhrase) + '</span>'
-        + '<span style="font:600 10px/1.4 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#bab6b6">' + esc(c.translit) + (english ? " · " + esc(english) : "") + '</span>'
+        + (c.nativePhrase ? '<span dir="auto" style="display:block;font:800 20px/1.3 \'Archivo\',sans-serif;letter-spacing:-.02em;overflow-wrap:anywhere">' + esc(c.nativePhrase) + '</span>' : "")
+        + (translitParts[0] ? '<span style="display:block;font:800 11px/1.5 \'Archivo\',sans-serif;letter-spacing:.06em;color:#f2b30c;overflow-wrap:anywhere">' + esc(translitParts[0]) + '</span>' : "")
+        + (translitParts[1] ? '<span style="display:block;font:600 10px/1.5 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#bab6b6;overflow-wrap:anywhere">' + esc(translitParts[1]) + '</span>' : "")
+        + (english ? '<span style="display:block;font:400 11.5px/1.5 \'Archivo\',sans-serif;color:#bab6b6;margin-top:2px;overflow-wrap:anywhere">' + esc(english) + '</span>' : "")
         + '</div>'
         + '</a>';
     }).join("");

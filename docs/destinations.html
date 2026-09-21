@@ -31,7 +31,8 @@
      native-language greeting slides up over the teaser on hover/focus, the
      way it plays out for real once you land on the destination page). */
   .pp-dst-card{position:relative}
-  .pp-dst-greet{position:absolute;left:0;right:0;bottom:0;top:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:4px;padding:20px 18px 22px;background:#1b1a19;color:#f7f3ec;opacity:0;transform:translateY(10px);transition:opacity .28s ease,transform .32s cubic-bezier(.2,.85,.25,1);pointer-events:none}
+  .pp-dst-greet{position:absolute;left:0;right:0;bottom:0;top:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:6px;padding:20px 18px 22px;background:#1b1a19;color:#f7f3ec;opacity:0;transform:translateY(10px);transition:opacity .28s ease,transform .32s cubic-bezier(.2,.85,.25,1);pointer-events:none;overflow:hidden}
+  .pp-dst-greet > * { max-width: 100%; }
   .pp-dst-card:hover .pp-dst-greet,.pp-dst-card:focus-visible .pp-dst-greet{opacity:1;transform:translateY(0)}
   .pp-dst-greet-flag{font-size:26px;line-height:1;display:inline-block;animation:ppFlagWave 2.2s ease-in-out infinite;transform-origin:70% 90%}
 </style>
