@@ -58,10 +58,16 @@
   function loadedScriptSrcs() {
     var out = {};
     Array.prototype.forEach.call(document.querySelectorAll("script[src]"), function (s) {
-      out[s.getAttribute("src")] = true;
+      out[stripQuery(s.getAttribute("src"))] = true;
     });
     return out;
   }
+
+  // Script/style URLs carry a ?v= cache-busting query string (bumped on
+  // deploy so a returning browser can't keep serving a stale cached copy
+  // of a file that just changed) — compare by path only so that string
+  // never has to be kept in sync with SHARED_SCRIPTS by hand.
+  function stripQuery(src) { return src ? src.split("?")[0] : src; }
 
   function injectScript(src) {
     var s = document.createElement("script");
@@ -78,7 +84,7 @@
     var found = null;
     Array.prototype.forEach.call(doc.querySelectorAll("script[src]"), function (s) {
       var src = s.getAttribute("src");
-      if (src && SHARED_SCRIPTS.indexOf(src) === -1) found = src;
+      if (src && SHARED_SCRIPTS.indexOf(stripQuery(src)) === -1) found = src;
     });
     return found;
   }
@@ -105,10 +111,11 @@
     if (window.PP_NAV) window.PP_NAV.setActive(extractActive(html));
 
     var present = loadedScriptSrcs();
-    SHARED_SCRIPTS.forEach(function (src) {
-      if (src === "js/router.js") return;
-      var needed = doc.querySelector('script[src="' + src + '"]');
-      if (needed && !present[src]) injectScript(src);
+    Array.prototype.forEach.call(doc.querySelectorAll("script[src]"), function (s) {
+      var src = s.getAttribute("src");
+      var path = stripQuery(src);
+      if (path === "js/router.js" || SHARED_SCRIPTS.indexOf(path) === -1) return;
+      if (!present[path]) injectScript(src);
     });
 
     var pageScript = extractPageScript(doc);

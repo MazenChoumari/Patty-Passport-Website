@@ -56,9 +56,19 @@
     var meaning = translitParts[1] || "";
     var greetingParts = (d.greeting || "").split(" — ");
     var message = greetingParts[1] || greetingParts[0] || "";
+    // The flagpole/pennant outline was drawn as a single cream (#f7f3ec)
+    // stroke, which only has contrast against this bar's own dark
+    // background — anywhere the pole ends up seen against something
+    // lighter (a caching hiccup showing stale markup, a future reuse of
+    // this SVG elsewhere, print/high-contrast modes), it visually
+    // vanishes. Each line/path is now drawn twice: a wider dark #1b1a19
+    // stroke first, then the original cream stroke on top — a poster-
+    // style outline that reads on any background, not just this one.
     document.getElementById("dp-greeting").innerHTML =
       '<svg width="30" height="30" viewBox="0 0 24 24" style="display:inline-block;flex:none;animation:ppFlagWave 2.4s ease-in-out infinite;transform-origin:21% 92%">'
+      + '<line x1="5" y1="2" x2="5" y2="22" stroke="#1b1a19" stroke-width="4.2" stroke-linecap="round"/>'
       + '<line x1="5" y1="2" x2="5" y2="22" stroke="#f7f3ec" stroke-width="2" stroke-linecap="round"/>'
+      + '<path d="M5 3 L20 3 L16 7 L20 11 L5 11 Z" fill="' + route.bg + '" stroke="#1b1a19" stroke-width="3" stroke-linejoin="round"/>'
       + '<path d="M5 3 L20 3 L16 7 L20 11 L5 11 Z" fill="' + route.bg + '" stroke="#f7f3ec" stroke-width="1.6" stroke-linejoin="round"/>'
       + '</svg>'
       + '<span style="min-width:0;flex:1 1 260px;display:flex;flex-direction:column;gap:6px">'
