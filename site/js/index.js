@@ -227,6 +227,30 @@
     if (window.PP_TRACK) window.PP_TRACK(function () { window.removeEventListener("scroll", check); clearInterval(iv); });
   }
 
+  /* ── Home Mediterranean map: same illustrated basin + the same 21
+     country positions as route-map.js (both read window.PP_MED_MAP), so
+     the two pages can never show a different map. Unlike the route-map
+     page this one has no filter UI — every node is always shown, live-
+     linked straight to its destination page. ── */
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+
+  function renderHomeMap(data) {
+    var bg = document.getElementById("home-map-bg");
+    var nodesEl = document.getElementById("home-map-nodes");
+    if (!bg || !nodesEl || !window.PP_MED_MAP) return;
+    bg.innerHTML = window.PP_MED_MAP.background();
+    var pos = window.PP_MED_MAP.POS;
+    var routes = data.ROUTES;
+    nodesEl.innerHTML = data.COUNTRIES.map(function (c, i) {
+      var p = pos[c.code] || [50, 50];
+      var ch = routes[c.routeKey];
+      var sway = (4 + (i % 5) * 0.6).toFixed(1) + "s";
+      return '<a href="destination.html#' + c.code + '" aria-label="' + esc(c.name) + ' — ' + esc(ch.name) + ' route" style="position:absolute;left:' + p[0] + '%;top:' + p[1] + '%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:flex-start;gap:5px;text-decoration:none">'
+        + '<span class="pp-map-node-badge" style="display:flex;align-items:center;gap:7px;padding:6px 9px;background:' + ch.bg + ';color:' + ch.fg + ';border:2px solid #1b1a19;font:800 10.5px/1 \'Archivo\',sans-serif;letter-spacing:.12em;white-space:nowrap;animation:ppSway ' + sway + ' ease-in-out infinite">' + esc(c.code.toUpperCase()) + '<span class="pp-map-node-sub" style="font:600 8.5px/1;letter-spacing:.14em;opacity:.75">' + esc(ch.name) + '</span></span>'
+        + '<span class="pp-map-node-name" style="font:800 13px/1 \'Archivo\',sans-serif;letter-spacing:-.01em;color:#fff;text-shadow:0 1px 0 rgba(27,26,25,.6)">' + esc(c.name) + '</span></a>';
+    }).join("");
+  }
+
   /* ── Mini Patty Tooty preview ── */
   function initTootyPreview(data) {
     var qEl = document.getElementById("pp-tooty-question");
@@ -236,6 +260,14 @@
     var input = document.querySelector('#tooty input[type="text"]');
     var send = document.querySelector('#tooty button');
     if (!qEl) return;
+
+    if (window.PP_TOOTY_ICON) {
+      var headerAvatar = document.getElementById("pp-tooty-avatar-header");
+      if (headerAvatar) headerAvatar.innerHTML = window.PP_TOOTY_ICON(24);
+      Array.prototype.forEach.call(document.querySelectorAll("#tooty .pp-tooty-avatar"), function (el) {
+        el.innerHTML = window.PP_TOOTY_ICON(18);
+      });
+    }
 
     var countries = (data && data.COUNTRIES) || [];
     function findByTag(tag) {
@@ -344,6 +376,7 @@
       renderCultureEq();
       renderPassport(data.COUNTRIES);
       renderGardenPlaques(data.COUNTRIES);
+      renderHomeMap(data);
       initTootyPreview(data);
       if (window.initHoverStyles) window.initHoverStyles(document.body);
     } else {

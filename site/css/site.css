@@ -78,6 +78,15 @@ html, body { overflow-x: hidden; }
   .pp-2col > * { min-width: 0; }
   .pp-statgrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
 
+  /* Mediterranean map nodes (js/med-map.js consumers: index.js,
+     route-map.js) — at phone width, 21 badges with a route-name subline
+     and a full country name below crowd into an unreadable, untappable
+     cluster wherever several countries sit close together (the Balkans).
+     Drop to the gate code alone; the full name stays one tap away on the
+     destination page and in the accessible label. */
+  .pp-map-node-sub, .pp-map-node-name { display: none !important; }
+  .pp-map-node-badge { padding: 4px 6px !important; }
+
   /* Shared nav (js/nav.js) — the top row (logo + music/passport/all-pages
      buttons) and the quick-gates strip are both fixed-width flex rows that
      don't fit a phone screen as authored. Targeted by DOM position since
