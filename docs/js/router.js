@@ -161,7 +161,39 @@
     if (window.PP_NAV) window.PP_NAV.closeMenu();
 
     var samePage = a.pathname === location.pathname;
-    if (samePage && a.hash) return; // in-page hash navigation (destination.html#xx, legal.html#faq): let native behavior run
+    if (samePage && a.hash) {
+      // In-page hash navigation (events.html#enquiry, legal.html#faq).
+      // Native browser handling (CSS scroll-behavior:smooth on <html>)
+      // is trusted for this on most pages, but on a long, element-heavy
+      // page it can visibly fall short of the target and just stop
+      // there — reproduced directly on events.html's "Enquire" links,
+      // which landed hundreds of pixels short of the actual form
+      // (looking like the click opened an earlier section instead).
+      // Drive it ourselves so it's never at the mercy of that: smooth
+      // for the normal short hop, then a corrective instant snap if a
+      // check shortly after shows we didn't actually get there.
+      var target = document.querySelector(a.hash);
+      if (!target) return; // no matching id: let native no-op behavior run
+      e.preventDefault();
+      history.pushState(null, "", a.getAttribute("href"));
+      // Offset by the fixed nav bar's real height so its target's own
+      // heading doesn't land hidden underneath it — the bar wraps to a
+      // second row under ~760px, so this is measured live, not assumed.
+      function navOffset() {
+        var bar = document.querySelector("[data-nav-root]");
+        return (bar ? bar.offsetHeight : 0) + 12;
+      }
+      function scrollToTarget(behavior) {
+        var top = target.getBoundingClientRect().top + window.scrollY - navOffset();
+        window.scrollTo({ top: top, behavior: behavior });
+      }
+      scrollToTarget("smooth");
+      setTimeout(function () {
+        var rect = target.getBoundingClientRect();
+        if (Math.abs(rect.top - navOffset()) > 24) scrollToTarget("auto");
+      }, 900);
+      return;
+    }
 
     e.preventDefault();
     // Same page, no hash (e.g. re-tapping "Home" while already home, or a

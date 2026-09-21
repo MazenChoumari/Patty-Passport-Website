@@ -148,13 +148,6 @@
   /* Garden of Destinations — one native tree per country (brief §5.10),
      plaque colors cycling through the same four-color rotation the
      original design's 8 example plaques used. */
-  var TREES = {
-    lbn: "Cedar", syr: "Pistachio tree", pse: "Olive tree", tur: "Hazelnut tree",
-    cyp: "Carob tree", grc: "Olive tree", ita: "Lemon tree", esp: "Orange tree",
-    fra: "Plane tree", mco: "Citrus tree", mlt: "Prickly pear", svn: "Linden tree",
-    hrv: "Black pine", bih: "Walnut tree", mne: "Olive tree", alb: "Olive tree",
-    egy: "Date palm", lby: "Date palm", tun: "Olive tree", dza: "Date palm", mar: "Orange tree"
-  };
   var PLAQUE_COLORS = [
     [YEL, INK], [RED, "#fff"], [BLU, "#fff"], ["#e7e3dc", INK]
   ];
@@ -163,7 +156,7 @@
     if (!el) return;
     el.innerHTML = countries.map(function (c, i) {
       var col = PLAQUE_COLORS[i % PLAQUE_COLORS.length];
-      var tree = TREES[c.code] || "Olive tree";
+      var tree = c.plant || "Olive tree";
       return '<div data-rv="up" data-rv-d="' + ((i % 6) * 60) + '" style="border-right:2px solid rgba(247,243,236,.3);border-bottom:2px solid rgba(247,243,236,.3);padding:20px 18px 22px;background:' + col[0] + ';color:' + col[1] + '">'
         + '<span style="font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75">Plaque ' + String(i + 1).padStart(2, "0") + '</span>'
         + '<p style="font:600 15px/1.4 \'Archivo\',sans-serif;margin:8px 0 0">' + tree + ' — dedicated to ' + c.name + '.</p>'

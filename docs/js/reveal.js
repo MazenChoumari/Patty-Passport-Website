@@ -1,20 +1,35 @@
 /* Patty Passport — shared scroll-reveal engine.
-   Animates elements in as they enter the viewport and resets them when they
-   leave, so scrolling back up re-plays the animation — matching the
-   original design's feeling of continuous movement instead of a page that
-   "uses up" its animations on first load.
+   Animates elements in as they enter the viewport and resets them when
+   they leave, so scrolling back up re-plays the animation — matching the
+   original design's feeling of continuous movement instead of a page
+   that "uses up" its animations on first load.
 
-   Visibility is recomputed from getBoundingClientRect() on every scroll/
-   resize (rAF-throttled) and once right after init(), rather than relying
-   only on IntersectionObserver threshold-crossing events. A big instant
-   jump — SPA nav-return, a hash deep-link's scrollIntoView, browser
-   back/forward scroll restoration — can move an element straight from
-   "below the fold" to "above the fold" without the browser ever rendering
-   an intermediate frame where it crosses the threshold, so an
-   IntersectionObserver never fires for it and it stays stuck at
-   opacity:0 forever. Recomputing from the actual rect on every scroll/
-   resize event (which always fires, jump or not) makes that impossible:
-   the element's true on-screen state is never more than one frame stale.
+   Two mechanisms, for two different failure modes:
+
+   1. IntersectionObserver drives the normal case (user scrolling,
+      including an animated `scroll-behavior:smooth` anchor jump, which
+      renders real intermediate frames the observer can see) — cheap,
+      native, and never competes with the browser's own scroll/animation
+      work on the main thread.
+
+   2. A low-frequency catch-up pass (setInterval, ~4/s) reconciles any
+      element IntersectionObserver never fired for: specifically an
+      *instant* jump — SPA nav-return, browser back/forward scroll
+      restoration — that moves an element straight from off-screen to
+      on-screen (or a fast discrete scroll, e.g. a trackpad flick, whose
+      sampled frames can step clean over a thin element) without ever
+      rendering a frame where it crosses the threshold, so the observer
+      has nothing to fire on and the element is stuck at opacity:0.
+
+   An earlier version of this file used only a getBoundingClientRect()
+   recompute on every `scroll` event instead of (2). It fixed the same
+   stuck-content bug, but running that recompute across every bound
+   element on every scroll event was heavy enough to visibly interrupt
+   the CSS smooth-scroll animation on a same-page hash link (the browser
+   would abandon the in-progress scroll partway to the target). Polling
+   at ~250ms instead of on every scroll event keeps the same guarantee —
+   nothing stays stuck for more than a quarter-second — without ever
+   touching the main thread often enough to fight an active scroll.
 
    Respects prefers-reduced-motion by skipping the animation and showing
    content immediately.
@@ -40,7 +55,7 @@
     up: "none", left: "none", right: "none", scale: "translate(-50%,-50%) scale(1)"
   };
   var REDUCED = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var THRESHOLD = 0.12, BOTTOM_MARGIN_RATIO = 0.06;
+  var THRESHOLD = 0.12, BOTTOM_MARGIN_RATIO = 0.06, POLL_MS = 250;
 
   var generic = [];   // { el, dir }
   var wordGroups = []; // { el, spans }
@@ -53,6 +68,31 @@
     var visibleHeight = Math.min(r.bottom, bottomLimit) - Math.max(r.top, 0);
     if (visibleHeight <= 0) return false;
     return (visibleHeight / r.height) >= THRESHOLD;
+  }
+
+  function setGenericState(entry, visible) {
+    entry.el.style.opacity = visible ? "1" : "0";
+    entry.el.style.transform = visible ? (RV_TO[entry.dir] || "none") : (RV_FROM[entry.dir] || RV_FROM.up);
+  }
+  function setWordGroupState(entry, visible) {
+    entry.spans.forEach(function (s) {
+      s.style.opacity = visible ? "1" : "0";
+      s.style.transform = visible ? "none" : "translateY(.4em)";
+    });
+  }
+
+  var io = null;
+  function getObserver() {
+    if (io) return io;
+    io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (ioEntry) {
+        var entry = ioEntry.target._ppRvEntry;
+        if (!entry) return;
+        if (entry.spans) setWordGroupState(entry, ioEntry.isIntersecting);
+        else setGenericState(entry, ioEntry.isIntersecting);
+      });
+    }, { threshold: THRESHOLD, rootMargin: "0px 0px -" + Math.round(BOTTOM_MARGIN_RATIO * 100) + "% 0px" });
+    return io;
   }
 
   function bindGeneric(el) {
@@ -68,7 +108,10 @@
     el.style.transition = "opacity .7s cubic-bezier(.2,.8,.25,1) " + delay + "ms, transform .8s cubic-bezier(.2,.85,.25,1) " + delay + "ms";
     el.style.opacity = "0";
     el.style.transform = RV_FROM[dir] || RV_FROM.up;
-    generic.push({ el: el, dir: dir });
+    var entry = { el: el, dir: dir };
+    el._ppRvEntry = entry;
+    generic.push(entry);
+    getObserver().observe(el);
   }
 
   function wordify(el) {
@@ -93,43 +136,32 @@
       spans.forEach(function (s) { s.style.opacity = "1"; s.style.transform = "none"; });
       return;
     }
-    wordGroups.push({ el: el, spans: spans });
+    var entry = { el: el, spans: spans };
+    el._ppRvEntry = entry;
+    setWordGroupState(entry, false);
+    wordGroups.push(entry);
+    getObserver().observe(el);
   }
 
-  function setGenericState(entry, visible) {
-    entry.el.style.opacity = visible ? "1" : "0";
-    entry.el.style.transform = visible ? (RV_TO[entry.dir] || "none") : (RV_FROM[entry.dir] || RV_FROM.up);
-  }
-
-  function setWordGroupState(entry, visible) {
-    entry.spans.forEach(function (s) {
-      s.style.opacity = visible ? "1" : "0";
-      s.style.transform = visible ? "none" : "translateY(.4em)";
+  function poll() {
+    generic.forEach(function (entry) {
+      var visible = isVisible(entry.el);
+      var showing = entry.el.style.opacity !== "0";
+      if (visible !== showing) setGenericState(entry, visible);
+    });
+    wordGroups.forEach(function (entry) {
+      var visible = isVisible(entry.el);
+      var showing = entry.spans.length && entry.spans[0].style.opacity !== "0";
+      if (visible !== showing) setWordGroupState(entry, visible);
     });
   }
-
-  var ticking = false;
-  function sync() {
-    ticking = false;
-    generic.forEach(function (entry) { setGenericState(entry, isVisible(entry.el)); });
-    wordGroups.forEach(function (entry) { setWordGroupState(entry, isVisible(entry.el)); });
-  }
-  function requestSync() {
-    if (REDUCED || ticking) return;
-    ticking = true;
-    requestAnimationFrame(sync);
-  }
-
-  if (!REDUCED) {
-    window.addEventListener("scroll", requestSync, { passive: true });
-    window.addEventListener("resize", requestSync);
-  }
+  if (!REDUCED) setInterval(poll, POLL_MS);
 
   function init(root) {
     var scope = root || document;
     Array.prototype.forEach.call(scope.querySelectorAll("[data-rv]"), bindGeneric);
     Array.prototype.forEach.call(scope.querySelectorAll("[data-word-group]"), bindWordGroup);
-    requestSync();
+    if (!REDUCED) poll();
   }
 
   window.PP_REVEAL = { init: init, wordify: wordify };
