@@ -110,7 +110,7 @@
               ${state.musicOn ? "Playing" : "Play the Mediterranean"}
             </button>
             <a href="my-passport.html" style="display:inline-flex;align-items:center;gap:8px;padding:10px 14px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap" data-hover="background:#ec3013">My Passport</a>
-            <button type="button" id="pp-nav-open" style="display:inline-flex;align-items:center;gap:10px;padding:10px 13px;background:transparent;border:2px solid #1b1a19;color:#1b1a19;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c;border-color:#f2b30c" data-active="background:#ec3013;border-color:#ec3013;color:#fff">
+            <button type="button" id="pp-nav-open" aria-expanded="${state.drawerOpen ? "true" : "false"}" aria-controls="pp-nav-drawer" style="display:inline-flex;align-items:center;gap:10px;padding:10px 13px;background:transparent;border:2px solid #1b1a19;color:#1b1a19;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c;border-color:#f2b30c" data-active="background:#ec3013;border-color:#ec3013;color:#fff">
               <span style="display:block;width:16px">
                 <span style="display:block;height:2px;background:currentColor;margin-bottom:3px"></span>
                 <span style="display:block;height:2px;background:currentColor;margin-bottom:3px"></span>
@@ -138,36 +138,60 @@
     `;
 
     bar.querySelector("#pp-nav-music")?.addEventListener("click", () => { state.musicOn = !state.musicOn; renderBar(); toggleMusicPlayback(); });
-    bar.querySelector("#pp-nav-open")?.addEventListener("click", () => {
-      state.drawerOpen = true; state.drawerIn = false; renderDrawer();
-      setTimeout(() => { state.drawerIn = true; renderDrawer(); }, 20);
-    });
+    bar.querySelector("#pp-nav-open")?.addEventListener("click", openDrawer);
 
     if (window.initHoverStyles) window.initHoverStyles(bar);
     syncNavHeight();
+  }
+
+  /* Single source of truth for opening/closing the "All pages" drawer —
+     every trigger (hamburger tap, X button, scrim click, Escape, tapping
+     a link inside the drawer, or a client-side navigation firing
+     elsewhere on the page via js/router.js) goes through open/closeDrawer
+     so state.drawerOpen, the panel's own built/torn-down DOM, and the
+     hamburger's aria-expanded attribute can never drift out of sync with
+     each other — that drift (an open drawer surviving a navigation, or a
+     stale rebuild flag blocking the next open) was exactly what made a
+     second tap unreliable. */
+  function syncOpenButton() {
+    const btn = document.getElementById("pp-nav-open");
+    if (btn) btn.setAttribute("aria-expanded", state.drawerOpen ? "true" : "false");
+  }
+  function openDrawer() {
+    if (state.drawerOpen) return;
+    state.drawerOpen = true; state.drawerIn = false; renderDrawer(); syncOpenButton();
+    setTimeout(() => { state.drawerIn = true; renderDrawer(); }, 20);
+  }
+  function closeDrawer() {
+    if (!state.drawerOpen) return;
+    state.drawerOpen = false; state.drawerIn = false; renderDrawer(); syncOpenButton();
   }
 
   function renderDrawer() {
     const drawer = document.getElementById("pp-nav-drawer");
     if (!drawer) return;
 
-    if (!state.drawerOpen) { drawer.innerHTML = ""; drawer._ppBuilt = false; return; }
+    if (!state.drawerOpen) {
+      if (drawer._ppOpen) { drawer.innerHTML = ""; drawer._ppOpen = false; }
+      return;
+    }
 
-    const drawerLinksHtml = PAGES.map(p => {
-      const bg = active === p[1] ? "rgba(242,179,12,.14)" : "transparent";
-      return `<a href="${p[3]}" style="display:flex;align-items:baseline;gap:14px;padding:18px 24px;border-bottom:1px solid rgba(247,243,236,.22);text-decoration:none;color:#f7f3ec;background:${bg}" data-hover="background:#ec3013;color:#fff">`
-        + `<span style="font:600 10px/1 'Archivo',sans-serif;letter-spacing:.16em;color:#f2b30c;width:28px;flex:none">${p[0]}</span>`
-        + `<span style="flex:1"><span style="display:block;font:800 19px/1.1 'Archivo',sans-serif;letter-spacing:-.02em">${p[1]}</span>`
-        + `<span style="display:block;font:400 12px/1.45 'Archivo',sans-serif;color:#bab6b6;margin-top:3px">${p[2]}</span></span>`
-        + `<span style="font:800 15px/1 'Archivo',sans-serif">→</span></a>`;
-    }).join("");
+    // drawer._ppOpen tracks whether the panel DOM is currently built, so
+    // opening always builds fresh (guaranteed single-tap reopen) while the
+    // drawerIn transition tick 20ms later — still open, DOM already built —
+    // only flips the transform/opacity in place, so the scrim's one-shot
+    // fade-in animation is never restarted mid-open.
+    if (!drawer._ppOpen) {
+      drawer._ppOpen = true;
+      const drawerLinksHtml = PAGES.map(p => {
+        const bg = active === p[1] ? "rgba(242,179,12,.14)" : "transparent";
+        return `<a href="${p[3]}" style="display:flex;align-items:baseline;gap:14px;padding:18px 24px;border-bottom:1px solid rgba(247,243,236,.22);text-decoration:none;color:#f7f3ec;background:${bg}" data-hover="background:#ec3013;color:#fff">`
+          + `<span style="font:600 10px/1 'Archivo',sans-serif;letter-spacing:.16em;color:#f2b30c;width:28px;flex:none">${p[0]}</span>`
+          + `<span style="flex:1"><span style="display:block;font:800 19px/1.1 'Archivo',sans-serif;letter-spacing:-.02em">${p[1]}</span>`
+          + `<span style="display:block;font:400 12px/1.45 'Archivo',sans-serif;color:#bab6b6;margin-top:3px">${p[2]}</span></span>`
+          + `<span style="font:800 15px/1 'Archivo',sans-serif">→</span></a>`;
+      }).join("");
 
-    // Only rebuild from scratch the first time the drawer opens in this
-    // session (drawerIn goes false -> true straight after); once it
-    // exists, later calls (e.g. the drawerIn transition tick) just flip
-    // the transform/opacity in place so the scrim's fade-in never restarts.
-    if (!drawer._ppBuilt || drawer._ppBuilt !== state.drawerOpen) {
-      drawer._ppBuilt = state.drawerOpen;
       drawer.innerHTML = `
         <div style="position:fixed;inset:0;z-index:90;display:flex;justify-content:flex-end;font-family:'Archivo',system-ui,sans-serif">
           <div id="pp-nav-scrim" style="position:absolute;inset:0;background:rgba(27,26,25,.62);animation:ppNavFade .22s ease both"></div>
@@ -180,9 +204,14 @@
             <div style="padding:22px 24px;font:400 12px/1.6 'Archivo',sans-serif;color:#bab6b6">Leganés · Madrid<br>Mon—Fri 10:00 — 22:00<br>Weekends &amp; holidays 10:00 — 00:00</div>
           </div>
         </div>`;
-      const closeDrawer = () => { state.drawerOpen = false; state.drawerIn = false; renderDrawer(); };
       drawer.querySelector("#pp-nav-close")?.addEventListener("click", closeDrawer);
       drawer.querySelector("#pp-nav-scrim")?.addEventListener("click", closeDrawer);
+      // Tapping any link inside the drawer closes it immediately; the
+      // click event still bubbles to js/router.js's document-level
+      // listener afterwards (removing this node from the DOM here doesn't
+      // stop that — the browser fixes an event's propagation path before
+      // dispatch), so the SPA navigation itself is untouched.
+      Array.prototype.forEach.call(drawer.querySelectorAll("a[href]"), a => a.addEventListener("click", closeDrawer));
       if (window.initHoverStyles) window.initHoverStyles(drawer);
     } else {
       const panel = drawer.querySelector("#pp-nav-panel");
@@ -230,7 +259,10 @@
       active = next || "";
       renderBar();
       if (state.drawerOpen) renderDrawer();
-    }
+    },
+    // js/router.js calls this on every internal navigation click, so the
+    // drawer never survives onto the next page open and stale.
+    closeMenu: closeDrawer
   };
 
   window.PP_READY(() => {
@@ -242,7 +274,7 @@
     let raf = null;
     window.addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(() => { raf = null; tick(); }); }, { passive: true });
     window.addEventListener("resize", () => { tick(); syncNavHeight(); });
-    window.addEventListener("keydown", e => { if (e.key === "Escape" && state.drawerOpen) { state.drawerOpen = false; state.drawerIn = false; renderDrawer(); } });
+    window.addEventListener("keydown", e => { if (e.key === "Escape") closeDrawer(); });
     tick();
     setInterval(syncNavHeight, 350);
     setInterval(() => {
