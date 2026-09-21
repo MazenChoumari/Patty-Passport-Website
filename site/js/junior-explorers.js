@@ -24,18 +24,7 @@
     ["TT", "Explorer tote", "For birthdays and school journeys — the whole kit in a bag they carry out themselves.", "#e7e3dc", INK]
   ].map(function (k, i) { return { mark: k[0], title: k[1], line: k[2], bg: k[3], fg: k[4], delay: String(i * 65) }; });
 
-  var ROUTES = [
-    ["grc", "GREECE", "Souvlaki, lemon and fries in the bun. No spice, no surprises, nothing green hidden in it.", "Junior souvlaki", YEL, INK, "Kids-sized souvlaki plate"],
-    ["ita", "ITALY", "Tomato, basil and cheese — the safest landing on the whole map, and still a real country.", "Mini parmigiana", CREAM, INK, "Kid-sized parmigiana burger"],
-    ["lbn", "LEBANON", "Grilled chicken, soft bread, garlic dialled right down for smaller travellers.", "Mini tawouk wrap", RED, "#fff", "Mini chicken tawouk wrap"],
-    ["esp", "SPAIN", "Mild beef, sweet pepper, manchego — plus patatas to share across the table.", "Junior Iberian", BLU, "#fff", "Kids Iberian burger with patatas"]
-  ].map(function (r, i) {
-    return {
-      name: r[1], line: r[2], dish: r[3], bg: r[4], fg: r[5],
-      tag: "JUNIOR LANE", href: "destination.html#" + r[0],
-      slotId: "jr-rt-" + r[0], slot: r[6], delay: String(i * 70)
-    };
-  });
+  var ROUTE_ORDER = ["LEV", "AEG", "IBL", "ADR", "NAF"];
 
   var LEARNING = [
     ["21", "Where countries actually are", "The route map is a real map. By the fourth stamp they can point at the Adriatic.", YEL, INK],
@@ -73,17 +62,63 @@
     }).join("");
   }
 
-  function renderRoutes() {
-    document.getElementById("jr-routes").innerHTML = ROUTES.map(function (r) {
-      return '<a href="' + r.href + '" data-rv="up" data-rv-d="' + r.delay + '" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:#f7f3ec;color:#1b1a19;text-decoration:none;display:flex;flex-direction:column">'
-        + '<div style="position:relative;height:180px;border-bottom:2px solid #1b1a19">'
-        + '<div class="pp-placeholder" id="' + r.slotId + '" style="position:absolute;inset:0"><span>' + esc(r.slot) + '</span></div>'
-        + '<span style="position:absolute;left:0;top:0;padding:6px 10px;background:' + r.bg + ';color:' + r.fg + ';font:800 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;pointer-events:none">' + r.tag + '</span></div>'
-        + '<div style="padding:18px 17px 20px;display:flex;flex-direction:column;gap:9px;flex:1">'
-        + '<h3 style="font:800 21px/1.02 \'Archivo\',sans-serif;letter-spacing:-.025em;margin:0">' + esc(r.name) + '</h3>'
-        + '<p style="font:400 12.5px/1.5 \'Archivo\',sans-serif;color:#605d5d;margin:0">' + esc(r.line) + '</p>'
-        + '<span style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;padding-top:11px;border-top:2px solid rgba(27,26,25,.18);font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase">' + esc(r.dish) + '<span>→</span></span></div></a>';
+  var KIND_LABEL = { beef: "BEEF", chicken: "CHICKEN", veg: "VEGETARIAN" };
+  var KIND_COLOR = { beef: RED, chicken: YEL, veg: "#2f8f4e" };
+
+  function eur(n) { return "€" + n.toFixed(2).replace(/\.00$/, ".00"); }
+
+  function renderKidsMenu() {
+    var el = document.getElementById("jr-routes");
+    if (!el) return;
+    var data = window.PP_DATA;
+    if (!data || !data.KIDS_MENU) {
+      if (!window.__jrPoll) window.__jrPoll = setInterval(function () { if (window.PP_DATA && window.PP_DATA.KIDS_MENU) { clearInterval(window.__jrPoll); renderKidsMenu(); } }, 60);
+      return;
+    }
+    var price = data.KIDS_COMBO_PRICE;
+    el.innerHTML = ROUTE_ORDER.map(function (key, i) {
+      var route = data.ROUTES[key];
+      var km = data.KIDS_MENU[key];
+      var burgerCards = km.burgers.map(function (b) {
+        return '<div style="border:2px solid rgba(27,26,25,.18);padding:12px 13px;display:flex;flex-direction:column;gap:6px">'
+          + '<span style="display:inline-flex;align-self:flex-start;padding:3px 7px;background:' + KIND_COLOR[b.kind] + ';color:' + (b.kind === "chicken" ? INK : "#fff") + ';font:800 8.5px/1 \'Archivo\',sans-serif;letter-spacing:.12em">' + KIND_LABEL[b.kind] + '</span>'
+          + '<strong style="font:800 13.5px/1.2 \'Archivo\',sans-serif">' + esc(b.name) + '</strong>'
+          + '<span style="font:400 11.5px/1.4 \'Archivo\',sans-serif;color:#605d5d">' + esc(b.line) + '</span></div>';
+      }).join("");
+      var sideCards = km.sides.map(function (s) {
+        return '<div style="border:2px solid rgba(27,26,25,.18);padding:10px 12px">'
+          + '<strong style="display:block;font:800 12.5px/1.2 \'Archivo\',sans-serif">' + esc(s.name) + '</strong>'
+          + '<span style="font:400 11px/1.4 \'Archivo\',sans-serif;color:#605d5d">' + esc(s.line) + '</span></div>';
+      }).join("");
+      var dessertCards = km.desserts.map(function (d) {
+        return '<div style="border:2px solid rgba(27,26,25,.18);padding:10px 12px">'
+          + '<strong style="display:block;font:800 12.5px/1.2 \'Archivo\',sans-serif">' + esc(d.name) + '</strong>'
+          + '<span style="font:400 11px/1.4 \'Archivo\',sans-serif;color:#605d5d">' + esc(d.line) + '</span></div>';
+      }).join("");
+      return '<div data-rv="up" data-rv-d="' + (i * 70) + '" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:#f7f3ec;color:#1b1a19;display:flex;flex-direction:column">'
+        + '<div style="padding:16px 18px;background:' + route.bg + ';color:' + route.fg + ';display:flex;align-items:center;justify-content:space-between;gap:10px">'
+        + '<h3 style="font:800 20px/1.05 \'Archivo\',sans-serif;letter-spacing:-.02em;margin:0">' + esc(route.name.toUpperCase()) + '</h3>'
+        + '<span style="font:800 15px/1 \'Archivo\',sans-serif">' + eur(price) + '</span></div>'
+        + '<div style="padding:16px 18px 20px;display:flex;flex-direction:column;gap:14px">'
+        + '<div style="font:600 9.5px/1.5 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#605d5d">Kids Route Combo — ' + eur(price) + ' · pick one burger, one side, the drink and a dessert</div>'
+        + '<div><span style="display:block;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ae1800;margin-bottom:8px">Choose a burger</span>'
+        + '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px">' + burgerCards + '</div></div>'
+        + '<div><span style="display:block;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ae1800;margin-bottom:8px">Choose a side</span>'
+        + '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px">' + sideCards + '</div></div>'
+        + '<div><span style="display:block;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ae1800;margin-bottom:8px">Drink (included)</span>'
+        + '<div style="border:2px solid rgba(27,26,25,.18);padding:10px 12px"><strong style="display:block;font:800 12.5px/1.2 \'Archivo\',sans-serif">' + esc(km.drink.name) + '</strong><span style="font:400 11px/1.4 \'Archivo\',sans-serif;color:#605d5d">' + esc(km.drink.line) + '</span></div></div>'
+        + '<div><span style="display:block;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ae1800;margin-bottom:8px">Choose a dessert</span>'
+        + '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px">' + dessertCards + '</div></div>'
+        + '<div style="display:flex;flex-wrap:wrap;gap:7px;padding-top:6px;border-top:2px solid rgba(27,26,25,.18)">'
+        + '<span style="padding:4px 8px;border:1px solid #2f8f4e;color:#2f8f4e;font:700 9px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase">Vegetarian option available</span>'
+        + '<span style="padding:4px 8px;border:1px solid #1b1a19;font:700 9px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase">No alcohol on this menu</span>'
+        + '<span style="padding:4px 8px;border:1px solid #ae1800;color:#ae1800;font:700 9px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase">Full allergen list at the desk</span>'
+        + '</div>'
+        + '<a href="events.html" style="display:inline-flex;align-items:center;justify-content:space-between;padding:12px 15px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase" data-hover="background:#ec3013">Book this route<span>→</span></a>'
+        + '</div></div>';
     }).join("");
+    if (window.initHoverStyles) window.initHoverStyles(el);
+    if (window.PP_REVEAL) window.PP_REVEAL.init(el);
   }
 
   function renderLearning() {
@@ -106,7 +141,7 @@
   window.PP_READY(function () {
     renderKit();
     renderKitItems();
-    renderRoutes();
+    renderKidsMenu();
     renderLearning();
     renderParents();
     if (window.initHoverStyles) window.initHoverStyles(document.body);

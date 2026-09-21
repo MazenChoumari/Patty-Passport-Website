@@ -420,8 +420,53 @@
     return { id: p[0], name: p[1], summary: p[2], cards: p[3].map(function (c) { return { title: c[0], line: c[1] }; }) };
   });
 
+  // Kids menu — one combo per route, not per country (a route-level
+  // "lane", same idea as the rest of the junior gate). Every combo is
+  // the same fixed price regardless of which burger/side/dessert is
+  // picked; the choice is real, the price isn't itemised per component.
+  // No alcohol anywhere on this menu, by design, not just by omission.
+  var KIDS_COMBO_PRICE = 10.5;
+  var KIDS_MENU_SRC = [
+    ["LEV",
+      [["Mini Shawarma Beef", "beef", "Beef patty, tahini, pickles — mild"], ["Mini Tawouk Chicken", "chicken", "Yoghurt-garlic chicken, no chilli"], ["Mini Halloumi Veg", "veg", "Grilled halloumi, tomato, mild labneh"]],
+      [["Plain Fries", "Salted, no seasoning blend"], ["Hummus Dippers", "Warm pita strips with plain hummus"]],
+      ["Lemon Mint Cooler", "Still lemon-mint, no fizz option too"],
+      [["Mini Knefe Bites", "Warm cheese pastry, light syrup"], ["Baklava Twist", "One small filo-nut twist"]]],
+    ["AEG",
+      [["Mini Souvlaki Beef", "beef", "Grilled beef strips, soft pita"], ["Mini Souvlaki Chicken", "chicken", "Grilled chicken strips, soft pita"], ["Mini Halloumi Aegean", "veg", "Grilled halloumi, cucumber, mild yoghurt"]],
+      [["Plain Fries", "Salted, no seasoning blend"], ["Pita Dippers", "Warm pita strips with plain yoghurt"]],
+      ["Ayran Cooler", "Plain salted yoghurt drink, mild"],
+      [["Mini Baklava", "One small filo-nut piece"], ["Yoghurt & Honey Cup", "Plain yoghurt, honey drizzle"]]],
+    ["IBL",
+      [["Mini Iberian Beef", "beef", "Beef patty, mild pepper, manchego"], ["Mini Chicken Milanese", "chicken", "Breaded chicken, no spice"], ["Mini Margherita Veg", "veg", "Tomato, mozzarella, basil"]],
+      [["Plain Fries", "Salted, no seasoning blend"], ["Patatas Lite", "Roast potatoes, no spiced sauce"]],
+      ["Orange Splash Cooler", "Fresh orange, still or sparkling"],
+      [["Churro Bites", "Three bites, cinnamon sugar"], ["Gelato Cup", "One scoop, vanilla or chocolate"]]],
+    ["ADR",
+      [["Mini Ćevapi Beef", "beef", "Grilled beef fingers, soft bun"], ["Mini Adriatic Chicken", "chicken", "Grilled chicken, mild herb"], ["Mini Cheese Štrukli Veg", "veg", "Baked cheese pastry parcel"]],
+      [["Plain Fries", "Salted, no seasoning blend"], ["Polenta Fingers", "Soft baked polenta, no sauce"]],
+      ["Apple Berry Cooler", "Apple-berry juice, still"],
+      [["Mini Palačinke", "Two small pancake bites, jam"], ["Honey Cookie", "One soft honey biscuit"]]],
+    ["NAF",
+      [["Mini Beef Kefta", "beef", "Mild beef kefta, no harissa"], ["Mini Chicken Kefta", "chicken", "Mild chicken kefta, no harissa"], ["Mini Chickpea Veg", "veg", "Chickpea patty, mild tahini"]],
+      [["Plain Fries", "Salted, no seasoning blend"], ["Couscous Cup", "Plain couscous, olive oil"]],
+      ["Orange Blossom Cooler", "Orange blossom water, still"],
+      [["Date Bites", "Two small stuffed date bites"], ["Mini Basbousa", "One small semolina cake square"]]]
+  ].map(function (r) {
+    return {
+      routeKey: r[0],
+      burgers: r[1].map(function (b) { return { name: b[0], kind: b[1], line: b[2] }; }),
+      sides: r[2].map(function (s) { return { name: s[0], line: s[1] }; }),
+      drink: { name: r[3][0], line: r[3][1] },
+      desserts: r[4].map(function (d) { return { name: d[0], line: d[1] }; })
+    };
+  });
+  var KIDS_MENU = {};
+  KIDS_MENU_SRC.forEach(function (k) { KIDS_MENU[k.routeKey] = k; });
+
   window.PP_DATA = {
     PRICES: PRICES, COMBOS: COMBOS, UPGRADES: UPGRADES, MIN_SPEND: MIN_SPEND,
+    KIDS_MENU: KIDS_MENU, KIDS_COMBO_PRICE: KIDS_COMBO_PRICE,
     ROUTES: ROUTES, COUNTRIES: COUNTRIES,
     SCENARIOS: SCENARIOS, FUNDING: FUNDING, OPERATING: OPERATING, SEVEN_PS: SEVEN_PS,
     HOURS: [
