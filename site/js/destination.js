@@ -39,20 +39,31 @@
     document.getElementById("dp-name-crumb").textContent = d.name;
     document.getElementById("dp-med-crumb").textContent = d.med;
 
-    // Greeting & language — native script + romanised + English, flag-wave in
+    // Greeting & language — native script, romanised pronunciation, English
+    // meaning and the destination's welcome message each get their own
+    // block-level line (never concatenated into one string) so a long
+    // message can never crash into the native script or the short
+    // pronunciation/meaning pair, on any viewport width. dir="auto" on the
+    // native-script line lets the browser bidi-isolate it correctly for
+    // the countries where it's Arabic (RTL) without needing a per-country
+    // flag in the data model.
+    var translitParts = (d.translit || "").split(" · ");
+    var pronunciation = translitParts[0] || "";
+    var meaning = translitParts[1] || "";
     var greetingParts = (d.greeting || "").split(" — ");
-    var romanised = greetingParts[0] || "";
-    var english = greetingParts[1] || "";
+    var message = greetingParts[1] || greetingParts[0] || "";
     document.getElementById("dp-greeting").innerHTML =
       '<svg width="30" height="30" viewBox="0 0 24 24" style="display:inline-block;flex:none;animation:ppFlagWave 2.4s ease-in-out infinite;transform-origin:21% 92%">'
       + '<line x1="5" y1="2" x2="5" y2="22" stroke="#f7f3ec" stroke-width="2" stroke-linecap="round"/>'
       + '<path d="M5 3 L20 3 L16 7 L20 11 L5 11 Z" fill="' + route.bg + '" stroke="#f7f3ec" stroke-width="1.6" stroke-linejoin="round"/>'
       + '</svg>'
-      + '<span>'
-      + '<span style="display:block;font:800 22px/1.2 \'Archivo\',sans-serif;margin-bottom:2px">' + esc(d.nativePhrase) + (d.nativePhrase ? " — " : "") + esc(romanised) + '</span>'
-      + '<span style="display:block;font:400 13px/1.5 \'Archivo\',sans-serif;color:#bab6b6">' + esc(english) + '</span>'
+      + '<span style="min-width:0;flex:1 1 260px;display:flex;flex-direction:column;gap:4px">'
+      + (d.nativePhrase ? '<span dir="auto" style="display:block;font:800 22px/1.3 \'Archivo\',sans-serif;overflow-wrap:anywhere">' + esc(d.nativePhrase) + '</span>' : "")
+      + (pronunciation ? '<span style="display:block;font:800 12.5px/1.5 \'Archivo\',sans-serif;letter-spacing:.05em;color:#f2b30c;overflow-wrap:anywhere">' + esc(pronunciation) + '</span>' : "")
+      + (meaning ? '<span style="display:block;font:600 11px/1.5 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#bab6b6;overflow-wrap:anywhere">' + esc(meaning) + '</span>' : "")
+      + (message ? '<span style="display:block;font:400 13px/1.5 \'Archivo\',sans-serif;color:#bab6b6;margin-top:2px;overflow-wrap:anywhere">' + esc(message) + '</span>' : "")
       + '</span>'
-      + '<span style="margin-left:auto;display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:2px solid ' + route.bg + ';color:' + route.bg + ';font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase">'
+      + '<span style="margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:2px solid ' + route.bg + ';color:' + route.bg + ';font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap">'
       + '<span style="width:7px;height:7px;background:' + route.bg + ';flex:none"></span>You are here — ' + esc(route.name) + ' Route</span>';
 
     document.getElementById("dp-hero-bg").style.background = route.bg;
@@ -85,7 +96,8 @@
     document.getElementById("dp-culture1").textContent = d.culture1;
     document.getElementById("dp-culture2").textContent = d.culture2;
     document.getElementById("dp-phrase").textContent = d.nativePhrase;
-    document.getElementById("dp-translit").textContent = d.translit;
+    document.getElementById("dp-translit").textContent = pronunciation;
+    document.getElementById("dp-meaning").textContent = meaning;
     document.getElementById("dp-eqbars").innerHTML = Array.from({ length: 14 }, function (_, k) {
       var color = k % 4 === 0 ? RED : k % 3 === 0 ? YEL : INK;
       var dur = (0.5 + (k % 6) * 0.14).toFixed(2) + "s";
