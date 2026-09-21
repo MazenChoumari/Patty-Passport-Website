@@ -3,35 +3,41 @@
    progress bar, terminal directory drawer, music toggle) into plain JS
    that renders into <div id="pp-nav"></div>.
 
-   Each page sets `window.PP_ACTIVE = "<gate/drawer key>"` before this
-   script runs (see PAGES/GATES keys below) so the nav can highlight the
-   current page. */
+   Each page sets `window.PP_ACTIVE = "<code>"` before this script runs
+   (see the first column of PAGES/GATES below) so the nav can highlight
+   the current page in both the quick-gates bar and the "All pages"
+   drawer. The gate number, bar label and drawer label are three
+   different strings for the same page (e.g. "Rewards" in the gates bar
+   vs "Rewards & passport" in the drawer) — comparing against a single
+   stable code, instead of against either display label directly, is
+   what keeps both highlights in sync regardless of which label a given
+   list happens to show. */
 (function () {
   const PAGES = [
-    ["01", "Destinations", "All 21 countries, route by route", "destinations.html"],
-    ["02", "Route map", "The Mediterranean network", "route-map.html"],
-    ["03", "Menu", "Every dish, by destination", "menu.html"],
-    ["04", "Rewards & passport", "Stamps, ladder, unlockables", "rewards.html"],
-    ["05", "Events & birthdays", "Celebrations on any route", "events.html"],
-    ["06", "Junior explorers", "Kits, booklets, kids routes", "junior-explorers.html"],
-    ["07", "Our story", "Why Patty Passport exists", "our-story.html"],
-    ["08", "Ask Patty Tooty", "The destination concierge", "patty-tooty.html"],
-    ["09", "Investors", "Steer the next route", "investors.html"],
-    ["10", "My passport", "Stamps, rewards, bookings", "my-passport.html"],
-    ["11", "Book a table", "Choose time, route and destination", "booking.html"],
-    ["12", "Home terminal", "The full journey, top to bottom", "index.html"]
+    ["01", "destinations", "Destinations", "All 21 countries, route by route", "destinations.html"],
+    ["02", "route-map", "Route map", "The Mediterranean network", "route-map.html"],
+    ["03", "menu", "Menu", "Every dish, by destination", "menu.html"],
+    ["04", "rewards", "Rewards & passport", "Stamps, ladder, unlockables", "rewards.html"],
+    ["05", "events", "Events & birthdays", "Celebrations on any route", "events.html"],
+    ["06", "kids", "Junior explorers", "Kits, booklets, kids routes", "junior-explorers.html"],
+    ["07", "story", "Our story", "Why Patty Passport exists", "our-story.html"],
+    ["08", "patty-tooty", "Ask Patty Tooty", "The destination concierge", "patty-tooty.html"],
+    ["09", "investors", "Investors", "Steer the next route", "investors.html"],
+    ["10", "my-passport", "My passport", "Stamps, rewards, bookings", "my-passport.html"],
+    ["11", "booking", "Book a table", "Choose time, route and destination", "booking.html"],
+    ["12", "home", "Home terminal", "The full journey, top to bottom", "index.html"]
   ];
   const GATES = [
-    ["Destinations", "destinations.html", "#ec3013"],
-    ["Route map", "route-map.html", "#2b76c9"],
-    ["Menu", "menu.html", "#f2b30c"],
-    ["Rewards", "rewards.html", "#ec3013"],
-    ["Events", "events.html", "#f2b30c"],
-    ["Kids", "junior-explorers.html", "#2b76c9"],
-    ["Story", "our-story.html", "#ec3013"],
-    ["Patty Tooty", "patty-tooty.html", "#f2b30c"],
-    ["Investors", "investors.html", "#ec3013"],
-    ["Book", "booking.html", "#ec3013"]
+    ["destinations", "Destinations", "destinations.html", "#ec3013"],
+    ["route-map", "Route map", "route-map.html", "#2b76c9"],
+    ["menu", "Menu", "menu.html", "#f2b30c"],
+    ["rewards", "Rewards", "rewards.html", "#ec3013"],
+    ["events", "Events", "events.html", "#f2b30c"],
+    ["kids", "Kids", "junior-explorers.html", "#2b76c9"],
+    ["story", "Story", "our-story.html", "#ec3013"],
+    ["patty-tooty", "Patty Tooty", "patty-tooty.html", "#f2b30c"],
+    ["investors", "Investors", "investors.html", "#ec3013"],
+    ["booking", "Book", "booking.html", "#ec3013"]
   ];
 
   const state = { drawerOpen: false, drawerIn: false, musicOn: false, gatePage: 0, gateFade: 1 };
@@ -73,8 +79,8 @@
       const bg = isActive ? "#1b1a19" : "transparent";
       const fg = isActive ? "#f7f3ec" : "#1b1a19";
       const border = isActive ? "#1b1a19" : "rgba(27,26,25,.2)";
-      return `<a href="${g[1]}" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid ${border};background:${bg};text-decoration:none;color:${fg};font:600 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap" data-hover="border-color:#ec3013;color:#ec3013">`
-        + `<span style="width:6px;height:6px;flex:none;background:${g[2]}"></span>${g[0]}</a>`;
+      return `<a href="${g[2]}" style="display:inline-flex;align-items:center;gap:7px;padding:8px 11px;border:2px solid ${border};background:${bg};text-decoration:none;color:${fg};font:600 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap" data-hover="border-color:#ec3013;color:#ec3013">`
+        + `<span style="width:6px;height:6px;flex:none;background:${g[3]}"></span>${g[1]}</a>`;
     }).join("");
 
     const nowPlayingHtml = state.musicOn ? `
@@ -87,7 +93,7 @@
     bar.innerHTML = `
       <div data-nav-root="1" style="position:fixed;top:0;left:0;right:0;z-index:80;background:#f7f3ec;border-bottom:2px solid #1b1a19;font-family:'Archivo',system-ui,sans-serif">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:18px;padding:11px 26px">
-          <a href="index.html" style="display:flex;align-items:center;gap:13px;text-decoration:none;color:#1b1a19;flex:none">
+          <a href="index.html" id="pp-nav-logo" style="display:flex;align-items:center;gap:13px;text-decoration:none;color:#1b1a19;flex:none">
             <span style="position:relative;width:44px;height:44px;flex:none;background:#1b1a19;display:block">
               <span style="position:absolute;left:4px;top:4px;right:4px;bottom:4px;border:2px solid #f7f3ec;display:block"></span>
               <span style="position:absolute;left:9px;top:9px;width:26px;height:8px;background:#f2b30c;display:block"></span>
@@ -139,6 +145,17 @@
 
     bar.querySelector("#pp-nav-music")?.addEventListener("click", () => { state.musicOn = !state.musicOn; renderBar(); toggleMusicPlayback(); });
     bar.querySelector("#pp-nav-open")?.addEventListener("click", openDrawer);
+    // Logo/name/slogan click: already home -> smooth-scroll to top (and
+    // clear any hash) instead of a same-URL click silently doing nothing;
+    // anywhere else -> don't intercept, let the click bubble to
+    // js/router.js's normal link handling for the SPA navigation home.
+    bar.querySelector("#pp-nav-logo")?.addEventListener("click", e => {
+      if (/\/(index\.html)?$/.test(location.pathname)) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+      }
+    });
 
     if (window.initHoverStyles) window.initHoverStyles(bar);
     syncNavHeight();
@@ -185,10 +202,10 @@
       drawer._ppOpen = true;
       const drawerLinksHtml = PAGES.map(p => {
         const bg = active === p[1] ? "rgba(242,179,12,.14)" : "transparent";
-        return `<a href="${p[3]}" style="display:flex;align-items:baseline;gap:14px;padding:18px 24px;border-bottom:1px solid rgba(247,243,236,.22);text-decoration:none;color:#f7f3ec;background:${bg}" data-hover="background:#ec3013;color:#fff">`
+        return `<a href="${p[4]}" style="display:flex;align-items:baseline;gap:14px;padding:18px 24px;border-bottom:1px solid rgba(247,243,236,.22);text-decoration:none;color:#f7f3ec;background:${bg}" data-hover="background:#ec3013;color:#fff">`
           + `<span style="font:600 10px/1 'Archivo',sans-serif;letter-spacing:.16em;color:#f2b30c;width:28px;flex:none">${p[0]}</span>`
-          + `<span style="flex:1"><span style="display:block;font:800 19px/1.1 'Archivo',sans-serif;letter-spacing:-.02em">${p[1]}</span>`
-          + `<span style="display:block;font:400 12px/1.45 'Archivo',sans-serif;color:#bab6b6;margin-top:3px">${p[2]}</span></span>`
+          + `<span style="flex:1"><span style="display:block;font:800 19px/1.1 'Archivo',sans-serif;letter-spacing:-.02em">${p[2]}</span>`
+          + `<span style="display:block;font:400 12px/1.45 'Archivo',sans-serif;color:#bab6b6;margin-top:3px">${p[3]}</span></span>`
           + `<span style="font:800 15px/1 'Archivo',sans-serif">→</span></a>`;
       }).join("");
 

@@ -39,43 +39,26 @@
     document.getElementById("dp-name-crumb").textContent = d.name;
     document.getElementById("dp-med-crumb").textContent = d.med;
 
-    // Greeting & language — native script, romanised pronunciation, English
-    // meaning and the destination's welcome message each get their own
-    // block-level line (never concatenated into one string) so a long
-    // message can never crash into the native script or the short
-    // pronunciation/meaning pair, on any viewport width. dir="auto" on the
-    // native-script line lets the browser bidi-isolate it correctly for
-    // the countries where it's Arabic (RTL) without needing a per-country
-    // flag in the data model — but browsers also default an RTL-detected
-    // block's own text-align to "right", which visually yanks that one
-    // line away from its LTR siblings in this left-aligned stack. Pinning
+    // Greeting bar: the universal greeting only (native / romanised /
+    // "Welcome"), each on its own block-level line so nothing can crash
+    // together on any viewport width. The country's separate unique
+    // welcome phrase (native / romanised / English) lives further down in
+    // the "Say it at the table" box, not here — the hero is the quick
+    // greeting, not the full phrase. dir="auto" on the native-script line
+    // lets the browser bidi-isolate it correctly for the countries where
+    // it's Arabic (RTL) — but browsers also default an RTL-detected
+    // block's own text-align to "right", which would yank that one line
+    // away from its LTR siblings in this left-aligned stack. Pinning
     // text-align:left keeps the character shaping/ordering benefit of
     // dir="auto" while keeping the line itself anchored with the rest.
-    var translitParts = (d.translit || "").split(" · ");
-    var pronunciation = translitParts[0] || "";
-    var meaning = translitParts[1] || "";
-    var greetingParts = (d.greeting || "").split(" — ");
-    var message = greetingParts[1] || greetingParts[0] || "";
-    // The flagpole/pennant outline was drawn as a single cream (#f7f3ec)
-    // stroke, which only has contrast against this bar's own dark
-    // background — anywhere the pole ends up seen against something
-    // lighter (a caching hiccup showing stale markup, a future reuse of
-    // this SVG elsewhere, print/high-contrast modes), it visually
-    // vanishes. Each line/path is now drawn twice: a wider dark #1b1a19
-    // stroke first, then the original cream stroke on top — a poster-
-    // style outline that reads on any background, not just this one.
+    // The flag uses the country's own colors (js/flags.js), bordered in
+    // cream so it reads clearly against this bar's dark background.
     document.getElementById("dp-greeting").innerHTML =
-      '<svg width="30" height="30" viewBox="0 0 24 24" style="display:inline-block;flex:none;animation:ppFlagWave 2.4s ease-in-out infinite;transform-origin:21% 92%">'
-      + '<line x1="5" y1="2" x2="5" y2="22" stroke="#1b1a19" stroke-width="4.2" stroke-linecap="round"/>'
-      + '<line x1="5" y1="2" x2="5" y2="22" stroke="#f7f3ec" stroke-width="2" stroke-linecap="round"/>'
-      + '<path d="M5 3 L20 3 L16 7 L20 11 L5 11 Z" fill="' + route.bg + '" stroke="#1b1a19" stroke-width="3" stroke-linejoin="round"/>'
-      + '<path d="M5 3 L20 3 L16 7 L20 11 L5 11 Z" fill="' + route.bg + '" stroke="#f7f3ec" stroke-width="1.6" stroke-linejoin="round"/>'
-      + '</svg>'
+      window.PP_FLAGS.render(d.code, 34, { stroke: "#f7f3ec" })
       + '<span style="min-width:0;flex:1 1 260px;display:flex;flex-direction:column;gap:6px">'
-      + (d.nativePhrase ? '<span dir="auto" style="display:block;text-align:left;font:800 22px/1.3 \'Archivo\',sans-serif;overflow-wrap:anywhere">' + esc(d.nativePhrase) + '</span>' : "")
-      + (pronunciation ? '<span style="display:block;font:800 12.5px/1.5 \'Archivo\',sans-serif;letter-spacing:.05em;color:#f2b30c;overflow-wrap:anywhere">' + esc(pronunciation) + '</span>' : "")
-      + (meaning ? '<span style="display:block;font:600 11px/1.5 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#bab6b6;overflow-wrap:anywhere">' + esc(meaning) + '</span>' : "")
-      + (message ? '<span style="display:block;font:400 13px/1.5 \'Archivo\',sans-serif;color:#bab6b6;margin-top:4px;overflow-wrap:anywhere">' + esc(message) + '</span>' : "")
+      + (d.greetingNative ? '<span dir="auto" style="display:block;text-align:left;font:800 22px/1.3 \'Archivo\',sans-serif;overflow-wrap:anywhere">' + esc(d.greetingNative) + '</span>' : "")
+      + (d.greetingRoman ? '<span style="display:block;font:800 12.5px/1.5 \'Archivo\',sans-serif;letter-spacing:.05em;color:#f2b30c;overflow-wrap:anywhere">' + esc(d.greetingRoman) + '</span>' : "")
+      + '<span style="display:block;font:600 11px/1.5 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#bab6b6">Welcome</span>'
       + '</span>'
       + '<span style="margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:2px solid ' + route.bg + ';color:' + route.bg + ';font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap">'
       + '<span style="width:7px;height:7px;background:' + route.bg + ';flex:none"></span>You are here — ' + esc(route.name) + ' Route</span>';
@@ -109,9 +92,12 @@
     document.getElementById("dp-culture-title").textContent = d.identity.toUpperCase();
     document.getElementById("dp-culture1").textContent = d.culture1;
     document.getElementById("dp-culture2").textContent = d.culture2;
-    document.getElementById("dp-phrase").textContent = d.nativePhrase;
-    document.getElementById("dp-translit").textContent = pronunciation;
-    document.getElementById("dp-meaning").textContent = meaning;
+    // "Say it at the table" is the destination's own separate unique
+    // welcome phrase (native / romanised / English) — distinct from the
+    // universal greeting shown in the hero above.
+    document.getElementById("dp-phrase").textContent = d.phraseNative;
+    document.getElementById("dp-translit").textContent = d.phraseRoman;
+    document.getElementById("dp-meaning").textContent = d.phraseEnglish;
     document.getElementById("dp-eqbars").innerHTML = Array.from({ length: 14 }, function (_, k) {
       var color = k % 4 === 0 ? RED : k % 3 === 0 ? YEL : INK;
       var dur = (0.5 + (k % 6) * 0.14).toFixed(2) + "s";
@@ -135,7 +121,7 @@
     document.getElementById("dp-dish-price").textContent = eur(hero.price);
     document.getElementById("dp-diet-tags").textContent = hero.tags.join(" · ");
     document.getElementById("dp-pairings").innerHTML = [
-      { kind: "Side", name: "Route fries with " + d.identity.split(" ")[0].toLowerCase() + " salt", price: "€4.50" },
+      { kind: "Side", name: "Route fries with " + route.name.toLowerCase() + " salt", price: "€4.50" },
       { kind: "Drink", name: "House cooler of " + d.name, price: "€3.80" },
       { kind: "Dessert", name: d.name + " sweet of the week", price: "€5.50" }
     ].map(function (p) {

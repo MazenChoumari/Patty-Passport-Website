@@ -15,11 +15,11 @@
   // still read live from PP_DATA.ROUTES so they can never drift from the
   // rest of the site's route palette.
   var CH_COPY = {
-    LEV: { num: "01", kicker: "Chapter one", blurb: "Cedar mountains, souk smoke, toum and sumac. The loudest welcome on the sea." },
-    AEG: { num: "02", kicker: "Chapter two", blurb: "Island light, oregano, charcoal and lemon. Slow lunches that run into evening." },
-    IBL: { num: "03", kicker: "Chapter three", blurb: "Plaza noise, bravas heat, olive oil and late dessert. Europe's warm south." },
-    ADR: { num: "04", kicker: "Chapter four", blurb: "Stone harbours, grill smoke, ajvar and walnut. The quiet coast that surprises." },
-    NAF: { num: "05", kicker: "Chapter five", blurb: "Spice markets, mint tea, harissa and orange blossom. The sea's other shore." }
+    LEV: { num: "01", kicker: "Chapter one", blurb: "Cedar mountains, ancient ports, caravan kitchens and the table traditions of the eastern Mediterranean.", list: "Three destinations: Lebanon, Syria and Palestine." },
+    AEG: { num: "02", kicker: "Chapter two", blurb: "Bronze Age islands, imperial straits, olive groves and charcoal cooking across the sea-crossroads between Europe and Asia.", list: "Three destinations: Türkiye, Cyprus and Greece." },
+    IBL: { num: "03", kicker: "Chapter three", blurb: "Roman roads, medieval ports, Mediterranean agriculture and long-table cultures shaped by wheat, wine, olive oil and late evenings.", list: "Five destinations: Italy, Spain, France, Monaco and Malta." },
+    ADR: { num: "04", kicker: "Chapter four", blurb: "Venetian harbours, mountain interiors, Slavic traditions and a coast where stone, salt and smoke meet.", list: "Five destinations: Slovenia, Croatia, Bosnia & Herzegovina, Montenegro and Albania." },
+    NAF: { num: "05", kicker: "Chapter five", blurb: "River civilizations, Punic ports, Amazigh mountains, Saharan trade and spice-rich kitchens facing the southern shore.", list: "Five destinations: Egypt, Libya, Tunisia, Algeria and Morocco." }
   };
   var CH_ORDER = ["LEV", "AEG", "IBL", "ADR", "NAF"];
 
@@ -86,10 +86,14 @@
       var meta = stops.length + " destinations · gates " + meds[0] + "—" + meds[meds.length - 1];
       var stopsHtml = stops.map(function (s) {
         var highlighted = hi === s.code;
-        return '<a href="destination.html#' + s.code + '" data-stop="' + s.code + '" class="' + (highlighted ? "pp-rm-highlight" : "") + '" style="padding:22px 20px 24px;border-right:1px solid rgba(27,26,25,.28);border-bottom:1px solid rgba(27,26,25,.28);text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;min-height:170px;transition:background .2s ease" data-hover="background:#1b1a19;color:#f7f3ec">'
+        return '<a href="destination.html#' + s.code + '" data-stop="' + s.code + '" class="' + (highlighted ? "pp-rm-highlight" : "") + '" style="padding:22px 20px 24px;border-right:1px solid rgba(27,26,25,.28);border-bottom:1px solid rgba(27,26,25,.28);text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:8px;min-height:200px;transition:background .2s ease" data-hover="background:#1b1a19;color:#f7f3ec">'
+          + '<span style="display:flex;align-items:center;justify-content:space-between;gap:8px">'
           + '<span style="font:600 9px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.65">' + esc(s.med) + '</span>'
+          + window.PP_FLAGS.render(s.code, 22, { stroke: "currentColor" })
+          + '</span>'
           + '<span style="font:800 21px/1.02 \'Archivo\',sans-serif;letter-spacing:-.025em">' + esc(s.name.toUpperCase()) + '</span>'
-          + '<span style="font:400 12.5px/1.45 \'Archivo\',sans-serif;opacity:.82">' + esc(s.identity) + '</span>'
+          + '<span style="font:700 12.5px/1.4 \'Archivo\',sans-serif;opacity:.9">' + esc(s.identity) + '</span>'
+          + '<span style="font:400 11.5px/1.45 \'Archivo\',sans-serif;opacity:.75">' + esc(s.cardIntro || s.intro) + '</span>'
           + '<span style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;font:800 10.5px/1 \'Archivo\',sans-serif;letter-spacing:.12em">' + s.stamp + '<span>→</span></span></a>';
       }).join("");
       return '<div data-rv="up" class="pp-2col" style="display:grid;grid-template-columns:minmax(0,.42fr) minmax(0,1fr);border-top:2px solid #1b1a19;background:' + route.bg + ';color:' + route.fg + '">'
@@ -98,7 +102,8 @@
         + '<span style="font:800 40px/1 \'Archivo\',sans-serif;letter-spacing:-.04em;opacity:.3">' + copy.num + '</span>'
         + '<span style="font:600 10px/1 \'Archivo\',sans-serif;letter-spacing:.2em;text-transform:uppercase">' + copy.kicker + '</span></div>'
         + '<h3 style="font:800 clamp(26px,3vw,42px)/.98 \'Archivo\',sans-serif;letter-spacing:-.03em;margin:0 0 12px">' + esc(route.name.toUpperCase()) + ' ROUTE</h3>'
-        + '<p style="font:400 14px/1.55 \'Archivo\',sans-serif;margin:0 0 18px;opacity:.86;max-width:42ch">' + esc(copy.blurb) + '</p>'
+        + '<p style="font:700 14px/1.55 \'Archivo\',sans-serif;margin:0 0 10px;opacity:.92;max-width:42ch">' + esc(copy.blurb) + '</p>'
+        + '<p style="font:400 13px/1.5 \'Archivo\',sans-serif;margin:0 0 18px;opacity:.78;max-width:42ch">' + esc(copy.list) + '</p>'
         + '<div style="font:600 9.5px/1.6 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.75">' + esc(meta) + '</div></div>'
         + '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))">' + stopsHtml + '</div></div>';
     }).join("");

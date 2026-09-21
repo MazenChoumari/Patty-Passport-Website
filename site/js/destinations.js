@@ -39,11 +39,11 @@
     document.getElementById("dst-result-label").textContent = list.length + " destinations shown";
 
     // Grid of country cards.
+    // Cards show only the destination's universal greeting (native /
+    // romanised / "Welcome") on hover — never its separate unique welcome
+    // phrase, which is reserved for the open profile page.
     document.getElementById("dst-grid").innerHTML = list.map(function (c) {
       var route = routes[c.routeKey];
-      var greetingParts = (c.greeting || "").split(" — ");
-      var english = greetingParts[1] || "";
-      var translitParts = (c.translit || "").split(" · ");
       return '<a href="destination.html#' + c.code + '" class="pp-dst-card" style="display:flex;flex-direction:column;border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;text-decoration:none;color:#1b1a19;background:#f7f3ec;transition:background .2s ease" data-hover="background:#fff">'
         + '<div style="position:relative;height:210px;border-bottom:2px solid #1b1a19">'
         + '<div class="pp-placeholder" style="position:absolute;inset:0"><span>' + esc(c.name) + ' — street scene or landscape</span></div>'
@@ -55,22 +55,16 @@
         + '<h3 style="font:800 26px/1 \'Archivo\',sans-serif;letter-spacing:-.025em;margin:0">' + esc(c.name.toUpperCase()) + '</h3>'
         + '<span style="font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.14em;color:#7d7979">' + esc(c.med) + '</span></div>'
         + '<div style="font:800 13.5px/1.3 \'Archivo\',sans-serif;color:#ae1800">' + esc(c.identity) + '</div>'
-        + '<p style="font:400 13px/1.5 \'Archivo\',sans-serif;color:#605d5d;margin:0">' + esc(c.intro) + '</p>'
+        + '<p style="font:400 13px/1.5 \'Archivo\',sans-serif;color:#605d5d;margin:0">' + esc(c.cardIntro || c.intro) + '</p>'
         + '<div style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:12px;border-top:2px solid rgba(27,26,25,.18);font:600 10px/1 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase">'
         + '<span style="color:#605d5d">' + esc(c.heroItem.name) + '</span>'
         + '<span style="display:inline-flex;align-items:center;gap:7px;font:800 11px/1 \'Archivo\',sans-serif;color:#1b1a19">' + eur(c.heroItem.price) + '<span>→</span></span></div>'
         + '</div>'
         + '<div class="pp-dst-greet">'
-        + '<svg class="pp-dst-greet-flag" width="26" height="26" viewBox="0 0 24 24">'
-        + '<line x1="5" y1="2" x2="5" y2="22" stroke="#1b1a19" stroke-width="4.2" stroke-linecap="round"/>'
-        + '<line x1="5" y1="2" x2="5" y2="22" stroke="#f7f3ec" stroke-width="2" stroke-linecap="round"/>'
-        + '<path d="M5 3 L20 3 L16 7 L20 11 L5 11 Z" fill="' + route.bg + '" stroke="#1b1a19" stroke-width="3" stroke-linejoin="round"/>'
-        + '<path d="M5 3 L20 3 L16 7 L20 11 L5 11 Z" fill="' + route.bg + '" stroke="#f7f3ec" stroke-width="1.6" stroke-linejoin="round"/>'
-        + '</svg>'
-        + (c.nativePhrase ? '<span dir="auto" style="display:block;text-align:left;font:800 20px/1.3 \'Archivo\',sans-serif;letter-spacing:-.02em;overflow-wrap:anywhere">' + esc(c.nativePhrase) + '</span>' : "")
-        + (translitParts[0] ? '<span style="display:block;font:800 11px/1.5 \'Archivo\',sans-serif;letter-spacing:.06em;color:#f2b30c;overflow-wrap:anywhere">' + esc(translitParts[0]) + '</span>' : "")
-        + (translitParts[1] ? '<span style="display:block;font:600 10px/1.5 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#bab6b6;overflow-wrap:anywhere">' + esc(translitParts[1]) + '</span>' : "")
-        + (english ? '<span style="display:block;font:400 11.5px/1.5 \'Archivo\',sans-serif;color:#bab6b6;margin-top:5px;overflow-wrap:anywhere">' + esc(english) + '</span>' : "")
+        + window.PP_FLAGS.render(c.code, 30, { stroke: "#f7f3ec" })
+        + (c.greetingNative ? '<span dir="auto" style="display:block;text-align:left;font:800 20px/1.3 \'Archivo\',sans-serif;letter-spacing:-.02em;overflow-wrap:anywhere">' + esc(c.greetingNative) + '</span>' : "")
+        + (c.greetingRoman ? '<span style="display:block;font:800 11px/1.5 \'Archivo\',sans-serif;letter-spacing:.06em;color:#f2b30c;overflow-wrap:anywhere">' + esc(c.greetingRoman) + '</span>' : "")
+        + '<span style="display:block;font:600 10px/1.5 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#bab6b6">Welcome</span>'
         + '</div>'
         + '</a>';
     }).join("");
