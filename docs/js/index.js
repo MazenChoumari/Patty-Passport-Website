@@ -52,7 +52,9 @@
       });
     }
     var raf = null;
-    window.addEventListener("scroll", function () { if (!raf) raf = requestAnimationFrame(function () { raf = null; tick(); }); }, { passive: true });
+    function onScroll() { if (!raf) raf = requestAnimationFrame(function () { raf = null; tick(); }); }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    if (window.PP_TRACK) window.PP_TRACK(function () { window.removeEventListener("scroll", onScroll); });
     tick();
   }
 
@@ -221,7 +223,8 @@
     }
     check();
     window.addEventListener("scroll", check, { passive: true });
-    setInterval(check, 400);
+    var iv = setInterval(check, 400);
+    if (window.PP_TRACK) window.PP_TRACK(function () { window.removeEventListener("scroll", check); clearInterval(iv); });
   }
 
   /* ── Mini Patty Tooty preview ── */
@@ -312,6 +315,22 @@
     });
   }
 
+  /* Only present on a real fresh load of index.html (baked into the HTML,
+     never re-added by js/router.js's client-side swap), so a nav click
+     back to Home never repeats this pause. Waits two frames so the
+     pre-reveal state actually paints before transitioning out of it
+     (otherwise some browsers skip straight to the end state), plus a
+     short deliberate beat so "shell first" reads as a choreographed
+     reveal rather than an imperceptible flicker. */
+  function revealShell() {
+    if (!document.body.classList.contains("pp-shell-loading")) return;
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        setTimeout(function () { document.body.classList.remove("pp-shell-loading"); }, 220);
+      });
+    });
+  }
+
   function boot() {
     var data = window.PP_DATA;
     setHeadlineText();
@@ -329,9 +348,11 @@
       if (window.initHoverStyles) window.initHoverStyles(document.body);
     } else {
       window.addEventListener("pp-data-ready", boot, { once: true });
+      if (window.PP_TRACK) window.PP_TRACK(function () { window.removeEventListener("pp-data-ready", boot); });
     }
     if (window.PP_REVEAL) window.PP_REVEAL.init();
+    revealShell();
   }
 
-  document.addEventListener("DOMContentLoaded", boot);
+  window.PP_READY(boot);
 })();

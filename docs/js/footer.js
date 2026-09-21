@@ -21,7 +21,7 @@
     return list.map(l => `<a href="${l[1]}" style="text-decoration:none;color:#bab6b6;font:400 12.5px/1.5 'Archivo',sans-serif" data-hover="color:#f2b30c">${l[0]}</a>`).join("");
   }
 
-  document.addEventListener("DOMContentLoaded", () => {
+  window.PP_READY(() => {
     const root = document.getElementById("pp-footer");
     if (!root) return;
     root.innerHTML = `

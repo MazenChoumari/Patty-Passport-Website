@@ -9,10 +9,6 @@
 (function () {
   var RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
 
-  // If the full Ask-Patty-Tooty page is already on screen (it renders its
-  // own #pt-thread chat), don't also mount the floating duplicate.
-  if (document.getElementById("pt-thread")) return;
-
   var state = { open: false, messages: [] };
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
@@ -180,9 +176,25 @@
     render();
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", mount);
-  } else {
-    mount();
-  }
+  // The full Ask-Patty-Tooty page renders its own #pt-thread chat, so the
+  // floating duplicate stays hidden there. This is a single persistent
+  // script (js/router.js never re-runs it across a client-side page
+  // change), so instead of only checking once at load, js/router.js calls
+  // setVisible() after every swap with whether the new page has #pt-thread.
+  window.PP_TOOTY_WIDGET = {
+    setVisible: function (visible) {
+      if (visible) {
+        var root = document.getElementById("ptw-root");
+        if (root) root.style.display = "";
+        else mount();
+      } else {
+        var existing = document.getElementById("ptw-root");
+        if (existing) existing.style.display = "none";
+      }
+    }
+  };
+
+  window.PP_READY(function () {
+    if (!document.getElementById("pt-thread")) mount();
+  });
 })();

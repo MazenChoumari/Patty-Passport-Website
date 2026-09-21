@@ -103,7 +103,7 @@
     }).join("");
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  window.PP_READY(function () {
     renderKit();
     renderKitItems();
     renderRoutes();

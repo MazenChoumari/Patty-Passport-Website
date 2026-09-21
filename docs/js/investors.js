@@ -357,15 +357,21 @@
     if (e.key === "Escape" && state.form) { state.form = false; state.sent = false; render(); }
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  window.PP_READY(function () {
     document.body.addEventListener("click", onClick);
     document.body.addEventListener("input", onInput);
     window.addEventListener("keydown", onKeydown);
+    if (window.PP_TRACK) window.PP_TRACK(function () {
+      document.body.removeEventListener("click", onClick);
+      document.body.removeEventListener("input", onInput);
+      window.removeEventListener("keydown", onKeydown);
+    });
     render();
     if (!window.PP_DATA) {
       var poll = setInterval(function () { if (window.PP_DATA) { clearInterval(poll); render(); } }, 60);
     } else {
       window.addEventListener("pp-data-ready", render);
+      if (window.PP_TRACK) window.PP_TRACK(function () { window.removeEventListener("pp-data-ready", render); });
     }
   });
 })();

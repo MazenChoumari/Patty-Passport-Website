@@ -158,10 +158,12 @@
     if (window.PP_REVEAL) window.PP_REVEAL.init();
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  window.PP_READY(function () {
     window.scrollTo({ top: 0 });
     render();
-    window.addEventListener("hashchange", function () { window.scrollTo({ top: 0 }); render(); });
+    function onHashChange() { window.scrollTo({ top: 0 }); render(); }
+    window.addEventListener("hashchange", onHashChange);
+    if (window.PP_TRACK) window.PP_TRACK(function () { window.removeEventListener("hashchange", onHashChange); });
     if (!window.PP_DATA) {
       var poll = setInterval(function () { if (window.PP_DATA) { clearInterval(poll); render(); } }, 60);
     }

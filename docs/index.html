@@ -26,10 +26,26 @@
   @keyframes ppFlowUp{0%{transform:translateY(0)}100%{transform:translateY(-50%)}}
   @keyframes ppFlowDown{0%{transform:translateY(-50%)}100%{transform:translateY(0)}}
   @keyframes ppDots{0%,80%,100%{opacity:.2}40%{opacity:1}}
+
+  /* Shell-first load: the nav (with the music button) is rendered by a
+     separate script and always appears the instant it's ready. #pp-view
+     briefly holds back so it reveals a beat after, instead of every child
+     element popping in at once on a fresh visit. Layout/height are
+     unaffected (opacity+transform only), so nothing shifts when it
+     resolves, and this only ever applies to a real page load — a
+     client-side nav back to Home (js/router.js) never re-adds the
+     triggering class, so it won't repeat that pause on every visit. */
+  #pp-view { opacity: 1; transform: none; transition: opacity .55s cubic-bezier(.2,.8,.25,1), transform .6s cubic-bezier(.2,.85,.25,1); }
+  body.pp-shell-loading #pp-view { opacity: 0; transform: translateY(14px); }
+  @media (prefers-reduced-motion: reduce) {
+    #pp-view { transition: opacity .2s linear; }
+    body.pp-shell-loading #pp-view { transform: none; }
+  }
 </style>
 </head>
-<body>
+<body class="pp-shell-loading">
 <div id="pp-nav"></div>
+<main id="pp-view">
 
 <!-- ░░ 1 · HERO / CHECK-IN ░░ -->
 <section id="top" style="position:relative;background:#f7f3ec;border-bottom:2px solid #1b1a19;overflow:hidden">
@@ -673,8 +689,11 @@
   </div>
 </section>
 
+</main>
+
 <div id="pp-footer"></div>
 
+<script src="js/router.js"></script>
 <script src="js/data.js"></script>
 <script>window.PP_ACTIVE = "Home terminal";</script>
 <script src="js/hover.js"></script>

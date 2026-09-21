@@ -127,7 +127,7 @@
     }
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  window.PP_READY(function () {
     if (window.PP_DATA) {
       applyHash();
     } else {
@@ -135,5 +135,6 @@
       var poll = setInterval(function () { if (window.PP_DATA) { clearInterval(poll); applyHash(); } }, 60);
     }
     window.addEventListener("hashchange", applyHash);
+    if (window.PP_TRACK) window.PP_TRACK(function () { window.removeEventListener("hashchange", applyHash); });
   });
 })();

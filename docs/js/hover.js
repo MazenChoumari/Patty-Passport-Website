@@ -27,5 +27,5 @@
   window.initHoverStyles = function (root) {
     (root || document).querySelectorAll("[data-hover], [data-active]").forEach(bind);
   };
-  document.addEventListener("DOMContentLoaded", () => window.initHoverStyles());
+  window.PP_READY(() => window.initHoverStyles());
 })();

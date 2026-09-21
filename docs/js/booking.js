@@ -219,10 +219,12 @@
     if (resetBtn) resetBtn.onclick = function () { state.booked = null; render(); };
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  window.PP_READY(function () {
     applyHash();
     render();
-    window.addEventListener("hashchange", function () { applyHash(); render(); });
+    function onHashChange() { applyHash(); render(); }
+    window.addEventListener("hashchange", onHashChange);
+    if (window.PP_TRACK) window.PP_TRACK(function () { window.removeEventListener("hashchange", onHashChange); });
     if (!window.PP_DATA) {
       var poll = setInterval(function () { if (window.PP_DATA) { clearInterval(poll); applyHash(); render(); } }, 60);
     }
