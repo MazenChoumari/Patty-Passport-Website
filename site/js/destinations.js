@@ -62,7 +62,9 @@
         + '</div>'
         + '<div class="pp-dst-greet">'
         + '<svg class="pp-dst-greet-flag" width="26" height="26" viewBox="0 0 24 24">'
+        + '<line x1="5" y1="2" x2="5" y2="22" stroke="#1b1a19" stroke-width="4.2" stroke-linecap="round"/>'
         + '<line x1="5" y1="2" x2="5" y2="22" stroke="#f7f3ec" stroke-width="2" stroke-linecap="round"/>'
+        + '<path d="M5 3 L20 3 L16 7 L20 11 L5 11 Z" fill="' + route.bg + '" stroke="#1b1a19" stroke-width="3" stroke-linejoin="round"/>'
         + '<path d="M5 3 L20 3 L16 7 L20 11 L5 11 Z" fill="' + route.bg + '" stroke="#f7f3ec" stroke-width="1.6" stroke-linejoin="round"/>'
         + '</svg>'
         + (c.nativePhrase ? '<span dir="auto" style="display:block;text-align:left;font:800 20px/1.3 \'Archivo\',sans-serif;letter-spacing:-.02em;overflow-wrap:anywhere">' + esc(c.nativePhrase) + '</span>' : "")
