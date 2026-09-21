@@ -93,11 +93,9 @@
         + '<span style="display:block;font:800 clamp(24px,2.6vw,36px)/1 \'Archivo\',sans-serif;letter-spacing:-.03em">' + esc(c.name.toUpperCase()) + '</span>'
         + '<span style="display:block;font:600 9.5px/1.5 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75;margin-top:5px">' + esc(r.name) + ' Route · ' + esc(c.med) + '</span></span>'
         + (function () {
-            var parts = (c.greeting || "").split(" — ");
-            var local = parts[0] || "", eng = parts[1] || "";
             return '<span style="display:flex;flex-direction:column;gap:2px;max-width:46ch;min-width:0;overflow-wrap:anywhere">'
-              + (local ? '<span style="font:600 13px/1.4 \'Archivo\',sans-serif;opacity:.95">' + esc(local) + '</span>' : "")
-              + (eng ? '<span style="font:400 12.5px/1.4 \'Archivo\',sans-serif;opacity:.8">' + esc(eng) + '</span>' : "")
+              + (c.greetingNative ? '<span dir="auto" style="display:block;text-align:left;font:600 13px/1.4 \'Archivo\',sans-serif;opacity:.95">' + esc(c.greetingNative) + '</span>' : "")
+              + (c.greetingRoman ? '<span style="font:400 12.5px/1.4 \'Archivo\',sans-serif;opacity:.8">' + esc(c.greetingRoman) + '</span>' : "")
               + '</span>';
           })()
         + '<a href="destination.html#' + c.code + '" style="display:inline-flex;align-items:center;gap:9px;padding:11px 14px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 10.5px/1 \'Archivo\',sans-serif;letter-spacing:.13em;text-transform:uppercase" data-hover="background:#ec3013">Country page<span>→</span></a>'

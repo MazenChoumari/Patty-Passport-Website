@@ -108,7 +108,7 @@
   function bubbleHtml(from, text) {
     if (from === "pt") {
       return '<div style="display:flex;gap:8px;align-items:flex-start;margin-bottom:10px">'
-        + '<span style="width:22px;height:22px;flex:none;background:' + YEL + ';border:2px solid ' + INK + ';display:flex;align-items:center;justify-content:center;font:800 8px/1 \'Archivo\',sans-serif">PT</span>'
+        + '<span style="width:22px;height:22px;flex:none;background:' + YEL + ';border:2px solid ' + INK + ';display:flex;align-items:center;justify-content:center">' + window.PP_TOOTY_ICON(15, INK) + '</span>'
         + '<span style="max-width:82%;background:#fff;border:2px solid ' + INK + ';padding:9px 10px;font:400 12.5px/1.45 \'Archivo\',sans-serif">' + text + '</span></div>';
     }
     return '<div style="display:flex;justify-content:flex-end;margin-bottom:10px">'
@@ -142,7 +142,7 @@
     if (!root) return;
     if (!state.open) {
       root.innerHTML = '<button type="button" id="ptw-toggle" aria-label="Ask Patty Tooty" style="display:flex;align-items:center;gap:10px;padding:12px 16px 12px 12px;background:' + INK + ';color:' + CREAM + ';border:2px solid ' + INK + ';border-radius:999px;cursor:pointer;box-shadow:0 8px 22px rgba(27,26,25,.35);font-family:\'Archivo\',system-ui,sans-serif" data-hover="background:' + RED + '">'
-        + '<span style="position:relative;width:34px;height:34px;flex:none;background:' + YEL + ';border:2px solid ' + INK + ';border-radius:50%;display:flex;align-items:center;justify-content:center;font:800 11px/1 \'Archivo\',sans-serif;color:' + INK + '">PT'
+        + '<span style="position:relative;width:34px;height:34px;flex:none;background:' + YEL + ';border:2px solid ' + INK + ';border-radius:50%;display:flex;align-items:center;justify-content:center">' + window.PP_TOOTY_ICON(23, INK)
         + '<span style="position:absolute;right:-2px;top:-2px;width:9px;height:9px;background:' + RED + ';border:2px solid ' + CREAM + ';border-radius:50%;animation:ptwBlink 1.3s steps(1) infinite"></span></span>'
         + '<span style="font:800 12px/1 \'Archivo\',sans-serif;letter-spacing:.04em;white-space:nowrap">Ask Patty Tooty</span></button>';
       var t = root.querySelector("#ptw-toggle");
@@ -150,7 +150,7 @@
     } else {
       root.innerHTML = '<div style="width:min(320px,88vw);background:' + CREAM + ';border:2px solid ' + INK + ';box-shadow:0 14px 32px rgba(27,26,25,.4);font-family:\'Archivo\',system-ui,sans-serif">'
         + '<div style="display:flex;align-items:center;gap:10px;padding:11px 12px;background:' + INK + ';color:' + CREAM + '">'
-        + '<span style="width:28px;height:28px;flex:none;background:' + YEL + ';border:2px solid ' + INK + ';border-radius:50%;display:flex;align-items:center;justify-content:center;font:800 9px/1 \'Archivo\',sans-serif;color:' + INK + '">PT</span>'
+        + '<span style="width:28px;height:28px;flex:none;background:' + YEL + ';border:2px solid ' + INK + ';border-radius:50%;display:flex;align-items:center;justify-content:center">' + window.PP_TOOTY_ICON(19, INK) + '</span>'
         + '<span style="flex:1"><span style="display:block;font:800 12.5px/1 \'Archivo\',sans-serif">PATTY TOOTY</span>'
         + '<span style="display:flex;align-items:center;gap:5px;font:600 8px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#bab6b6;margin-top:3px"><span style="width:5px;height:5px;background:' + YEL + ';border-radius:50%;animation:ptwBlink 1.3s steps(1) infinite"></span>Online</span></span>'
         + '<button type="button" id="ptw-close" aria-label="Close" style="background:transparent;border:2px solid rgba(247,243,236,.5);color:' + CREAM + ';font:800 10px/1 \'Archivo\',sans-serif;padding:6px 8px;cursor:pointer" data-hover="background:' + RED + ';border-color:' + RED + '">✕</button>'
