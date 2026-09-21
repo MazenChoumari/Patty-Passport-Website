@@ -30,6 +30,18 @@
     var all = D.COUNTRIES.filter(function (c) { return (c.dietTags || "").toLowerCase().indexOf("spicy") > -1; });
     return all.length ? all[Math.floor(Math.random() * all.length)] : null;
   }
+  var COUNTRY_ALIASES = { turkey: "tur", bosnia: "bih" };
+  function findCountryByName(t) {
+    var D = window.PP_DATA;
+    if (!D) return null;
+    for (var alias in COUNTRY_ALIASES) {
+      if (t.indexOf(alias) > -1) {
+        var byAlias = D.COUNTRIES.find(function (c) { return c.code === COUNTRY_ALIASES[alias]; });
+        if (byAlias) return byAlias;
+      }
+    }
+    return D.COUNTRIES.find(function (c) { return t.indexOf(c.name.toLowerCase()) > -1; }) || null;
+  }
 
   function answerFor(raw) {
     var t = (raw || "").toLowerCase();
@@ -59,10 +71,31 @@
     if (/book|table|reserve/.test(t)) {
       return { text: "Booking takes under a minute — route, time, table size.", pills: [["Book a table", "booking.html"]] };
     }
+    if (/\bmenu\b|\bdish(es)?\b|\bburger|\bfries\b|food/.test(t)) {
+      return { text: "The full menu runs across all 21 destinations — burgers, loaded fries, salads, drinks and desserts, each one specific to its country.", pills: [["Open the menu", "menu.html"]] };
+    }
+    if (/\broute(s)?\b|route map/.test(t)) {
+      return { text: "Five routes cross the map — Levant, Aegean, Iberia & Latin, Adriatic, N. Africa — twenty-one destinations between them.", pills: [["Open the route map", "route-map.html"]] };
+    }
+    if (/destination|\bcountr(y|ies)\b|where can i go/.test(t)) {
+      return { text: "Twenty-one Mediterranean destinations across five routes, from Lebanon and Greece to Spain, Croatia and Morocco.", pills: [["Browse destinations", "destinations.html"]] };
+    }
+    if (/hour|open|close|location|address|contact|phone|email/.test(t)) {
+      var D5 = window.PP_DATA;
+      var hours = D5 && D5.HOURS ? D5.HOURS.map(function (h) { return h.days + ": " + h.time; }).join(" · ") : "Mon—Fri 10:00 — 22:00 · Weekends & holidays 10:00 — 00:00";
+      return { text: "We're in Leganés, Madrid. " + hours + ".", pills: [["Book a table", "booking.html"]] };
+    }
+    if (/\bevent|party|celebrat|reunion/.test(t)) {
+      return { text: "Events run on any route, from a small birthday to a hundred-plus reunion — the zone gets dressed for whichever country you pick.", pills: [["Event packages", "events.html"]] };
+    }
+    var namedCountry = findCountryByName(t);
+    if (namedCountry) {
+      return { text: namedCountry.name + " — " + namedCountry.identity + ". Headline dish: " + namedCountry.heroItem.name + ".", pills: [["Open " + namedCountry.name, "destination.html#" + namedCountry.code]] };
+    }
     if (/hi\b|hello|hey/.test(t)) {
       return { text: "Welcome aboard! Ask me about a country, the menu, kids, stamps, booking or investing.", pills: [["Browse destinations", "destinations.html"]] };
     }
-    return { text: "Still learning that one — try spicy, vegetarian, halal, kids, stamps, booking or investing, or open the full concierge.", pills: [["Full concierge", "patty-tooty.html"]] };
+    return { text: "Still learning that one — try a country name, the menu, routes, hours, kids, stamps, booking or investing, or open the full concierge.", pills: [["Full concierge", "patty-tooty.html"]] };
   }
 
   var QUICK = [

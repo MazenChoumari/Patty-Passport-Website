@@ -65,6 +65,20 @@
     var all = D.COUNTRIES.filter(function (c) { return (c.dietTags || "").toLowerCase().indexOf(word) > -1; });
     return all.length ? all[Math.floor(Math.random() * all.length)] : null;
   }
+  // A few common alternate English spellings that don't match the on-site
+  // country name directly (the data/menu use "Türkiye", not "Turkey").
+  var COUNTRY_ALIASES = { turkey: "tur", bosnia: "bih" };
+  function findCountryByName(t) {
+    var D = window.PP_DATA;
+    if (!D) return null;
+    for (var alias in COUNTRY_ALIASES) {
+      if (t.indexOf(alias) > -1) {
+        var byAlias = D.COUNTRIES.find(function (c) { return c.code === COUNTRY_ALIASES[alias]; });
+        if (byAlias) return byAlias;
+      }
+    }
+    return D.COUNTRIES.find(function (c) { return t.indexOf(c.name.toLowerCase()) > -1; }) || null;
+  }
 
   function answerFor(raw) {
     var t = (raw || "").toLowerCase();
@@ -141,6 +155,68 @@
         question: raw, answer: "Booking takes under a minute — pick a route, a time, and the size of your table.",
         followUp: "Groups of six or more, or a birthday, are best booked a few days ahead.",
         pills: [["Book a table", "booking.html", RED, "#fff"], ["Events & groups", "events.html", YEL, INK]]
+      };
+    }
+    if (/\bmenu\b|\bdish(es)?\b|\bburger|\bfries\b|what.*(eat|order)|food (options|choices)/.test(t)) {
+      var D1 = window.PP_DATA;
+      return {
+        question: raw,
+        answer: D1 ? "The full menu runs across all " + D1.COUNTRIES.length + " destinations — burgers, loaded fries, salads, drinks and desserts, each one specific to its country." : "The full menu runs across every destination — burgers, loaded fries, salads, drinks and desserts, each specific to its country.",
+        followUp: "Filter it by route, or by halal, vegetarian, vegan or spicy, and only the matching plates stay on the board.",
+        pills: [["Open the menu", "menu.html", YEL, INK]]
+      };
+    }
+    if (/\broute(s)?\b|route map|which (route|zone)/.test(t)) {
+      var D2 = window.PP_DATA;
+      var routeNames = D2 ? Object.keys(D2.ROUTES).map(function (k) { return D2.ROUTES[k].name; }).join(", ") : "Levant, Aegean, Iberia & Latin, Adriatic, N. Africa";
+      return {
+        question: raw,
+        answer: "Five routes cross the map: " + routeNames + " — twenty-one destinations between them.",
+        followUp: "Pick a route first, then the country inside it, on the route map.",
+        pills: [["Open the route map", "route-map.html", BLU, "#fff"], ["All destinations", "destinations.html", CREAM, INK]]
+      };
+    }
+    if (/destination|\bcountr(y|ies)\b|where can i go|how many (countries|destinations)/.test(t)) {
+      var D3 = window.PP_DATA;
+      return {
+        question: raw,
+        answer: D3 ? "Twenty-one Mediterranean destinations across five routes — from Lebanon and Greece to Spain, Croatia and Morocco." : "Twenty-one Mediterranean destinations across five routes.",
+        followUp: "Tell me a country by name, or a preference like spicy, vegetarian or halal, and I'll narrow it down.",
+        pills: [["Browse destinations", "destinations.html", CREAM, INK], ["Open the route map", "route-map.html", BLU, "#fff"]]
+      };
+    }
+    if (/hour|open|close|location|address|where are you|contact|phone|email/.test(t)) {
+      var D4 = window.PP_DATA;
+      var hours = D4 && D4.HOURS ? D4.HOURS.map(function (h) { return h.days + ": " + h.time; }).join(" · ") : "Mon—Fri 10:00 — 22:00 · Weekends & holidays 10:00 — 00:00";
+      return {
+        question: raw,
+        answer: "We're in Leganés, Madrid. " + hours + ".",
+        followUp: "For anything else, hello@pattypassport.com or +34 91 123 45 67 reaches the desk directly.",
+        pills: [["Book a table", "booking.html", RED, "#fff"]]
+      };
+    }
+    if (/price|cost|how much|expensive|budget|min(imum)? spend/.test(t)) {
+      return {
+        question: raw,
+        answer: "Burgers, sides, drinks and desserts are priced individually on the menu, with combo pricing at the table — there's no cover charge to walk in and browse.",
+        followUp: "Large groups and events have their own package pricing.",
+        pills: [["Open the menu", "menu.html", YEL, INK], ["Events & groups", "events.html", BLU, "#fff"]]
+      };
+    }
+    if (/\bevent|party|celebrat|group\b|reunion/.test(t)) {
+      return {
+        question: raw, answer: "Events run on any route, from a birthday for four to a reunion for a hundred and twenty — the zone gets dressed for whichever country you pick.",
+        followUp: "Weekdays and weekends run different packages; the events page has the full breakdown.",
+        pills: [["Event packages", "events.html", YEL, INK], ["Reserve the table", "booking.html", RED, "#fff"]]
+      };
+    }
+    var namedCountry = findCountryByName(t);
+    if (namedCountry) {
+      return {
+        question: raw,
+        answer: namedCountry.name + " — " + namedCountry.identity + ". " + namedCountry.intro,
+        followUp: "Its headline dish is the " + namedCountry.heroItem.name + ", stamp " + namedCountry.stamp + " on the " + (window.PP_DATA.ROUTES[namedCountry.routeKey] || {}).name + " route.",
+        pills: [["Open " + namedCountry.name, "destination.html#" + namedCountry.code, YEL, INK], ["See it on the map", "route-map.html#" + namedCountry.code, BLU, "#fff"]]
       };
     }
     if (/story|history|why|founder/.test(t)) {

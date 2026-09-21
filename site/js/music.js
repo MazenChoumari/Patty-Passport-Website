@@ -47,11 +47,21 @@
     ensureHost();
     player = new YT.Player("pp-yt-player", {
       videoId: VIDEO_ID,
-      playerVars: { autoplay: 0, controls: 0, disablekb: 1, fs: 0, modestbranding: 1, rel: 0 },
+      // loop+playlist (set to the same single video) is the documented way
+      // to make the IFrame API loop one video; onStateChange below is a
+      // belt-and-braces fallback that explicitly restarts on ENDED, since
+      // loop:1 alone is known to be unreliable in some embed contexts.
+      playerVars: { autoplay: 0, controls: 0, disablekb: 1, fs: 0, modestbranding: 1, rel: 0, loop: 1, playlist: VIDEO_ID },
       events: {
         onReady: function (e) {
           e.target.setVolume(DEFAULT_VOLUME);
           if (pendingOn !== null) { applyState(pendingOn); pendingOn = null; }
+        },
+        onStateChange: function (e) {
+          if (e.data === YT.PlayerState.ENDED) {
+            e.target.seekTo(0);
+            e.target.playVideo();
+          }
         }
       }
     });
