@@ -46,7 +46,11 @@
     // pronunciation/meaning pair, on any viewport width. dir="auto" on the
     // native-script line lets the browser bidi-isolate it correctly for
     // the countries where it's Arabic (RTL) without needing a per-country
-    // flag in the data model.
+    // flag in the data model — but browsers also default an RTL-detected
+    // block's own text-align to "right", which visually yanks that one
+    // line away from its LTR siblings in this left-aligned stack. Pinning
+    // text-align:left keeps the character shaping/ordering benefit of
+    // dir="auto" while keeping the line itself anchored with the rest.
     var translitParts = (d.translit || "").split(" · ");
     var pronunciation = translitParts[0] || "";
     var meaning = translitParts[1] || "";
@@ -58,7 +62,7 @@
       + '<path d="M5 3 L20 3 L16 7 L20 11 L5 11 Z" fill="' + route.bg + '" stroke="#f7f3ec" stroke-width="1.6" stroke-linejoin="round"/>'
       + '</svg>'
       + '<span style="min-width:0;flex:1 1 260px;display:flex;flex-direction:column;gap:6px">'
-      + (d.nativePhrase ? '<span dir="auto" style="display:block;font:800 22px/1.3 \'Archivo\',sans-serif;overflow-wrap:anywhere">' + esc(d.nativePhrase) + '</span>' : "")
+      + (d.nativePhrase ? '<span dir="auto" style="display:block;text-align:left;font:800 22px/1.3 \'Archivo\',sans-serif;overflow-wrap:anywhere">' + esc(d.nativePhrase) + '</span>' : "")
       + (pronunciation ? '<span style="display:block;font:800 12.5px/1.5 \'Archivo\',sans-serif;letter-spacing:.05em;color:#f2b30c;overflow-wrap:anywhere">' + esc(pronunciation) + '</span>' : "")
       + (meaning ? '<span style="display:block;font:600 11px/1.5 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#bab6b6;overflow-wrap:anywhere">' + esc(meaning) + '</span>' : "")
       + (message ? '<span style="display:block;font:400 13px/1.5 \'Archivo\',sans-serif;color:#bab6b6;margin-top:4px;overflow-wrap:anywhere">' + esc(message) + '</span>' : "")
