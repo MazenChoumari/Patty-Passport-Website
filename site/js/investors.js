@@ -321,6 +321,14 @@
       + '<span style="display:inline-flex;align-items:center;gap:6px"><span style="width:9px;height:9px;border-radius:50%;background:' + INK + ';display:inline-block"></span>Break-even intersection</span>'
       + '<span style="display:inline-flex;align-items:center;gap:6px"><span style="width:9px;height:9px;border-radius:50%;background:' + YEL + ';border:1px solid ' + INK + ';display:inline-block"></span>Base-case operating point</span>'
       + '<span style="display:inline-flex;align-items:center;gap:6px"><span style="width:9px;height:9px;border-radius:50%;background:' + BLU + ';display:inline-block"></span>Low / high sales scenarios</span>'
+      + '<span style="display:inline-flex;align-items:center;gap:6px"><span style="width:16px;height:10px;background:' + RED + ';opacity:.3;display:inline-block"></span>Loss region</span>'
+      + '<span style="display:inline-flex;align-items:center;gap:6px"><span style="width:16px;height:10px;background:' + YEL + ';opacity:.4;display:inline-block"></span>Profit region</span>'
+      + '</div>';
+
+    var formulas = '<div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(27,26,25,.18);font:400 11.5px/1.6 \'Archivo\',sans-serif;color:#605d5d">'
+      + '<strong style="color:' + INK + '">Formulas —</strong> Revenue/month = guests/day × avg. spend × (' + O.days + ' trading days ÷ 12). '
+      + 'Total cost/month = fixed overhead + (' + (v.variablePct * 100).toFixed(0) + '% × revenue). '
+      + 'Break-even revenue/month = fixed overhead ÷ (1 − ' + (v.variablePct * 100).toFixed(0) + '%).'
       + '</div>';
 
     var facts = '<dl style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px 20px;margin:18px 0 0;padding-top:16px;border-top:1px solid rgba(27,26,25,.18)">'
@@ -336,7 +344,7 @@
 
     var note = '<p style="font:400 11.5px/1.55 \'Archivo\',sans-serif;color:#7d7979;margin:16px 0 0;max-width:70ch">Planning model only. Break-even depends on actual rent, staffing, trading days, mix, taxes, financing and final site design.</p>';
 
-    root.innerHTML = svg + legend + facts + note;
+    root.innerHTML = svg + legend + formulas + facts + note;
   }
 
   /* ── break-even & sales ── */
