@@ -28,7 +28,7 @@
   window.__ppRouterInit = true;
 
   var SHARED_SCRIPTS = [
-    "js/data.js", "js/flags.js", "js/tooty-icon.js", "js/hover.js", "js/reveal.js", "js/music.js",
+    "js/data.js", "js/flags.js", "js/tooty-icon.js", "js/med-map.js", "js/hover.js", "js/reveal.js", "js/music.js",
     "js/nav.js", "js/footer.js", "js/patty-tooty-widget.js", "js/router.js"
   ];
 
