@@ -72,16 +72,16 @@
   var TEAM = [
     { name: "George Ammar", role: "Journey Crew · Server", nationality: "Lebanese / Spanish",
       bio: "Runs the floor on the busiest routes and never lets a table feel rushed between courses.",
-      reviews: ["George made our trip to Greece unforgettable. He explained the destination card so well and made our kids feel at home."] },
+      reviews: [{ text: "George made our trip to Greece unforgettable. He explained the destination card so well and made our kids feel at home.", rating: 5 }] },
     { name: "Lucía Fernández", role: "Check-In Host", nationality: "Spanish",
       bio: "The first face at the desk — reads a party in seconds and picks the right first destination for them.",
-      reviews: ["Lucía greeted us with such warmth. She helped us choose Lebanon as our first destination and walked our child through the passport stamps."] },
+      reviews: [{ text: "Lucía greeted us with such warmth. She helped us choose Lebanon as our first destination and walked our child through the passport stamps.", rating: 5 }] },
     { name: "Marco Rossi", role: "Flavor Control · Kitchen", nationality: "Italian",
       bio: "Holds every country's plate to the same standard: nothing leaves the pass unless it tastes like the place it's from.",
-      reviews: ["Marco's attention to detail made our Italian burger taste like a real piazza moment."] },
+      reviews: [{ text: "Marco's attention to detail made our Italian burger taste like a real piazza moment.", rating: 4 }] },
     { name: "Yasmin Haddad", role: "Kids & Destinations Guide", nationality: "Lebanese",
       bio: "Turns the passport into a game for younger guests — flags, phrases and a stamp they actually want to earn.",
-      reviews: ["Yasmin ran an amazing activity for our kids, teaching them about flags and flavors."] },
+      reviews: [{ text: "Yasmin ran an amazing activity for our kids, teaching them about flags and flavors.", rating: 5 }] },
     { name: "Nikos Papadopoulos", role: "Route Crew · Server", nationality: "Greek",
       bio: "Keeps the Aegean route moving and always has a story about the dish that's about to land.",
       reviews: [] },
@@ -181,16 +181,41 @@
     }).join("");
   }
 
+  // Small inline star glyph, filled up to `n` (0-5) — aria-hidden since
+  // the number is always spelled out in text alongside it.
+  function starsHtml(n, size) {
+    var s = size || 13;
+    var out = "";
+    for (var i = 1; i <= 5; i++) {
+      out += '<span style="color:' + (i <= n ? "#f2b30c" : "rgba(27,26,25,.22)") + ';font-size:' + s + 'px;line-height:1">★</span>';
+    }
+    return '<span aria-hidden="true" style="display:inline-flex;gap:1px">' + out + '</span>';
+  }
+
+  function teamRatingSummary(t) {
+    var rated = t.reviews.filter(function (r) { return typeof r !== "string" && r.rating; });
+    if (!rated.length) return null;
+    var avg = rated.reduce(function (sum, r) { return sum + r.rating; }, 0) / rated.length;
+    return { avg: avg, count: rated.length };
+  }
+
   function renderTeam() {
     document.getElementById("st-team").innerHTML = TEAM.map(function (t, i) {
       var reviewsHtml = t.reviews.length
         ? t.reviews.map(function (r) {
             var text = typeof r === "string" ? r : r.text;
             var author = typeof r === "string" ? "" : (r.author || "");
-            return '<div style="padding:11px 0;border-bottom:1px solid rgba(27,26,25,.14);font:400 12.5px/1.5 \'Archivo\',sans-serif;color:#444141">'
-              + '“' + esc(text) + '”' + (author ? '<span style="display:block;margin-top:4px;font:600 10px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#7d7979">— ' + esc(author) + '</span>' : '') + '</div>';
+            var rating = typeof r === "string" ? 0 : (r.rating || 0);
+            return '<div style="padding:11px 0;border-bottom:1px solid rgba(27,26,25,.14)">'
+              + (rating ? '<div style="margin-bottom:5px">' + starsHtml(rating) + '<span style="margin-left:6px;font:600 10px/1 \'Archivo\',sans-serif;color:#7d7979">' + rating + ' out of 5</span></div>' : '')
+              + '<div style="font:400 12.5px/1.5 \'Archivo\',sans-serif;color:#444141">“' + esc(text) + '”' + (author ? '<span style="display:block;margin-top:4px;font:600 10px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#7d7979">— ' + esc(author) + '</span>' : '') + '</div></div>';
           }).join("")
         : '<div style="padding:11px 0;font:400 12.5px/1.5 \'Archivo\',sans-serif;color:#7d7979;font-style:italic">No reviews yet — be the first to leave one.</div>';
+
+      var summary = teamRatingSummary(t);
+      var summaryHtml = summary
+        ? '<div style="display:flex;align-items:center;gap:7px">' + starsHtml(Math.round(summary.avg), 14) + '<span style="font:800 12px/1 \'Archivo\',sans-serif">' + summary.avg.toFixed(1) + '</span><span style="font:600 10px/1 \'Archivo\',sans-serif;color:#7d7979">(' + summary.count + ' review' + (summary.count === 1 ? "" : "s") + ')</span></div>'
+        : '<span style="font:600 10px/1 \'Archivo\',sans-serif;color:#7d7979;font-style:italic">No ratings yet</span>';
 
       return '<div data-rv="up" data-rv-d="' + t.delay + '" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:#f7f3ec;display:flex;flex-direction:column">'
         + '<div style="position:relative;height:220px;border-bottom:2px solid #1b1a19">'
@@ -199,6 +224,7 @@
         + '<div style="padding:18px 18px 20px;display:flex;flex-direction:column;gap:9px;flex:1">'
         + '<h3 style="font:800 19px/1.1 \'Archivo\',sans-serif;letter-spacing:-.02em;margin:0">' + esc(t.name) + '</h3>'
         + '<div style="font:800 10.5px/1.3 \'Archivo\',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#ae1800">' + esc(t.role) + '</div>'
+        + summaryHtml
         + '<p style="font:400 12.5px/1.5 \'Archivo\',sans-serif;color:#605d5d;margin:0">' + esc(t.bio) + '</p>'
         + '<div data-team-reviews="' + i + '" style="margin-top:6px;border-top:2px solid rgba(27,26,25,.16)">' + reviewsHtml + '</div>'
         + '<button type="button" class="st-leave-review" data-idx="' + i + '" style="margin-top:auto;align-self:flex-start;padding:10px 14px;border:2px solid #1b1a19;background:transparent;color:#1b1a19;font:800 10.5px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" data-hover="background:#1b1a19;color:#f7f3ec">Leave a review</button>'
@@ -219,6 +245,37 @@
         }
       });
     });
+  }
+
+  function paintReviewStars(n) {
+    for (var i = 1; i <= 5; i++) {
+      var glyph = document.getElementById("st-star-glyph-" + i);
+      if (glyph) glyph.style.color = i <= n ? "#f2b30c" : "rgba(247,243,236,.35)";
+    }
+  }
+
+  function renderReviewStarInputs() {
+    var wrap = document.getElementById("st-review-stars-inputs");
+    if (!wrap || wrap.childElementCount) return; // built once; reading the checked value doesn't need a re-render
+    var html = "";
+    for (var n = 1; n <= 5; n++) {
+      html += '<label style="display:inline-flex;align-items:center;cursor:pointer;padding:2px" title="' + n + ' out of 5">'
+        + '<input type="radio" name="st-rating" value="' + n + '"' + (n === 5 ? " checked" : "") + ' style="position:absolute;opacity:0;width:1px;height:1px" aria-label="' + n + (n === 1 ? " star" : " stars") + '">'
+        + '<span id="st-star-glyph-' + n + '" aria-hidden="true" style="font-size:22px;line-height:1;color:rgba(247,243,236,.35)">★</span>'
+        + '</label>';
+    }
+    wrap.innerHTML = html;
+    paintReviewStars(5);
+    Array.prototype.forEach.call(wrap.querySelectorAll('input[name="st-rating"]'), function (input) {
+      input.addEventListener("change", function () { paintReviewStars(parseInt(input.value, 10)); });
+      input.addEventListener("focus", function () { input.parentElement.style.outline = "2px solid #ec3013"; input.parentElement.style.outlineOffset = "2px"; });
+      input.addEventListener("blur", function () { input.parentElement.style.outline = "none"; });
+    });
+  }
+
+  function selectedReviewRating() {
+    var checked = document.querySelector('input[name="st-rating"]:checked');
+    return checked ? parseInt(checked.value, 10) : 5;
   }
 
   function renderReviewSelect() {
@@ -242,15 +299,16 @@
       var idx = parseInt(select.value, 10);
       var text = (textEl.value || "").trim();
       var author = (nameEl.value || "").trim();
+      var rating = selectedReviewRating();
       if (!text || !TEAM[idx]) {
         status.textContent = "Write a few words before posting.";
         return;
       }
-      TEAM[idx].reviews.unshift({ text: text, author: author });
+      TEAM[idx].reviews.unshift({ text: text, author: author, rating: rating });
       state.selectedIdx = idx;
       textEl.value = "";
       nameEl.value = "";
-      status.textContent = "Thanks — your review for " + TEAM[idx].name + " has been added below.";
+      status.textContent = "Thanks — your " + rating + "-star review for " + TEAM[idx].name + " has been added below. (Saved for this visit only — it won't be here after you refresh or come back later.)";
       renderTeam();
       renderReviewSelect();
       var card = document.querySelector('[data-team-reviews="' + idx + '"]');
@@ -268,6 +326,7 @@
     renderCrew();
     renderTeam();
     renderReviewSelect();
+    renderReviewStarInputs();
     if (window.initHoverStyles) window.initHoverStyles(document.body);
     if (window.PP_REVEAL) window.PP_REVEAL.init();
   }
