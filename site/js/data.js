@@ -293,6 +293,17 @@
     ];
   }
 
+  // Approved one-per-country plant/tree identity — used by the home
+  // garden section (one plaque per country) and anywhere else a single
+  // shared "national plant" needs to stay consistent.
+  var PLANTS = {
+    lbn: "Cedar of Lebanon", syr: "Aleppo pine", pse: "Olive tree", tur: "Turkish pine",
+    cyp: "Cyprus cedar", grc: "Cypress", ita: "Stone pine", esp: "Cork oak",
+    fra: "Plane tree", mco: "Italian cypress", mlt: "Carob", svn: "Istrian olive",
+    hrv: "Dalmatian black pine", bih: "European beech", mne: "Chestnut", alb: "Olive tree",
+    egy: "Date palm", lby: "Acacia", tun: "Pomegranate", dza: "Atlas cedar", mar: "Argan tree"
+  };
+
   var CULTURE_BY_CODE = {};
   CULTURE_SRC.forEach(function (d) {
     CULTURE_BY_CODE[d[0]] = {
@@ -325,7 +336,8 @@
       phraseNative: culture.phraseNative || "", phraseRoman: culture.phraseRoman || "", phraseEnglish: culture.phraseEnglish || "",
       facts: culture.facts || [], nature: culture.nature || "",
       capital: culture.capital || "", population: culture.population || "",
-      sea: culture.sea || "", dietTags: culture.dietTags || ""
+      sea: culture.sea || "", dietTags: culture.dietTags || "",
+      plant: PLANTS[c[0]] || ""
     };
   });
 
