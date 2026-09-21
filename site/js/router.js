@@ -147,14 +147,28 @@
     var a = e.target.closest ? e.target.closest("a[href]") : null;
     if (!a || !isRoutable(a)) return;
 
-    var currentPath = location.pathname;
-    if (a.pathname === currentPath) return; // same page (hash-only or identical link): let native behavior run
+    // Any internal link tap closes the "All pages" drawer immediately —
+    // regardless of which branch below runs — so it can never survive
+    // onto the next page still open/stale (js/nav.js owns the actual
+    // open/closed state; this is a no-op if it was already closed).
+    if (window.PP_NAV) window.PP_NAV.closeMenu();
+
+    var samePage = a.pathname === location.pathname;
+    if (samePage && a.hash) return; // in-page hash navigation (destination.html#xx, legal.html#faq): let native behavior run
 
     e.preventDefault();
+    // Same page, no hash (e.g. re-tapping "Home" while already home, or a
+    // second tap on a drawer link before it had a chance to close): a real
+    // <a> click here would still force a full reload even though nothing
+    // needs to change, which is exactly the "second tap reloads the page"
+    // bug — resetting the persistent music player. Just stop here.
+    if (samePage) return;
+
     navigate(a.href, true);
   });
 
   window.addEventListener("popstate", function () {
+    if (window.PP_NAV) window.PP_NAV.closeMenu();
     navigate(location.href, false);
   });
 })();
