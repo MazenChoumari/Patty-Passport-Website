@@ -210,17 +210,45 @@
   var PLAQUE_COLORS = [
     [YEL, INK], [RED, "#fff"], [BLU, "#fff"], ["#e7e3dc", INK]
   ];
+  var gardenRoute = "ALL";
+  var GARDEN_ROUTE_ORDER = ["LEV", "AEG", "IBL", "ADR", "NAF"];
+
   function renderGardenPlaques(countries) {
     var el = document.getElementById("pp-garden-plaques");
     if (!el) return;
     el.innerHTML = countries.map(function (c, i) {
       var col = PLAQUE_COLORS[i % PLAQUE_COLORS.length];
       var tree = c.plant || "Olive tree";
-      return '<div data-rv="up" data-rv-d="' + ((i % 6) * 60) + '" style="border-right:2px solid rgba(247,243,236,.3);border-bottom:2px solid rgba(247,243,236,.3);padding:20px 18px 22px;background:' + col[0] + ';color:' + col[1] + '">'
+      var dim = gardenRoute !== "ALL" && c.routeKey !== gardenRoute;
+      return '<div data-rv="up" data-rv-d="' + ((i % 6) * 60) + '" data-plaque-route="' + c.routeKey + '" style="border-right:2px solid rgba(247,243,236,.3);border-bottom:2px solid rgba(247,243,236,.3);padding:20px 18px 22px;background:' + col[0] + ';color:' + col[1] + ';transition:opacity .3s ease;opacity:' + (dim ? ".22" : "1") + '">'
         + '<span style="font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75">Plaque ' + String(i + 1).padStart(2, "0") + '</span>'
         + '<p style="font:600 15px/1.4 \'Archivo\',sans-serif;margin:8px 0 0">' + tree + ' — dedicated to ' + c.name + '.</p>'
         + '</div>';
     }).join("");
+  }
+
+  function renderGardenRouteFilters(routes) {
+    var el = document.getElementById("garden-route-filters");
+    if (!el) return;
+    var keys = ["ALL"].concat(GARDEN_ROUTE_ORDER);
+    el.innerHTML = keys.map(function (k) {
+      var active = gardenRoute === k;
+      var label = k === "ALL" ? "All routes" : routes[k].name;
+      return '<button type="button" data-garden-route="' + k + '" style="padding:9px 13px;background:' + (active ? "#f2b30c" : "transparent") + ';border:2px solid #f7f3ec;color:' + (active ? "#1b1a19" : "#f7f3ec") + ';font:800 10.5px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c;color:#1b1a19">' + label + '</button>';
+    }).join("");
+  }
+
+  function initGardenFilters(data) {
+    function onClick(e) {
+      var btn = e.target.closest("[data-garden-route]");
+      if (!btn) return;
+      gardenRoute = btn.getAttribute("data-garden-route");
+      renderGardenRouteFilters(data.ROUTES);
+      renderGardenPlaques(data.COUNTRIES);
+      if (window.initHoverStyles) window.initHoverStyles(document.getElementById("garden-route-filters"));
+    }
+    document.body.addEventListener("click", onClick);
+    if (window.PP_TRACK) window.PP_TRACK(function () { document.body.removeEventListener("click", onClick); });
   }
 
   function renderPassport(countries) {
@@ -487,7 +515,9 @@
       renderSoundtracks(data.ROUTES);
       initSoundtrackControls();
       renderPassport(data.COUNTRIES);
+      renderGardenRouteFilters(data.ROUTES);
       renderGardenPlaques(data.COUNTRIES);
+      initGardenFilters(data);
       initTootyPreview(data);
       if (window.initHoverStyles) window.initHoverStyles(document.body);
     } else {
