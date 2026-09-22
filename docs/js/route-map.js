@@ -65,9 +65,6 @@
 
     document.getElementById("rm-active-label").textContent = act === "ALL" ? "All five routes shown" : routes[act].name.toUpperCase() + " ROUTE ISOLATED";
 
-    var mapBg = document.getElementById("rm-map-bg");
-    if (mapBg && !mapBg.childElementCount) mapBg.innerHTML = window.PP_MED_MAP.background();
-
     document.getElementById("rm-nodes").innerHTML = countries.map(function (c, i) {
       var ch = routes[c.routeKey];
       var pos = POS[c.code] || ["50%", "50%"];

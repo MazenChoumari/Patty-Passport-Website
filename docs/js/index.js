@@ -251,6 +251,28 @@
     if (window.PP_TRACK) window.PP_TRACK(function () { document.body.removeEventListener("click", onClick); });
   }
 
+  /* ── Home Mediterranean map: real clickable destination nodes, laid out
+     with the same shared positions route-map.js uses (window.PP_MED_MAP.POS)
+     so the two pages never drift apart — but no illustrated background
+     here, just the plain placeholder box already in the markup, until a
+     real map image is supplied. ── */
+  function escMap(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+
+  function renderHomeMap(data) {
+    var nodesEl = document.getElementById("home-map-nodes");
+    if (!nodesEl || !window.PP_MED_MAP) return;
+    var pos = window.PP_MED_MAP.POS;
+    var routes = data.ROUTES;
+    nodesEl.innerHTML = data.COUNTRIES.map(function (c, i) {
+      var p = pos[c.code] || [50, 50];
+      var ch = routes[c.routeKey];
+      var sway = (4 + (i % 5) * 0.6).toFixed(1) + "s";
+      return '<a href="destination.html#' + c.code + '" aria-label="' + escMap(c.name) + ' — ' + escMap(ch.name) + ' route" style="position:absolute;left:' + p[0] + '%;top:' + p[1] + '%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:flex-start;gap:5px;text-decoration:none">'
+        + '<span class="pp-map-node-badge" style="display:flex;align-items:center;gap:7px;padding:6px 9px;background:' + ch.bg + ';color:' + ch.fg + ';border:2px solid #1b1a19;font:800 10.5px/1 \'Archivo\',sans-serif;letter-spacing:.12em;white-space:nowrap;animation:ppSway ' + sway + ' ease-in-out infinite">' + escMap(c.code.toUpperCase()) + '<span class="pp-map-node-sub" style="font:600 8.5px/1;letter-spacing:.14em;opacity:.75">' + escMap(ch.name) + '</span></span>'
+        + '<span class="pp-map-node-name" style="font:800 13px/1 \'Archivo\',sans-serif;letter-spacing:-.01em;color:#fff;text-shadow:0 1px 0 rgba(27,26,25,.6),0 0 6px rgba(0,0,0,.5)">' + escMap(c.name) + '</span></a>';
+    }).join("");
+  }
+
   function renderPassport(countries) {
     var STAMPED = 6;
     document.getElementById("pp-passport-progress").textContent = "Passport spread · " + STAMPED + " of 21";
@@ -518,6 +540,7 @@
       renderGardenRouteFilters(data.ROUTES);
       renderGardenPlaques(data.COUNTRIES);
       initGardenFilters(data);
+      renderHomeMap(data);
       initTootyPreview(data);
       if (window.initHoverStyles) window.initHoverStyles(document.body);
     } else {
