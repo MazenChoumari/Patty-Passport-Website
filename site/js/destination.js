@@ -147,9 +147,11 @@
             + '<span style="font:800 15px/1 \'Archivo\',sans-serif">' + eur(it.price) + '</span></div>'
             + '<h3 style="font:800 17px/1.12 \'Archivo\',sans-serif;letter-spacing:-.02em;margin:0">' + esc(it.name) + '</h3>'
             + '<p style="font:400 12.5px/1.45 \'Archivo\',sans-serif;color:#605d5d;margin:0">' + esc(it.desc) + '</p>'
-            + '<div style="margin-top:auto;display:flex;flex-wrap:wrap;gap:5px;padding-top:10px;border-top:2px solid rgba(27,26,25,.16)">'
+            + '<div style="display:flex;flex-wrap:wrap;gap:5px;padding-top:10px;border-top:2px solid rgba(27,26,25,.16)">'
             + it.tags.map(function (t) { return '<span style="padding:4px 7px;border:2px solid rgba(27,26,25,.28);color:' + (TAG_COLORS[t] || "#605d5d") + ';font:800 8.5px/1 \'Archivo\',sans-serif;letter-spacing:.11em;text-transform:uppercase">' + t + '</span>'; }).join("")
-            + '</div></div>';
+            + '</div>'
+            + '<button type="button" data-bag-add data-bag-kind="adult" data-bag-name="' + esc(it.name) + '" data-bag-price="' + it.price + '" data-bag-country="' + esc(d.code) + '" data-bag-country-name="' + esc(d.name) + '" data-bag-route="' + esc(route.name) + '" style="margin-top:auto;width:100%;padding:9px 10px;background:#1b1a19;color:#f7f3ec;border:0;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" data-hover="background:#ec3013">+ Add to bag</button>'
+            + '</div>';
         }).join("") + '</div></div>';
     }).join("");
 
