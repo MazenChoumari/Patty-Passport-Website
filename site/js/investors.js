@@ -11,7 +11,7 @@
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
   var state = {
-    scenario: "A1", revCase: "base", p: 0,
+    scenario: "A1", revCase: "base", p: 0, siteFilter: "ALL",
     form: false, sent: false,
     fName: "", fEmail: "", fPhone: "", fMessage: "",
     fScenario: "A1", fTicket: "€250k – €500k", fStructure: "Equity"
@@ -170,7 +170,15 @@
   function renderScenario(v) {
     var D = v.D, S = v.S, rc = v.rc;
 
-    document.getElementById("inv-scenario-cards").innerHTML = D.SCENARIOS.map(function (s) {
+    var sites = ["ALL"].concat(Array.from(new Set(D.SCENARIOS.map(function (s) { return s.site; }))));
+    document.getElementById("inv-site-filter").innerHTML = sites.map(function (site) {
+      var on = state.siteFilter === site;
+      var label = site === "ALL" ? "Both sites" : site + " only";
+      return '<button type="button" data-act="pick-site" data-val="' + esc(site) + '" style="padding:10px 14px;background:' + (on ? INK : "transparent") + ';border:2px solid #1b1a19;color:' + (on ? CREAM : INK) + ';font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c;color:#1b1a19">' + esc(label) + '</button>';
+    }).join("");
+
+    var shownScenarios = state.siteFilter === "ALL" ? D.SCENARIOS : D.SCENARIOS.filter(function (s) { return s.site === state.siteFilter; });
+    document.getElementById("inv-scenario-cards").innerHTML = shownScenarios.map(function (s) {
       var on = s.key === S.key;
       var parking = s.parking[0] === s.parking[1] ? s.parking[0] : s.parking[0] + "–" + s.parking[1];
       return '<button type="button" data-act="pick-scenario" data-val="' + s.key + '" style="border:0;border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:' + (on ? YEL : CREAM) + ';color:' + INK + ';padding:22px 20px 24px;display:flex;flex-direction:column;gap:10px;min-height:215px;cursor:pointer;text-align:left" data-hover="background:#1b1a19;color:#f7f3ec">'
@@ -400,6 +408,66 @@
     }).join("");
   }
 
+  /* ── financial assumptions: every figure here is read live from
+     PP_DATA.LAND/BUILD_RATE/EXTERIOR/SCENARIOS/OPERATING, never retyped ── */
+  function renderAssumptions(v) {
+    var D = v.D, O = v.O;
+    var landRoot = document.getElementById("inv-assumptions-land");
+    if (!landRoot) return;
+
+    landRoot.innerHTML = Object.keys(D.LAND).map(function (planKey) {
+      var land = D.LAND[planKey];
+      var itemized = land.lines.reduce(function (a, l) { return a + l[1]; }, 0);
+      var band = land.low === land.high ? eur0(land.low) : eur0(land.low) + " – " + eur0(land.high);
+      return '<div style="border-right:2px solid rgba(247,243,236,.3);border-bottom:2px solid rgba(247,243,236,.3);padding:20px 18px 22px">'
+        + '<div style="font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#f2b30c;margin-bottom:8px">Plan ' + esc(planKey) + ' land · ' + esc(land.name) + '</div>'
+        + '<div style="font:800 26px/1 \'Archivo\',sans-serif;letter-spacing:-.02em;margin-bottom:6px">' + eur0(itemized) + '</div>'
+        + '<div style="font:600 10.5px/1.4 \'Archivo\',sans-serif;color:#bab6b6;margin-bottom:10px">Itemized total · ' + land.plot.toLocaleString("en-GB") + ' m² plot · used in the scenario range as ' + band + '</div>'
+        + '<div style="border-top:1px solid rgba(247,243,236,.22);padding-top:8px;display:flex;flex-direction:column;gap:4px">'
+        + land.lines.map(function (l) { return '<span style="display:flex;justify-content:space-between;gap:10px;font:400 11px/1.5 \'Archivo\',sans-serif;color:#bab6b6"><span>' + esc(l[0]) + '</span><span style="color:#f7f3ec">' + eur0(l[1]) + '</span></span>'; }).join("")
+        + '</div></div>';
+    }).join("");
+
+    var buildRoot = document.getElementById("inv-assumptions-build");
+    var sizes = Array.from(new Set(D.SCENARIOS.map(function (s) { return s.building; })));
+    buildRoot.innerHTML = [
+      ["Building rate", "€" + D.BUILD_RATE.low.toLocaleString("en-GB") + " – €" + D.BUILD_RATE.high.toLocaleString("en-GB") + "/m²", "Turnkey construction, per m²"]
+    ].concat(sizes.map(function (sz) {
+      return [sz.toLocaleString("en-GB") + " m² building", m(sz * D.BUILD_RATE.low) + " – " + m(sz * D.BUILD_RATE.high), sz.toLocaleString("en-GB") + " m² × rate band"];
+    })).concat(Object.keys(D.EXTERIOR).map(function (k2) {
+      var ext = D.EXTERIOR[k2];
+      return ["Exterior · " + k2, eur0(ext[0]) + " – " + eur0(ext[1]), "Parking, plaza, garden, lighting, sound"];
+    })).map(function (row) {
+      return '<div style="border-right:2px solid rgba(247,243,236,.3);border-bottom:2px solid rgba(247,243,236,.3);padding:18px 16px 20px;display:flex;flex-direction:column;gap:6px">'
+        + '<span style="font:600 9px/1.3 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#7d7979">' + esc(row[0]) + '</span>'
+        + '<span style="font:800 18px/1.1 \'Archivo\',sans-serif;letter-spacing:-.015em">' + row[1] + '</span>'
+        + '<span style="font:400 10.5px/1.4 \'Archivo\',sans-serif;color:#7d7979">' + esc(row[2]) + '</span></div>';
+    }).join("");
+
+    var totalsRoot = document.getElementById("inv-assumptions-totals");
+    totalsRoot.innerHTML = D.SCENARIOS.map(function (s) {
+      return '<div style="border-right:2px solid rgba(247,243,236,.3);border-bottom:2px solid rgba(247,243,236,.3);padding:18px 16px 20px;display:flex;flex-direction:column;gap:6px">'
+        + '<span style="font:600 9px/1.3 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#7d7979">' + esc(s.label) + ' · ' + esc(s.site) + '</span>'
+        + '<span style="font:800 19px/1.1 \'Archivo\',sans-serif;letter-spacing:-.02em;color:#f2b30c">' + m(s.totalLow) + ' – ' + m(s.totalHigh) + '</span>'
+        + '<span style="font:400 10.5px/1.4 \'Archivo\',sans-serif;color:#7d7979">' + s.building.toLocaleString("en-GB") + ' m² building</span></div>';
+    }).join("");
+
+    var opexRoot = document.getElementById("inv-assumptions-opex");
+    opexRoot.innerHTML = [
+      ["Labour", (O.labourPct * 100).toFixed(0) + "% of revenue", "Planning range 27–32% of sales"],
+      ["Food & beverage", (O.foodPct * 100).toFixed(0) + "% of revenue", "Planning range 28–32% of F&B revenue"],
+      ["Marketing", (O.marketingPct * 100).toFixed(0) + "% of revenue", "Planning range 7–8% of gross revenue"],
+      ["Base-case annual revenue", eur0(v.revenue), O.revenueCases[1].guests + " guests/day × €" + O.revenueCases[1].spend + " × " + O.days + " days"],
+      ["Base-case operating profit", eur0(v.profit), "Revenue less food, labour, marketing and fixed overhead"],
+      ["Break-even revenue", eur0(v.beMonthly) + "/month", eur0(v.beMonthly * 12) + "/year"]
+    ].map(function (row) {
+      return '<div style="border-right:2px solid rgba(247,243,236,.3);border-bottom:2px solid rgba(247,243,236,.3);padding:18px 16px 20px;display:flex;flex-direction:column;gap:6px">'
+        + '<span style="font:600 9px/1.3 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#7d7979">' + esc(row[0]) + '</span>'
+        + '<span style="font:800 18px/1.1 \'Archivo\',sans-serif;letter-spacing:-.015em">' + row[1] + '</span>'
+        + '<span style="font:400 10.5px/1.4 \'Archivo\',sans-serif;color:#7d7979">' + esc(row[2]) + '</span></div>';
+    }).join("");
+  }
+
   /* ── funding ── */
   function renderFunding(v) {
     var D = v.D, S = v.S;
@@ -443,6 +511,7 @@
     renderScenario(v);
     renderBreakeven(v);
     renderBreakevenChart(v);
+    renderAssumptions(v);
     renderPositioning();
     renderFunding(v);
     renderContact(v);
@@ -464,6 +533,17 @@
         state.form = false; state.sent = false; render(); break;
       case "pick-scenario":
         state.scenario = val; render(); break;
+      case "pick-site":
+        state.siteFilter = val;
+        var D0 = window.PP_DATA;
+        if (D0 && val !== "ALL") {
+          var current = D0.SCENARIOS.find(function (s) { return s.key === state.scenario; });
+          if (!current || current.site !== val) {
+            var firstMatch = D0.SCENARIOS.find(function (s) { return s.site === val; });
+            if (firstMatch) state.scenario = firstMatch.key;
+          }
+        }
+        render(); break;
       case "pick-revcase":
         state.revCase = val; render(); break;
       case "pick-ps":
