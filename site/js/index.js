@@ -170,78 +170,137 @@
     var grid = document.getElementById("pp-stamp-grid");
     grid.innerHTML = countries.map(function (c, i) {
       var on = i < STAMPED;
-      return '<div style="position:relative;background:#f7f3ec;aspect-ratio:1/1;display:flex;flex-direction:column;justify-content:flex-end;padding:7px">'
+      return '<div data-stamp-cell style="position:relative;background:#f7f3ec;aspect-ratio:1/1;display:flex;flex-direction:column;justify-content:flex-end;padding:7px;opacity:0;transform:scale(.82)">'
         + '<span style="font:800 13px/1 \'Archivo\',sans-serif">' + c.code.toUpperCase() + '</span>'
         + '<span style="font:400 8px/1.2 \'Archivo\',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#7d7979">' + c.name + '</span>'
-        + (on ? '<span style="position:absolute;top:6px;right:6px;width:40px;height:40px;border:2.5px solid #ec3013;color:#ec3013;display:flex;align-items:center;justify-content:center;font:800 9px/1 \'Archivo\',sans-serif;transform:rotate(-10deg)">' + c.stamp + '</span>' : "")
+        + (on ? '<span data-stamp-mark style="position:absolute;top:6px;right:6px;width:40px;height:40px;border:2.5px solid #ec3013;color:#ec3013;display:flex;align-items:center;justify-content:center;font:800 9px/1 \'Archivo\',sans-serif;opacity:0;transform:rotate(20deg) scale(1.8)">' + c.stamp + '</span>' : "")
         + '</div>';
     }).join("");
+    initPassportReveal();
   }
 
-  /* ── Boarding pass print sequence: one-shot reveal when section scrolls into view ── */
+  /* ── Passport stamp grid: cells fade/scale in row by row, stamped cells
+     "stamp down" after their cell appears; re-triggers every time the
+     section is scrolled back into view (see scrollSequence). ── */
+  function initPassportReveal() {
+    var sec = document.getElementById("passport");
+    var cells = Array.prototype.slice.call(document.querySelectorAll('[data-stamp-cell]'));
+    if (!sec || !cells.length) return;
+    var timers = [];
+    function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+    function reset() {
+      clearTimers();
+      cells.forEach(function (cell) {
+        cell.style.transition = "none";
+        cell.style.opacity = "0";
+        cell.style.transform = "scale(.82)";
+        var mark = cell.querySelector('[data-stamp-mark]');
+        if (mark) { mark.style.transition = "none"; mark.style.opacity = "0"; mark.style.transform = "rotate(20deg) scale(1.8)"; }
+      });
+    }
+    function play(reduced) {
+      if (reduced) {
+        cells.forEach(function (cell) {
+          cell.style.transition = "none"; cell.style.opacity = "1"; cell.style.transform = "none";
+          var mark = cell.querySelector('[data-stamp-mark]');
+          if (mark) { mark.style.transition = "none"; mark.style.opacity = "1"; mark.style.transform = "rotate(-10deg) scale(1)"; }
+        });
+        return;
+      }
+      cells.forEach(function (cell, i) {
+        timers.push(setTimeout(function () {
+          cell.style.transition = "opacity .4s ease, transform .4s cubic-bezier(.2,.85,.25,1)";
+          cell.style.opacity = "1";
+          cell.style.transform = "none";
+          var mark = cell.querySelector('[data-stamp-mark]');
+          if (mark) {
+            timers.push(setTimeout(function () {
+              mark.style.transition = "opacity .35s ease, transform .4s cubic-bezier(.34,1.56,.64,1)";
+              mark.style.opacity = "1";
+              mark.style.transform = "rotate(-10deg) scale(1)";
+            }, 160));
+          }
+        }, i * 30));
+      });
+    }
+    scrollSequence(sec, play, reset, 0.22);
+  }
+
+  /* ── Shared re-triggering scroll sequence: unlike PP_REVEAL (which only
+     ever shows an element once it's been seen), this drives a *sequence*
+     — a scene that resets and replays every time the section leaves and
+     re-enters view, so it stays alive on revisit and after SPA page
+     switches instead of playing once and sitting "done" forever. Uses
+     IntersectionObserver for snappy, reliable onset (no scroll-poll lag). */
+  function scrollSequence(sectionEl, play, reset, threshold) {
+    if (!sectionEl || !("IntersectionObserver" in window)) { if (play) play(true); return; }
+    var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var playing = false;
+    reset();
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting && !playing) {
+          playing = true;
+          play(reduced);
+        } else if (!entry.isIntersecting && playing) {
+          playing = false;
+          reset();
+        }
+      });
+    }, { threshold: threshold || 0.32 });
+    io.observe(sectionEl);
+    if (window.PP_TRACK) window.PP_TRACK(function () { io.disconnect(); });
+  }
+
+  /* ── Boarding pass print sequence: replays every time the scene scrolls
+     into view (see scrollSequence above) ── */
   function initBoardingPass() {
     var sec = document.querySelector('[data-pass-sec]');
     if (!sec) return;
-    var fired = false;
-    function fire() {
-      if (fired) return;
-      fired = true;
-      var card = document.querySelector('[data-pass-card]');
-      var rows = Array.prototype.slice.call(document.querySelectorAll('[data-pass-row]'));
-      var bar = document.querySelector('[data-pass-bar]');
-      var stamp = document.querySelector('[data-pass-stamp]');
-      var hint = document.querySelector('[data-pass-hint]');
-      if (card) { card.style.transition = "transform .8s cubic-bezier(.2,.85,.25,1)"; card.style.transform = "translateY(0)"; }
+    var card = document.querySelector('[data-pass-card]');
+    var rows = Array.prototype.slice.call(document.querySelectorAll('[data-pass-row]'));
+    var bar = document.querySelector('[data-pass-bar]');
+    var stamp = document.querySelector('[data-pass-stamp]');
+    var hint = document.querySelector('[data-pass-hint]');
+    var timers = [];
+    function clearTimers() { timers.forEach(clearTimeout); timers = []; }
+    function reset() {
+      clearTimers();
+      if (card) { card.style.transition = "none"; card.style.transform = "translateY(-100%)"; }
+      rows.forEach(function (r) { r.style.transition = "none"; r.style.opacity = "0"; });
+      if (bar) { bar.style.transition = "none"; bar.style.width = "0"; }
+      if (stamp) { stamp.style.transition = "none"; stamp.style.opacity = "0"; stamp.style.transform = "rotate(-24deg) scale(2)"; }
+      if (hint) hint.textContent = "Scroll to print";
+    }
+    function play(reduced) {
+      if (reduced) {
+        if (card) { card.style.transition = "none"; card.style.transform = "translateY(0)"; }
+        rows.forEach(function (r) { r.style.transition = "none"; r.style.opacity = "1"; });
+        if (bar) { bar.style.transition = "none"; bar.style.width = "100%"; }
+        if (stamp) { stamp.style.transition = "none"; stamp.style.opacity = "1"; stamp.style.transform = "rotate(-11deg) scale(1)"; }
+        if (hint) hint.textContent = "Printed — PP-LBN-2026";
+        return;
+      }
+      if (card) { card.style.transition = "transform .75s cubic-bezier(.2,.85,.25,1)"; card.style.transform = "translateY(0)"; }
       rows.forEach(function (r, i) {
-        setTimeout(function () {
-          r.style.transition = "opacity .5s ease";
+        timers.push(setTimeout(function () {
+          r.style.transition = "opacity .45s ease";
           r.style.opacity = "1";
-        }, 500 + i * 160);
+        }, 240 + i * 120));
       });
-      setTimeout(function () {
-        if (bar) { bar.style.transition = "width 1.1s cubic-bezier(.2,.8,.25,1)"; bar.style.width = "100%"; }
-      }, 500 + rows.length * 160 + 100);
-      setTimeout(function () {
+      timers.push(setTimeout(function () {
+        if (bar) { bar.style.transition = "width 1s cubic-bezier(.2,.8,.25,1)"; bar.style.width = "100%"; }
+      }, 240 + rows.length * 120 + 80));
+      timers.push(setTimeout(function () {
         if (stamp) {
           stamp.style.transition = "opacity .5s ease, transform .5s cubic-bezier(.34,1.56,.64,1)";
           stamp.style.opacity = "1";
           stamp.style.transform = "rotate(-11deg) scale(1)";
         }
         if (hint) hint.textContent = "Printed — PP-LBN-2026";
-      }, 500 + rows.length * 160 + 1200);
+      }, 240 + rows.length * 120 + 850));
     }
-    function check() {
-      var r = sec.getBoundingClientRect();
-      if (r.top < window.innerHeight * 0.6 && r.bottom > 0) fire();
-    }
-    check();
-    window.addEventListener("scroll", check, { passive: true });
-    var iv = setInterval(check, 400);
-    if (window.PP_TRACK) window.PP_TRACK(function () { window.removeEventListener("scroll", check); clearInterval(iv); });
-  }
-
-  /* ── Home Mediterranean map: same illustrated basin + the same 21
-     country positions as route-map.js (both read window.PP_MED_MAP), so
-     the two pages can never show a different map. Unlike the route-map
-     page this one has no filter UI — every node is always shown, live-
-     linked straight to its destination page. ── */
-  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
-
-  function renderHomeMap(data) {
-    var bg = document.getElementById("home-map-bg");
-    var nodesEl = document.getElementById("home-map-nodes");
-    if (!bg || !nodesEl || !window.PP_MED_MAP) return;
-    bg.innerHTML = window.PP_MED_MAP.background();
-    var pos = window.PP_MED_MAP.POS;
-    var routes = data.ROUTES;
-    nodesEl.innerHTML = data.COUNTRIES.map(function (c, i) {
-      var p = pos[c.code] || [50, 50];
-      var ch = routes[c.routeKey];
-      var sway = (4 + (i % 5) * 0.6).toFixed(1) + "s";
-      return '<a href="destination.html#' + c.code + '" aria-label="' + esc(c.name) + ' — ' + esc(ch.name) + ' route" style="position:absolute;left:' + p[0] + '%;top:' + p[1] + '%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:flex-start;gap:5px;text-decoration:none">'
-        + '<span class="pp-map-node-badge" style="display:flex;align-items:center;gap:7px;padding:6px 9px;background:' + ch.bg + ';color:' + ch.fg + ';border:2px solid #1b1a19;font:800 10.5px/1 \'Archivo\',sans-serif;letter-spacing:.12em;white-space:nowrap;animation:ppSway ' + sway + ' ease-in-out infinite">' + esc(c.code.toUpperCase()) + '<span class="pp-map-node-sub" style="font:600 8.5px/1;letter-spacing:.14em;opacity:.75">' + esc(ch.name) + '</span></span>'
-        + '<span class="pp-map-node-name" style="font:800 13px/1 \'Archivo\',sans-serif;letter-spacing:-.01em;color:#fff;text-shadow:0 1px 0 rgba(27,26,25,.6)">' + esc(c.name) + '</span></a>';
-    }).join("");
+    scrollSequence(sec, play, reset, 0.35);
   }
 
   /* ── Mini Patty Tooty preview ── */
@@ -369,7 +428,6 @@
       renderCultureEq();
       renderPassport(data.COUNTRIES);
       renderGardenPlaques(data.COUNTRIES);
-      renderHomeMap(data);
       initTootyPreview(data);
       if (window.initHoverStyles) window.initHoverStyles(document.body);
     } else {
