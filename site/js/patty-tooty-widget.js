@@ -95,6 +95,12 @@
     if (/hi\b|hello|hey/.test(t)) {
       return { text: "Welcome aboard! Ask me about a country, the menu, kids, stamps, booking or investing.", pills: [["Browse destinations", "destinations.html"]] };
     }
+    if (/who are you|what are you|your name|about you/.test(t)) {
+      return { text: "I'm Patty Tooty — the terminal's travel concierge. Round like a burger bun, headphones always on, sneakers always laced for the next route.", pills: [["Browse destinations", "destinations.html"]] };
+    }
+    if (/help me (choose|decide|pick)|where (do|should) i start|not sure where|don.t know where|no idea where/.test(t)) {
+      return { text: "Start on the Levant Route — Lebanon, stamp #01. Loudest welcome on the sea, and the Shish Tawouk Street Burger is the plate most tables come back for.", pills: [["Open Lebanon", "destination.html#lbn"], ["Route map", "route-map.html"]] };
+    }
     return { text: "Still learning that one — try a country name, the menu, routes, hours, kids, stamps, booking or investing, or open the full concierge.", pills: [["Full concierge", "patty-tooty.html"]] };
   }
 
