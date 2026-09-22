@@ -67,6 +67,19 @@
 
   function eur(n) { return "€" + n.toFixed(2).replace(/\.00$/, ".00"); }
 
+  // Which burger/side/dessert is currently picked per route — defaults to
+  // the first option of each so "Add to bag" always has a valid combo,
+  // and clicking a card genuinely changes the selection (fixes the cards
+  // being inert/non-clickable).
+  var kidsPick = {};
+  ROUTE_ORDER.forEach(function (key) { kidsPick[key] = { burger: 0, side: 0, dessert: 0 }; });
+
+  function pickCard(selected, inner, extraStyle) {
+    return '<div style="border:2px solid ' + (selected ? "#1b1a19" : "rgba(27,26,25,.18)") + ';background:' + (selected ? "rgba(242,179,12,.16)" : "#fff") + ';padding:12px 13px;display:flex;flex-direction:column;gap:6px;cursor:pointer;position:relative' + (extraStyle || "") + '" tabindex="0" role="button" aria-pressed="' + selected + '">'
+      + (selected ? '<span style="position:absolute;top:8px;right:8px;width:18px;height:18px;border-radius:50%;background:#1b1a19;color:#fff;display:flex;align-items:center;justify-content:center;font:800 11px/1 \'Archivo\',sans-serif">✓</span>' : "")
+      + inner + '</div>';
+  }
+
   function renderKidsMenu() {
     var el = document.getElementById("jr-routes");
     if (!el) return;
@@ -79,28 +92,31 @@
     el.innerHTML = ROUTE_ORDER.map(function (key, i) {
       var route = data.ROUTES[key];
       var km = data.KIDS_MENU[key];
-      var burgerCards = km.burgers.map(function (b) {
-        return '<div style="border:2px solid rgba(27,26,25,.18);padding:12px 13px;display:flex;flex-direction:column;gap:6px">'
-          + '<span style="display:inline-flex;align-self:flex-start;padding:3px 7px;background:' + KIND_COLOR[b.kind] + ';color:' + (b.kind === "chicken" ? INK : "#fff") + ';font:800 8.5px/1 \'Archivo\',sans-serif;letter-spacing:.12em">' + KIND_LABEL[b.kind] + '</span>'
+      var pick = kidsPick[key];
+      var burgerCards = km.burgers.map(function (b, bi) {
+        var inner = '<span style="display:inline-flex;align-self:flex-start;padding:3px 7px;background:' + KIND_COLOR[b.kind] + ';color:' + (b.kind === "chicken" ? INK : "#fff") + ';font:800 8.5px/1 \'Archivo\',sans-serif;letter-spacing:.12em">' + KIND_LABEL[b.kind] + '</span>'
           + '<strong style="font:800 13.5px/1.2 \'Archivo\',sans-serif">' + esc(b.name) + '</strong>'
-          + '<span style="font:400 11.5px/1.4 \'Archivo\',sans-serif;color:#605d5d">' + esc(b.line) + '</span></div>';
+          + '<span style="font:400 11.5px/1.4 \'Archivo\',sans-serif;color:#605d5d">' + esc(b.line) + '</span>';
+        return '<div data-kid-pick="' + key + '|burger|' + bi + '">' + pickCard(pick.burger === bi, inner) + '</div>';
       }).join("");
-      var sideCards = km.sides.map(function (s) {
-        return '<div style="border:2px solid rgba(27,26,25,.18);padding:10px 12px">'
-          + '<strong style="display:block;font:800 12.5px/1.2 \'Archivo\',sans-serif">' + esc(s.name) + '</strong>'
-          + '<span style="font:400 11px/1.4 \'Archivo\',sans-serif;color:#605d5d">' + esc(s.line) + '</span></div>';
+      var sideCards = km.sides.map(function (s, si) {
+        var inner = '<strong style="display:block;font:800 12.5px/1.2 \'Archivo\',sans-serif">' + esc(s.name) + '</strong>'
+          + '<span style="font:400 11px/1.4 \'Archivo\',sans-serif;color:#605d5d">' + esc(s.line) + '</span>';
+        return '<div data-kid-pick="' + key + '|side|' + si + '">' + pickCard(pick.side === si, inner) + '</div>';
       }).join("");
-      var dessertCards = km.desserts.map(function (d) {
-        return '<div style="border:2px solid rgba(27,26,25,.18);padding:10px 12px">'
-          + '<strong style="display:block;font:800 12.5px/1.2 \'Archivo\',sans-serif">' + esc(d.name) + '</strong>'
-          + '<span style="font:400 11px/1.4 \'Archivo\',sans-serif;color:#605d5d">' + esc(d.line) + '</span></div>';
+      var dessertCards = km.desserts.map(function (d, di) {
+        var inner = '<strong style="display:block;font:800 12.5px/1.2 \'Archivo\',sans-serif">' + esc(d.name) + '</strong>'
+          + '<span style="font:400 11px/1.4 \'Archivo\',sans-serif;color:#605d5d">' + esc(d.line) + '</span>';
+        return '<div data-kid-pick="' + key + '|dessert|' + di + '">' + pickCard(pick.dessert === di, inner) + '</div>';
       }).join("");
+      var chosenBurger = km.burgers[pick.burger], chosenSide = km.sides[pick.side], chosenDessert = km.desserts[pick.dessert];
+      var meta = chosenBurger.name + " · " + chosenSide.name + " · " + km.drink.name + " · " + chosenDessert.name;
       return '<div data-rv="up" data-rv-d="' + (i * 70) + '" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:#f7f3ec;color:#1b1a19;display:flex;flex-direction:column">'
         + '<div style="padding:16px 18px;background:' + route.bg + ';color:' + route.fg + ';display:flex;align-items:center;justify-content:space-between;gap:10px">'
         + '<h3 style="font:800 20px/1.05 \'Archivo\',sans-serif;letter-spacing:-.02em;margin:0">' + esc(route.name.toUpperCase()) + '</h3>'
         + '<span style="font:800 15px/1 \'Archivo\',sans-serif">' + eur(price) + '</span></div>'
         + '<div style="padding:16px 18px 20px;display:flex;flex-direction:column;gap:14px">'
-        + '<div style="font:600 9.5px/1.5 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#605d5d">Kids Route Combo — ' + eur(price) + ' · pick one burger, one side, the drink and a dessert</div>'
+        + '<div style="font:600 9.5px/1.5 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#605d5d">Kids Route Combo — ' + eur(price) + ' · tap to pick a burger, a side and a dessert</div>'
         + '<div><span style="display:block;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ae1800;margin-bottom:8px">Choose a burger</span>'
         + '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px">' + burgerCards + '</div></div>'
         + '<div><span style="display:block;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ae1800;margin-bottom:8px">Choose a side</span>'
@@ -114,7 +130,10 @@
         + '<span style="padding:4px 8px;border:1px solid #1b1a19;font:700 9px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase">No alcohol on this menu</span>'
         + '<span style="padding:4px 8px;border:1px solid #ae1800;color:#ae1800;font:700 9px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase">Full allergen list at the desk</span>'
         + '</div>'
-        + '<a href="events.html" style="display:inline-flex;align-items:center;justify-content:space-between;padding:12px 15px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase" data-hover="background:#ec3013">Book this route<span>→</span></a>'
+        + '<div style="display:flex;flex-wrap:wrap;gap:8px">'
+        + '<button type="button" data-bag-add data-bag-kind="kids" data-bag-name="Junior ' + esc(route.name) + ' Combo" data-bag-price="' + price + '" data-bag-country-name="' + esc(route.name) + ' route" data-bag-route="' + esc(route.name) + '" data-bag-meta="' + esc(meta) + '" style="flex:1 1 200px;display:inline-flex;align-items:center;justify-content:space-between;padding:12px 15px;background:#f2b30c;color:#1b1a19;border:0;font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" data-hover="background:#1b1a19;color:#f7f3ec">+ Add this combo to bag<span>→</span></button>'
+        + '<a href="events.html" style="flex:1 1 160px;display:inline-flex;align-items:center;justify-content:space-between;padding:12px 15px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase" data-hover="background:#ec3013">Book this route<span>→</span></a>'
+        + '</div>'
         + '</div></div>';
     }).join("");
     if (window.initHoverStyles) window.initHoverStyles(el);
@@ -138,12 +157,41 @@
     }).join("");
   }
 
+  function applyPick(spec) {
+    var parts = spec.split("|");
+    kidsPick[parts[0]][parts[1]] = parseInt(parts[2], 10);
+    renderKidsMenu();
+    if (window.initHoverStyles) window.initHoverStyles(document.getElementById("jr-routes"));
+  }
+
+  function initKidsPicker() {
+    function onClick(e) {
+      var card = e.target.closest("[data-kid-pick]");
+      if (!card) return;
+      applyPick(card.getAttribute("data-kid-pick"));
+    }
+    function onKeydown(e) {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      var card = e.target.closest("[data-kid-pick]");
+      if (!card) return;
+      e.preventDefault();
+      applyPick(card.getAttribute("data-kid-pick"));
+    }
+    document.body.addEventListener("click", onClick);
+    document.body.addEventListener("keydown", onKeydown);
+    if (window.PP_TRACK) window.PP_TRACK(function () {
+      document.body.removeEventListener("click", onClick);
+      document.body.removeEventListener("keydown", onKeydown);
+    });
+  }
+
   window.PP_READY(function () {
     renderKit();
     renderKitItems();
     renderKidsMenu();
     renderLearning();
     renderParents();
+    initKidsPicker();
     if (window.initHoverStyles) window.initHoverStyles(document.body);
     if (window.PP_REVEAL) window.PP_REVEAL.init();
   });
