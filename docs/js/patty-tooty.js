@@ -92,13 +92,12 @@
     }
     if (/spicy|chilli|chili|hot(?!el)/.test(t)) {
       var spicy = pickByCountryDiet("spicy");
-      if (spicy) {
-        return {
-          question: raw, answer: spicy.name + " runs the spiciest lane on the map — the " + spicy.heroItem.name + " (" + spicy.heroItem.desc + ") is the plate to order.",
-          followUp: "Every route lists its heat honestly on the menu card, so nothing spicy sneaks up on you.",
-          pills: [["Open " + spicy.name, "destination.html#" + spicy.code, YEL, INK], ["Full menu", "menu.html", CREAM, INK]]
-        };
-      }
+      return {
+        question: raw,
+        answer: spicy ? spicy.name + " runs the spiciest lane on the map — the " + spicy.heroItem.name + " (" + spicy.heroItem.desc + ") is the plate to order." : "Libya, Tunisia and Algeria run the spiciest lanes on the map.",
+        followUp: "Every route lists its heat honestly on the menu card, so nothing spicy sneaks up on you.",
+        pills: spicy ? [["Open " + spicy.name, "destination.html#" + spicy.code, YEL, INK], ["Full menu", "menu.html", CREAM, INK]] : [["Full menu", "menu.html", CREAM, INK]]
+      };
     }
     if (/vegan|vegetarian|\bveg\b|meat.?free|plant.?based/.test(t)) {
       var veg = pickByItemTag("Vegetarian");
@@ -233,6 +232,22 @@
         pills: [["Browse destinations", "destinations.html", CREAM, INK], ["Full menu", "menu.html", YEL, INK]]
       };
     }
+    if (/who are you|what are you|your name|about you|what is patty tooty/.test(t)) {
+      return {
+        question: raw,
+        answer: "I'm Patty Tooty — the terminal's travel concierge. Round like a burger bun, headphones always on, sneakers always laced for the next route.",
+        followUp: "I pick your first destination, find the dish that fits your table, point kids at the right route, explain the passport, and walk you to the page you need.",
+        pills: [["Browse destinations", "destinations.html", CREAM, INK], ["Full menu", "menu.html", YEL, INK]]
+      };
+    }
+    if (/help me (choose|decide|pick)|where (do|should) i start|not sure where|don.t know where|no idea where|what should i (do|order|try)/.test(t)) {
+      return {
+        question: raw,
+        answer: "Start on the Levant Route — Lebanon, stamp #01. Loudest welcome on the sea, and the Shish Tawouk Street Burger is the plate most tables come back for.",
+        followUp: "Tell me a preference — spicy, vegetarian, halal, kids at the table — and I'll narrow it down further.",
+        pills: [["Open Lebanon", "destination.html#lbn", YEL, INK], ["See the route map", "route-map.html", CREAM, INK]]
+      };
+    }
     return {
       question: raw, answer: "I'm still learning that one, but here's what usually helps — a destination, the menu, or a human at the desk.",
       followUp: "Try asking about spicy, vegetarian, halal or alcohol-free, or about stamps, kids, booking or investing.",
@@ -316,6 +331,12 @@
     var chipsRoot = document.getElementById("pt-chips");
     if (!threadRoot) return;
 
+    if (window.PP_TOOTY_ICON) {
+      var heroAvatar = document.getElementById("pt-hero-avatar");
+      if (heroAvatar) heroAvatar.innerHTML = window.PP_TOOTY_ICON(58, INK);
+      var headerAvatar = document.getElementById("pt-header-avatar");
+      if (headerAvatar) headerAvatar.innerHTML = window.PP_TOOTY_ICON(26, INK);
+    }
     if (skillsRoot) skillsRoot.innerHTML = skillsHtml();
     if (jobsRoot) jobsRoot.innerHTML = jobsHtml();
     threadRoot.innerHTML = threadHtml(currentThread());
