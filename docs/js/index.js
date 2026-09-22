@@ -13,7 +13,7 @@
     "gh-pass": "PRINTED AT THE DESK. YOURS TO KEEP.",
     "gh-map": "THE MEDITERRANEAN, ONE TERMINAL.",
     "gh-regions": "FIVE ROUTES. TWENTY-ONE DESTINATIONS.",
-    "gh-culture": "EVERY ZONE HAS A SOUNDTRACK.",
+    "gh-culture": "EVERY ROUTE HAS A SOUNDTRACK.",
     "gh-nature": "THE LAND BEHIND EVERY PLATE.",
     "gh-garden": "A GARDEN FOR TWENTY-ONE COUNTRIES.",
     "gh-passport": "FILL THE BOOK. FLY AGAIN.",
@@ -132,15 +132,74 @@
     track.innerHTML = html + html;
   }
 
-  /* ── Culture eq bars ── */
-  function renderCultureEq() {
-    var el = document.getElementById("pp-eqbars-culture");
-    el.innerHTML = Array.from({ length: 22 }, function (_, k) {
-      var color = k % 4 === 0 ? RED : k % 3 === 0 ? YEL : INK;
-      var dur = (0.5 + (k % 6) * 0.14).toFixed(2) + "s";
-      var delay = ((k % 7) * 0.08).toFixed(2) + "s";
-      return '<span style="flex:1;background:' + color + ';height:30%;animation:ppEq ' + dur + ' ease-in-out ' + delay + ' infinite alternate"></span>';
+  /* ── Route soundtracks — five route cards, never five country cards.
+     No `url` yet on any route, so every play button renders as an honest
+     disabled "Playlist coming soon" state; wiring a real link later is
+     just adding `url` here — playSoundtrack() already handles the rest
+     (one-at-a-time, visible playing state, no autoplay, no fake link). ── */
+  var SOUNDTRACKS = [
+    { key: "LEV", num: "01", label: "LEVANT ROUTE", title: "Port Cities After Sunset",
+      desc: "A warm route of oud, darbuka, strings and modern Arabic voices, moving from Beirut’s corniche to Damascus courtyards and the olive hills of Palestine. The sound is generous, layered and social — music made for mezze arriving in the middle of the table and conversations that continue long after the plates are full.",
+      atmosphere: ["Oud and qanun melodies.", "Levantine percussion.", "Classic Arabic vocal arrangements.", "Modern Lebanese, Syrian and Palestinian artists.", "Slow evening tracks for shared dining."],
+      cardLine: "Cedar air, souk rhythm, sea-light after dark.", countries: "Lebanon · Syria · Palestine", openCode: "lbn", url: null },
+    { key: "AEG", num: "02", label: "AEGEAN ROUTE", title: "Islands in the Wind",
+      desc: "A bright, open soundtrack shaped by bouzouki, Turkish strings, Greek island melodies and the restless movement of the Aegean. It should feel like a ferry leaving the harbour: sun on white stone, wind through olive trees and a long lunch gradually becoming evening.",
+      atmosphere: ["Bouzouki and bağlama.", "Greek island folk.", "Turkish acoustic strings.", "Mediterranean guitar.", "Bright, relaxed songs for daytime dining."],
+      cardLine: "White stone, olive wind, charcoal smoke and open water.", countries: "Türkiye · Cyprus · Greece", openCode: "tur", url: null },
+    { key: "IBL", num: "03", label: "IBERIA & LATIN ROUTE", title: "Late Lunch, Longer Night",
+      desc: "This route moves through the Mediterranean cultures of Italy, Spain, southern France, Monaco and Malta: opera, guitar, café conversation, brass, strings and streets that stay awake after dinner. It is warm, expressive and theatrical without becoming loud — a soundtrack for food made slowly and enjoyed without checking the time.",
+      atmosphere: ["Italian café and cinematic strings.", "Spanish guitar and flamenco influence.", "French Riviera jazz.", "Mediterranean brass and accordion.", "Maltese and coastal folk textures."],
+      cardLine: "Piazza voices, Riviera light and dinner after dark.", countries: "Italy · Spain · France · Monaco · Malta", openCode: "ita", url: null },
+    { key: "ADR", num: "04", label: "ADRIATIC ROUTE", title: "Stone Harbours, Mountain Echoes",
+      desc: "The Adriatic route carries the sound of mountain villages, fishing harbours, old cafés and wedding tables. Strings, accordion, choral harmonies and Balkan rhythms meet the quieter pulse of the coast, creating music that feels both ancient and alive.",
+      atmosphere: ["Balkan brass and accordion.", "Adriatic folk strings.", "Klapa-style coastal harmonies.", "Mountain village melodies.", "Modern regional artists with acoustic roots."],
+      cardLine: "Karst stone, pine air, harbour smoke and voices together.", countries: "Slovenia · Croatia · Bosnia & Herzegovina · Montenegro · Albania", openCode: "svn", url: null },
+    { key: "NAF", num: "05", label: "NORTH AFRICA ROUTE", title: "The Sea Behind the Desert",
+      desc: "A route of frame drums, North African strings, Amazigh rhythms, Arabic vocals and modern desert-influenced sound. It moves from the Nile and the ruins of Carthage across Saharan trade roads to the Atlantic edge, carrying the energy of markets, courtyards, wedding celebrations and mint tea poured from a height.",
+      atmosphere: ["Darbuka and frame drums.", "Oud and North African string traditions.", "Amazigh musical influences.", "Rai, chaabi and contemporary Maghrebi artists.", "Rhythms that feel festive, communal and sun-warmed."],
+      cardLine: "Spice smoke, date palms, old cities and Atlantic wind.", countries: "Egypt · Libya · Tunisia · Algeria · Morocco", openCode: "egy", url: null }
+  ];
+  var soundtrackPlaying = null;
+
+  function escST(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+
+  function renderSoundtracks(routes) {
+    var el = document.getElementById("soundtrack-cards");
+    if (!el) return;
+    el.innerHTML = SOUNDTRACKS.map(function (s, i) {
+      var ch = routes[s.key] || { bg: INK, fg: "#fff" };
+      var playing = soundtrackPlaying === s.key;
+      var playBtn = s.url
+        ? '<button type="button" data-play-route="' + s.key + '" style="display:inline-flex;align-items:center;gap:8px;padding:10px 13px;background:' + (playing ? RED : INK) + ';border:0;color:#fff;font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.08em;cursor:pointer" data-hover="background:#ec3013">' + (playing ? "⏸ Pause" : "▶ Play route soundtrack") + '</button>'
+        : '<span aria-disabled="true" style="display:inline-flex;align-items:center;gap:8px;padding:10px 13px;background:rgba(27,26,25,.08);border:2px dashed rgba(27,26,25,.3);color:#7d7979;font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.08em;cursor:not-allowed">Playlist coming soon</span>';
+      var nowPlaying = playing ? '<div data-now-playing style="margin-top:12px;display:flex;align-items:flex-end;gap:3px;height:20px">' + Array.from({ length: 14 }, function (_, k) {
+        var dur = (0.5 + (k % 5) * 0.13).toFixed(2) + "s";
+        return '<span style="flex:1;background:' + ch.bg + ';height:30%;animation:ppEq ' + dur + ' ease-in-out infinite alternate"></span>';
+      }).join("") + '</div><div style="font:600 9px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ae1800;margin-top:6px">Now playing</div>' : "";
+      return '<div data-rv="up" data-rv-d="' + ((i % 3) * 70) + '" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:#fff;padding:22px 20px 24px;display:flex;flex-direction:column;gap:12px">'
+        + '<div style="display:flex;align-items:center;gap:10px"><span style="font:800 22px/1 \'Archivo\',sans-serif;letter-spacing:-.03em;opacity:.3">' + s.num + '</span><span style="padding:5px 9px;background:' + ch.bg + ';color:' + ch.fg + ';font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.12em">' + s.label + '</span></div>'
+        + '<h3 style="font:800 22px/1.08 \'Archivo\',sans-serif;letter-spacing:-.02em;margin:0">' + escST(s.title) + '</h3>'
+        + '<p style="font:400 13px/1.55 \'Archivo\',sans-serif;color:#605d5d;margin:0">' + escST(s.desc) + '</p>'
+        + '<div style="display:flex;flex-wrap:wrap;gap:6px">' + s.atmosphere.map(function (a) { return '<span style="padding:5px 8px;background:#f7f3ec;border:1px solid rgba(27,26,25,.2);font:600 9.5px/1.3 \'Archivo\',sans-serif;color:#605d5d">' + escST(a) + '</span>'; }).join("") + '</div>'
+        + '<div style="font:600 12px/1.4 \'Archivo\',sans-serif;font-style:italic;color:#ae1800">' + escST(s.cardLine) + '</div>'
+        + '<div style="font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#1b1a19">' + escST(s.countries) + '</div>'
+        + '<div style="margin-top:auto;padding-top:6px;display:flex;flex-wrap:wrap;gap:10px;align-items:center">' + playBtn + '<a href="route-map.html#' + s.openCode + '" style="font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#ae1800;text-decoration:none">Open route →</a></div>'
+        + nowPlaying
+        + '</div>';
     }).join("");
+    if (window.initHoverStyles) window.initHoverStyles(el);
+  }
+
+  function initSoundtrackControls() {
+    function onClick(e) {
+      var btn = e.target.closest("[data-play-route]");
+      if (!btn) return;
+      var key = btn.getAttribute("data-play-route");
+      soundtrackPlaying = soundtrackPlaying === key ? null : key;
+      renderSoundtracks(window.PP_DATA.ROUTES);
+    }
+    document.body.addEventListener("click", onClick);
+    if (window.PP_TRACK) window.PP_TRACK(function () { document.body.removeEventListener("click", onClick); });
   }
 
   /* ── Passport preview (fixed demo state: 6 of 21 stamped, matches the
@@ -425,7 +484,8 @@
       renderHeroProps(data.COUNTRIES);
       renderTicker(data.COUNTRIES);
       renderIdentityTrack(data.COUNTRIES);
-      renderCultureEq();
+      renderSoundtracks(data.ROUTES);
+      initSoundtrackControls();
       renderPassport(data.COUNTRIES);
       renderGardenPlaques(data.COUNTRIES);
       initTootyPreview(data);
