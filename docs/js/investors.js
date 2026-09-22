@@ -244,21 +244,22 @@
     document.getElementById("inv-return-note").textContent = "Mid investment = " + m(S.mid) + ", the midpoint of this scenario's corrected range. Every figure recalculates when you change scenario or sales case.";
   }
 
-  /* ── product positioning map ── */
+  /* ── product positioning map: a clean crosshair (one vertical axis line,
+     one horizontal axis line, drawn in the container's own background —
+     see investors.html), with just the Patty Passport marker on it. The
+     top/bottom captions around the box already name both spectrums, so
+     no extra tick labels are layered on top of the grid to collide with
+     them. ── */
   function renderPositioning() {
     var root = document.getElementById("inv-positioning-map");
     if (!root) return;
-    var axisLabels = [["Low", 0], ["Mid", 50], ["High", 100]].map(function (t) {
-      return '<span style="position:absolute;left:' + t[1] + '%;bottom:-20px;transform:translateX(-50%);font:700 9px/1 \'Archivo\',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#7d7979">' + t[0] + '</span>'
-        + '<span style="position:absolute;bottom:' + t[1] + '%;left:-32px;transform:translateY(50%);font:700 9px/1 \'Archivo\',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#7d7979">' + t[0] + '</span>';
-    }).join("");
-    var pp = '<div style="position:absolute;left:58%;top:' + (100 - 78) + '%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;z-index:2">'
-      + '<span id="inv-pos-mascot" style="width:44px;height:44px;border-radius:50%;background:#f2b30c;border:3px solid #f7f3ec;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 5px rgba(242,179,12,.28)"></span>'
-      + '<span style="font:800 10.5px/1.15 \'Archivo\',sans-serif;color:#f2b30c;white-space:nowrap;text-align:center">PATTY PASSPORT<br><span style="font:600 8.5px/1.3 \'Archivo\',sans-serif;color:#bab6b6;letter-spacing:.06em;text-transform:uppercase">Fair price · high immersion</span></span>'
+    var pp = '<div style="position:absolute;left:62%;top:' + (100 - 76) + '%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:7px">'
+      + '<span id="inv-pos-mascot" style="width:46px;height:46px;border-radius:50%;background:#f2b30c;border:3px solid #f7f3ec;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 6px rgba(242,179,12,.22)"></span>'
+      + '<span style="font:800 11px/1.15 \'Archivo\',sans-serif;color:#f2b30c;white-space:nowrap;text-align:center">PATTY PASSPORT<br><span style="font:600 8.5px/1.3 \'Archivo\',sans-serif;color:#bab6b6;letter-spacing:.06em;text-transform:uppercase">Fair price · high immersion</span></span>'
       + '</div>';
-    root.innerHTML = axisLabels + pp;
+    root.innerHTML = pp;
     var mascot = document.getElementById("inv-pos-mascot");
-    if (mascot && window.PP_TOOTY_ICON) mascot.innerHTML = window.PP_TOOTY_ICON(28);
+    if (mascot && window.PP_TOOTY_ICON) mascot.innerHTML = window.PP_TOOTY_ICON(30);
   }
 
   /* ── break-even chart (SVG visuals only — all labels are real HTML text
