@@ -4,6 +4,11 @@
    (front-end only, per master brief §5.6 — no backend). */
 (function () {
   var RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
+  // Same five approved service roles + colors as crew.html (js/crew.js).
+  var ROLE_COLOR = {
+    "Route Host": BLU, "Passport Desk": YEL, "Destination Guide": "#1f7a3d",
+    "Table Captain": "#7a4fae", "Kitchen Crew": RED
+  };
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
@@ -70,28 +75,28 @@
   // (front-end only — filled in live via "Leave a Review").
   var TAG_COLORS = [RED, BLU, "#1f7a3d", YEL];
   var TEAM = [
-    { name: "George Ammar", role: "Journey Crew · Server", nationality: "Lebanese / Spanish",
+    { name: "George Ammar", role: "Route Host", nationality: "Lebanese / Spanish",
       bio: "Runs the floor on the busiest routes and never lets a table feel rushed between courses.",
       reviews: [{ text: "George made our trip to Greece unforgettable. He explained the destination card so well and made our kids feel at home.", rating: 5 }] },
-    { name: "Lucía Fernández", role: "Check-In Host", nationality: "Spanish",
+    { name: "Lucía Fernández", role: "Passport Desk", nationality: "Spanish",
       bio: "The first face at the desk — reads a party in seconds and picks the right first destination for them.",
       reviews: [{ text: "Lucía greeted us with such warmth. She helped us choose Lebanon as our first destination and walked our child through the passport stamps.", rating: 5 }] },
-    { name: "Marco Rossi", role: "Flavor Control · Kitchen", nationality: "Italian",
+    { name: "Marco Rossi", role: "Kitchen Crew", nationality: "Italian",
       bio: "Holds every country's plate to the same standard: nothing leaves the pass unless it tastes like the place it's from.",
       reviews: [{ text: "Marco's attention to detail made our Italian burger taste like a real piazza moment.", rating: 4 }] },
-    { name: "Yasmin Haddad", role: "Kids & Destinations Guide", nationality: "Lebanese",
+    { name: "Yasmin Haddad", role: "Destination Guide", nationality: "Lebanese",
       bio: "Turns the passport into a game for younger guests — flags, phrases and a stamp they actually want to earn.",
       reviews: [{ text: "Yasmin ran an amazing activity for our kids, teaching them about flags and flavors.", rating: 5 }] },
-    { name: "Nikos Papadopoulos", role: "Route Crew · Server", nationality: "Greek",
+    { name: "Nikos Papadopoulos", role: "Route Host", nationality: "Greek",
       bio: "Keeps the Aegean route moving and always has a story about the dish that's about to land.",
       reviews: [] },
-    { name: "Alicia Morales", role: "Events & Birthdays Coordinator", nationality: "Spanish",
+    { name: "Alicia Morales", role: "Table Captain", nationality: "Spanish",
       bio: "Plans the birthdays and group journeys, from the first booking call to the final candle.",
       reviews: [] },
-    { name: "Omar El Tayar", role: "Drinks & Destinations", nationality: "Egyptian",
+    { name: "Omar El Tayar", role: "Kitchen Crew", nationality: "Egyptian",
       bio: "Runs the drinks pass across all twenty-one countries and knows which cooler pairs with which route.",
       reviews: [] },
-    { name: "Sofia Costa", role: "Pastry & Desserts", nationality: "Portuguese / Moroccan",
+    { name: "Sofia Costa", role: "Kitchen Crew", nationality: "Portuguese / Moroccan",
       bio: "Closes every table's journey with the country's dessert — and keeps the sweet stamp worth waiting for.",
       reviews: [] }
   ].map(function (t, i) {
@@ -223,7 +228,7 @@
         + '<span style="position:absolute;left:0;top:0;padding:6px 10px;background:' + t.tag + ';color:#fff;font:800 9px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;pointer-events:none">' + esc(t.nationality) + '</span></div>'
         + '<div style="padding:18px 18px 20px;display:flex;flex-direction:column;gap:9px;flex:1">'
         + '<h3 style="font:800 19px/1.1 \'Archivo\',sans-serif;letter-spacing:-.02em;margin:0">' + esc(t.name) + '</h3>'
-        + '<div style="font:800 10.5px/1.3 \'Archivo\',sans-serif;letter-spacing:.13em;text-transform:uppercase;color:#ae1800">' + esc(t.role) + '</div>'
+        + '<span style="display:inline-flex;align-self:flex-start;padding:4px 8px;background:' + (ROLE_COLOR[t.role] || INK) + ';color:' + (ROLE_COLOR[t.role] === YEL ? INK : "#fff") + ';font:800 9px/1.3 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase">' + esc(t.role) + '</span>'
         + summaryHtml
         + '<p style="font:400 12.5px/1.5 \'Archivo\',sans-serif;color:#605d5d;margin:0">' + esc(t.bio) + '</p>'
         + '<div data-team-reviews="' + i + '" style="margin-top:6px;border-top:2px solid rgba(27,26,25,.16)">' + reviewsHtml + '</div>'
