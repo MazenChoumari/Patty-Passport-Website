@@ -17,22 +17,9 @@
     fScenario: "A1", fTicket: "€250k – €500k", fStructure: "Equity"
   };
 
-  /* ── product positioning map — category-level estimates for illustration
-     only, not published or verified market prices (master brief §20).
-     Sources consulted for category description (not exact pricing):
-     Goiko goiko.com/es/en · Foster's Hollywood fostershollywood.es
-     VIPS vips.es · Burger King burgerking.es/en/menu
-     Carl's Jr. carlsjr.es/productos-carls-jr · TGB (weur-cdn.carta.menu)
-     McDonald's mcdonalds.es */
-  var POSITIONING = [
-    { name: "McDonald's", x: 18, y: 12 },
-    { name: "Burger King", x: 22, y: 15 },
-    { name: "TGB", x: 28, y: 20 },
-    { name: "Carl's Jr.", x: 38, y: 18 },
-    { name: "VIPS", x: 45, y: 32 },
-    { name: "Foster's Hollywood", x: 50, y: 48 },
-    { name: "Goiko", x: 68, y: 50 }
-  ];
+  /* ── product positioning map: Patty Passport only, on a clean axis grid
+     (master brief — no outside competitor wall, just the brand's own
+     price/quality claim, directly labeled). ── */
 
   /* ── derive every number the page shows from PP_DATA + current state ── */
   function derive() {
@@ -253,19 +240,17 @@
   function renderPositioning() {
     var root = document.getElementById("inv-positioning-map");
     if (!root) return;
-    var dots = POSITIONING.map(function (c) {
-      return '<div style="position:absolute;left:' + c.x + '%;top:' + (100 - c.y) + '%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:5px">'
-        + '<span style="width:11px;height:11px;border-radius:50%;background:#bab6b6;border:2px solid #1b1a19"></span>'
-        + '<span style="font:700 9.5px/1.15 \'Archivo\',sans-serif;color:#f7f3ec;white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.6)">' + esc(c.name) + '</span>'
-        + '</div>';
+    var axisLabels = [["Low", 0], ["Mid", 50], ["High", 100]].map(function (t) {
+      return '<span style="position:absolute;left:' + t[1] + '%;bottom:-20px;transform:translateX(-50%);font:700 9px/1 \'Archivo\',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#7d7979">' + t[0] + '</span>'
+        + '<span style="position:absolute;bottom:' + t[1] + '%;left:-32px;transform:translateY(50%);font:700 9px/1 \'Archivo\',sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#7d7979">' + t[0] + '</span>';
     }).join("");
     var pp = '<div style="position:absolute;left:58%;top:' + (100 - 78) + '%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;z-index:2">'
-      + '<span id="inv-pos-mascot" style="width:38px;height:38px;border-radius:50%;background:#f2b30c;border:3px solid #f7f3ec;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px rgba(242,179,12,.28)"></span>'
+      + '<span id="inv-pos-mascot" style="width:44px;height:44px;border-radius:50%;background:#f2b30c;border:3px solid #f7f3ec;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 5px rgba(242,179,12,.28)"></span>'
       + '<span style="font:800 10.5px/1.15 \'Archivo\',sans-serif;color:#f2b30c;white-space:nowrap;text-align:center">PATTY PASSPORT<br><span style="font:600 8.5px/1.3 \'Archivo\',sans-serif;color:#bab6b6;letter-spacing:.06em;text-transform:uppercase">Fair price · high immersion</span></span>'
       + '</div>';
-    root.innerHTML = dots + pp;
+    root.innerHTML = axisLabels + pp;
     var mascot = document.getElementById("inv-pos-mascot");
-    if (mascot && window.PP_TOOTY_ICON) mascot.innerHTML = window.PP_TOOTY_ICON(24);
+    if (mascot && window.PP_TOOTY_ICON) mascot.innerHTML = window.PP_TOOTY_ICON(28);
   }
 
   /* ── break-even chart (SVG visuals only — all labels are real HTML text
@@ -301,7 +286,22 @@
       return '<circle cx="' + cx + '" cy="' + cy + '" r="' + (on ? 2.2 : 1.5) + '" fill="' + (on ? YEL : BLU) + '" stroke="' + INK + '" stroke-width="0.5"/>';
     }).join("");
 
+    // Gridlines are drawn in the SVG (pure geometry, scales cleanly); the
+    // tick VALUES are real HTML text positioned over it by percentage, so
+    // labels never shrink unreadable on narrow screens the way SVG <text>
+    // would. viewBox is 100 wide/vbH tall, so left:x% maps directly to sx,
+    // and top:(y/vbH)*100% maps to sy.
+    var yTicks = [0, 0.25, 0.5, 0.75, 1].map(function (f) { return f * yMax; });
+    var xTicks = [0, 0.25, 0.5, 0.75, 1].map(function (f) { return f * xMax; });
+    var xAxisTicks = [0, 0.5, 1].map(function (f) { return f * xMax; });
+    var gridLines = yTicks.map(function (val) {
+      return '<line x1="' + sx(0) + '" y1="' + sy(val) + '" x2="' + sx(xMax) + '" y2="' + sy(val) + '" stroke="rgba(27,26,25,.12)" stroke-width="0.35"/>';
+    }).join("") + xTicks.map(function (val) {
+      return '<line x1="' + sx(val) + '" y1="' + padT + '" x2="' + sx(val) + '" y2="' + sy(0) + '" stroke="rgba(27,26,25,.12)" stroke-width="0.35"/>';
+    }).join("");
+
     var svg = '<svg viewBox="0 0 ' + vbW + ' ' + vbH + '" role="img" aria-label="Break-even chart: revenue and total cost by guests per day, current scenario ' + esc(rc.label) + '" style="display:block;width:100%;height:auto;background:#fff;border:2px solid #1b1a19">'
+      + gridLines
       + '<path d="' + lossPath + '" fill="' + RED + '" fill-opacity="0.14"/>'
       + '<path d="' + profitPath + '" fill="' + YEL + '" fill-opacity="0.22"/>'
       + '<path d="' + fixedLine + '" fill="none" stroke="#7d7979" stroke-width="0.5" stroke-dasharray="1.4,1.4"/>'
@@ -313,6 +313,19 @@
       + '<line x1="' + sx(0) + '" y1="' + sy(0) + '" x2="' + sx(xMax) + '" y2="' + sy(0) + '" stroke="' + INK + '" stroke-width="0.6"/>'
       + '<line x1="' + sx(0) + '" y1="' + padT + '" x2="' + sx(0) + '" y2="' + sy(0) + '" stroke="' + INK + '" stroke-width="0.6"/>'
       + '</svg>';
+
+    var yAxisLabels = yTicks.slice().reverse().map(function (val) {
+      var topPct = (sy(val) / vbH) * 100;
+      return '<span style="position:absolute;left:0;top:' + topPct + '%;transform:translateY(-50%);font:700 9px/1 \'Archivo\',sans-serif;color:#7d7979;white-space:nowrap">' + k(val) + '</span>';
+    }).join("");
+    var xAxisLabels = xAxisTicks.map(function (val) {
+      var leftPct = sx(val);
+      return '<span style="position:absolute;left:' + leftPct + '%;bottom:0;transform:translateX(' + (val === 0 ? "0" : val === xMax ? "-100%" : "-50%") + ');font:700 9px/1 \'Archivo\',sans-serif;color:#7d7979;white-space:nowrap">' + Math.round(val) + '/day</span>';
+    }).join("");
+    var svgWithAxes = '<div style="position:relative;padding:0 0 22px 44px">' + svg
+      + '<div style="position:absolute;left:0;top:0;width:44px;height:calc(100% - 22px)">' + yAxisLabels + '</div>'
+      + '<div style="position:absolute;left:44px;right:0;bottom:0;height:20px">' + xAxisLabels + '</div>'
+      + '</div>';
 
     var legend = '<div style="display:flex;flex-wrap:wrap;gap:14px 20px;margin-top:14px;font:600 10.5px/1.3 \'Archivo\',sans-serif">'
       + '<span style="display:inline-flex;align-items:center;gap:6px"><span style="width:16px;height:3px;background:' + INK + ';display:inline-block"></span>Revenue line</span>'
@@ -344,7 +357,7 @@
 
     var note = '<p style="font:400 11.5px/1.55 \'Archivo\',sans-serif;color:#7d7979;margin:16px 0 0;max-width:70ch">Planning model only. Break-even depends on actual rent, staffing, trading days, mix, taxes, financing and final site design.</p>';
 
-    root.innerHTML = svg + legend + formulas + facts + note;
+    root.innerHTML = svgWithAxes + legend + formulas + facts + note;
   }
 
   /* ── break-even & sales ── */
