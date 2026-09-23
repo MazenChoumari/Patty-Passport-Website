@@ -9,53 +9,49 @@
 
   var CH_ORDER = ["LEV", "AEG", "IBL", "ADR", "NAF"];
 
-  /* Short, real musical-tradition cues per country — no invented song or
-     artist names, consistent with the site's honest "playlist coming
-     soon" framing used elsewhere. */
-  var MUSIC = {
-    lbn: "Oud taqsim and tarab strings — the sound of a long Beirut dinner.",
-    syr: "Qanun and muwashshah vocals from Damascus courtyard evenings.",
-    pse: "Mijwiz reed and dabke percussion — line-dance energy at the table.",
-    tur: "Bağlama strings and Aegean folk — a coastline caravan sound.",
-    cyp: "Laouto and island ballads carried on sea wind.",
-    grc: "Bouzouki and rebetiko soul — harbour tavern energy.",
-    ita: "Mandolin and cinematic strings — a late Roman trattoria mood.",
-    esp: "Flamenco guitar and hand-clap rhythm, late into the night.",
-    fra: "Riviera jazz manouche — café strings after the sun goes down.",
-    mco: "Cabaret piano and brass — a polished Mediterranean nightclub feel.",
-    mlt: "Għana folk singing — call-and-response voices over harbour air.",
-    svn: "Alpine folk strings drifting down from the Karst hills.",
-    hrv: "Klapa harmony singing — close, unaccompanied harbour voices.",
-    bih: "Sevdalinka strings — slow, aching mountain-town ballads.",
-    mne: "Gusle and epic sung verse from the mountain interior.",
-    alb: "Layered polyphonic harmony carried from village to village.",
-    egy: "Oud and tabla — classic Cairo orchestral warmth.",
-    lby: "Amazigh frame-drum rhythm from the coastal highlands.",
-    tun: "Malouf strings — Andalusian-rooted courtyard music.",
-    dza: "Raï vocals and modern Maghrebi pulse.",
-    mar: "Gnawa hand-drums and iron castanets — trance rhythm from Essaouira."
-  };
-
   var state = { route: "ALL", highlight: null };
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+
+  function libraryByCode() {
+    var D = window.PP_DATA;
+    var out = {};
+    (D && D.MUSIC_LIBRARY || []).forEach(function (t) { out[t.code] = t; });
+    return out;
+  }
 
   function vinyl(fg) {
     return '<span class="pp-st-vinyl" style="display:block;width:52px;height:52px;border-radius:50%;background:repeating-radial-gradient(circle,' + fg + ' 0 2px,transparent 2px 5px);position:relative;flex:none">'
       + '<span style="position:absolute;inset:0;margin:auto;width:14px;height:14px;border-radius:50%;background:' + fg + '"></span></span>';
   }
 
-  function countryCard(c, route) {
+  // Every card reads from window.PP_DATA.MUSIC_LIBRARY — the same source
+  // destination.js's country-profile soundtrack module and the nav's
+  // now-playing label use, so a track added there later shows up here
+  // automatically. Only the one row with a real `src` (lbn today) gets a
+  // working play button, wired to the same shared player the nav music
+  // toggle controls — not a separate fake player.
+  function countryCard(c, route, lib) {
     var hi = state.highlight === c.code;
-    var line = MUSIC[c.code] || "A destination soundtrack card, coming soon.";
+    var t = lib[c.code];
+    var title = t ? t.title : c.name + " — soundtrack coming soon";
+    var meta = t ? [t.genre, t.city].filter(Boolean).join(" · ") : "";
+    var desc = t ? t.desc : "A destination soundtrack card, coming soon.";
+    var playable = t && t.src;
+    var actionHtml = playable
+      ? '<button type="button" data-play-track="' + esc(c.code) + '" style="display:inline-flex;align-items:center;gap:6px;padding:8px 10px;background:rgba(0,0,0,.22);border:1.5px solid currentColor;color:inherit;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.08em;cursor:pointer" data-hover="background:rgba(0,0,0,.4)">▶ Play preview</button>'
+      : '<span aria-disabled="true" style="display:inline-flex;align-items:center;gap:6px;padding:8px 10px;background:rgba(0,0,0,.18);border:1.5px dashed currentColor;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.08em;opacity:.85">▶ Coming soon</span>';
     return '<a href="#' + c.code + '" data-country-card="' + c.code + '" class="pp-st-card' + (hi ? " pp-rm-highlight" : "") + '" style="display:flex;flex-direction:column;gap:12px;padding:18px;background:' + route.bg + ';color:' + route.fg + ';border:2px solid #1b1a19;text-decoration:none;min-height:190px" data-hover="filter:brightness(1.05)">'
       + '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">'
       + '<div>' + window.PP_FLAGS.render(c.code, 26, { stroke: route.fg }) + '<div style="font:800 16px/1.15 \'Archivo\',sans-serif;letter-spacing:-.01em;margin-top:8px">' + esc(c.name) + '</div></div>'
       + vinyl(route.fg)
       + '</div>'
-      + '<p style="font:600 12px/1.5 \'Archivo\',sans-serif;margin:0;opacity:.92;flex:1">' + esc(line) + '</p>'
-      + '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">'
-      + '<span aria-disabled="true" style="display:inline-flex;align-items:center;gap:6px;padding:8px 10px;background:rgba(0,0,0,.18);border:1.5px dashed currentColor;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.08em;opacity:.85">▶ Coming soon</span>'
+      + '<div style="flex:1;display:flex;flex-direction:column;gap:4px">'
+      + '<div style="font:800 13.5px/1.3 \'Archivo\',sans-serif">' + esc(title) + '</div>'
+      + (meta ? '<div style="font:700 9px/1.3 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;opacity:.7">' + esc(meta) + '</div>' : "")
+      + '<p style="font:400 11.5px/1.5 \'Archivo\',sans-serif;margin:6px 0 0;opacity:.9">' + esc(desc) + '</p>'
+      + '</div>'
+      + '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">' + actionHtml
       + '<span style="font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.1em">' + esc(c.stamp) + '</span>'
       + '</div></a>';
   }
@@ -76,18 +72,26 @@
         + '<span style="width:9px;height:9px;background:' + dot + ';display:block"></span>' + esc(label) + '<span style="opacity:.6">' + count + '</span></button>';
     }).join("");
 
+    var lib = libraryByCode();
     var chapters = CH_ORDER.filter(function (k) { return act === "ALL" || act === k; });
     document.getElementById("st-routes").innerHTML = chapters.map(function (key, idx) {
       var route = routes[key];
       var stops = countries.filter(function (c) { return c.routeKey === key; });
       return '<div data-rv="up" style="' + (idx > 0 ? "margin-top:34px;" : "") + '">'
         + '<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:16px"><span style="padding:6px 10px;background:' + route.bg + ';color:' + route.fg + ';font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.12em">' + esc(route.name.toUpperCase()) + ' ROUTE</span><span style="font:600 11px/1 \'Archivo\',sans-serif;color:#7d7979">' + stops.length + ' destinations</span></div>'
-        + '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px">' + stops.map(function (c) { return countryCard(c, route); }).join("") + '</div>'
+        + '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px">' + stops.map(function (c) { return countryCard(c, route, lib); }).join("") + '</div>'
         + '</div>';
     }).join("");
 
     Array.prototype.forEach.call(document.querySelectorAll("#st-legend [data-route]"), function (btn) {
       btn.addEventListener("click", function () { state.route = btn.getAttribute("data-route"); render(); });
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll("[data-play-track]"), function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        if (window.PP_MUSIC) window.PP_MUSIC.toggle(true);
+      });
     });
 
     if (window.initHoverStyles) window.initHoverStyles(document.body);

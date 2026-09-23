@@ -502,6 +502,39 @@
     }
   };
 
+  // Single shared soundtrack library — one row per track, keyed by country
+  // code. This is the one place a track's title/route/city/genre/source
+  // lives; soundtracks.html, each destination page's soundtrack module and
+  // the nav's now-playing label all read from here instead of carrying
+  // their own copy, so a track added here later shows up correctly
+  // everywhere at once instead of needing three separate edits. `src` is
+  // a YouTube video id and is null (honestly "coming soon") until a real
+  // track is wired up for that country — lbn is the only one live today,
+  // matching the nav's actual embedded player.
+  var MUSIC_LIBRARY = [
+    { code: "lbn", route: "LEV", title: "Lebanese Dabke", city: "Beirut", genre: "Dabke / Tarab", desc: "Oud taqsim and tarab strings — the sound of a long Beirut dinner.", src: "oUv0nN_KMi0", cover: null },
+    { code: "syr", route: "LEV", title: "Damascus Muwashshah", city: "Damascus", genre: "Muwashshah", desc: "Qanun and muwashshah vocals from Damascus courtyard evenings.", src: null, cover: null },
+    { code: "pse", route: "LEV", title: "Dabke Line Dance", city: null, genre: "Dabke / Mijwiz", desc: "Mijwiz reed and dabke percussion — line-dance energy at the table.", src: null, cover: null },
+    { code: "tur", route: "AEG", title: "Aegean Bağlama Folk", city: null, genre: "Anatolian Folk", desc: "Bağlama strings and Aegean folk — a coastline caravan sound.", src: null, cover: null },
+    { code: "cyp", route: "AEG", title: "Island Laouto Ballad", city: null, genre: "Cypriot Folk", desc: "Laouto and island ballads carried on sea wind.", src: null, cover: null },
+    { code: "grc", route: "AEG", title: "Rebetiko Harbour Soul", city: null, genre: "Rebetiko", desc: "Bouzouki and rebetiko soul — harbour tavern energy.", src: null, cover: null },
+    { code: "ita", route: "IBL", title: "Roman Trattoria Strings", city: "Rome", genre: "Cinematic / Mandolin", desc: "Mandolin and cinematic strings — a late Roman trattoria mood.", src: null, cover: null },
+    { code: "esp", route: "IBL", title: "Flamenco Night Guitar", city: null, genre: "Flamenco", desc: "Flamenco guitar and hand-clap rhythm, late into the night.", src: null, cover: null },
+    { code: "fra", route: "IBL", title: "Riviera Jazz Manouche", city: null, genre: "Jazz Manouche", desc: "Riviera jazz manouche — café strings after the sun goes down.", src: null, cover: null },
+    { code: "mco", route: "IBL", title: "Riviera Cabaret Swing", city: null, genre: "Cabaret / Jazz", desc: "Cabaret piano and brass — a polished Mediterranean nightclub feel.", src: null, cover: null },
+    { code: "mlt", route: "IBL", title: "Għana Harbour Song", city: null, genre: "Għana Folk", desc: "Għana folk singing — call-and-response voices over harbour air.", src: null, cover: null },
+    { code: "svn", route: "ADR", title: "Karst Alpine Strings", city: null, genre: "Alpine Folk", desc: "Alpine folk strings drifting down from the Karst hills.", src: null, cover: null },
+    { code: "hrv", route: "ADR", title: "Klapa Harbour Harmony", city: null, genre: "Klapa", desc: "Klapa harmony singing — close, unaccompanied harbour voices.", src: null, cover: null },
+    { code: "bih", route: "ADR", title: "Sevdalinka Ballad", city: null, genre: "Sevdalinka", desc: "Sevdalinka strings — slow, aching mountain-town ballads.", src: null, cover: null },
+    { code: "mne", route: "ADR", title: "Gusle Mountain Verse", city: null, genre: "Gusle / Epic", desc: "Gusle and epic sung verse from the mountain interior.", src: null, cover: null },
+    { code: "alb", route: "ADR", title: "Polyphonic Village Song", city: null, genre: "Albanian Polyphony", desc: "Layered polyphonic harmony carried from village to village.", src: null, cover: null },
+    { code: "egy", route: "NAF", title: "Cairo Oud Orchestral", city: "Cairo", genre: "Classic Egyptian", desc: "Oud and tabla — classic Cairo orchestral warmth.", src: null, cover: null },
+    { code: "lby", route: "NAF", title: "Amazigh Coastal Drums", city: null, genre: "Amazigh Percussion", desc: "Amazigh frame-drum rhythm from the coastal highlands.", src: null, cover: null },
+    { code: "tun", route: "NAF", title: "Malouf Courtyard Strings", city: null, genre: "Malouf", desc: "Malouf strings — Andalusian-rooted courtyard music.", src: null, cover: null },
+    { code: "dza", route: "NAF", title: "Raï Maghrebi Pulse", city: null, genre: "Raï", desc: "Raï vocals and modern Maghrebi pulse.", src: null, cover: null },
+    { code: "mar", route: "NAF", title: "Essaouira Gnawa Trance", city: "Essaouira", genre: "Gnawa", desc: "Gnawa hand-drums and iron castanets — trance rhythm from Essaouira.", src: null, cover: null }
+  ];
+
   window.PP_DATA = {
     PRICES: PRICES, COMBOS: COMBOS, UPGRADES: UPGRADES, MIN_SPEND: MIN_SPEND,
     KIDS_MENU: KIDS_MENU, KIDS_COMBO_PRICE: KIDS_COMBO_PRICE,
@@ -509,6 +542,7 @@
     SCENARIOS: SCENARIOS, FUNDING: FUNDING, OPERATING: OPERATING, SEVEN_PS: SEVEN_PS,
     LAND: LAND, BUILD_RATE: BUILD_RATE, EXTERIOR: EXTERIOR,
     PASSPORT_TYPES: PASSPORT_TYPES,
+    MUSIC_LIBRARY: MUSIC_LIBRARY,
     HOURS: [
       { days: "Monday — Friday", time: "10:00 — 22:00" },
       { days: "Weekends & holidays", time: "10:00 — 00:00" }

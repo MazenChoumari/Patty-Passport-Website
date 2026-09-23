@@ -16,7 +16,6 @@
   const PAGES = [
     ["01", "destinations", "Destinations", "All 21 countries, route by route", "destinations.html"],
     ["02", "route-map", "Route map", "The Mediterranean network", "route-map.html"],
-    ["02b", "soundtracks", "Route soundtracks", "The sound of every destination", "soundtracks.html"],
     ["03", "menu", "Menu", "Every dish, by destination", "menu.html"],
     ["04", "rewards", "Rewards & passport", "Stamps, ladder, unlockables", "rewards.html"],
     ["05", "events", "Events & birthdays", "Celebrations on any route", "events.html"],
@@ -54,6 +53,21 @@
   function playIcon() {
     return '<span style="width:0;height:0;border-left:9px solid currentColor;border-top:6px solid transparent;border-bottom:6px solid transparent"></span>';
   }
+  // Reads the currently-playing track's real metadata from the shared
+  // library (window.PP_DATA.MUSIC_LIBRARY) instead of a hardcoded string,
+  // so the label always names the track AND its route/country context —
+  // "Lebanese Dabke · Levant Route" — and stays correct if a different
+  // track is ever wired up as the one with a real `src`.
+  function nowPlayingLabel() {
+    const D = window.PP_DATA;
+    const lib = D && D.MUSIC_LIBRARY;
+    const track = lib && lib.find(t => t.src);
+    if (!track) return "Lebanese Dabke · Levant Route";
+    const route = D.ROUTES && D.ROUTES[track.route];
+    const parts = [track.title, route ? route.name + " Route" : null].filter(Boolean);
+    return parts.join(" · ");
+  }
+
   function loadingDots() {
     return '<span style="display:flex;align-items:center;gap:3px;height:12px">'
       + '<span style="width:4px;height:4px;border-radius:50%;background:currentColor;animation:ppNavEq .9s ease-in-out infinite"></span>'
@@ -94,7 +108,7 @@
     const nowPlayingHtml = state.musicOn ? `
       <div style="display:flex;align-items:center;gap:12px;padding:8px 26px;background:#1b1a19;color:#f7f3ec;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase">
         <span style="width:7px;height:7px;background:#f2b30c;animation:ppNavBlink 1.3s steps(1) infinite"></span>
-        ${state.musicLoading ? "Loading track…" : "Now playing · Lebanese Dabke"}
+        ${state.musicLoading ? "Loading track…" : "Now playing · " + nowPlayingLabel()}
       </div>` : "";
 
     bar.innerHTML = `
@@ -212,19 +226,8 @@
     // fade-in animation is never restarted mid-open.
     if (!drawer._ppOpen) {
       drawer._ppOpen = true;
-      // Route soundtracks (p[0] === "02b") is a discoverable layer under
-      // Route Map, not a co-equal 12th destination — it renders as a
-      // smaller, indented sub-row right under Route Map's own row instead
-      // of the full-size directory entries, so the drawer's main list
-      // doesn't read as more crowded than it already is.
       const drawerLinksHtml = PAGES.map(p => {
         const bg = active === p[1] ? "rgba(242,179,12,.14)" : "transparent";
-        if (p[0] === "02b") {
-          return `<a href="${p[4]}" style="display:flex;align-items:center;gap:10px;padding:11px 24px 11px 50px;border-bottom:1px solid rgba(247,243,236,.16);text-decoration:none;color:#bab6b6;background:${bg}" data-hover="background:#ec3013;color:#fff">`
-            + `<span style="opacity:.6;font:600 13px/1 'Archivo',sans-serif">↳</span>`
-            + `<span style="flex:1;font:600 12.5px/1.3 'Archivo',sans-serif">${p[2]} <span style="opacity:.7;font-weight:400">— ${p[3]}</span></span>`
-            + `<span style="font:800 12px/1 'Archivo',sans-serif">→</span></a>`;
-        }
         return `<a href="${p[4]}" style="display:flex;align-items:baseline;gap:14px;padding:18px 24px;border-bottom:1px solid rgba(247,243,236,.22);text-decoration:none;color:#f7f3ec;background:${bg}" data-hover="background:#ec3013;color:#fff">`
           + `<span style="font:600 10px/1 'Archivo',sans-serif;letter-spacing:.16em;color:#f2b30c;width:28px;flex:none">${p[0]}</span>`
           + `<span style="flex:1"><span style="display:block;font:800 19px/1.1 'Archivo',sans-serif;letter-spacing:-.02em">${p[2]}</span>`
