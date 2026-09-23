@@ -16,6 +16,7 @@
   const PAGES = [
     ["01", "destinations", "Destinations", "All 21 countries, route by route", "destinations.html"],
     ["02", "route-map", "Route map", "The Mediterranean network", "route-map.html"],
+    ["02b", "soundtracks", "Route soundtracks", "The sound of every destination", "soundtracks.html"],
     ["03", "menu", "Menu", "Every dish, by destination", "menu.html"],
     ["04", "rewards", "Rewards & passport", "Stamps, ladder, unlockables", "rewards.html"],
     ["05", "events", "Events & birthdays", "Celebrations on any route", "events.html"],
