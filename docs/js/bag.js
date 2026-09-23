@@ -108,7 +108,8 @@
       + '</div>'
       + '<div style="flex:1;overflow-y:auto;padding:18px">' + body + '</div>'
       + '<div style="padding:16px 18px 20px;border-top:2px solid #1b1a19;background:#fff">'
-      + '<div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px"><span style="font:600 10px/1 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#605d5d">Total</span><span style="font:800 22px/1 \'Archivo\',sans-serif;letter-spacing:-.02em">' + eur(total()) + '</span></div>'
+      + '<div style="display:flex;align-items:baseline;justify-content:space-between"><span style="font:600 10px/1 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#605d5d">Total</span><span style="font:800 22px/1 \'Archivo\',sans-serif;letter-spacing:-.02em">' + eur(total()) + '</span></div>'
+      + '<div style="font:600 9.5px/1.4 \'Archivo\',sans-serif;color:#7d7979;margin-bottom:12px">Prices include VAT.</div>'
       + '<div style="font:600 10.5px/1.5 \'Archivo\',sans-serif;color:#ae1800;margin-bottom:12px">Delivery is currently unavailable — dine-in only, confirmed at the desk or by booking a table.</div>'
       + '<a href="booking.html" style="display:flex;align-items:center;width:100%;padding:14px 16px;background:#ec3013;color:#fff;text-decoration:none;font:800 13px/1.1 \'Archivo\',sans-serif;margin-bottom:8px" data-hover="background:#1b1a19">Book a table for this order<span style="margin-left:auto">→</span></a>'
       + (items.length ? '<button type="button" data-bag-clear style="width:100%;padding:10px;background:transparent;border:2px solid rgba(27,26,25,.25);color:#605d5d;font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.08em;cursor:pointer">Clear bag</button>' : "")

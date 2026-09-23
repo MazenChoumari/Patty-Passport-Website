@@ -39,7 +39,9 @@
     var tagsHtml = i.tags.map(function (t) {
       return '<span style="padding:4px 7px;border:2px solid rgba(27,26,25,.28);color:' + (TAG_COLORS[t] || "#605d5d") + ';font:800 8.5px/1 \'Archivo\',sans-serif;letter-spacing:.11em;text-transform:uppercase">' + esc(t) + '</span>';
     }).join("");
-    var addBtn = (c && r) ? '<button type="button" data-bag-add data-bag-kind="adult" data-bag-name="' + esc(i.name) + '" data-bag-price="' + i.price + '" data-bag-country="' + esc(c.code) + '" data-bag-country-name="' + esc(c.name) + '" data-bag-route="' + esc(r.name) + '" style="width:100%;padding:9px 10px;background:#1b1a19;color:#f7f3ec;border:0;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" data-hover="background:#ec3013">+ Add to bag</button>' : "";
+    var addBtn = (c && r) ? '<button type="button" data-bag-add data-bag-kind="adult" data-bag-name="' + esc(i.name) + '" data-bag-price="' + i.price + '" data-bag-country="' + esc(c.code) + '" data-bag-country-name="' + esc(c.name) + '" data-bag-route="' + esc(r.name) + '" style="flex:1;padding:9px 10px;background:#1b1a19;color:#f7f3ec;border:0;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" data-hover="background:#ec3013">+ Add to bag</button>' : "";
+    var isBurger = i.kind === "veg" || i.kind === "chicken" || i.kind === "beef";
+    var comboBtn = (c && r && isBurger) ? '<button type="button" data-combo-open="' + esc(i.name) + '" data-combo-kind="' + i.kind + '" data-combo-price="' + i.price + '" data-combo-country="' + esc(c.code) + '" data-combo-country-name="' + esc(c.name) + '" data-combo-route="' + esc(r.name) + '" style="flex:1;padding:9px 10px;background:transparent;color:#1b1a19;border:2px solid #1b1a19;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c;border-color:#f2b30c">Make it a combo</button>' : "";
     return '<div style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:#f7f3ec;padding:18px 17px 20px;display:flex;flex-direction:column;gap:9px;min-height:186px">'
       + '<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">'
       + '<span style="font:600 9px/1 \'Archivo\',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:' + kind[1] + '">' + esc(kind[0]) + '</span>'
@@ -47,7 +49,7 @@
       + '<h3 style="font:800 17px/1.12 \'Archivo\',sans-serif;letter-spacing:-.02em;margin:0">' + esc(i.name) + '</h3>'
       + '<p style="font:400 12.5px/1.45 \'Archivo\',sans-serif;color:#605d5d;margin:0">' + esc(i.desc) + '</p>'
       + '<div style="display:flex;flex-wrap:wrap;gap:5px;padding-top:10px;border-top:2px solid rgba(27,26,25,.16)">' + tagsHtml + '</div>'
-      + (addBtn ? '<div style="margin-top:auto;padding-top:4px">' + addBtn + '</div>' : "")
+      + (addBtn ? '<div style="margin-top:auto;padding-top:4px;display:flex;flex-wrap:wrap;gap:6px">' + addBtn + comboBtn + '</div>' : "")
       + '</div>';
   }
 
@@ -167,7 +169,7 @@
     }
 
     var minSpendEl = document.getElementById("mn-minspend");
-    if (minSpendEl) minSpendEl.textContent = "Minimum spend €" + D.MIN_SPEND.adult + " per adult · €" + D.MIN_SPEND.child + " per child";
+    if (minSpendEl) minSpendEl.textContent = "Minimum spend €" + D.MIN_SPEND.adult + " per adult · €" + D.MIN_SPEND.child + " per child · all prices include VAT";
     if (window.PP_REVEAL) window.PP_REVEAL.init();
   }
 
