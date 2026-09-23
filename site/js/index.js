@@ -259,8 +259,11 @@
     }).join("");
   }
 
+  var PP_STAMPED = 6;
+  var passportType = "explorer";
+
   function renderPassport(countries) {
-    var STAMPED = 6;
+    var STAMPED = PP_STAMPED;
     document.getElementById("pp-passport-progress").textContent = "Passport spread · " + STAMPED + " of 21";
     var grid = document.getElementById("pp-stamp-grid");
     grid.innerHTML = countries.map(function (c, i) {
@@ -272,6 +275,57 @@
         + '</div>';
     }).join("");
     initPassportReveal();
+  }
+
+  /* ── Passport type tabs + reward ladder: the reward ladder's cadence
+     (3/5/8/21 stamps) is shared across passport types, but the titles,
+     descriptions and the "NEXT" chip genuinely swap per type — this
+     isn't a label-only change. Reused as-is by rewards.js. ── */
+  function renderPassportTabs(types) {
+    var el = document.getElementById("pp-passport-tabs");
+    if (!el) return;
+    el.innerHTML = Object.keys(types).map(function (key) {
+      var t = types[key];
+      var on = passportType === key;
+      return '<button type="button" data-passport-type="' + key + '" style="padding:10px 14px;background:' + (on ? INK : "transparent") + ';border:2px solid #1b1a19;color:' + (on ? "#f7f3ec" : INK) + ';font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c;color:#1b1a19">' + t.name + '</button>';
+    }).join("");
+  }
+
+  function renderRewardLadder(types) {
+    var type = types[passportType];
+    var taglineEl = document.getElementById("pp-passport-tagline");
+    if (taglineEl) taglineEl.textContent = type.tagline;
+
+    var nextRung = type.ladder.filter(function (r) { return r.stamps > PP_STAMPED; })[0];
+    var nextEl = document.getElementById("pp-passport-next");
+    if (nextEl) nextEl.textContent = nextRung ? "NEXT: " + nextRung.title.toUpperCase() : "PASSPORT COMPLETE";
+
+    var el = document.getElementById("pp-reward-ladder");
+    if (!el) return;
+    el.innerHTML = type.ladder.map(function (r, i) {
+      var unlocked = PP_STAMPED >= r.stamps;
+      var isNext = !unlocked && r === nextRung;
+      var badgeBg = unlocked ? "#f2b30c" : (isNext ? INK : "#e7e3dc");
+      var badgeFg = unlocked ? INK : (isNext ? "#f7f3ec" : "#7d7979");
+      var status = unlocked ? "UNLOCKED" : (r.stamps - PP_STAMPED) + " TO GO";
+      return '<div data-rv="left" data-rv-d="' + (i * 90) + '" style="display:flex;align-items:center;gap:16px;padding:15px 0;border-bottom:2px solid rgba(27,26,25,.2)">'
+        + '<span style="width:54px;height:54px;flex:none;background:' + badgeBg + ';color:' + badgeFg + ';display:flex;align-items:center;justify-content:center;font:800 20px/1 \'Archivo\',sans-serif">' + r.stamps + '</span>'
+        + '<span style="flex:1"><span style="display:block;font:800 17px/1.1 \'Archivo\',sans-serif;letter-spacing:-.015em">' + escST(r.title) + '</span><span style="display:block;font:400 12.5px/1.4 \'Archivo\',sans-serif;color:#605d5d;margin-top:3px">' + escST(r.desc) + '</span></span>'
+        + '<span style="font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:' + (unlocked ? "#ae1800" : "#605d5d") + '">' + status + '</span></div>';
+    }).join("");
+  }
+
+  function initPassportTypeTabs(types) {
+    function onClick(e) {
+      var btn = e.target.closest("[data-passport-type]");
+      if (!btn) return;
+      passportType = btn.getAttribute("data-passport-type");
+      renderPassportTabs(types);
+      renderRewardLadder(types);
+      if (window.initHoverStyles) window.initHoverStyles(document.getElementById("pp-passport-tabs"));
+    }
+    document.body.addEventListener("click", onClick);
+    if (window.PP_TRACK) window.PP_TRACK(function () { document.body.removeEventListener("click", onClick); });
   }
 
   /* ── Passport stamp grid: cells fade/scale in row by row, stamped cells
@@ -522,6 +576,9 @@
       renderIdentityTrack(data.COUNTRIES);
       renderSoundtracks(data.ROUTES);
       renderPassport(data.COUNTRIES);
+      renderPassportTabs(data.PASSPORT_TYPES);
+      renderRewardLadder(data.PASSPORT_TYPES);
+      initPassportTypeTabs(data.PASSPORT_TYPES);
       renderGardenRouteFilters(data.ROUTES);
       renderGardenPlaques(data.COUNTRIES, data.ROUTES);
       initGardenFilters(data);

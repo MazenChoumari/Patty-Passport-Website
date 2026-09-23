@@ -6,12 +6,7 @@
 (function () {
   var RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
 
-  var LADDER_DEFS = [
-    [3, "Free country drink", "A cooler from the route you just landed in", YEL, INK],
-    [5, "Free side", "Loaded fries or a country salad, on the house", YEL, INK],
-    [8, "Secret destination burger", "Off-menu, changes monthly", INK, CREAM],
-    [21, "World Traveller buffet", "The whole sea, on the house", RED, "#fff"]
-  ];
+  var LADDER_COLORS = [[YEL, INK], [YEL, INK], [INK, CREAM], [RED, "#fff"]];
 
   var MOCK_BOOKINGS = [
     { time: "25 SEP", what: "Lebanon · MED-12", detail: "Table 4 · 4 adults, 2 kids · 20:30" },
@@ -20,7 +15,7 @@
 
   var state = {
     modal: null, mode: "create",
-    user: null, avatarUrl: null,
+    user: null, avatarUrl: null, formType: "explorer",
     // mock "already collected" stamps, seeded with real country codes from PP_DATA
     stamps: ["lbn", "grc", "esp", "mar", "tur", "ita"]
   };
@@ -37,8 +32,22 @@
     var cta = create ? "Create my Patty Passport" : "Log in";
     var switchLabel = create ? "Already have a passport? Log in instead" : "No passport yet? Create one instead";
 
+    var typePicker = "";
+    if (create && window.PP_DATA) {
+      var types = window.PP_DATA.PASSPORT_TYPES;
+      typePicker = '<div style="margin-bottom:18px">'
+        + '<span style="display:block;font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:8px">Passport type</span>'
+        + '<div style="display:flex;flex-wrap:wrap;gap:8px">' + Object.keys(types).map(function (key) {
+          var on = state.formType === key;
+          return '<button type="button" data-form-type="' + key + '" style="padding:9px 13px;background:' + (on ? INK : "transparent") + ';border:2px solid #1b1a19;color:' + (on ? CREAM : INK) + ';font:800 10.5px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c;color:#1b1a19">' + types[key].name + '</button>';
+        }).join("") + '</div>'
+        + '<p style="font:400 11.5px/1.5 \'Archivo\',sans-serif;color:#7d7979;margin:8px 0 0">' + esc(types[state.formType].tagline) + '</p>'
+        + '</div>';
+    }
+
     var fields = create
-      ? '<label style="display:block;margin-bottom:16px">'
+      ? typePicker
+        + '<label style="display:block;margin-bottom:16px">'
         + '<span style="display:block;font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:8px">Name</span>'
         + '<input id="mp-f-name" type="text" placeholder="Your name" style="width:100%;background:transparent;border:0;border-bottom:2px solid #1b1a19;color:#1b1a19;font:800 16px/1.3 \'Archivo\',sans-serif;padding:0 0 8px;outline:none" /></label>'
         + '<label style="display:block;margin-bottom:16px">'
@@ -96,6 +105,9 @@
     if (!state.user) return "";
     var D = window.PP_DATA;
     var countries = D ? D.COUNTRIES : [];
+    var passportType = state.user.passportType || "explorer";
+    var type = D ? D.PASSPORT_TYPES[passportType] : null;
+    var LADDER_DEFS = type ? type.ladder.map(function (r, i) { return [r.stamps, r.title, r.desc].concat(LADDER_COLORS[i] || [INK, CREAM]); }) : [];
     var filled = state.stamps.length;
     var next = LADDER_DEFS.find(function (l) { return filled < l[0]; });
     var memberNo = "0" + (100 + filled * 7);
@@ -151,7 +163,7 @@
       + '<input type="file" id="mp-avatar-input" accept="image/*" style="display:none" />'
       + '</span>'
       + '<span style="flex:1;min-width:200px">'
-      + '<span style="display:block;font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#7d7979;margin-bottom:8px">Explorer Passport · PP-2026-' + memberNo + '</span>'
+      + '<span style="display:block;font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#7d7979;margin-bottom:8px">' + esc(type ? type.name : "Explorer") + ' Passport · PP-2026-' + memberNo + '</span>'
       + '<span style="display:block;font:800 clamp(30px,4vw,56px)/.95 \'Archivo\',sans-serif;letter-spacing:-.04em">' + esc(state.user.name.toUpperCase()) + '</span></span>'
       + '<span style="display:flex;flex-wrap:wrap;gap:10px">'
       + '<a href="booking.html" style="display:inline-flex;align-items:center;padding:14px 17px;background:#ec3013;color:#fff;text-decoration:none;font:800 13px/1.1 \'Archivo\',sans-serif" data-hover="background:#1b1a19">Book the next route<span style="margin-left:12px">→</span></a>'
@@ -195,6 +207,9 @@
     if (scrim) scrim.addEventListener("click", function () { state.modal = null; render(); });
     if (closeBtn) closeBtn.addEventListener("click", function () { state.modal = null; render(); });
     if (switchBtn) switchBtn.addEventListener("click", function () { state.mode = state.mode === "create" ? "login" : "create"; render(); });
+    Array.prototype.forEach.call(root.querySelectorAll("[data-form-type]"), function (btn) {
+      btn.addEventListener("click", function () { state.formType = btn.getAttribute("data-form-type"); render(); });
+    });
     if (form) form.addEventListener("submit", function (e) {
       e.preventDefault();
       var create = state.mode === "create";
@@ -202,7 +217,7 @@
       var emailInput = root.querySelector("#mp-f-email");
       var name = create && nameInput ? nameInput.value.trim() : "";
       if (!name && emailInput && emailInput.value) name = emailInput.value.split("@")[0];
-      state.user = { name: name || "Traveller" };
+      state.user = { name: name || "Traveller", passportType: create ? state.formType : (state.user ? state.user.passportType : "explorer") || "explorer" };
       state.modal = null;
       render();
     });
