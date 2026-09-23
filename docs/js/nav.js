@@ -41,7 +41,7 @@
     ["booking", "Book", "booking.html", "#ec3013"]
   ];
 
-  const state = { drawerOpen: false, drawerIn: false, musicOn: false, gatePage: 0, gateFade: 1 };
+  const state = { drawerOpen: false, drawerIn: false, musicOn: false, musicLoading: false, gatePage: 0, gateFade: 1 };
   let active = window.PP_ACTIVE || "";
 
   function eqBars() {
@@ -53,6 +53,13 @@
   }
   function playIcon() {
     return '<span style="width:0;height:0;border-left:9px solid currentColor;border-top:6px solid transparent;border-bottom:6px solid transparent"></span>';
+  }
+  function loadingDots() {
+    return '<span style="display:flex;align-items:center;gap:3px;height:12px">'
+      + '<span style="width:4px;height:4px;border-radius:50%;background:currentColor;animation:ppNavEq .9s ease-in-out infinite"></span>'
+      + '<span style="width:4px;height:4px;border-radius:50%;background:currentColor;animation:ppNavEq .9s ease-in-out .15s infinite"></span>'
+      + '<span style="width:4px;height:4px;border-radius:50%;background:currentColor;animation:ppNavEq .9s ease-in-out .3s infinite"></span>'
+      + '</span>';
   }
 
   function computeGates() {
@@ -87,8 +94,7 @@
     const nowPlayingHtml = state.musicOn ? `
       <div style="display:flex;align-items:center;gap:12px;padding:8px 26px;background:#1b1a19;color:#f7f3ec;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.16em;text-transform:uppercase">
         <span style="width:7px;height:7px;background:#f2b30c;animation:ppNavBlink 1.3s steps(1) infinite"></span>
-        Now playing · Beirut Corniche, 7pm — Levant Route
-        <span style="margin-left:auto;color:#bab6b6">42 tracks</span>
+        ${state.musicLoading ? "Loading track…" : "Now playing · Lebanese Dabke"}
       </div>` : "";
 
     bar.innerHTML = `
@@ -113,8 +119,8 @@
           </a>
           <div style="display:flex;align-items:center;gap:10px;flex:none;margin-left:auto">
             <button type="button" id="pp-nav-music" style="display:inline-flex;align-items:center;gap:9px;padding:9px 12px;border:2px solid #1b1a19;background:transparent;color:#1b1a19;font:800 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;cursor:pointer;white-space:nowrap" data-hover="background:#f2b30c;border-color:#f2b30c">
-              ${state.musicOn ? eqBars() : playIcon()}
-              ${state.musicOn ? "Playing" : "Play the Mediterranean"}
+              ${state.musicLoading ? loadingDots() : (state.musicOn ? eqBars() : playIcon())}
+              ${state.musicLoading ? "Loading…" : (state.musicOn ? "Playing" : "Play the Mediterranean")}
             </button>
             <a href="my-passport.html" style="display:inline-flex;align-items:center;gap:8px;padding:10px 14px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap" data-hover="background:#ec3013">My Passport</a>
             <button type="button" id="pp-nav-open" aria-expanded="${state.drawerOpen ? "true" : "false"}" aria-controls="pp-nav-drawer" style="display:inline-flex;align-items:center;gap:10px;padding:10px 13px;background:transparent;border:2px solid #1b1a19;color:#1b1a19;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c;border-color:#f2b30c" data-active="background:#ec3013;border-color:#ec3013;color:#fff">
@@ -144,7 +150,12 @@
       <div data-nav-spacer="1" style="height:136px"></div>
     `;
 
-    bar.querySelector("#pp-nav-music")?.addEventListener("click", () => { state.musicOn = !state.musicOn; renderBar(); toggleMusicPlayback(); });
+    bar.querySelector("#pp-nav-music")?.addEventListener("click", () => {
+      state.musicOn = !state.musicOn;
+      state.musicLoading = state.musicOn && !(window.PP_MUSIC && window.PP_MUSIC.isReady());
+      renderBar();
+      toggleMusicPlayback();
+    });
     bar.querySelector("#pp-nav-open")?.addEventListener("click", openDrawer);
     // Logo/name/slogan click: already home -> smooth-scroll to top (and
     // clear any hash) instead of a same-URL click silently doing nothing;
@@ -289,6 +300,14 @@
     root.innerHTML = '<div id="pp-nav-bar"></div><div id="pp-nav-drawer"></div>';
 
     renderBar();
+    // Confirms real playback state from js/music.js's actual YouTube
+    // player, since the click above only sets an optimistic target — this
+    // is what clears the "Loading…" state once audio genuinely starts.
+    window.addEventListener("pp-music-state", e => {
+      state.musicLoading = false;
+      state.musicOn = !!e.detail.playing;
+      renderBar();
+    });
     let raf = null;
     window.addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(() => { raf = null; tick(); }); }, { passive: true });
     window.addEventListener("resize", () => { tick(); syncNavHeight(); });
