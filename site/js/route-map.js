@@ -23,15 +23,6 @@
   };
   var CH_ORDER = ["LEV", "AEG", "IBL", "ADR", "NAF"];
 
-  // Map layout — shared with the home page's map (js/med-map.js) so the
-  // two can never drift apart; POS there is in plain 0-100 numbers, so
-  // convert once here to the "N%" strings this file's markup expects.
-  var POS = {};
-  Object.keys(window.PP_MED_MAP.POS).forEach(function (code) {
-    var p = window.PP_MED_MAP.POS[code];
-    POS[code] = [p[0] + "%", p[1] + "%"];
-  });
-
   var state = { route: "ALL", highlightCode: null };
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
@@ -65,16 +56,22 @@
 
     document.getElementById("rm-active-label").textContent = act === "ALL" ? "All five routes shown" : routes[act].name.toUpperCase() + " ROUTE ISOLATED";
 
-    document.getElementById("rm-nodes").innerHTML = countries.map(function (c, i) {
+    var rmLeaders = [];
+    var rmNodesHtml = countries.map(function (c, i) {
       var ch = routes[c.routeKey];
-      var pos = POS[c.code] || ["50%", "50%"];
       var on = act === "ALL" || act === c.routeKey;
       var sway = (4 + (i % 5) * 0.6).toFixed(1) + "s";
       var highlighted = hi === c.code;
-      return '<a href="destination.html#' + c.code + '" data-node="' + c.code + '" aria-label="' + esc(c.name) + ' — ' + esc(ch.name) + ' route, gate ' + esc(c.med) + '" style="position:absolute;left:' + pos[0] + ';top:' + pos[1] + ';transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:flex-start;gap:5px;text-decoration:none;opacity:' + (on ? "1" : "0.22") + ';transition:opacity .3s ease">'
-        + '<span class="pp-map-node-badge ' + (highlighted ? "pp-rm-highlight" : "") + '" style="display:flex;align-items:center;gap:7px;padding:6px 9px;background:' + ch.bg + ';color:' + ch.fg + ';border:2px solid #1b1a19;font:800 10.5px/1 \'Archivo\',sans-serif;letter-spacing:.12em;white-space:nowrap;animation:ppSway ' + sway + ' ease-in-out infinite">' + esc(c.code.toUpperCase()) + '<span class="pp-map-node-sub" style="font:600 8.5px/1;letter-spacing:.14em;opacity:.75">' + esc(c.med) + '</span></span>'
-        + '<span class="pp-map-node-name" style="font:800 13px/1 \'Archivo\',sans-serif;letter-spacing:-.01em;color:#fff;text-shadow:0 1px 0 rgba(27,26,25,.6)">' + esc(c.name) + '</span></a>';
+      var node = window.PP_MED_MAP.renderNode({
+        code: c.code, name: c.name, med: c.med, href: "destination.html#" + c.code,
+        ariaLabel: c.name + " — " + ch.name + " route, gate " + c.med,
+        badgeBg: ch.bg, badgeFg: ch.fg, sway: sway, opacity: on ? "1" : "0.22",
+        dataNode: true, highlightClass: highlighted ? "pp-rm-highlight" : ""
+      });
+      if (node.leader) rmLeaders.push(node.leader);
+      return node.html;
     }).join("");
+    document.getElementById("rm-nodes").innerHTML = window.PP_MED_MAP.leaderLinesSvg(rmLeaders) + rmNodesHtml;
 
     var chapters = CH_ORDER.filter(function (k) { return act === "ALL" || act === k; });
     document.getElementById("rm-chapters").innerHTML = chapters.map(function (key) {

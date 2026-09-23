@@ -278,20 +278,24 @@
   function renderHomeMap(data) {
     var nodesEl = document.getElementById("home-map-nodes");
     if (!nodesEl || !window.PP_MED_MAP) return;
-    var pos = window.PP_MED_MAP.POS;
     var routes = data.ROUTES;
     var act = homeMapRoute;
     var activeLabelEl = document.getElementById("home-map-active-label");
     if (activeLabelEl) activeLabelEl.textContent = act === "ALL" ? "All five routes shown" : routes[act].name.toUpperCase() + " ROUTE ISOLATED";
-    nodesEl.innerHTML = data.COUNTRIES.map(function (c, i) {
-      var p = pos[c.code] || [50, 50];
+    var homeLeaders = [];
+    var homeNodesHtml = data.COUNTRIES.map(function (c, i) {
       var ch = routes[c.routeKey];
       var on = act === "ALL" || act === c.routeKey;
       var sway = (4 + (i % 5) * 0.6).toFixed(1) + "s";
-      return '<a href="destination.html#' + c.code + '" class="pp-home-node" aria-label="' + escMap(c.name) + ' — ' + escMap(ch.name) + ' route, gate ' + escMap(c.med) + '" style="position:absolute;left:' + p[0] + '%;top:' + p[1] + '%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:flex-start;gap:5px;text-decoration:none;opacity:' + (on ? "1" : "0.22") + ';transition:opacity .3s ease">'
-        + '<span class="pp-map-node-badge" style="display:flex;align-items:center;gap:7px;padding:6px 9px;background:' + ch.bg + ';color:' + ch.fg + ';border:2px solid #1b1a19;font:800 10.5px/1 \'Archivo\',sans-serif;letter-spacing:.12em;white-space:nowrap;animation:ppSway ' + sway + ' ease-in-out infinite">' + escMap(c.code.toUpperCase()) + '<span class="pp-map-node-sub" style="font:600 8.5px/1;letter-spacing:.14em;opacity:.75">' + escMap(c.med) + '</span></span>'
-        + '<span class="pp-map-node-name" style="font:800 13px/1 \'Archivo\',sans-serif;letter-spacing:-.01em;color:#fff;text-shadow:0 1px 0 rgba(27,26,25,.6)">' + escMap(c.name) + '</span></a>';
+      var node = window.PP_MED_MAP.renderNode({
+        code: c.code, name: c.name, med: c.med, href: "destination.html#" + c.code,
+        ariaLabel: c.name + " — " + ch.name + " route, gate " + c.med,
+        badgeBg: ch.bg, badgeFg: ch.fg, sway: sway, opacity: on ? "1" : "0.22"
+      });
+      if (node.leader) homeLeaders.push(node.leader);
+      return node.html;
     }).join("");
+    nodesEl.innerHTML = window.PP_MED_MAP.leaderLinesSvg(homeLeaders) + homeNodesHtml;
   }
 
   function initHomeMapFilter(data) {
