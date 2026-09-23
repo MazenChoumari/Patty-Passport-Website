@@ -115,8 +115,55 @@
         + '<span style="margin-top:auto;font:800 13px/1 \'Archivo\',sans-serif">' + esc(t[7]) + '</span></button>';
     }).join("");
 
+    renderFinalCallBoard(D);
+
     if (window.initHoverStyles) window.initHoverStyles(document.body);
     if (window.PP_REVEAL) window.PP_REVEAL.init();
+  }
+
+  // Real Europe/Madrid open/closed state from the same hours shown on
+  // Our Story — no fabricated countdown, just today's actual weekday
+  // window. HOURS[0] = weekdays, HOURS[1] = weekends & holidays.
+  function deskStatus(D) {
+    if (!D || !D.HOURS) return null;
+    var fmt = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Madrid", hour: "2-digit", minute: "2-digit", hour12: false, weekday: "short" });
+    var parts = fmt.formatToParts(new Date());
+    var get = function (t) { var p = parts.find(function (x) { return x.type === t; }); return p ? p.value : ""; };
+    var weekday = get("weekday");
+    var minutes = parseInt(get("hour"), 10) * 60 + parseInt(get("minute"), 10);
+    var isWeekend = weekday === "Sat" || weekday === "Sun";
+    var range = isWeekend ? D.HOURS[1] : D.HOURS[0];
+    var m = range.time.match(/(\d{2}):(\d{2}).*?(\d{2}):(\d{2})/);
+    if (!m) return null;
+    var openMin = parseInt(m[1], 10) * 60 + parseInt(m[2], 10);
+    var closeRaw = parseInt(m[3], 10) * 60 + parseInt(m[4], 10);
+    var closeMin = closeRaw === 0 ? 24 * 60 : closeRaw;
+    return { open: minutes >= openMin && minutes < closeMin, days: range.days, hours: range.time };
+  }
+
+  var ROUTE_ORDER = ["LEV", "AEG", "IBL", "ADR", "NAF"];
+  function renderFinalCallBoard(D) {
+    var statusEl = document.getElementById("rw-desk-status");
+    var status = deskStatus(D);
+    if (statusEl) {
+      statusEl.textContent = status ? (status.open ? "Desk open now" : "Desk closed now") : "";
+      statusEl.style.display = status ? "inline-flex" : "none";
+      statusEl.title = status ? status.days + " · " + status.hours : "";
+    }
+
+    var board = document.getElementById("rw-departures");
+    if (!board) return;
+    var dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
+    var picks = [0, 1, 2].map(function (i) { return ROUTE_ORDER[(dayOfYear + i) % ROUTE_ORDER.length]; });
+    board.innerHTML = picks.map(function (key, i) {
+      var route = D.ROUTES[key];
+      var count = D.COUNTRIES.filter(function (c) { return c.routeKey === key; }).length;
+      return '<a href="route-map.html" style="display:flex;align-items:center;gap:12px;padding:13px 15px;text-decoration:none;color:#fff;' + (i > 0 ? "border-top:1px solid rgba(255,255,255,.28)" : "") + '" data-hover="background:rgba(27,26,25,.16)">'
+        + '<span style="width:8px;height:8px;flex:none;background:' + route.bg + ';border:1.5px solid #fff"></span>'
+        + '<span style="flex:1;min-width:0"><span style="display:block;font:800 13px/1.2 \'Archivo\',sans-serif">' + esc(route.name) + ' route</span>'
+        + '<span style="display:block;font:400 10.5px/1.4 \'Archivo\',sans-serif;opacity:.8">' + count + ' destinations · stamp available</span></span>'
+        + '<span style="font:800 11px/1 \'Archivo\',sans-serif">→</span></a>';
+    }).join("");
   }
 
   window.PP_READY(function () {
@@ -135,6 +182,8 @@
     }
     document.body.addEventListener("click", onTypeClick);
     if (window.PP_TRACK) window.PP_TRACK(function () { document.body.removeEventListener("click", onTypeClick); });
+    var deskTimer = setInterval(function () { if (window.PP_DATA) renderFinalCallBoard(window.PP_DATA); }, 60000);
+    if (window.PP_TRACK) window.PP_TRACK(function () { clearInterval(deskTimer); });
     render();
   });
 })();
