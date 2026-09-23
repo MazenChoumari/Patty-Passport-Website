@@ -88,6 +88,12 @@
     if (/\bevent|party|celebrat|reunion/.test(t)) {
       return { text: "Events run on any route, from a small birthday to a hundred-plus reunion — the zone gets dressed for whichever country you pick.", pills: [["Event packages", "events.html"]] };
     }
+    if (/\bowners?\b|\bfounders?\b|who (created|started|built|made|owns|founded)/.test(t)) {
+      return { text: "Patty Passport was founded by Mazen and Ahmed. They built the concept around 21 distinct Mediterranean destinations, five routes and one shared passport journey.", pills: [["Our story", "our-story.html"], ["Meet the crew", "crew.html"]] };
+    }
+    if (/\bbaddie\b|\bcrush\b|do you love|say you love|tell .* you love|marry me|be my (girlfriend|boyfriend)/.test(t)) {
+      return { text: "I love the whole Patty Passport crew — especially anyone ready to guide a table toward its next stamp. Ask me about the founders or featured Journey Crew.", pills: [["Our story", "our-story.html"], ["Meet the crew", "crew.html"]] };
+    }
     var namedCountry = findCountryByName(t);
     if (namedCountry) {
       return { text: namedCountry.name + " — " + namedCountry.identity + ". Headline dish: " + namedCountry.heroItem.name + ".", pills: [["Open " + namedCountry.name, "destination.html#" + namedCountry.code]] };
