@@ -373,18 +373,29 @@
       ? '<div style="position:absolute;left:' + marginLabelLeft + '%;top:' + marginLabelTop + '%;transform:translate(-50%,-135%);font:800 8px/1 \'Archivo\',sans-serif;letter-spacing:.04em;color:' + SAFE + ';white-space:nowrap;background:#fff;padding:1px 4px">Margin of safety · ' + marginPct.toFixed(0) + '%</div>'
       : "";
 
+    // Dual axis guides: the left axis reads revenue/cost per MONTH (the
+    // unit the rest of the model works in); the right axis is the exact
+    // same scale × 12, read as PER YEAR — the unit investors actually
+    // think in — so both are available on one chart without forcing a
+    // separate annual version or mental arithmetic mid-read.
     var yAxisLabels = yTicks.slice().reverse().map(function (val) {
       var topPct = (sy(val) / vbH) * 100;
       return '<span style="position:absolute;left:0;top:' + topPct + '%;transform:translateY(-50%);font:600 8.5px/1 \'Archivo\',sans-serif;color:#8a8a8a;white-space:nowrap">' + k(val) + '</span>';
+    }).join("");
+    var yAxisLabelsRight = yTicks.slice().reverse().map(function (val) {
+      var topPct = (sy(val) / vbH) * 100;
+      return '<span style="position:absolute;right:0;top:' + topPct + '%;transform:translateY(-50%);font:600 8.5px/1 \'Archivo\',sans-serif;color:#8a8a8a;white-space:nowrap">' + k(val * 12) + '</span>';
     }).join("");
     var xAxisLabels = xAxisTicks.map(function (val) {
       var leftPct = sx(val);
       return '<span style="position:absolute;left:' + leftPct + '%;bottom:0;transform:translateX(' + (val === 0 ? "0" : val === xMax ? "-100%" : "-50%") + ');font:600 8.5px/1 \'Archivo\',sans-serif;color:#8a8a8a;white-space:nowrap">' + Math.round(val) + '/day</span>';
     }).join("");
-    var svgWithAxes = '<div style="position:relative;padding:0 0 22px 44px">' + svg
-      + '<div style="position:absolute;left:0;top:0;width:44px;height:calc(100% - 22px)">' + yAxisLabels + '</div>'
-      + '<div style="position:absolute;left:44px;right:0;top:0;bottom:22px">' + marginLabel + '</div>'
-      + '<div style="position:absolute;left:44px;right:0;bottom:0;height:20px">' + xAxisLabels + '</div>'
+    var axisCaptions = '<div style="display:flex;justify-content:space-between;gap:10px;margin:2px 0 2px 44px;font:700 8px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#a3a3a3"><span>€ / month</span><span>€ / year</span></div>';
+    var svgWithAxes = axisCaptions + '<div style="position:relative;padding:0 44px 22px 44px">' + svg
+      + '<div style="position:absolute;left:0;top:0;width:40px;height:calc(100% - 22px)">' + yAxisLabels + '</div>'
+      + '<div style="position:absolute;right:0;top:0;width:40px;height:calc(100% - 22px)">' + yAxisLabelsRight + '</div>'
+      + '<div style="position:absolute;left:44px;right:44px;top:0;bottom:22px">' + marginLabel + '</div>'
+      + '<div style="position:absolute;left:44px;right:44px;bottom:0;height:20px">' + xAxisLabels + '</div>'
       + '</div>';
 
     var legend = '<div style="display:flex;flex-wrap:wrap;gap:12px 18px;margin-top:12px;font:600 10px/1.3 \'Archivo\',sans-serif;color:#444141">'
@@ -441,6 +452,41 @@
       ["Guests above break-even", Math.round(marginGuests) + "/day"],
       ["Cushion", marginPct.toFixed(0) + "%"]
     ]);
+
+    renderCostAudit(v);
+  }
+
+  // Full cost audit: every category the break-even model actually
+  // touches (or doesn't), each classified as Fixed, Variable, Mixed, or
+  // Excluded — so a reader can see at a glance which categories are a
+  // real % of revenue, which are folded into the single fixed-overhead
+  // number, and which aren't in the model at all yet. Percentages/€
+  // figures still come straight from PP_DATA.OPERATING; the
+  // classification labels and notes are editorial, not computed.
+  var COST_CATEGORIES = [
+    { name: "Food & beverage", cls: "Variable", tone: "#1f7a3d", note: "Ingredients, packaging, prep waste." },
+    { name: "Labour", cls: "Mixed", tone: "#8a6a00", note: "Modeled here as a flat % of revenue for simplicity — in practice it's a fixed core-staff base plus variable peak/part-time hours that scale with guest volume." },
+    { name: "Marketing", cls: "Variable", tone: "#1f7a3d", note: "Digital and offline promotion." },
+    { name: "Rent & occupancy", cls: "Fixed", tone: "#1d5c9e", note: "Folded into the single fixed-overhead figure below — not itemized separately." },
+    { name: "Utilities & maintenance", cls: "Fixed", tone: "#1d5c9e", note: "Also folded into the fixed-overhead figure — not itemized separately." },
+    { name: "Owner draw, debt service, tax, depreciation", cls: "Excluded", tone: "#ae1800", note: "Not in this operating-profit figure at all — a real P&L needs to add these before it's a net-income number." }
+  ];
+  function renderCostAudit(v) {
+    var O = v.O;
+    var root = document.getElementById("inv-cost-audit");
+    if (!root) return;
+    var RATE = { "Food & beverage": (O.foodPct * 100).toFixed(0) + "%", "Labour": (O.labourPct * 100).toFixed(0) + "%", "Marketing": (O.marketingPct * 100).toFixed(0) + "%" };
+    root.innerHTML = COST_CATEGORIES.map(function (c, i) {
+      return '<div data-rv="up" data-rv-d="' + (i * 50) + '" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;padding:18px 18px 20px;display:flex;flex-direction:column;gap:9px;min-height:150px">'
+        + '<span style="display:inline-flex;align-self:flex-start;padding:4px 8px;background:' + c.tone + ';color:#fff;font:800 8.5px/1 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase">' + c.cls + '</span>'
+        + '<span style="font:800 14.5px/1.2 \'Archivo\',sans-serif;letter-spacing:-.01em">' + esc(c.name) + (RATE[c.name] ? ' <span style="color:#7d7979;font-weight:600">· ' + RATE[c.name] + '</span>' : '') + '</span>'
+        + '<span style="font:400 11.5px/1.5 \'Archivo\',sans-serif;color:#605d5d">' + esc(c.note) + '</span></div>';
+    }).join("");
+    var warnEl = document.getElementById("inv-cost-warning");
+    if (warnEl) {
+      warnEl.innerHTML = '<span style="display:block;font:800 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#ae1800;margin-bottom:8px">Assumption warning — ' + eur0(O.fixedMonthly) + '/month fixed overhead</span>'
+        + '<p style="font:400 12.5px/1.55 \'Archivo\',sans-serif;color:#444141;margin:0;max-width:78ch">This single figure is a planning-stage bundle of rent, utilities, maintenance and admin — not a line-itemized budget built from a signed lease or utility quotes. Every break-even and margin figure on this page inherits it, so treat all of them as directional until it\'s replaced with real site costs.</p>';
+    }
   }
 
   /* ── break-even & sales ── */
