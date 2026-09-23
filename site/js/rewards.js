@@ -13,7 +13,7 @@
     ["egy", "EGY", "Egypt"], ["lby", "LBY", "Libya"], ["tun", "TUN", "Tunisia"], ["dza", "DZA", "Algeria"], ["mar", "MAR", "Morocco"]
   ];
   var PRESETS = [0, 3, 5, 8, 21];
-  var LADDER_COLORS = [[YEL, INK], [YEL, INK], [INK, CREAM], [RED, "#fff"]];
+  var LADDER_COLORS = [[YEL, INK], [BLU, "#fff"], [INK, CREAM], [RED, "#fff"]];
   var STEPS = [
     ["1", "Ask at the desk", "The book is free with any check-in. Your name goes on page one.", RED, "#fff"],
     ["2", "Pick tonight's country", "Any of twenty-one. The boarding ticket prints with the gate on it.", YEL, INK],
@@ -112,7 +112,7 @@
         + '<span style="width:36px;height:36px;flex:none;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font:800 10px/1 \'Archivo\',sans-serif;transform:rotate(-8deg)">' + t[3] + '</span></div>'
         + '<h3 style="font:800 21px/1 \'Archivo\',sans-serif;letter-spacing:-.025em;margin:0">' + esc(t[2]) + '</h3>'
         + '<div style="display:flex;flex-direction:column;border-top:2px solid currentColor">' + featuresHtml + '</div>'
-        + '<span style="margin-top:auto;font:800 13px/1 \'Archivo\',sans-serif">' + (on ? "✓ Selected — see ladder above" : esc(t[7])) + '</span></button>';
+        + '<span style="margin-top:auto;font:800 13px/1 \'Archivo\',sans-serif">' + esc(t[7]) + '</span></button>';
     }).join("");
 
     if (window.initHoverStyles) window.initHoverStyles(document.body);

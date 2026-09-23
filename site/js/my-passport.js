@@ -6,7 +6,7 @@
 (function () {
   var RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
 
-  var LADDER_COLORS = [[YEL, INK], [YEL, INK], [INK, CREAM], [RED, "#fff"]];
+  var LADDER_COLORS = [[YEL, INK], [BLU, "#fff"], [INK, CREAM], [RED, "#fff"]];
 
   var MOCK_BOOKINGS = [
     { time: "25 SEP", what: "Lebanon · MED-12", detail: "Table 4 · 4 adults, 2 kids · 20:30" },
