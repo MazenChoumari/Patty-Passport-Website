@@ -23,6 +23,7 @@
   ::selection{background:rgba(236,48,19,.28)}
   @keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
   @keyframes ppDrift{0%{transform:translate3d(0,0,0) rotate(var(--r,0deg))}50%{transform:translate3d(0,-12px,0) rotate(calc(var(--r,0deg) + 1.2deg))}100%{transform:translate3d(0,0,0) rotate(var(--r,0deg))}}
+  @keyframes ppDash{0%{background-position:0 0}100%{background-position:44px 0}}
 </style>
 </head>
 <body>
@@ -205,12 +206,31 @@
   </div>
 </section>
 
-<section style="background:#1b1a19;color:#f7f3ec;border-bottom:2px solid #1b1a19;padding:36px 32px">
-  <div style="max-width:1120px;margin:0 auto">
-    <p style="font:800 15px/1.5 'Archivo',sans-serif;margin:0 0 10px;color:#f2b30c">Patty Passport is open to everyone — halal-friendly, kosher-sensitive, vegetarian, vegan, alcohol-free or alcohol-friendly.</p>
-    <p style="font:400 13.5px/1.6 'Archivo',sans-serif;color:#bab6b6;margin:0 0 14px;max-width:76ch">Every menu clearly tags pork, alcohol and dietary info rather than assuming one rule fits every guest — check with your crew host when booking any of the packages above.</p>
-    <p style="font:400 12.5px/1.6 'Archivo',sans-serif;color:#bab6b6;margin:0 0 4px">We offer 40–50 surface parking spaces around the building, with clear signage for each route.</p>
-    <p style="font:400 12.5px/1.6 'Archivo',sans-serif;color:#bab6b6;margin:0">Bus connections: lines L1, L3 and L7 stop at "Parque Tecnológico – Patty Passport," a short walk from our entrance.</p>
+<section style="background:#1b1a19;color:#f7f3ec;border-bottom:2px solid #1b1a19;padding:60px 0 66px">
+  <div style="max-width:1320px;margin:0 auto;padding:0 32px">
+    <h2 data-rv="up" style="font:800 clamp(28px,3.8vw,50px)/.96 'Archivo',sans-serif;letter-spacing:-.035em;margin:0 0 14px;max-width:18ch">EVERY GUEST HAS A ROUTE.</h2>
+    <p data-rv="up" data-rv-d="60" style="font:400 14.5px/1.6 'Archivo',sans-serif;color:#bab6b6;margin:0 0 20px;max-width:70ch">Patty Passport is open to everyone — halal-friendly, kosher-sensitive, vegetarian, vegan, alcohol-free or alcohol-friendly. No guest needs to fit the menu; the menu is built to fit the table.</p>
+    <div data-rv="up" data-rv-d="90" style="height:2px;background-image:repeating-linear-gradient(90deg,#f2b30c 0 22px,transparent 22px 44px);background-size:44px 2px;animation:ppDash 2.4s linear infinite;margin-bottom:30px" aria-hidden="true"></div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));border-top:2px solid rgba(247,243,236,.3);border-left:2px solid rgba(247,243,236,.3)">
+      <div data-rv="up" style="border-right:2px solid rgba(247,243,236,.3);border-bottom:2px solid rgba(247,243,236,.3);padding:24px 22px 26px;display:flex;flex-direction:column;gap:14px">
+        <span style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#f2b30c">Dietary &amp; service</span>
+        <div id="ev-diet-legend" style="display:flex;flex-wrap:wrap;gap:7px"></div>
+      </div>
+      <div data-rv="up" data-rv-d="60" style="border-right:2px solid rgba(247,243,236,.3);border-bottom:2px solid rgba(247,243,236,.3);padding:24px 22px 26px;display:flex;flex-direction:column;gap:14px">
+        <span style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#f2b30c">Clear information</span>
+        <p style="font:400 13px/1.6 'Archivo',sans-serif;color:#bab6b6;margin:0">Every menu tags pork, alcohol and dietary info directly on the item — nothing is assumed. Guests with serious or life-threatening allergies should confirm directly with the crew host before ordering; tags flag common concerns but don't replace that conversation.</p>
+        <div style="display:flex;align-items:center;gap:10px;padding-top:6px;border-top:1px solid rgba(247,243,236,.2)">
+          <span id="ev-tags-icon" style="width:22px;height:22px;flex:none;color:#f2b30c"></span>
+          <span style="font:600 11px/1.4 'Archivo',sans-serif;color:#f7f3ec">Dietary tags on every menu, every route</span>
+        </div>
+      </div>
+      <div data-rv="up" data-rv-d="120" style="border-right:2px solid rgba(247,243,236,.3);border-bottom:2px solid rgba(247,243,236,.3);padding:24px 22px 26px;display:flex;flex-direction:column;gap:14px">
+        <span style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#f2b30c">Getting here</span>
+        <div id="ev-transport-panel" style="display:flex;flex-direction:column;gap:0;border:1px solid rgba(247,243,236,.25)"></div>
+        <p style="font:400 11px/1.5 'Archivo',sans-serif;color:#7d7979;margin:0">Site plan, not confirmed infrastructure — parking capacity and bus access are planning assumptions for Gate One and will be verified against the final site design.</p>
+      </div>
+    </div>
   </div>
 </section>
 
