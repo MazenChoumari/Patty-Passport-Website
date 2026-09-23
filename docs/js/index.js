@@ -226,6 +226,19 @@
       renderGardenRouteFilters(data.ROUTES);
       renderGardenPlaques(data.COUNTRIES, data.ROUTES);
       if (window.initHoverStyles) window.initHoverStyles(document.getElementById("garden-route-filters"));
+      // The planting-key links (not the filter bar's own buttons) also
+      // scroll down to the plaque grid via their real href — this flash
+      // is the "you've arrived, this is the selected group" cue router.js's
+      // smooth-scroll alone doesn't give, since the filtered/dimmed state
+      // change happens instantly, before the scroll finishes.
+      if (btn.tagName === "A") {
+        var grid = document.getElementById("pp-garden-plaques");
+        if (grid) {
+          grid.classList.remove("pp-garden-flash");
+          void grid.offsetWidth;
+          grid.classList.add("pp-garden-flash");
+        }
+      }
     }
     document.body.addEventListener("click", onClick);
     if (window.PP_TRACK) window.PP_TRACK(function () { document.body.removeEventListener("click", onClick); });
