@@ -53,15 +53,21 @@
       + '</div>';
   }
 
-  function filterGroup(label, keys, kindKey, current, activeBg, activeFg) {
+  function filterGroup(label, keys, kindKey, current, activeBg, activeFg, showDivider) {
     var btns = keys.map(function (k) {
       var isActive = current === k[0];
       var bg = isActive ? activeBg : "transparent";
       var fg = isActive ? activeFg : INK;
-      return '<button type="button" data-filter="' + kindKey + '" data-value="' + k[0] + '" style="padding:9px 12px;background:' + bg + ';border:2px solid #1b1a19;color:' + fg + ';font:800 10.5px/1 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer">' + esc(k[1]) + '</button>';
+      return '<button type="button" data-filter="' + kindKey + '" data-value="' + k[0] + '" style="padding:8px 12px;background:' + bg + ';border:2px solid #1b1a19;color:' + fg + ';font:800 10.5px/1 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer">' + esc(k[1]) + '</button>';
     }).join("");
-    return '<div style="display:flex;flex-wrap:wrap;gap:7px;align-items:center">'
-      + '<span style="font:600 9px/1 \'Archivo\',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#7d7979">' + label + '</span>' + btns + '</div>';
+    // Each group is its own labelled block (label on its own line, above
+    // its buttons) with a vertical rule to its right on wide screens —
+    // Route/Course/Diet used to sit in one flat wrapping row with only a
+    // gap between them, which read as one jumbled line once buttons
+    // wrapped. Blocks wrap as whole units now, never mid-group.
+    return '<div style="display:flex;flex-direction:column;gap:8px;padding:2px 22px 2px 0;' + (showDivider ? "border-right:2px solid rgba(27,26,25,.16);margin-right:4px" : "") + '">'
+      + '<span style="font:800 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#7d7979">' + label + '</span>'
+      + '<div style="display:flex;flex-wrap:wrap;gap:7px">' + btns + '</div></div>';
   }
 
   function renderBoard() {
@@ -81,11 +87,11 @@
     var shown = countries.reduce(function (a, x) { return a + x.items.length; }, 0);
     var total = D.COUNTRIES.reduce(function (a, c) { return a + c.items.length; }, 0);
 
-    var filterBar = '<div data-sticky-under-nav="1" style="position:sticky;top:136px;z-index:40;background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:14px 44px;display:flex;flex-wrap:wrap;gap:14px;align-items:center">'
-      + filterGroup("Route", R_KEYS, "route", state.route, INK, CREAM)
-      + filterGroup("Course", G_KEYS, "group", state.group, RED, "#fff")
-      + filterGroup("Diet", D_KEYS, "diet", state.diet, BLU, "#fff")
-      + '<span style="margin-left:auto;font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979">' + shown + ' of ' + total + ' items shown</span>'
+    var filterBar = '<div data-sticky-under-nav="1" style="position:sticky;top:136px;z-index:40;background:#f7f3ec;border-bottom:2px solid #1b1a19;padding:16px 44px;display:flex;flex-wrap:wrap;gap:18px 0;align-items:flex-start">'
+      + filterGroup("Route", R_KEYS, "route", state.route, INK, CREAM, true)
+      + filterGroup("Course", G_KEYS, "group", state.group, RED, "#fff", true)
+      + filterGroup("Diet", D_KEYS, "diet", state.diet, BLU, "#fff", false)
+      + '<span style="margin-left:auto;align-self:center;font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979">' + shown + ' of ' + total + ' items shown</span>'
       + '</div>';
 
     var countriesHtml = countries.map(function (x) {
