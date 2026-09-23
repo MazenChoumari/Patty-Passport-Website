@@ -16,10 +16,17 @@
     { time: "11 OCT", what: "Morocco · MED-55", detail: "Table 9 · 2 travellers · 19:30" }
   ];
 
+  var ROUTE_ORDER = ["LEV", "AEG", "IBL", "ADR", "NAF"];
+
   var state = {
     modal: null, mode: "create", formError: null,
     user: null, avatarUrl: null, formType: "explorer",
-    stamps: []
+    stamps: [],
+    // Stamp-spread controls: filter by route, free-text search, and a
+    // single "armed" cell awaiting a second click before a stamp is
+    // actually removed (added stamps apply instantly — only removing an
+    // already-earned stamp needs the confirm step).
+    stampFilter: "ALL", stampSearch: "", pendingRemove: null
   };
 
   function syncFromAuth() {
@@ -132,15 +139,49 @@
         + '<div style="font:600 9.5px/1.45 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;margin-top:8px;opacity:.78">' + s.label + '</div></div>';
     }).join("");
 
-    var cellsHtml = countries.map(function (c) {
-      var on = state.stamps.indexOf(c.code) > -1;
-      var bg = on ? CREAM : "#efece6";
-      return '<button type="button" class="mp-cell" data-code="' + c.code + '" style="position:relative;background:' + bg + ';color:' + INK + ';aspect-ratio:1/1;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:9px;border:0;cursor:pointer;text-align:left" data-hover="background:#f2b30c;color:#1b1a19">'
-        + '<span style="font:800 14px/1 \'Archivo\',sans-serif">' + c.code.toUpperCase() + '</span>'
-        + '<span style="font:400 8.5px/1.2 \'Archivo\',sans-serif;letter-spacing:.06em;text-transform:uppercase;opacity:.72">' + esc(c.name) + '</span>'
-        + (on ? '<span style="position:absolute;top:8px;right:8px;width:40px;height:40px;border:2.5px solid #ec3013;color:#ec3013;display:flex;align-items:center;justify-content:center;font:800 9px/1 \'Archivo\',sans-serif;transform:rotate(-10deg)">' + c.stamp + '</span>' : "")
-        + '</button>';
-    }).join("");
+    var filterKeys = ["ALL"].concat(ROUTE_ORDER);
+    var filterBarHtml = '<div role="group" aria-label="Filter by route" style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px">' + filterKeys.map(function (k) {
+      var label = k === "ALL" ? "All routes" : (D.ROUTES[k] ? D.ROUTES[k].name : k);
+      var active = state.stampFilter === k;
+      return '<button type="button" data-stamp-filter="' + k + '" aria-pressed="' + (active ? "true" : "false") + '" style="padding:7px 11px;background:' + (active ? INK : "transparent") + ';border:2px solid #1b1a19;color:' + (active ? CREAM : INK) + ';font:800 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c;color:#1b1a19">' + esc(label) + '</button>';
+    }).join("") + '</div>';
+
+    var clearLabel = state.stampFilter === "ALL" ? "Clear all stamps" : "Clear " + (D.ROUTES[state.stampFilter] ? D.ROUTES[state.stampFilter].name : "route") + " stamps";
+    var actionBarHtml = '<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px">'
+      + '<label style="flex:1;min-width:170px">'
+      + '<span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Search countries</span>'
+      + '<input type="search" id="mp-stamp-search" value="' + esc(state.stampSearch) + '" placeholder="Search a country…" style="width:100%;padding:9px 11px;border:2px solid #1b1a19;background:#fff;font:600 12px/1.3 \'Archivo\',sans-serif;color:#1b1a19;outline:none" /></label>'
+      + '<button type="button" id="mp-stamp-select-all" style="padding:9px 12px;background:transparent;border:2px solid #1b1a19;color:#1b1a19;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap" data-hover="background:#1b1a19;color:#fff">Select all 21</button>'
+      + '<button type="button" id="mp-stamp-clear-route" style="padding:9px 12px;background:transparent;border:2px solid #ae1800;color:#ae1800;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap" data-hover="background:#ae1800;color:#fff">' + esc(clearLabel) + '</button>'
+      + '</div>';
+
+    var q = state.stampSearch.trim().toLowerCase();
+    var visibleCountries = countries.filter(function (c) {
+      if (state.stampFilter !== "ALL" && c.routeKey !== state.stampFilter) return false;
+      if (q && c.name.toLowerCase().indexOf(q) === -1 && c.code.toLowerCase().indexOf(q) === -1) return false;
+      return true;
+    });
+
+    var cellsHtml = !visibleCountries.length
+      ? '<div style="grid-column:1/-1;padding:24px;text-align:center;background:#efece6;font:600 12px/1.5 \'Archivo\',sans-serif;color:#7d7979">No countries match that search.</div>'
+      : visibleCountries.map(function (c) {
+        var on = state.stamps.indexOf(c.code) > -1;
+        var confirming = state.pendingRemove === c.code;
+        var bg = confirming ? "#fff" : (on ? CREAM : "#efece6");
+        if (confirming) {
+          return '<div class="mp-cell" data-code="' + c.code + '" style="position:relative;background:' + bg + ';color:' + INK + ';aspect-ratio:1/1;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;padding:8px;border:2px solid #ae1800;text-align:center">'
+            + '<span style="font:700 10px/1.3 \'Archivo\',sans-serif">Remove ' + esc(c.name) + ' stamp?</span>'
+            + '<span style="display:flex;gap:6px">'
+            + '<button type="button" data-confirm-remove="' + c.code + '" style="padding:5px 9px;background:#ae1800;color:#fff;border:0;font:800 9px/1 \'Archivo\',sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer" data-hover="background:#7a1200">Remove</button>'
+            + '<button type="button" data-cancel-remove="' + c.code + '" style="padding:5px 9px;background:transparent;color:' + INK + ';border:1.5px solid #1b1a19;font:800 9px/1 \'Archivo\',sans-serif;letter-spacing:.06em;text-transform:uppercase;cursor:pointer" data-hover="background:#1b1a19;color:#fff">Cancel</button>'
+            + '</span></div>';
+        }
+        return '<button type="button" class="mp-cell" data-stamp-toggle="' + c.code + '" aria-pressed="' + (on ? "true" : "false") + '" style="position:relative;background:' + bg + ';color:' + INK + ';aspect-ratio:1/1;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:9px;border:0;cursor:pointer;text-align:left" data-hover="background:#f2b30c;color:#1b1a19">'
+          + '<span style="font:800 14px/1 \'Archivo\',sans-serif">' + c.code.toUpperCase() + '</span>'
+          + '<span style="font:400 8.5px/1.2 \'Archivo\',sans-serif;letter-spacing:.06em;text-transform:uppercase;opacity:.72">' + esc(c.name) + '</span>'
+          + (on ? '<span style="position:absolute;top:8px;right:8px;width:40px;height:40px;border:2.5px solid #ec3013;color:#ec3013;display:flex;align-items:center;justify-content:center;font:800 9px/1 \'Archivo\',sans-serif;transform:rotate(-10deg)">' + c.stamp + '</span>' : "")
+          + '</button>';
+      }).join("");
 
     var ladderHtml = LADDER_DEFS.map(function (l) {
       var done = filled >= l[0];
@@ -183,7 +224,8 @@
       + '<div>'
       + '<div style="display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:14px">'
       + '<h2 style="font:800 clamp(22px,2.6vw,34px)/1 \'Archivo\',sans-serif;letter-spacing:-.03em;margin:0">YOUR STAMP SPREAD</h2>'
-      + '<span style="font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979">Tap a country to add or remove a stamp</span></div>'
+      + '<span style="font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979">Tap to add · tap again to remove</span></div>'
+      + filterBarHtml + actionBarHtml
       + '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:2px;background:rgba(27,26,25,.35);border:2px solid #1b1a19">' + cellsHtml + '</div>'
       + '</div>'
 
@@ -201,9 +243,24 @@
   function render() {
     var root = document.getElementById("mp-app");
     if (!root) return;
+    // Every state change re-renders the whole panel via innerHTML, which
+    // would normally steal focus/cursor position out of the search box
+    // on every keystroke — capture and restore it around the rebuild so
+    // typing a search term stays uninterrupted.
+    var active = document.activeElement;
+    var refocusId = active && active.id === "mp-stamp-search" ? active.id : null;
+    var selStart = refocusId ? active.selectionStart : null;
+    var selEnd = refocusId ? active.selectionEnd : null;
     root.innerHTML = modalHtml() + loggedOutHtml() + loggedInHtml();
     wireEvents(root);
     if (window.initHoverStyles) window.initHoverStyles(root);
+    if (refocusId) {
+      var el = document.getElementById(refocusId);
+      if (el) {
+        el.focus();
+        if (selStart != null && el.setSelectionRange) el.setSelectionRange(selStart, selEnd);
+      }
+    }
   }
 
   function wireEvents(root) {
@@ -268,21 +325,87 @@
       });
     }
 
-    Array.prototype.forEach.call(root.querySelectorAll(".mp-cell"), function (btn) {
+    Array.prototype.forEach.call(root.querySelectorAll("[data-stamp-filter]"), function (btn) {
       btn.addEventListener("click", function () {
-        var code = btn.getAttribute("data-code");
-        var i = state.stamps.indexOf(code);
-        if (i > -1) state.stamps.splice(i, 1); else state.stamps.push(code);
+        state.stampFilter = btn.getAttribute("data-stamp-filter");
+        state.pendingRemove = null;
+        render();
+      });
+    });
+
+    var search = root.querySelector("#mp-stamp-search");
+    if (search) search.addEventListener("input", function () {
+      state.stampSearch = search.value;
+      state.pendingRemove = null;
+      render();
+    });
+
+    var selectAll = root.querySelector("#mp-stamp-select-all");
+    if (selectAll) selectAll.addEventListener("click", function () {
+      var D = window.PP_DATA;
+      if (!D) return;
+      state.stamps = D.COUNTRIES.map(function (c) { return c.code; });
+      window.PP_AUTH.update({ stamps: state.stamps });
+      render();
+    });
+
+    var clearRoute = root.querySelector("#mp-stamp-clear-route");
+    if (clearRoute) clearRoute.addEventListener("click", function () {
+      var D = window.PP_DATA;
+      if (!D) return;
+      if (state.stampFilter === "ALL") {
+        state.stamps = [];
+      } else {
+        var routeCodes = D.COUNTRIES.filter(function (c) { return c.routeKey === state.stampFilter; }).map(function (c) { return c.code; });
+        state.stamps = state.stamps.filter(function (code) { return routeCodes.indexOf(code) === -1; });
+      }
+      state.pendingRemove = null;
+      window.PP_AUTH.update({ stamps: state.stamps });
+      render();
+    });
+
+    // Adding a stamp applies instantly (harmless, additive); removing an
+    // already-earned one arms a confirm step on that cell first instead
+    // of removing on the same click, so a stray tap can't erase a real
+    // stamp — the second click (or Cancel) resolves it.
+    Array.prototype.forEach.call(root.querySelectorAll("[data-stamp-toggle]"), function (btn) {
+      btn.addEventListener("click", function () {
+        var code = btn.getAttribute("data-stamp-toggle");
+        if (state.stamps.indexOf(code) > -1) {
+          state.pendingRemove = code;
+          render();
+          return;
+        }
+        state.stamps.push(code);
         window.PP_AUTH.update({ stamps: state.stamps });
         render();
       });
+    });
+
+    Array.prototype.forEach.call(root.querySelectorAll("[data-confirm-remove]"), function (btn) {
+      btn.addEventListener("click", function () {
+        var code = btn.getAttribute("data-confirm-remove");
+        var i = state.stamps.indexOf(code);
+        if (i > -1) state.stamps.splice(i, 1);
+        state.pendingRemove = null;
+        window.PP_AUTH.update({ stamps: state.stamps });
+        render();
+      });
+    });
+
+    Array.prototype.forEach.call(root.querySelectorAll("[data-cancel-remove]"), function (btn) {
+      btn.addEventListener("click", function () { state.pendingRemove = null; render(); });
     });
   }
 
   window.PP_READY(function () {
     syncFromAuth();
     if ((location.hash || "").toLowerCase() === "#join" && !state.user) { state.modal = true; state.mode = "create"; }
-    function onKeydown(e) { if (e.key === "Escape" && state.modal) { state.modal = null; render(); } }
+    function onKeydown(e) {
+      if (e.key !== "Escape") return;
+      if (state.modal) { state.modal = null; render(); }
+      else if (state.pendingRemove) { state.pendingRemove = null; render(); }
+    }
     document.addEventListener("keydown", onKeydown);
     if (window.PP_TRACK) window.PP_TRACK(function () { document.removeEventListener("keydown", onKeydown); });
     // Stay in sync with the account even if it changes from another open
