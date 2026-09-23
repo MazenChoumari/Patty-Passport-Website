@@ -85,6 +85,20 @@
       return svg(size, '<circle cx="6" cy="18" r="2.1" fill="' + c + '"/>'
         + '<circle cx="18" cy="6" r="2.1" fill="' + c + '"/>'
         + '<path d="M7.5 16.5c3-2 5-3.5 5.5-6c0.4-2 1.8-3.3 3.4-3.8" ' + s(c) + '/>');
+    },
+    // Group-menu dietary badges (events.html Country Night packages).
+    leafMark: function (size, c) {
+      return svg(size, '<path d="M5 19c-1-7 3-13.5 14-14.5c1 10-5 14.5-14 14.5Z" ' + s(c) + '/>'
+        + '<path d="M6 18c3-4 6-7 12.5-12.5" ' + s(c) + '/>');
+    },
+    chickenMark: function (size, c) {
+      return svg(size, '<path d="M9 6c3.5-1.8 7.2-0.2 8 3.4c0.7 3.2-1 5.8-4 8.4l-3.8 3.4l-1.6-1.7l2.6-2.9c-2.3 0.2-4.4-0.7-5.2-2.8c-1-2.6 0.7-5 4-7.8Z" ' + s(c) + '/>'
+        + '<circle cx="14.5" cy="9.3" r="1" fill="' + c + '"/>');
+    },
+    beefMark: function (size, c) {
+      return svg(size, '<path d="M4.5 9c1-2.6 3.6-4 7-4c4.3 0 8 2.6 8 6.4c0 3.6-3.3 6.4-7.4 6.4c-1 0-1.9-0.15-2.7-0.4c-0.5 1.4-1.7 2.4-3.4 2.4c-1.9 0-3-1.2-3-2.8c0-1.1 0.6-2 1.6-2.5c-0.7-1.6-0.8-3.6-0.1-5.5Z" ' + s(c) + '/>'
+        + '<circle cx="9.5" cy="10" r="1" fill="' + c + '"/>'
+        + '<circle cx="14" cy="12.3" r="1" fill="' + c + '"/>');
     }
   };
 
