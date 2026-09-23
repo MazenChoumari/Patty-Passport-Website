@@ -68,6 +68,18 @@
     return parts.join(" · ");
   }
 
+  // "My Passport" nav button doubles as a profile control once signed
+  // in: shows the demo account's first name and a small filled dot
+  // instead of the generic label, so a returning visitor can see at a
+  // glance that they're already signed in without opening the page.
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+  function profileHtml() {
+    const user = window.PP_AUTH && window.PP_AUTH.current();
+    if (!user) return "My Passport";
+    const first = (user.name || "Traveller").split(/\s+/)[0];
+    return '<span style="width:7px;height:7px;border-radius:50%;background:#f2b30c;flex:none"></span>' + esc(first) + "&rsquo;s Passport";
+  }
+
   function loadingDots() {
     return '<span style="display:flex;align-items:center;gap:3px;height:12px">'
       + '<span style="width:4px;height:4px;border-radius:50%;background:currentColor;animation:ppNavEq .9s ease-in-out infinite"></span>'
@@ -136,7 +148,7 @@
               ${state.musicLoading ? loadingDots() : (state.musicOn ? eqBars() : playIcon())}
               ${state.musicLoading ? "Loading…" : (state.musicOn ? "Playing" : (state.musicResumable ? "Resume the Mediterranean" : "Play the Mediterranean"))}
             </button>
-            <a href="my-passport.html" style="display:inline-flex;align-items:center;gap:8px;padding:10px 14px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap" data-hover="background:#ec3013">My Passport</a>
+            <a href="my-passport.html" style="display:inline-flex;align-items:center;gap:8px;padding:10px 14px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap" data-hover="background:#ec3013">${profileHtml()}</a>
             <button type="button" id="pp-nav-open" aria-expanded="${state.drawerOpen ? "true" : "false"}" aria-controls="pp-nav-drawer" style="display:inline-flex;align-items:center;gap:10px;padding:10px 13px;background:transparent;border:2px solid #1b1a19;color:#1b1a19;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c;border-color:#f2b30c" data-active="background:#ec3013;border-color:#ec3013;color:#fff">
               <span style="display:block;width:16px">
                 <span style="display:block;height:2px;background:currentColor;margin-bottom:3px"></span>
@@ -325,6 +337,14 @@
     // Confirms real playback state from js/music.js's actual YouTube
     // player, since the click above only sets an optimistic target — this
     // is what clears the "Loading…" state once audio genuinely starts.
+    // Keeps the "My Passport" profile control in sync with the demo
+    // account — including from another open tab signing in/out, via
+    // PP_AUTH's own "storage" event listener feeding back into onChange.
+    // Not wrapped in PP_TRACK: nav.js is a shared, never-torn-down
+    // script (see js/router.js's SHARED_SCRIPTS), so this subscription
+    // should live for the real page's lifetime, not be cleared on every
+    // SPA navigation the way a page-specific script's listeners are.
+    if (window.PP_AUTH) window.PP_AUTH.onChange(() => renderBar());
     window.addEventListener("pp-music-state", e => {
       state.musicLoading = false;
       state.musicOn = !!e.detail.playing;

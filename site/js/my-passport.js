@@ -1,8 +1,11 @@
 /* Patty Passport — My Passport page, ported from My-Passport.dc.html's
-   x-dc template + Component logic. Front-end mock only: "creating an
-   account" / "logging in" just flips local state.user, nothing is sent
-   anywhere and nothing persists across a reload. Stamps, photo, and
-   bookings are all in-memory mock state seeded from window.PP_DATA. */
+   x-dc template + Component logic. "Creating an account" / "logging in"
+   goes through window.PP_AUTH (js/auth.js) — a demo-only adapter that
+   stores one account as plain JSON in this browser's localStorage, with
+   no server, no password check and no real authentication. It persists
+   across reloads (so a stamp spread survives a refresh) but is honestly
+   labeled as a demo everywhere it's shown. Bookings/avatar stay
+   in-memory mock state; only the account + stamp spread persist. */
 (function () {
   var RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
 
@@ -14,11 +17,16 @@
   ];
 
   var state = {
-    modal: null, mode: "create",
+    modal: null, mode: "create", formError: null,
     user: null, avatarUrl: null, formType: "explorer",
-    // mock "already collected" stamps, seeded with real country codes from PP_DATA
-    stamps: ["lbn", "grc", "esp", "mar", "tur", "ita"]
+    stamps: []
   };
+
+  function syncFromAuth() {
+    var rec = window.PP_AUTH && window.PP_AUTH.current();
+    state.user = rec;
+    state.stamps = rec && Array.isArray(rec.stamps) ? rec.stamps : [];
+  }
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
@@ -50,18 +58,16 @@
         + '<label style="display:block;margin-bottom:16px">'
         + '<span style="display:block;font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:8px">Name</span>'
         + '<input id="mp-f-name" type="text" placeholder="Your name" style="width:100%;background:transparent;border:0;border-bottom:2px solid #1b1a19;color:#1b1a19;font:800 16px/1.3 \'Archivo\',sans-serif;padding:0 0 8px;outline:none" /></label>'
-        + '<label style="display:block;margin-bottom:16px">'
+        + '<label style="display:block;margin-bottom:6px">'
         + '<span style="display:block;font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:8px">Email</span>'
         + '<input id="mp-f-email" type="email" placeholder="you@example.com" style="width:100%;background:transparent;border:0;border-bottom:2px solid #1b1a19;color:#1b1a19;font:800 16px/1.3 \'Archivo\',sans-serif;padding:0 0 8px;outline:none" /></label>'
-        + '<label style="display:block;margin-bottom:16px">'
-        + '<span style="display:block;font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:8px">PIN</span>'
-        + '<input id="mp-f-pin" type="password" placeholder="4-digit PIN" style="width:100%;background:transparent;border:0;border-bottom:2px solid #1b1a19;color:#1b1a19;font:800 16px/1.3 \'Archivo\',sans-serif;padding:0 0 8px;outline:none" /></label>'
-      : '<label style="display:block;margin-bottom:16px">'
+      : '<label style="display:block;margin-bottom:6px">'
         + '<span style="display:block;font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:8px">Email</span>'
-        + '<input id="mp-f-email" type="email" placeholder="you@example.com" style="width:100%;background:transparent;border:0;border-bottom:2px solid #1b1a19;color:#1b1a19;font:800 16px/1.3 \'Archivo\',sans-serif;padding:0 0 8px;outline:none" /></label>'
-        + '<label style="display:block;margin-bottom:16px">'
-        + '<span style="display:block;font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:8px">PIN</span>'
-        + '<input id="mp-f-pin" type="password" placeholder="4-digit PIN" style="width:100%;background:transparent;border:0;border-bottom:2px solid #1b1a19;color:#1b1a19;font:800 16px/1.3 \'Archivo\',sans-serif;padding:0 0 8px;outline:none" /></label>';
+        + '<input id="mp-f-email" type="email" placeholder="you@example.com" style="width:100%;background:transparent;border:0;border-bottom:2px solid #1b1a19;color:#1b1a19;font:800 16px/1.3 \'Archivo\',sans-serif;padding:0 0 8px;outline:none" /></label>';
+
+    var errorHtml = state.formError
+      ? '<p style="font:700 12px/1.5 \'Archivo\',sans-serif;color:#ae1800;margin:0 0 14px;padding:9px 12px;border:1.5px solid #ae1800;background:rgba(174,24,0,.08)">' + esc(state.formError) + '</p>'
+      : "";
 
     return '<div style="position:fixed;inset:0;z-index:95;display:flex;align-items:center;justify-content:center;padding:24px;animation:ppFade .2s ease both">'
       + '<div id="mp-modal-scrim" style="position:absolute;inset:0;background:rgba(27,26,25,.68)"></div>'
@@ -73,11 +79,12 @@
       + '<div style="padding:26px 22px 24px">'
       + '<h2 style="font:800 30px/1 \'Archivo\',sans-serif;letter-spacing:-.035em;margin:0 0 8px">' + esc(title) + '</h2>'
       + '<p style="font:400 13.5px/1.55 \'Archivo\',sans-serif;color:#605d5d;margin:0 0 22px">' + esc(line) + '</p>'
+      + errorHtml
       + '<form id="mp-modal-form">' + fields
       + '<button type="submit" style="display:inline-flex;align-items:center;width:100%;margin-top:6px;padding:16px 18px;background:#ec3013;border:0;color:#fff;font:800 14.5px/1.1 \'Archivo\',sans-serif;cursor:pointer" data-hover="background:#1b1a19">' + esc(cta) + '<span style="margin-left:auto">→</span></button>'
       + '</form>'
       + '<button type="button" id="mp-modal-switch" style="display:block;width:100%;margin-top:14px;background:transparent;border:0;color:#ae1800;font:600 12.5px/1.4 \'Archivo\',sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer">' + esc(switchLabel) + '</button>'
-      + '<p style="font:400 11px/1.5 \'Archivo\',sans-serif;color:#7d7979;margin:16px 0 0">Front-end demo — no account is created and nothing is stored on a server.</p>'
+      + '<p style="font:400 11px/1.5 \'Archivo\',sans-serif;color:#7d7979;margin:16px 0 0">Demo account — stored only as plain data in this browser’s local storage, not on a server, with no password check. Not a real, secure account: don’t use a real password here.</p>'
       + '</div></div></div>';
   }
 
@@ -206,7 +213,7 @@
     var form = root.querySelector("#mp-modal-form");
     if (scrim) scrim.addEventListener("click", function () { state.modal = null; render(); });
     if (closeBtn) closeBtn.addEventListener("click", function () { state.modal = null; render(); });
-    if (switchBtn) switchBtn.addEventListener("click", function () { state.mode = state.mode === "create" ? "login" : "create"; render(); });
+    if (switchBtn) switchBtn.addEventListener("click", function () { state.mode = state.mode === "create" ? "login" : "create"; state.formError = null; render(); });
     Array.prototype.forEach.call(root.querySelectorAll("[data-form-type]"), function (btn) {
       btn.addEventListener("click", function () { state.formType = btn.getAttribute("data-form-type"); render(); });
     });
@@ -215,21 +222,37 @@
       var create = state.mode === "create";
       var nameInput = root.querySelector("#mp-f-name");
       var emailInput = root.querySelector("#mp-f-email");
-      var name = create && nameInput ? nameInput.value.trim() : "";
-      if (!name && emailInput && emailInput.value) name = emailInput.value.split("@")[0];
-      state.user = { name: name || "Traveller", passportType: create ? state.formType : (state.user ? state.user.passportType : "explorer") || "explorer" };
-      state.modal = null;
+      var email = emailInput ? emailInput.value.trim() : "";
+      state.formError = null;
+      if (create) {
+        var name = nameInput ? nameInput.value.trim() : "";
+        if (!name && email) name = email.split("@")[0];
+        window.PP_AUTH.signUp({ name: name || "Traveller", email: email, passportType: state.formType, stamps: [] });
+        syncFromAuth();
+        state.modal = null;
+      } else {
+        var rec = window.PP_AUTH.logIn(email);
+        if (!rec) {
+          state.formError = "No demo passport found on this browser for that email — this only resumes an account created on this device. Create one instead?";
+        } else {
+          syncFromAuth();
+          state.modal = null;
+        }
+      }
       render();
     });
 
     var openCreate = root.querySelector("#mp-open-create");
     var openLogin = root.querySelector("#mp-open-login");
-    if (openCreate) openCreate.addEventListener("click", function () { state.modal = true; state.mode = "create"; render(); });
-    if (openLogin) openLogin.addEventListener("click", function () { state.modal = true; state.mode = "login"; render(); });
+    if (openCreate) openCreate.addEventListener("click", function () { state.modal = true; state.mode = "create"; state.formError = null; render(); });
+    if (openLogin) openLogin.addEventListener("click", function () { state.modal = true; state.mode = "login"; state.formError = null; render(); });
 
     var logout = root.querySelector("#mp-logout");
     if (logout) logout.addEventListener("click", function () {
-      state.user = null; state.modal = null; render();
+      window.PP_AUTH.logOut();
+      syncFromAuth();
+      state.modal = null;
+      render();
     });
 
     var avatarBtn = root.querySelector("#mp-avatar-btn");
@@ -250,16 +273,26 @@
         var code = btn.getAttribute("data-code");
         var i = state.stamps.indexOf(code);
         if (i > -1) state.stamps.splice(i, 1); else state.stamps.push(code);
+        window.PP_AUTH.update({ stamps: state.stamps });
         render();
       });
     });
   }
 
   window.PP_READY(function () {
-    if ((location.hash || "").toLowerCase() === "#join") { state.modal = true; state.mode = "create"; }
+    syncFromAuth();
+    if ((location.hash || "").toLowerCase() === "#join" && !state.user) { state.modal = true; state.mode = "create"; }
     function onKeydown(e) { if (e.key === "Escape" && state.modal) { state.modal = null; render(); } }
     document.addEventListener("keydown", onKeydown);
     if (window.PP_TRACK) window.PP_TRACK(function () { document.removeEventListener("keydown", onKeydown); });
+    // Stay in sync with the account even if it changes from another open
+    // tab (sign out there, a stamp added there) — re-syncs and re-renders
+    // this page live instead of only reflecting whatever was true when
+    // this page first loaded.
+    if (window.PP_AUTH) {
+      var offAuth = window.PP_AUTH.onChange(function () { syncFromAuth(); render(); });
+      if (window.PP_TRACK) window.PP_TRACK(offAuth);
+    }
     render();
     if (!window.PP_DATA) {
       var poll = setInterval(function () { if (window.PP_DATA) { clearInterval(poll); render(); } }, 60);
