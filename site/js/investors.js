@@ -260,20 +260,15 @@
     ["Goiko", 72, 55], ["SteakBurger", 80, 42]
   ];
 
-  // The site's own logo mark (same block-built passport icon nav.js draws
-  // at 44px in the header) — replaces the old Patty Tooty mascot marker,
-  // which was never the brand mark and didn't belong on a positioning map.
-  function siteLogoMark(size) {
-    var s = size || 40, k = s / 44;
-    function px(n) { return (n * k).toFixed(1) + "px"; }
-    return '<span style="position:relative;width:' + px(44) + ';height:' + px(44) + ';flex:none;background:#1b1a19;display:block;border:2px solid #f7f3ec">'
-      + '<span style="position:absolute;left:' + px(9) + ';top:' + px(9) + ';width:' + px(26) + ';height:' + px(8) + ';background:#f2b30c;display:block"></span>'
-      + '<span style="position:absolute;left:' + px(13) + ';top:' + px(11) + ';width:' + px(3) + ';height:' + px(3) + ';background:#1b1a19;display:block"></span>'
-      + '<span style="position:absolute;left:' + px(20) + ';top:' + px(11) + ';width:' + px(3) + ';height:' + px(3) + ';background:#1b1a19;display:block"></span>'
-      + '<span style="position:absolute;left:' + px(27) + ';top:' + px(11) + ';width:' + px(3) + ';height:' + px(3) + ';background:#1b1a19;display:block"></span>'
-      + '<span style="position:absolute;left:' + px(9) + ';top:' + px(19) + ';width:' + px(26) + ';height:' + px(3) + ';background:#f7f3ec;display:block"></span>'
-      + '<span style="position:absolute;left:' + px(9) + ';top:' + px(23) + ';width:' + px(26) + ';height:' + px(6) + ';background:#ec3013;display:block"></span>'
-      + '<span style="position:absolute;left:' + px(9) + ';top:' + px(30) + ';width:' + px(26) + ';height:' + px(6) + ';background:#f2b30c;display:block"></span>'
+  // The "complete brand variant" marker: centred Patty Tooty mascot, a
+  // visible "21" stamp, yellow marker treatment, and a black terminal-grid
+  // motif behind it — distinct enough from the plain competitor dots
+  // below not to be mistaken for one, and never the bare/side-facing
+  // mascot glyph on its own.
+  function pattyPassportMarker(size) {
+    var s = size || 52;
+    return '<span style="position:relative;width:' + s + 'px;height:' + s + 'px;flex:none;display:flex;align-items:center;justify-content:center;background:#f2b30c;border:2px solid #1b1a19;background-image:repeating-linear-gradient(0deg,rgba(27,26,25,.18) 0 1px,transparent 1px 9px),repeating-linear-gradient(90deg,rgba(27,26,25,.18) 0 1px,transparent 1px 9px)">'
+      + (window.PP_TOOTY_ICON_STAMPED ? window.PP_TOOTY_ICON_STAMPED(Math.round(s * 0.6), "#1b1a19", "#ec3013", "#1b1a19", "#f2b30c") : "")
       + '</span>';
   }
 
@@ -281,7 +276,7 @@
     var root = document.getElementById("inv-positioning-map");
     if (!root) return;
     var pp = '<div style="position:absolute;left:62%;top:24%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:7px;z-index:2">'
-      + siteLogoMark(40)
+      + pattyPassportMarker(52)
       + '<span style="font:800 11px/1.15 \'Archivo\',sans-serif;color:#f2b30c;white-space:nowrap;text-align:center">PATTY PASSPORT<br><span style="font:600 8.5px/1.3 \'Archivo\',sans-serif;color:#bab6b6;letter-spacing:.06em;text-transform:uppercase">Fair price · high immersion</span></span>'
       + '</div>';
     var competitors = COMPETITORS.map(function (c) {
