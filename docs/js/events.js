@@ -35,22 +35,22 @@
 
   var UPCOMING = [
     { key: "dabke", month: "October", date: "2026-10-16T19:30:00", route: "LEV", routeName: "Levant",
-      title: "Levant Dabke Night", line: "Shared-table percussion and a dabke line that pulls the whole room in.",
+      title: "Levant Dabke Night", line: "The whole room links arms and joins the line — live percussion, a packed floor, a night that refuses to sit still.",
       fact: "Dabke is a communal line dance from the Levant, tied to weddings, celebrations and group energy — in Palestine it's recognised on UNESCO's list of intangible cultural heritage.",
       tiers: [["Entry only", "€10"], ["Set menu", "€24"], ["Premium set", "€29"]],
       setLine: "Set menu: 1 drink, 1 burger, fries, dessert." },
     { key: "harbour", month: "November", date: "2026-11-13T19:30:00", route: "ADR", routeName: "Adriatic",
-      title: "Adriatic Harbour Songs", line: "Candlelit harbour harmonies and mountain echo, slower and closer to the table.",
+      title: "Adriatic Harbour Songs", line: "Candlelight, close harmony and a harbour hush — the kind of night that makes the whole table stop talking to listen.",
       fact: "Klapa — close-harmony singing carried down the Adriatic coast — is recognised by UNESCO as intangible cultural heritage.",
       tiers: [["Entry only", "€12"], ["Dinner menu", "€27"]],
       setLine: "Dinner menu: drink, burger, fries, dessert." },
     { key: "tribute", month: "December", date: "2026-12-19T20:00:00", route: null, routeName: "Tribute night",
-      title: "King of Pop Tribute Night", line: "Choreography, iconic-pop energy and a premium-feel evening — a tribute, not an official event.",
+      title: "King of Pop Tribute Night", line: "Full choreography, the hits, the moonwalk — an electric, sold-out-feeling night built entirely around the legend's music. Tribute performance only; no official affiliation.",
       fact: "Staged as a respectful tribute only, with no official affiliation — including a nod to the 1992 Heal the World Foundation's humanitarian legacy.",
       tiers: [["Entry only", "€15"], ["Set menu", "€25"], ["Premium seating", "€35"]],
       setLine: "Set menu: entry, drink, burger, fries, dessert." },
     { key: "aegean", month: "January", date: "2027-01-22T19:30:00", route: "AEG", routeName: "Aegean",
-      title: "Aegean After Dark", line: "Rebetiko strings and island atmosphere to open the new year's route calendar.",
+      title: "Aegean After Dark", line: "Rebetiko strings, island night air and the first big route night of the new year — this one fills fast.",
       fact: "Rebetiko — Greece's rebel folk music — is recognised by UNESCO as intangible cultural heritage.",
       tiers: [["Entry only", "€10"], ["Dinner menu", "€26"]],
       setLine: "Dinner menu: drink, burger, fries, dessert." }
@@ -87,8 +87,21 @@
       var countdownHtml = parts
         ? '<div data-countdown="' + e.key + '" style="font:800 13px/1 \'Archivo\',sans-serif;letter-spacing:.02em">Departs in ' + parts.d + 'd · ' + String(parts.h).padStart(2, "0") + 'h · ' + String(parts.m).padStart(2, "0") + 'm</div>'
         : '<div style="font:800 13px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;opacity:.6">Departed</div>';
+      // Poster strip: big departure date + a performance-motif mark
+      // (vinyl disc for the three music nights, a medal/spotlight mark
+      // for the tribute) instead of the card opening straight into text
+      // — a mood visual without inventing a photo of an event that
+      // hasn't happened yet.
+      var posterMark = e.key === "tribute"
+        ? (window.PP_ICON ? window.PP_ICON("medal", 40, route.fg) : "")
+        : '<span style="display:block;width:46px;height:46px;flex:none;border-radius:50%;background:repeating-radial-gradient(circle,' + route.fg + ' 0 2px,transparent 2px 5px);position:relative"><span style="position:absolute;inset:0;margin:auto;width:12px;height:12px;border-radius:50%;background:' + route.fg + '"></span></span>';
+      var posterHtml = '<div style="position:relative;margin:-22px -20px 4px;padding:18px 20px 16px;background:rgba(0,0,0,.16);display:flex;align-items:center;justify-content:space-between;gap:12px">'
+        + '<span><span style="display:block;font:800 34px/1 \'Archivo\',sans-serif;letter-spacing:-.03em">' + target.getDate() + '</span><span style="display:block;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.18em;text-transform:uppercase;opacity:.75">' + target.toLocaleDateString("en-GB", { month: "short" }) + '</span></span>'
+        + posterMark
+        + '</div>';
       return '<div data-rv="up" data-rv-d="' + (i * 70) + '" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:' + route.bg + ';color:' + route.fg + ';padding:22px 20px 24px;display:flex;flex-direction:column;gap:11px;position:relative' + (parts ? "" : ";opacity:.6") + '">'
-        + (isNext ? '<span style="position:absolute;right:0;top:0;padding:5px 9px;background:#1b1a19;color:#f2b30c;font:800 9px/1 \'Archivo\',sans-serif;letter-spacing:.14em">NEXT UP</span>' : "")
+        + (isNext ? '<span style="position:absolute;right:0;top:0;padding:5px 9px;background:#1b1a19;color:#f2b30c;font:800 9px/1 \'Archivo\',sans-serif;letter-spacing:.14em;z-index:1">NEXT UP</span>' : "")
+        + posterHtml
         + '<span style="font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75">' + esc(e.month) + ' · ' + esc(dateLabel) + '</span>'
         + '<h3 style="font:800 22px/1.05 \'Archivo\',sans-serif;letter-spacing:-.025em;margin:0">' + esc(e.title) + '</h3>'
         + '<p style="font:400 12.5px/1.5 \'Archivo\',sans-serif;margin:0;opacity:.9">' + esc(e.line) + '</p>'
@@ -96,7 +109,7 @@
         + '<p style="font:400 11px/1.4 \'Archivo\',sans-serif;margin:0;opacity:.7">' + esc(e.setLine) + '</p>'
         + '<p style="font:400 11.5px/1.5 \'Archivo\',sans-serif;font-style:italic;margin:0;opacity:.85;border-top:1px solid rgba(27,26,25,.14);padding-top:10px">' + esc(e.fact) + '</p>'
         + countdownHtml
-        + '<a href="#enquiry" data-enquire-pkg="' + esc(e.title) + '" style="margin-top:6px;display:inline-flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase" data-hover="background:#ec3013">Reserve a seat<span>→</span></a>'
+        + '<a href="#enquiry" data-enquire-pkg="' + esc(e.title) + '" style="margin-top:auto;padding-top:6px;display:inline-flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase" data-hover="background:#ec3013">Reserve a seat<span>→</span></a>'
         + '</div>';
     }).join("");
 
