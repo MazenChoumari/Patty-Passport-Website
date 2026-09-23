@@ -252,13 +252,37 @@
      top/bottom captions around the box already name both spectrums, so
      no extra tick labels are layered on top of the grid to collide with
      them. ── */
-  // Illustrative category-level estimates only (see the page's own
-  // disclaimer above the map) — not published or verified competitor data.
-  var COMPETITORS = [
-    ["McDonald's", 10, 90], ["Burger King", 22, 92], ["Carl's Jr", 16, 78],
-    ["TGB", 34, 70], ["VICIO", 46, 60], ["Five Guys", 58, 78],
-    ["Goiko", 72, 55], ["SteakBurger", 80, 42]
-  ];
+  // Internal category hypotheses only — directional placements the team
+  // believes are roughly right based on public brand format/pricing, NOT
+  // published market research, survey data or verified competitor
+  // figures. Two axis pairings are offered (state.posView) so the same
+  // named set can be read against price/immersion or against
+  // convenience/menu-breadth, since Patty Passport's actual point of
+  // difference — 21 destinations on one menu, not a faster single-cuisine
+  // format — only shows up on the second one.
+  var POSITIONING_VIEWS = {
+    price: {
+      xLabel: "Everyday value · price · premium price →",
+      yLabel: "↑ More immersive destination experience",
+      ppPos: [62, 24], ppLine: "Fair price · high immersion",
+      points: [
+        ["McDonald's", 10, 90], ["Burger King", 22, 92], ["Carl's Jr", 16, 78],
+        ["TGB", 34, 70], ["VICIO", 46, 60], ["Five Guys", 58, 78],
+        ["Goiko", 72, 55], ["SteakBurger", 80, 42]
+      ]
+    },
+    breadth: {
+      xLabel: "Grab-and-go speed · sit-down destination experience →",
+      yLabel: "↑ More menu breadth (single cuisine → 21 destinations)",
+      ppPos: [72, 20], ppLine: "Sit-down experience · widest menu",
+      points: [
+        ["McDonald's", 8, 88], ["Burger King", 14, 86], ["Carl's Jr", 20, 82],
+        ["TGB", 30, 72], ["VICIO", 38, 68], ["Five Guys", 45, 75],
+        ["Goiko", 62, 60], ["SteakBurger", 68, 58]
+      ]
+    }
+  };
+  state.posView = "price";
 
   // The "complete brand variant" marker: centred Patty Tooty mascot, a
   // visible "21" stamp, yellow marker treatment, and a black terminal-grid
@@ -275,11 +299,29 @@
   function renderPositioning() {
     var root = document.getElementById("inv-positioning-map");
     if (!root) return;
-    var pp = '<div style="position:absolute;left:62%;top:24%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:7px;z-index:2">'
+    var view = POSITIONING_VIEWS[state.posView] || POSITIONING_VIEWS.price;
+
+    var tabs = document.getElementById("inv-positioning-tabs");
+    if (tabs) {
+      tabs.innerHTML = [["price", "Price × immersion"], ["breadth", "Convenience × menu breadth"]].map(function (t) {
+        var on = state.posView === t[0];
+        return '<button type="button" data-pos-view="' + t[0] + '" style="padding:8px 12px;background:' + (on ? "#f2b30c" : "transparent") + ';border:2px solid #f2b30c;color:' + (on ? "#1b1a19" : "#f2b30c") + ';font:800 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.08em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c;color:#1b1a19">' + t[1] + '</button>';
+      }).join("");
+      Array.prototype.forEach.call(tabs.querySelectorAll("[data-pos-view]"), function (btn) {
+        btn.addEventListener("click", function () { state.posView = btn.getAttribute("data-pos-view"); renderPositioning(); });
+      });
+    }
+
+    var xLabelEl = document.getElementById("inv-positioning-xlabel");
+    var yLabelEl = document.getElementById("inv-positioning-ylabel");
+    if (xLabelEl) xLabelEl.textContent = view.xLabel;
+    if (yLabelEl) yLabelEl.textContent = view.yLabel;
+
+    var pp = '<div style="position:absolute;left:' + view.ppPos[0] + '%;top:' + view.ppPos[1] + '%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:7px;z-index:2">'
       + pattyPassportMarker(52)
-      + '<span style="font:800 11px/1.15 \'Archivo\',sans-serif;color:#f2b30c;white-space:nowrap;text-align:center">PATTY PASSPORT<br><span style="font:600 8.5px/1.3 \'Archivo\',sans-serif;color:#bab6b6;letter-spacing:.06em;text-transform:uppercase">Fair price · high immersion</span></span>'
+      + '<span style="font:800 11px/1.15 \'Archivo\',sans-serif;color:#f2b30c;white-space:nowrap;text-align:center">PATTY PASSPORT<br><span style="font:600 8.5px/1.3 \'Archivo\',sans-serif;color:#bab6b6;letter-spacing:.06em;text-transform:uppercase">' + esc(view.ppLine) + '</span></span>'
       + '</div>';
-    var competitors = COMPETITORS.map(function (c) {
+    var competitors = view.points.map(function (c) {
       return '<div style="position:absolute;left:' + c[1] + '%;top:' + c[2] + '%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px">'
         + '<span style="width:8px;height:8px;border-radius:50%;background:rgba(247,243,236,.4);border:1.5px solid rgba(247,243,236,.7)"></span>'
         + '<span style="font:600 8.5px/1.1 \'Archivo\',sans-serif;color:#bab6b6;white-space:nowrap">' + esc(c[0]) + '</span>'
