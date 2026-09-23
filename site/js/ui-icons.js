@@ -14,23 +14,47 @@
   function s(color) { return 'stroke="' + color + '" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"'; }
 
   var ICONS = {
-    // Passport-type badges — a booklet with a distinct emblem per type.
+    // Passport-type badges — each is the same booklet base (a rect + spine
+    // line, matching the site's other passport glyphs) with a distinct
+    // composition on the cover so the three types read apart even at a
+    // small badge size, not just by their differently-shaped emblem:
+    // Junior gets a booklet + a stuck-on sticker + a pencil drawing a
+    // route line; Explorer gets a single passport + a compass + a lone
+    // traveller silhouette; Family gets one shared passport + several
+    // small figures + a route line joining them underfoot.
     passportJunior: function (size, c) {
       return svg(size, '<rect x="5" y="3" width="14" height="18" rx="1.6" ' + s(c) + '/>'
         + '<line x1="5" y1="3" x2="5" y2="21" ' + s(c) + '/>'
-        + '<path d="M12 9 L13.1 11.3 L15.6 11.6 L13.8 13.3 L14.3 15.8 L12 14.5 L9.7 15.8 L10.2 13.3 L8.4 11.6 L10.9 11.3 Z" fill="' + c + '"/>');
+        // sticker, stuck on at an angle near the top corner
+        + '<path d="M15 5.5 L15.6 6.9 L17.1 7.1 L16 8.1 L16.3 9.6 L15 8.9 L13.7 9.6 L14 8.1 L12.9 7.1 L14.4 6.9 Z" fill="' + c + '"/>'
+        // pencil sketching a short dashed route line across the lower cover
+        + '<path d="M7.3 17.6 L11.6 15.2" ' + s(c) + ' stroke-dasharray="1.6 1.7"/>'
+        + '<path d="M11.6 15.2 L13.1 14.3 L12.5 16 Z" fill="' + c + '"/>');
     },
     passportExplorer: function (size, c) {
       return svg(size, '<rect x="5" y="3" width="14" height="18" rx="1.6" ' + s(c) + '/>'
         + '<line x1="5" y1="3" x2="5" y2="21" ' + s(c) + '/>'
-        + '<circle cx="12" cy="12" r="3.4" ' + s(c) + '/>'
-        + '<path d="M13.6 10.4 L12.6 12.6 L10.4 13.6 L11.4 11.4 Z" fill="' + c + '"/>');
+        // compass, upper cover
+        + '<circle cx="13" cy="9.4" r="2.7" ' + s(c) + '/>'
+        + '<path d="M14.3 8 L13.4 9.7 L11.7 10.6 L12.6 8.9 Z" fill="' + c + '"/>'
+        // single traveller silhouette, lower-left of the cover
+        + '<circle cx="8.6" cy="15.6" r="1.15" fill="' + c + '"/>'
+        + '<path d="M6.9 19.3 C6.9 17.1 10.3 17.1 10.3 19.3 Z" fill="' + c + '"/>');
     },
     passportFamily: function (size, c) {
       return svg(size, '<rect x="5" y="3" width="14" height="18" rx="1.6" ' + s(c) + '/>'
         + '<line x1="5" y1="3" x2="5" y2="21" ' + s(c) + '/>'
-        + '<circle cx="10" cy="11" r="2" fill="' + c + '"/>'
-        + '<circle cx="14.2" cy="12.6" r="2" fill="' + c + '" opacity=".55"/>');
+        // three small figures sharing the one cover
+        + '<circle cx="9.3" cy="9.6" r="1" fill="' + c + '"/>'
+        + '<path d="M7.9 12.9 C7.9 11 10.7 11 10.7 12.9 Z" fill="' + c + '"/>'
+        + '<circle cx="13.7" cy="8.7" r="1.1" fill="' + c + '"/>'
+        + '<path d="M12.1 12.3 C12.1 10.2 15.3 10.2 15.3 12.3 Z" fill="' + c + '"/>'
+        + '<circle cx="16.6" cy="10.1" r="0.85" fill="' + c + '" opacity=".8"/>'
+        + '<path d="M15.4 12.9 C15.4 11.4 17.8 11.4 17.8 12.9 Z" fill="' + c + '" opacity=".8"/>'
+        // one route line joining everyone underfoot
+        + '<path d="M7.8 16.6 L17.4 16.6" ' + s(c) + '/>'
+        + '<circle cx="7.8" cy="16.6" r="0.9" fill="' + c + '"/>'
+        + '<circle cx="17.4" cy="16.6" r="0.9" fill="' + c + '"/>');
     },
     // Junior Explorer Kit.
     booklet: function (size, c) {

@@ -67,7 +67,8 @@
     document.getElementById("rw-type-tabs").innerHTML = Object.keys(D.PASSPORT_TYPES).map(function (key) {
       var t = D.PASSPORT_TYPES[key];
       var on = state.passportType === key;
-      return '<button type="button" data-passport-type="' + key + '" style="padding:10px 14px;background:' + (on ? INK : "transparent") + ';border:2px solid #1b1a19;color:' + (on ? "#f7f3ec" : INK) + ';font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c;color:#1b1a19">' + t.name + '</button>';
+      var iconHtml = window.PP_ICON ? window.PP_ICON("passport" + key.charAt(0).toUpperCase() + key.slice(1), 16, "currentColor") : "";
+      return '<button type="button" data-passport-type="' + key + '" aria-pressed="' + (on ? "true" : "false") + '" style="display:inline-flex;align-items:center;gap:8px;padding:10px 14px;background:' + (on ? INK : "transparent") + ';border:2px solid #1b1a19;color:' + (on ? "#f7f3ec" : INK) + ';font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c;color:#1b1a19">' + iconHtml + t.name + '</button>';
     }).join("");
     document.getElementById("rw-type-tagline").textContent = type.tagline;
 
