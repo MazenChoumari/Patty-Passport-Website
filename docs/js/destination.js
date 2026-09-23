@@ -73,7 +73,7 @@
     document.getElementById("dp-order-link").querySelector("span").textContent = "Order the " + d.heroItem.name.replace(" Burger", "");
     document.getElementById("dp-stamp-link").style.color = route.fg;
     document.getElementById("dp-stamp-link").querySelector("span").textContent = "Collect stamp " + d.stamp;
-    document.getElementById("dp-hero-slot").querySelector("span").textContent = d.name + " — its most recognisable street or coast";
+    document.getElementById("dp-hero-slot").innerHTML = '<img src="images/destinations/' + d.code + '_hero.jpg" alt="' + esc(d.name) + ' — its most recognisable street or coast" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">';
     document.getElementById("dp-stamp-badge").textContent = d.stamp;
     document.getElementById("dp-stamp-name").textContent = d.name.toUpperCase();
     document.getElementById("dp-hero-caption").textContent = d.name + " · " + route.name + " Route · gate " + d.med;
@@ -112,7 +112,7 @@
         + '<span style="flex:1"><span style="display:block;font:800 16px/1.2 \'Archivo\',sans-serif;letter-spacing:-.015em;margin-bottom:5px">' + esc(f[0]) + '</span>'
         + '<span style="display:block;font:400 13px/1.5 \'Archivo\',sans-serif;color:#605d5d">' + esc(f[1]) + '</span></span></div>';
     }).join("");
-    document.getElementById("dp-nature-slot").querySelector("span").textContent = d.nature;
+    document.getElementById("dp-nature-slot").innerHTML = '<img src="images/destinations/' + d.code + '_nature.jpg" alt="' + esc(d.nature) + '" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">';
 
     var hero = d.heroItem;
     document.getElementById("dp-dish-slot").querySelector("span").textContent = hero.name + " — plated, close up";

@@ -46,7 +46,7 @@
       var route = routes[c.routeKey];
       return '<a href="destination.html#' + c.code + '" class="pp-dst-card" style="display:flex;flex-direction:column;border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;text-decoration:none;color:#1b1a19;background:#f7f3ec;transition:background .2s ease" data-hover="background:#fff">'
         + '<div style="position:relative;height:210px;border-bottom:2px solid #1b1a19">'
-        + '<div class="pp-placeholder" style="position:absolute;inset:0"><span>' + esc(c.name) + ' — street scene or landscape</span></div>'
+        + '<img src="images/destinations/' + c.code + '_card.jpg" alt="' + esc(c.name) + ' — street scene or landscape" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">'
         + '<span style="position:absolute;left:0;top:0;padding:7px 10px;background:' + route.bg + ';color:' + route.fg + ';font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.16em;pointer-events:none">' + esc(route.name.toUpperCase()) + '</span>'
         + '<span style="position:absolute;right:10px;bottom:10px;width:46px;height:46px;border:2px solid #f7f3ec;background:rgba(27,26,25,.75);color:#f7f3ec;display:flex;align-items:center;justify-content:center;font:800 11px/1 \'Archivo\',sans-serif;transform:rotate(-9deg);pointer-events:none">' + c.stamp + '</span>'
         + '</div>'
