@@ -20,6 +20,7 @@
   a{color:#ae1800;text-underline-offset:3px}
   a:hover{color:#ec3013}
   :focus-visible{outline:2px solid #ec3013;outline-offset:2px}
+  @keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
 </style>
 </head>
 <body>
@@ -60,6 +61,20 @@
   </div>
 </section>
 
+<!-- ── Join the crew — application flow ── -->
+<section id="cr-apply" style="background:#2b76c9;color:#fff;padding:64px 0 0">
+  <div style="max-width:1000px;margin:0 auto;padding:0 32px 52px">
+    <div style="display:inline-flex;align-items:center;gap:9px;background:#1b1a19;color:#f2b30c;padding:7px 12px;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px">
+      <span style="width:7px;height:7px;background:#f2b30c;animation:ppBlink 1.3s steps(1) infinite"></span>Hiring now · crew desk open
+    </div>
+    <h2 style="font:800 clamp(32px,4.6vw,58px)/.94 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 14px;max-width:18ch">JOIN THE CREW.</h2>
+    <p style="font:400 15.5px/1.6 'Archivo',sans-serif;color:rgba(255,255,255,.85);margin:0 0 26px;max-width:64ch">Guest-facing, kitchen or route-night — every seat on the roster starts the same way. Pick a role, tell us about you, and the crew desk takes it from there.</p>
+    <div id="cr-apply-perks" style="display:flex;flex-wrap:wrap;gap:9px;margin-bottom:24px"></div>
+    <div id="cr-apply-roles" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+  </div>
+  <div id="cr-apply-panel" style="background:#f7f3ec;color:#1b1a19;border-top:2px solid #1b1a19;border-bottom:2px solid #1b1a19"></div>
+</section>
+
 </main>
 
 <div id="pp-footer"></div>
@@ -77,6 +92,7 @@
 <script src="js/nav.js?v=20260921c"></script>
 <script src="js/footer.js?v=20260921c"></script>
 <script src="js/crew.js?v=20260921c"></script>
+<script src="js/careers.js?v=20260921c"></script>
 <script src="js/bag.js?v=20260921c"></script>
 <script src="js/patty-tooty-widget.js?v=20260921c"></script>
 </body>
