@@ -98,22 +98,21 @@
 <section style="background:#ec3013;color:#fff;padding:0 0 68px">
   <div data-rv="up" style="display:flex;align-items:center;gap:9px;max-width:1240px;margin:0 auto;padding:22px 32px 0">
     <span style="width:7px;height:7px;flex:none;background:#1b1a19;animation:ppBlink 1.3s steps(1) infinite"></span>
-    <span style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#1b1a19">Final call · stamp desk open now</span>
+    <span style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#1b1a19">Final call · stamp desk</span>
+    <span id="rw-desk-status" style="font:800 10px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:4px 8px;border:1.5px solid #1b1a19"></span>
   </div>
-  <div style="max-width:1240px;margin:20px auto 0;padding:0 32px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:26px">
+  <div class="pp-2col" style="max-width:1240px;margin:20px auto 0;padding:0 32px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(280px,.8fr);gap:36px;align-items:end">
     <div>
       <h2 data-rv="up" data-rv-d="40" style="font:800 clamp(30px,4.4vw,62px)/.93 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 14px;max-width:16ch">YOUR FIRST STAMP IS WAITING.</h2>
-      <p data-rv="up" data-rv-d="90" style="font:400 15.5px/1.55 'Archivo',sans-serif;margin:0;max-width:44ch">Ask at the desk on your next visit. The book is free, the stamps are earned, and the ladder never resets.</p>
-    </div>
-    <div data-rv="up" data-rv-d="150" style="display:flex;flex-wrap:wrap;align-items:center;gap:18px">
-      <span style="position:relative;width:46px;height:46px;flex:none;border:2px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;transform:rotate(-9deg)">
-        <span style="position:absolute;inset:-3px;border:2px solid #fff;border-radius:50%;animation:ppPulse 2.6s ease-out infinite"></span>
-        <span style="font:800 9px/1 'Archivo',sans-serif;letter-spacing:.06em">GO</span>
-      </span>
+      <p data-rv="up" data-rv-d="90" style="font:400 15.5px/1.55 'Archivo',sans-serif;margin:0 0 26px;max-width:44ch">Ask at the desk on your next visit. The book is free, the stamps are earned, and the ladder never resets.</p>
       <div style="display:flex;flex-wrap:wrap;gap:12px">
         <a href="booking.html" style="display:inline-flex;align-items:center;min-width:250px;padding:17px 20px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" data-hover="background:#f2b30c;color:#1b1a19">Reserve and collect<span style="margin-left:auto">→</span></a>
         <a href="junior-explorers.html" style="display:inline-flex;align-items:center;min-width:230px;padding:17px 20px;border:2px solid #fff;color:#fff;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" data-hover="background:#fff;color:#ec3013">Junior passport<span style="margin-left:auto">→</span></a>
       </div>
+    </div>
+    <div data-rv="up" data-rv-d="150" style="border:2px solid rgba(255,255,255,.45)">
+      <div style="padding:11px 15px;border-bottom:2px solid rgba(255,255,255,.45);font:800 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;opacity:.85">Next departures</div>
+      <div id="rw-departures"></div>
     </div>
   </div>
 </section>
