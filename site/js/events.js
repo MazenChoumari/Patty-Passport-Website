@@ -389,11 +389,23 @@
     };
   }
 
+  function renderDietIcons() {
+    var veg = document.getElementById("ev-diet-veg");
+    var chicken = document.getElementById("ev-diet-chicken");
+    var beef = document.getElementById("ev-diet-beef");
+    var kids = document.getElementById("ev-diet-kids");
+    if (veg && window.PP_ICON) veg.innerHTML = window.PP_ICON("leafMark", 28, "currentColor");
+    if (chicken && window.PP_ICON) chicken.innerHTML = window.PP_ICON("chickenMark", 28, "currentColor");
+    if (beef && window.PP_ICON) beef.innerHTML = window.PP_ICON("beefMark", 28, "currentColor");
+    if (kids && window.PP_ICON) kids.innerHTML = window.PP_ICON("kidsMark", 28, "currentColor");
+  }
+
   function render() {
     renderFacts();
     renderUpcoming();
     initCountdowns();
     renderPackages();
+    renderDietIcons();
     renderTimeline();
     renderProps();
     renderFields();
