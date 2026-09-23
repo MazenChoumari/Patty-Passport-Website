@@ -33,6 +33,99 @@
     };
   });
 
+  var UPCOMING = [
+    { key: "dabke", month: "October", date: "2026-10-16T19:30:00", route: "LEV", routeName: "Levant",
+      title: "Levant Dabke Night", line: "Shared-table percussion and a dabke line that pulls the whole room in.",
+      fact: "Dabke is a communal line dance from the Levant, tied to weddings, celebrations and group energy — in Palestine it's recognised on UNESCO's list of intangible cultural heritage.",
+      tiers: [["Entry only", "€10"], ["Set menu", "€24"], ["Premium set", "€29"]],
+      setLine: "Set menu: 1 drink, 1 burger, fries, dessert." },
+    { key: "harbour", month: "November", date: "2026-11-13T19:30:00", route: "ADR", routeName: "Adriatic",
+      title: "Adriatic Harbour Songs", line: "Candlelit harbour harmonies and mountain echo, slower and closer to the table.",
+      fact: "Klapa — close-harmony singing carried down the Adriatic coast — is recognised by UNESCO as intangible cultural heritage.",
+      tiers: [["Entry only", "€12"], ["Dinner menu", "€27"]],
+      setLine: "Dinner menu: drink, burger, fries, dessert." },
+    { key: "tribute", month: "December", date: "2026-12-19T20:00:00", route: null, routeName: "Tribute night",
+      title: "King of Pop Tribute Night", line: "Choreography, iconic-pop energy and a premium-feel evening — a tribute, not an official event.",
+      fact: "Staged as a respectful tribute only, with no official affiliation — including a nod to the 1992 Heal the World Foundation's humanitarian legacy.",
+      tiers: [["Entry only", "€15"], ["Set menu", "€25"], ["Premium seating", "€35"]],
+      setLine: "Set menu: entry, drink, burger, fries, dessert." },
+    { key: "aegean", month: "January", date: "2027-01-22T19:30:00", route: "AEG", routeName: "Aegean",
+      title: "Aegean After Dark", line: "Rebetiko strings and island atmosphere to open the new year's route calendar.",
+      fact: "Rebetiko — Greece's rebel folk music — is recognised by UNESCO as intangible cultural heritage.",
+      tiers: [["Entry only", "€10"], ["Dinner menu", "€26"]],
+      setLine: "Dinner menu: drink, burger, fries, dessert." }
+  ];
+
+  function countdownParts(target) {
+    var ms = target.getTime() - Date.now();
+    if (ms <= 0) return null;
+    var totalMin = Math.floor(ms / 60000);
+    var d = Math.floor(totalMin / 1440);
+    var h = Math.floor((totalMin % 1440) / 60);
+    var m = totalMin % 60;
+    return { d: d, h: h, m: m };
+  }
+
+  function renderUpcoming() {
+    var el = document.getElementById("ev-upcoming");
+    if (!el) return;
+    var D = window.PP_DATA;
+    var routes = D ? D.ROUTES : {};
+    var soonestKey = UPCOMING.filter(function (e) { return countdownParts(new Date(e.date)); })
+      .sort(function (a, b) { return new Date(a.date) - new Date(b.date); })[0];
+    soonestKey = soonestKey ? soonestKey.key : null;
+
+    el.innerHTML = UPCOMING.map(function (e, i) {
+      var target = new Date(e.date);
+      var parts = countdownParts(target);
+      var route = e.route && routes[e.route] ? routes[e.route] : { bg: INK, fg: CREAM };
+      var isNext = e.key === soonestKey;
+      var dateLabel = target.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+      var tiersHtml = e.tiers.map(function (t) {
+        return '<span style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid rgba(27,26,25,.14)"><span style="font:600 11.5px/1.3 \'Archivo\',sans-serif;opacity:.85">' + esc(t[0]) + '</span><span style="font:800 13px/1 \'Archivo\',sans-serif">' + esc(t[1]) + '</span></span>';
+      }).join("");
+      var countdownHtml = parts
+        ? '<div data-countdown="' + e.key + '" style="font:800 13px/1 \'Archivo\',sans-serif;letter-spacing:.02em">Departs in ' + parts.d + 'd · ' + String(parts.h).padStart(2, "0") + 'h · ' + String(parts.m).padStart(2, "0") + 'm</div>'
+        : '<div style="font:800 13px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;opacity:.6">Departed</div>';
+      return '<div data-rv="up" data-rv-d="' + (i * 70) + '" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:' + route.bg + ';color:' + route.fg + ';padding:22px 20px 24px;display:flex;flex-direction:column;gap:11px;position:relative' + (parts ? "" : ";opacity:.6") + '">'
+        + (isNext ? '<span style="position:absolute;right:0;top:0;padding:5px 9px;background:#1b1a19;color:#f2b30c;font:800 9px/1 \'Archivo\',sans-serif;letter-spacing:.14em">NEXT UP</span>' : "")
+        + '<span style="font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75">' + esc(e.month) + ' · ' + esc(dateLabel) + '</span>'
+        + '<h3 style="font:800 22px/1.05 \'Archivo\',sans-serif;letter-spacing:-.025em;margin:0">' + esc(e.title) + '</h3>'
+        + '<p style="font:400 12.5px/1.5 \'Archivo\',sans-serif;margin:0;opacity:.9">' + esc(e.line) + '</p>'
+        + '<div style="display:flex;flex-direction:column;margin-top:2px">' + tiersHtml + '</div>'
+        + '<p style="font:400 11px/1.4 \'Archivo\',sans-serif;margin:0;opacity:.7">' + esc(e.setLine) + '</p>'
+        + '<p style="font:400 11.5px/1.5 \'Archivo\',sans-serif;font-style:italic;margin:0;opacity:.85;border-top:1px solid rgba(27,26,25,.14);padding-top:10px">' + esc(e.fact) + '</p>'
+        + countdownHtml
+        + '<a href="#enquiry" data-enquire-pkg="' + esc(e.title) + '" style="margin-top:6px;display:inline-flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase" data-hover="background:#ec3013">Reserve a seat<span>→</span></a>'
+        + '</div>';
+    }).join("");
+
+    Array.prototype.forEach.call(el.querySelectorAll("[data-enquire-pkg]"), function (a) {
+      a.addEventListener("click", function () {
+        state.package = a.getAttribute("data-enquire-pkg");
+        renderPackageContext();
+      });
+    });
+  }
+
+  var countdownTimer = null;
+  function tickCountdowns() {
+    var changed = false;
+    UPCOMING.forEach(function (e) {
+      var el = document.querySelector('[data-countdown="' + e.key + '"]');
+      if (!el) return;
+      var parts = countdownParts(new Date(e.date));
+      if (!parts) { changed = true; return; }
+      el.textContent = "Departs in " + parts.d + "d · " + String(parts.h).padStart(2, "0") + "h · " + String(parts.m).padStart(2, "0") + "m";
+    });
+    if (changed) renderUpcoming();
+  }
+  function initCountdowns() {
+    if (countdownTimer) clearInterval(countdownTimer);
+    countdownTimer = setInterval(tickCountdowns, 30000);
+    if (window.PP_TRACK) window.PP_TRACK(function () { clearInterval(countdownTimer); });
+  }
+
   var TIMELINE = [
     ["19:00", "Check-in at the desk", "Guests collect boarding passes printed with their names and the destination."],
     ["19:15", "Gate announcement", "The departures board calls your group; the zone lights change to the route colour."],
@@ -244,6 +337,8 @@
 
   function render() {
     renderFacts();
+    renderUpcoming();
+    initCountdowns();
     renderPackages();
     renderTimeline();
     renderProps();
