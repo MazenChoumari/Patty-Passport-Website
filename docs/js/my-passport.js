@@ -54,7 +54,8 @@
         + '<span style="display:block;font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:8px">Passport type</span>'
         + '<div style="display:flex;flex-wrap:wrap;gap:8px">' + Object.keys(types).map(function (key) {
           var on = state.formType === key;
-          return '<button type="button" data-form-type="' + key + '" style="padding:9px 13px;background:' + (on ? INK : "transparent") + ';border:2px solid #1b1a19;color:' + (on ? CREAM : INK) + ';font:800 10.5px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c;color:#1b1a19">' + types[key].name + '</button>';
+          var iconHtml = window.PP_ICON ? window.PP_ICON("passport" + key.charAt(0).toUpperCase() + key.slice(1), 18, "currentColor") : "";
+          return '<button type="button" data-form-type="' + key + '" aria-pressed="' + (on ? "true" : "false") + '" style="display:inline-flex;align-items:center;gap:8px;padding:9px 13px;background:' + (on ? INK : "transparent") + ';border:2px solid #1b1a19;color:' + (on ? CREAM : INK) + ';font:800 10.5px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c;color:#1b1a19">' + iconHtml + types[key].name + '</button>';
         }).join("") + '</div>'
         + '<p style="font:400 11.5px/1.5 \'Archivo\',sans-serif;color:#7d7979;margin:8px 0 0">' + esc(types[state.formType].tagline) + '</p>'
         + '</div>';
@@ -211,7 +212,7 @@
       + '<input type="file" id="mp-avatar-input" accept="image/*" style="display:none" />'
       + '</span>'
       + '<span style="flex:1;min-width:200px">'
-      + '<span style="display:block;font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#7d7979;margin-bottom:8px">' + esc(type ? type.name : "Explorer") + ' Passport · PP-2026-' + memberNo + '</span>'
+      + '<span style="display:flex;align-items:center;gap:7px;font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#7d7979;margin-bottom:8px">' + (window.PP_ICON ? window.PP_ICON("passport" + passportType.charAt(0).toUpperCase() + passportType.slice(1), 15, "#7d7979") : "") + esc(type ? type.name : "Explorer") + ' Passport · PP-2026-' + memberNo + '</span>'
       + '<span style="display:block;font:800 clamp(30px,4vw,56px)/.95 \'Archivo\',sans-serif;letter-spacing:-.04em">' + esc(state.user.name.toUpperCase()) + '</span></span>'
       + '<span style="display:flex;flex-wrap:wrap;gap:10px">'
       + '<a href="booking.html" style="display:inline-flex;align-items:center;padding:14px 17px;background:#ec3013;color:#fff;text-decoration:none;font:800 13px/1.1 \'Archivo\',sans-serif" data-hover="background:#1b1a19">Book the next route<span style="margin-left:12px">→</span></a>'
