@@ -417,8 +417,62 @@
       if (submitBtn) submitBtn.disabled = state.thinking;
     }
 
+    renderDeskPanel();
+
     if (window.initHoverStyles) window.initHoverStyles(document.body);
     if (window.PP_REVEAL) window.PP_REVEAL.init();
+  }
+
+  // Live Passport Desk status for the "prefer a human?" handoff panel —
+  // real Europe/Madrid time against the published hours, same source as
+  // Our Story and Rewards, so the three pages can't disagree. "Check-in
+  // closes in…" only ever shows a real countdown to the desk's actual
+  // closing time, never a fabricated one.
+  function deskStatus() {
+    var D = window.PP_DATA;
+    if (!D || !D.HOURS) return null;
+    var fmt = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Madrid", hour: "2-digit", minute: "2-digit", hour12: false, weekday: "short" });
+    var parts = fmt.formatToParts(new Date());
+    var get = function (type) { var p = parts.find(function (x) { return x.type === type; }); return p ? p.value : ""; };
+    var weekday = get("weekday");
+    var minutes = parseInt(get("hour"), 10) * 60 + parseInt(get("minute"), 10);
+    var isWeekend = weekday === "Sat" || weekday === "Sun";
+    var range = isWeekend ? D.HOURS[1] : D.HOURS[0];
+    var m = range.time.match(/(\d{2}):(\d{2}).*?(\d{2}):(\d{2})/);
+    if (!m) return null;
+    var openMin = parseInt(m[1], 10) * 60 + parseInt(m[2], 10);
+    var closeRaw = parseInt(m[3], 10) * 60 + parseInt(m[4], 10);
+    var closeMin = closeRaw === 0 ? 24 * 60 : closeRaw;
+    var open = minutes >= openMin && minutes < closeMin;
+    return { open: open, minutesToClose: closeMin - minutes, closeLabel: m[3] + ":" + m[4], openLabel: m[1] + ":" + m[2] };
+  }
+
+  function renderDeskPanel() {
+    var D = window.PP_DATA;
+    var statusEl = document.getElementById("pt-desk-status");
+    var rowsEl = document.getElementById("pt-desk-rows");
+    if (!statusEl || !rowsEl || !D || !D.HOURS) return;
+    var status = deskStatus();
+
+    statusEl.textContent = status ? (status.open ? "Open now" : "Closed now") : "";
+
+    var checkInLine = status && status.open
+      ? (status.minutesToClose >= 60 ? "Closes in " + Math.floor(status.minutesToClose / 60) + "h " + (status.minutesToClose % 60) + "m" : "Closes in " + status.minutesToClose + "m")
+      : (status ? "Opens at " + status.openLabel : "—");
+
+    var rows = [
+      ["Weekday hours", D.HOURS[0].time],
+      ["Weekend hours", D.HOURS[1].time],
+      ["Check-in status", checkInLine],
+      ["Group enquiries", "Answered within 1 working day"],
+      ["Contact channel", "hello@pattypassport.com"],
+      ["Large groups (8+)", "Routed straight to the Events desk"]
+    ];
+    rowsEl.innerHTML = rows.map(function (r, i) {
+      return '<div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:11px 16px;' + (i > 0 ? "border-top:1px solid rgba(247,243,236,.2)" : "") + '">'
+        + '<span style="font:600 10px/1.3 \'Archivo\',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#bab6b6">' + esc(r[0]) + '</span>'
+        + '<span style="font:800 12px/1.3 \'Archivo\',sans-serif;text-align:right">' + esc(r[1]) + '</span></div>';
+    }).join("");
   }
 
   window.PP_READY(function () {
@@ -436,5 +490,7 @@
     if (!window.PP_DATA) {
       var poll = setInterval(function () { if (window.PP_DATA) { clearInterval(poll); render(); } }, 60);
     }
+    var deskTimer = setInterval(function () { if (window.PP_DATA) renderDeskPanel(); }, 60000);
+    if (window.PP_TRACK) window.PP_TRACK(function () { clearInterval(deskTimer); });
   });
 })();
