@@ -14,7 +14,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="description" content="Explore all 21 Mediterranean destinations on the Patty Passport menu, grouped into five routes across the Levant, Aegean, Iberia, Adriatic and North Africa.">
 <link rel="canonical" href="https://mazenchoumari.github.io/Patty-Passport-Website/destinations.html">
-<style>
+<style id="pp-page-style">
   body{margin:0;background:#f7f3ec;color:#1b1a19;font-family:"Archivo",system-ui,sans-serif;overflow-x:hidden}
   *,*::before,*::after{box-sizing:border-box}
   a{color:#ae1800;text-underline-offset:3px}
@@ -31,9 +31,9 @@
      native-language greeting slides up over the teaser on hover/focus, the
      way it plays out for real once you land on the destination page). */
   .pp-dst-card{position:relative}
-  .pp-dst-greet{position:absolute;left:0;right:0;bottom:0;top:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:14px;padding:32px 40px 40px;background:#1b1a19;color:#f7f3ec;opacity:0;transform:translateY(10px);transition:opacity .28s ease,transform .32s cubic-bezier(.2,.85,.25,1);pointer-events:none;overflow:hidden}
+  .pp-dst-greet{position:absolute;left:0;right:0;bottom:0;top:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:18px;padding:40px 46px 46px;background:#1b1a19;color:#f7f3ec;opacity:0;transform:translateY(10px);transition:opacity .28s ease,transform .32s cubic-bezier(.2,.85,.25,1);pointer-events:none;overflow:hidden}
   .pp-dst-greet > * { max-width: 100%; }
-  .pp-dst-greet > svg { margin-bottom: 16px; }
+  .pp-dst-greet > svg { margin-bottom: 20px; }
   .pp-dst-card:hover .pp-dst-greet,.pp-dst-card:focus-visible .pp-dst-greet{opacity:1;transform:translateY(0)}
   .pp-dst-greet-flag{font-size:26px;line-height:1;display:inline-block;animation:ppFlagWave 2.2s ease-in-out infinite;transform-origin:70% 90%}
 </style>

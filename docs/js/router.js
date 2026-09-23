@@ -108,6 +108,18 @@
     clearPageCleanups();
     view.innerHTML = newView.innerHTML;
     document.title = doc.title;
+
+    /* Each page's own <style id="pp-page-style"> block lives before
+       #pp-view (so it still works on a hard reload / direct load), which
+       means a soft swap here never touches it by default — the incoming
+       page's CSS (card padding, section layout, everything authored as
+       page-local rules) would silently never apply after an in-app nav
+       click, only ever after a real reload. Sync its text content in
+       manually alongside the view swap so both paths render identically. */
+    var oldStyle = document.getElementById("pp-page-style");
+    var newStyle = doc.getElementById("pp-page-style");
+    if (oldStyle) oldStyle.textContent = newStyle ? newStyle.textContent : "";
+
     if (window.PP_NAV) window.PP_NAV.setActive(extractActive(html));
 
     var present = loadedScriptSrcs();
