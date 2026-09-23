@@ -14,6 +14,24 @@
   var apiReady = false;
   var pendingOn = null; // desired on/off state requested before the player exists
 
+  // Remembers only the user's last explicit on/off choice — never used to
+  // autoplay on its own, since browsers block that (and it would be a
+  // jarring surprise on a fresh tab anyway). js/nav.js reads this once at
+  // load to show "Resume the Mediterranean" instead of the plain "Play"
+  // label when there's something to resume, but playback still only ever
+  // starts from that next real click.
+  var STORAGE_KEY = "pp_audio_v1";
+  function persistOn(on) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ on: !!on, at: Date.now() })); } catch (e) { /* private mode / storage blocked — persistence is a convenience, not a requirement */ }
+  }
+  function wasOnLastSession() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      var parsed = raw && JSON.parse(raw);
+      return !!(parsed && parsed.on);
+    } catch (e) { return false; }
+  }
+
   function ensureHost() {
     var host = document.getElementById("pp-yt-host");
     if (host) return host;
@@ -102,13 +120,19 @@
 
   window.PP_MUSIC = {
     toggle: function (on) {
+      persistOn(on);
       if (!apiReady) { pendingOn = on; loadApi(); return; }
       applyState(on);
     },
     // True only once playVideo() can actually fire synchronously and
     // start audio immediately — used by nav.js to decide whether a click
     // shows "Playing" right away or a brief "Loading…" state first.
-    isReady: function () { return !!(player && typeof player.playVideo === "function"); }
+    isReady: function () { return !!(player && typeof player.playVideo === "function"); },
+    // Read once at page load (never polled or acted on automatically) so
+    // the nav button can offer a "Resume" affordance instead of a plain
+    // "Play" one — actual playback still only ever starts from that next
+    // explicit click, same gesture-gating as any other first play.
+    wasOnLastSession: wasOnLastSession
   };
 
   /* Fix for the "first click doesn't start music" bug: browsers only allow
