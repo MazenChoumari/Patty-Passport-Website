@@ -215,11 +215,16 @@
     document.getElementById("dp-related-title").textContent = "ALSO ON THE " + route.name.toUpperCase() + " ROUTE";
     var related = countries.filter(function (c) { return c.routeKey === d.routeKey && c.code !== d.code; }).slice(0, 4);
     document.getElementById("dp-related").innerHTML = related.map(function (r, k) {
-      return '<a href="destination.html#' + r.code + '" data-rv="up" data-rv-d="' + (k * 70) + '" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;padding:22px 20px 24px;background:#f7f3ec;text-decoration:none;color:#1b1a19;display:flex;flex-direction:column;gap:10px;min-height:190px" data-hover="background:#1b1a19;color:#f7f3ec">'
-        + '<span style="font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.7">' + r.med + '</span>'
-        + '<span style="font:800 24px/1.02 \'Archivo\',sans-serif;letter-spacing:-.025em">' + r.name.toUpperCase() + '</span>'
-        + '<span style="font:400 13px/1.5 \'Archivo\',sans-serif;opacity:.8">' + esc(r.identity) + '</span>'
-        + '<span style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase">' + r.stamp + '<span>→</span></span></a>';
+      return '<a href="destination.html#' + r.code + '" data-rv="up" data-rv-d="' + (k * 70) + '" style="position:relative;border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;padding-top:5px;background:#f7f3ec;text-decoration:none;color:#1b1a19;display:flex;flex-direction:column;min-height:230px" data-hover="background:#1b1a19;color:#f7f3ec">'
+        + '<span style="display:block;height:5px;background:' + route.bg + ';position:absolute;left:0;top:0;right:0"></span>'
+        + '<span style="padding:20px 20px 0;display:flex;align-items:center;justify-content:space-between;gap:10px">'
+        + window.PP_FLAGS.render(r.code, 28, { stroke: "currentColor" })
+        + '<span style="font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.7">' + r.med + '</span></span>'
+        + '<span style="padding:14px 20px 0;font:800 24px/1.02 \'Archivo\',sans-serif;letter-spacing:-.025em">' + r.name.toUpperCase() + '</span>'
+        + '<span style="padding:8px 20px 0;font:400 13px/1.5 \'Archivo\',sans-serif;opacity:.8">' + esc(r.identity) + '</span>'
+        + '<span style="padding:12px 20px 0;font:700 10.5px/1.4 \'Archivo\',sans-serif;letter-spacing:.04em;opacity:.85">' + esc(r.heroItem.name) + ' · ' + eur(r.heroItem.price) + '</span>'
+        + (r.dietTags ? '<span style="padding:8px 20px 0;font:600 8.5px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;opacity:.65">' + esc(r.dietTags) + '</span>' : '')
+        + '<span style="margin-top:auto;padding:16px 20px 20px;display:flex;align-items:center;justify-content:space-between;font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase">' + r.stamp + '<span>→</span></span></a>';
     }).join("");
 
     document.getElementById("dp-cta-title").textContent = "FLY TO " + d.name.toUpperCase() + " THIS WEEK.";
