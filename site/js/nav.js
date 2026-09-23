@@ -40,7 +40,7 @@
     ["booking", "Book", "booking.html", "#ec3013"]
   ];
 
-  const state = { drawerOpen: false, drawerIn: false, musicOn: false, musicLoading: false, gatePage: 0, gateFade: 1 };
+  const state = { drawerOpen: false, drawerIn: false, musicOn: false, musicLoading: false, musicResumable: false, gatePage: 0, gateFade: 1 };
   let active = window.PP_ACTIVE || "";
 
   function eqBars() {
@@ -134,7 +134,7 @@
           <div style="display:flex;align-items:center;gap:10px;flex:none;margin-left:auto">
             <button type="button" id="pp-nav-music" style="display:inline-flex;align-items:center;gap:9px;padding:9px 12px;border:2px solid #1b1a19;background:transparent;color:#1b1a19;font:800 10px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;cursor:pointer;white-space:nowrap" data-hover="background:#f2b30c;border-color:#f2b30c">
               ${state.musicLoading ? loadingDots() : (state.musicOn ? eqBars() : playIcon())}
-              ${state.musicLoading ? "Loading…" : (state.musicOn ? "Playing" : "Play the Mediterranean")}
+              ${state.musicLoading ? "Loading…" : (state.musicOn ? "Playing" : (state.musicResumable ? "Resume the Mediterranean" : "Play the Mediterranean"))}
             </button>
             <a href="my-passport.html" style="display:inline-flex;align-items:center;gap:8px;padding:10px 14px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;white-space:nowrap" data-hover="background:#ec3013">My Passport</a>
             <button type="button" id="pp-nav-open" aria-expanded="${state.drawerOpen ? "true" : "false"}" aria-controls="pp-nav-drawer" style="display:inline-flex;align-items:center;gap:10px;padding:10px 13px;background:transparent;border:2px solid #1b1a19;color:#1b1a19;font:800 10.5px/1 'Archivo',sans-serif;letter-spacing:.13em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c;border-color:#f2b30c" data-active="background:#ec3013;border-color:#ec3013;color:#fff">
@@ -167,6 +167,7 @@
     bar.querySelector("#pp-nav-music")?.addEventListener("click", () => {
       state.musicOn = !state.musicOn;
       state.musicLoading = state.musicOn && !(window.PP_MUSIC && window.PP_MUSIC.isReady());
+      if (state.musicOn) state.musicResumable = false;
       renderBar();
       toggleMusicPlayback();
     });
@@ -313,6 +314,13 @@
     if (!root) return;
     root.innerHTML = '<div id="pp-nav-bar"></div><div id="pp-nav-drawer"></div>';
 
+    // Read once, up front: if the visitor had music on in an earlier
+    // session (or before an SPA-external reload), offer a "Resume" label
+    // instead of the plain "Play" one — playback itself still only ever
+    // starts from the next real click, same gesture-gating as any first
+    // play, since browsers block audio otherwise and an unprompted start
+    // would be jarring regardless.
+    state.musicResumable = !!(window.PP_MUSIC && window.PP_MUSIC.wasOnLastSession && window.PP_MUSIC.wasOnLastSession());
     renderBar();
     // Confirms real playback state from js/music.js's actual YouTube
     // player, since the click above only sets an optimistic target — this
