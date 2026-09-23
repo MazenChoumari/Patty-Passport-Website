@@ -1,8 +1,12 @@
 /* Patty Passport — rewards / passport stamp ladder page, ported from
-   Rewards.dc.html's x-dc template + Component logic. Front-end only (no
-   backend/login yet per the master brief) — the stamp count is a mock
-   "try the progression" demo: a +/- stepper plus a few preset states,
-   matching the original prototype's interaction design. */
+   Rewards.dc.html's x-dc template + Component logic. The ladder, steps
+   and passport-type tiers below are marketing info and stay browsable
+   by anyone. "Your spread" — the actual 21-cell stamp grid and stamp
+   count — is real data from window.PP_AUTH (js/auth.js): signed out it
+   shows a locked/empty state with a sign-in prompt instead of a public
+   +/- stepper or preset buttons a visitor could use to fake a stamp
+   count; signed in it reads the account's real stamps. Stamps are only
+   ever added/removed from My Passport (task 137), never from here. */
 (function () {
   var RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
   var C = [
@@ -12,7 +16,6 @@
     ["hrv", "HRV", "Croatia"], ["bih", "BIH", "Bosnia"], ["mne", "MNE", "Montenegro"], ["alb", "ALB", "Albania"],
     ["egy", "EGY", "Egypt"], ["lby", "LBY", "Libya"], ["tun", "TUN", "Tunisia"], ["dza", "DZA", "Algeria"], ["mar", "MAR", "Morocco"]
   ];
-  var PRESETS = [0, 3, 5, 8, 21];
   var LADDER_COLORS = [[YEL, INK], [BLU, "#fff"], [INK, CREAM], [RED, "#fff"]];
   var STEPS = [
     ["1", "Ask at the desk", "The book is free with any check-in. Your name goes on page one.", RED, "#fff"],
@@ -29,28 +32,36 @@
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
-  var state = { filled: 6, passportType: "explorer" };
+  var state = { passportType: "explorer" };
 
-  function setFilled(n) {
-    state.filled = Math.min(21, Math.max(0, n));
-    render();
+  // Pulls real signed-in data every render instead of caching it in
+  // `state`, so a sign-in/out or a stamp change from another tab (via
+  // PP_AUTH.onChange, wired below) is always reflected immediately.
+  function authedStamps() {
+    var user = window.PP_AUTH && window.PP_AUTH.current();
+    return user && Array.isArray(user.stamps) ? user.stamps : null;
   }
 
   function render() {
     var D = window.PP_DATA;
     if (!D) return;
-    var f = state.filled;
+    var user = window.PP_AUTH && window.PP_AUTH.current();
+    var stamps = authedStamps();
+    var signedIn = !!user;
+    if (signedIn && user.passportType) state.passportType = user.passportType;
+    var f = signedIn ? stamps.length : 0;
     var type = D.PASSPORT_TYPES[state.passportType];
     var ladder = type.ladder;
     var label = f + "/21";
-    document.getElementById("rw-filled-label").textContent = label;
     document.getElementById("rw-hero-label").textContent = label;
 
     var next = ladder.filter(function (r) { return r.stamps > f; })[0];
     var finalTitle = ladder[ladder.length - 1].title;
-    var progressLine = next
-      ? (next.stamps - f) + " more stamps to " + next.title.toLowerCase() + " · " + (21 - f) + " to " + finalTitle.toLowerCase()
-      : "Book complete — " + finalTitle.toLowerCase() + " is yours";
+    var progressLine = !signedIn
+      ? "Sign in to track real progress toward " + finalTitle.toLowerCase()
+      : next
+        ? (next.stamps - f) + " more stamps to " + next.title.toLowerCase() + " · " + (21 - f) + " to " + finalTitle.toLowerCase()
+        : "Book complete — " + finalTitle.toLowerCase() + " is yours";
     document.getElementById("rw-progress-line").textContent = progressLine;
 
     document.getElementById("rw-type-tabs").innerHTML = Object.keys(D.PASSPORT_TYPES).map(function (key) {
@@ -60,13 +71,28 @@
     }).join("");
     document.getElementById("rw-type-tagline").textContent = type.tagline;
 
-    document.getElementById("rw-presets").innerHTML = PRESETS.map(function (n) {
-      var active = n === f;
-      return '<button type="button" data-preset="' + n + '" style="padding:8px 12px;background:' + (active ? "#ec3013" : "transparent") + ';border:2px solid #f7f3ec;color:' + (active ? "#fff" : "#f7f3ec") + ';font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c;border-color:#f2b30c;color:#1b1a19">' + n + ' stamps</button>';
-    }).join("");
+    // "Your spread" tag + gate note: signed in shows a live pill and a
+    // link to manage stamps at My Passport (the only place stamps are
+    // ever added/removed); signed out shows a sign-in prompt instead of
+    // a public stepper anyone could use to fake a stamp count.
+    var tagEl = document.getElementById("rw-spread-tag");
+    if (tagEl) {
+      tagEl.innerHTML = signedIn
+        ? '<span style="display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border:2px solid #f2b30c;color:#f2b30c;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase"><span style="width:6px;height:6px;background:#f2b30c;border-radius:50%"></span>Live from your account</span>'
+        : '<span style="font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979">Not signed in</span>';
+    }
+    var gateEl = document.getElementById("rw-gate-note");
+    if (gateEl) {
+      gateEl.innerHTML = signedIn
+        ? '<a href="my-passport.html" style="display:inline-flex;align-items:center;gap:8px;color:#f2b30c;text-decoration:none;font:700 12.5px/1.4 \'Archivo\',sans-serif" data-hover="color:#fff">Manage stamps in My Passport<span>→</span></a>'
+        : '<div style="border:2px solid #f7f3ec;padding:16px 18px;display:flex;flex-wrap:wrap;align-items:center;gap:14px;justify-content:space-between">'
+          + '<span style="font:400 13px/1.5 \'Archivo\',sans-serif;color:#bab6b6;max-width:46ch">Sign in to see your real stamp spread here — the grid below is empty until then. Stamps are only ever added at the table, never from a public control on this page.</span>'
+          + '<a href="my-passport.html#join" style="flex:none;display:inline-flex;align-items:center;padding:12px 16px;background:#f2b30c;color:#1b1a19;text-decoration:none;font:800 12px/1 \'Archivo\',sans-serif;letter-spacing:.08em;text-transform:uppercase" data-hover="background:#fff">Sign in<span style="margin-left:10px">→</span></a>'
+          + '</div>';
+    }
 
     document.getElementById("rw-cells").innerHTML = C.map(function (c, i) {
-      var stamped = i < f;
+      var stamped = signedIn && stamps.indexOf(c[0]) > -1;
       var bg = stamped ? CREAM : "rgba(247,243,236,.08)";
       var fg = stamped ? INK : CREAM;
       var mark = "#" + String(i + 1).padStart(2, "0");
@@ -167,13 +193,6 @@
   }
 
   window.PP_READY(function () {
-    document.getElementById("rw-more").addEventListener("click", function () { setFilled(state.filled + 1); });
-    document.getElementById("rw-less").addEventListener("click", function () { setFilled(state.filled - 1); });
-    document.getElementById("rw-presets").addEventListener("click", function (e) {
-      var btn = e.target.closest("[data-preset]");
-      if (!btn) return;
-      setFilled(parseInt(btn.getAttribute("data-preset"), 10));
-    });
     function onTypeClick(e) {
       var btn = e.target.closest("[data-passport-type]");
       if (!btn) return;
@@ -181,6 +200,10 @@
       render();
     }
     document.body.addEventListener("click", onTypeClick);
+    if (window.PP_AUTH) {
+      var offAuth = window.PP_AUTH.onChange(render);
+      if (window.PP_TRACK) window.PP_TRACK(offAuth);
+    }
     if (window.PP_TRACK) window.PP_TRACK(function () { document.body.removeEventListener("click", onTypeClick); });
     var deskTimer = setInterval(function () { if (window.PP_DATA) renderFinalCallBoard(window.PP_DATA); }, 60000);
     if (window.PP_TRACK) window.PP_TRACK(function () { clearInterval(deskTimer); });
