@@ -184,18 +184,27 @@
   var gardenRoute = "ALL";
   var GARDEN_ROUTE_ORDER = ["LEV", "AEG", "IBL", "ADR", "NAF"];
 
-  function renderGardenPlaques(countries) {
+  /* Each plaque is now a small photo of that country's real planting
+     (from the uploaded tree pack) rather than a flat colored text block,
+     ordered LEV->AEG->IBL->ADR->NAF so scrolling the grid reads as
+     walking the route, not a random 21-item dump. Route-filter dimming
+     is unchanged. */
+  function renderGardenPlaques(countries, routes) {
     var el = document.getElementById("pp-garden-plaques");
     if (!el) return;
-    el.innerHTML = countries.map(function (c, i) {
-      var col = PLAQUE_COLORS[i % PLAQUE_COLORS.length];
+    var ordered = GARDEN_ROUTE_ORDER.reduce(function (acc, key) {
+      return acc.concat(countries.filter(function (c) { return c.routeKey === key; }));
+    }, []);
+    el.innerHTML = ordered.map(function (c, i) {
+      var ch = routes[c.routeKey] || { bg: INK, fg: "#fff" };
       var tree = c.plant || "Olive tree";
       var dim = gardenRoute !== "ALL" && c.routeKey !== gardenRoute;
-      return '<div data-rv="up" data-rv-d="' + ((i % 6) * 60) + '" data-plaque-route="' + c.routeKey + '" style="border-right:2px solid rgba(247,243,236,.3);border-bottom:2px solid rgba(247,243,236,.3);padding:20px 18px 22px;background:' + col[0] + ';color:' + col[1] + ';transition:opacity .3s ease;opacity:' + (dim ? ".22" : "1") + '">'
-        + '<span style="font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75">Plaque ' + String(i + 1).padStart(2, "0") + '</span>'
-        + '<p style="font:600 15px/1.4 \'Archivo\',sans-serif;margin:8px 0 0">' + tree + ' — dedicated to ' + c.name + '.</p>'
-        + '</div>';
+      return '<a href="destination.html#' + c.code + '" data-rv="up" data-rv-d="' + ((i % 7) * 50) + '" data-plaque-route="' + c.routeKey + '" style="display:flex;flex-direction:column;border-right:2px solid rgba(247,243,236,.3);border-bottom:2px solid rgba(247,243,236,.3);text-decoration:none;color:#f7f3ec;transition:opacity .3s ease;opacity:' + (dim ? ".22" : "1") + '" data-hover="background:rgba(247,243,236,.06)">'
+        + '<div style="position:relative;height:112px"><img src="images/trees/' + c.code + '_tree.jpg" alt="' + tree + ', ' + c.name + '" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"><span style="position:absolute;left:0;top:0;padding:4px 7px;background:' + ch.bg + ';color:' + ch.fg + ';font:800 8.5px/1 \'Archivo\',sans-serif;letter-spacing:.1em">' + c.code.toUpperCase() + '</span></div>'
+        + '<div style="padding:12px 13px 14px;flex:1"><div style="font:800 12.5px/1.25 \'Archivo\',sans-serif">' + tree + '</div><div style="font:600 9px/1.4 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#bab6b6;margin-top:4px">' + c.name + '</div></div>'
+        + '</a>';
     }).join("");
+    if (window.initHoverStyles) window.initHoverStyles(el);
   }
 
   function renderGardenRouteFilters(routes) {
@@ -215,7 +224,7 @@
       if (!btn) return;
       gardenRoute = btn.getAttribute("data-garden-route");
       renderGardenRouteFilters(data.ROUTES);
-      renderGardenPlaques(data.COUNTRIES);
+      renderGardenPlaques(data.COUNTRIES, data.ROUTES);
       if (window.initHoverStyles) window.initHoverStyles(document.getElementById("garden-route-filters"));
     }
     document.body.addEventListener("click", onClick);
@@ -514,7 +523,7 @@
       renderSoundtracks(data.ROUTES);
       renderPassport(data.COUNTRIES);
       renderGardenRouteFilters(data.ROUTES);
-      renderGardenPlaques(data.COUNTRIES);
+      renderGardenPlaques(data.COUNTRIES, data.ROUTES);
       initGardenFilters(data);
       renderHomeMap(data);
       initTootyPreview(data);
