@@ -238,24 +238,39 @@
      real map image is supplied. ── */
   function escMap(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
+  /* Home has no route-filter legend to isolate a route and thin the
+     Italy/Monaco/Bosnia/Albania pocket the way the Route Map page can, so
+     names stay always-on here (matching route-map.js's own node markup —
+     class="pp-map-node-name", already hidden at phone width by the shared
+     media query in site.css) but the four nodes that visually collide in
+     that one pocket get a small manual pixel nudge away from their badge,
+     plus a shortened map tag for the one long name in the group. The
+     badge itself is never moved, so the true position + tap target don't
+     shift — only the text label offsets. */
+  var HOME_LABEL_NUDGE = {
+    mco: { dx: -38, dy: -2 },
+    ita: { dx: 30, dy: -6 },
+    bih: { dx: -14, dy: 20 },
+    alb: { dx: 50, dy: -30 }
+  };
+  var HOME_LABEL_SHORT = { bih: "Bosnia" };
+
   function renderHomeMap(data) {
     var nodesEl = document.getElementById("home-map-nodes");
     if (!nodesEl || !window.PP_MED_MAP) return;
     var pos = window.PP_MED_MAP.POS;
     var routes = data.ROUTES;
-    /* Home has no route-legend to isolate a route and thin the cluster the
-       way the Route Map page can, so each node here shows only its gate
-       code by default — full name + route reveal in a .pp-home-tip
-       tooltip on hover/focus (see css/site.css) instead of always-on
-       subtext + name labels stacking into the dense Balkan/Italy/Monaco
-       area. See task: home map label collisions. */
     nodesEl.innerHTML = data.COUNTRIES.map(function (c, i) {
       var p = pos[c.code] || [50, 50];
       var ch = routes[c.routeKey];
       var sway = (4 + (i % 5) * 0.6).toFixed(1) + "s";
-      return '<a href="destination.html#' + c.code + '" class="pp-home-node" aria-label="' + escMap(c.name) + ' — ' + escMap(ch.name) + ' route" style="position:absolute;left:' + p[0] + '%;top:' + p[1] + '%;transform:translate(-50%,-50%);text-decoration:none">'
-        + '<span class="pp-home-tip"><b>' + escMap(c.name) + '</b><span>' + escMap(ch.name) + ' route</span></span>'
-        + '<span class="pp-map-node-badge" style="display:flex;align-items:center;padding:7px 10px;background:' + ch.bg + ';color:' + ch.fg + ';border:2px solid #1b1a19;font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;white-space:nowrap;animation:ppSway ' + sway + ' ease-in-out infinite">' + escMap(c.code.toUpperCase()) + '</span></a>';
+      var nudge = HOME_LABEL_NUDGE[c.code];
+      var nameText = HOME_LABEL_SHORT[c.code] || c.name;
+      var nameTransform = "translate(-50%,0)" + (nudge ? " translate(" + nudge.dx + "px," + nudge.dy + "px)" : "");
+      return '<a href="destination.html#' + c.code + '" class="pp-home-node" aria-label="' + escMap(c.name) + ' — ' + escMap(ch.name) + ' route, gate ' + escMap(c.med) + '" style="position:absolute;left:' + p[0] + '%;top:' + p[1] + '%;transform:translate(-50%,-50%);text-decoration:none">'
+        + '<span class="pp-home-tip"><b>' + escMap(ch.name) + ' route</b><span>Gate ' + escMap(c.med) + '</span></span>'
+        + '<span class="pp-map-node-badge" style="display:flex;align-items:center;padding:7px 10px;background:' + ch.bg + ';color:' + ch.fg + ';border:2px solid #1b1a19;font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;white-space:nowrap;animation:ppSway ' + sway + ' ease-in-out infinite">' + escMap(c.code.toUpperCase()) + '</span>'
+        + '<span class="pp-map-node-name" style="position:absolute;left:50%;top:100%;margin-top:5px;transform:' + nameTransform + ';font:800 11.5px/1 \'Archivo\',sans-serif;letter-spacing:-.005em;color:#fff;text-shadow:0 1px 3px rgba(27,26,25,.85);white-space:nowrap;pointer-events:none">' + escMap(nameText) + '</span></a>';
     }).join("");
   }
 

@@ -97,11 +97,12 @@ html, body { overflow-x: hidden; }
 }
 
 /* — Home map node tooltip (js/index.js renderHomeMap) —
-   The Home map has no route-filter legend to thin out dense clusters
-   (Italy/Monaco/Bosnia etc.) the way the Route Map page does, so each
-   node there shows only its gate code and reveals name + route on
-   hover/focus instead of always-on subtext + name label. Route-map.js's
-   own nodes are untouched — this only targets .pp-home-node. */
+   Country names are always-on on the Home map (js/index.js applies small
+   manual pixel nudges to the Italy/Monaco/Bosnia/Albania pocket so their
+   labels don't collide — see HOME_LABEL_NUDGE). This tooltip is a bonus
+   hover/focus reveal for the route + gate code, which the always-on name
+   label doesn't carry. Route-map.js's own nodes are untouched — this only
+   targets .pp-home-node. */
 .pp-home-node { position: relative; }
 .pp-home-tip {
   position: absolute; left: 50%; bottom: 100%; transform: translateX(-50%) translateY(-5px);
