@@ -156,13 +156,16 @@
 
 <section style="position:relative;background:#ec3013;color:#fff;padding:66px 0 72px;overflow:hidden">
   <div style="position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(255,255,255,.14) 1px,transparent 1px);background-size:74px 100%"></div>
-  <div style="position:relative;max-width:1240px;margin:0 auto;padding:0 32px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:26px">
+  <div class="pp-2col" style="position:relative;max-width:1240px;margin:0 auto;padding:0 32px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:40px;align-items:end">
     <div>
       <h2 data-rv="up" id="dp-cta-title" style="font:800 clamp(32px,4.6vw,66px)/.93 'Archivo',sans-serif;letter-spacing:-.04em;margin:0 0 14px;max-width:17ch"></h2>
       <p data-rv="up" data-rv-d="80" id="dp-cta-text" style="font:400 15.5px/1.55 'Archivo',sans-serif;margin:0;max-width:46ch"></p>
     </div>
-    <div data-rv="up" data-rv-d="140" style="display:flex;flex-wrap:wrap;align-items:center;gap:18px">
-      <div id="dp-cta-ticket"></div>
+    <div data-rv="up" data-rv-d="140" style="display:flex;flex-direction:column;gap:18px">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:16px">
+        <div id="dp-cta-ticket"></div>
+        <div id="dp-cta-extras" style="display:flex;flex-direction:column;gap:10px;flex:1 1 190px;min-width:190px"></div>
+      </div>
       <div style="display:flex;flex-wrap:wrap;gap:12px">
         <a href="events.html" style="display:inline-flex;align-items:center;min-width:230px;padding:17px 20px;border:2px solid #fff;color:#fff;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" data-hover="background:#fff;color:#ec3013">Book a celebration<span style="margin-left:auto">→</span></a>
         <a href="booking.html" style="display:inline-flex;align-items:center;min-width:250px;padding:17px 20px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 15px/1.1 'Archivo',sans-serif" data-hover="background:#f2b30c;color:#1b1a19">Reserve your flight<span style="margin-left:auto">→</span></a>

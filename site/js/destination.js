@@ -210,6 +210,25 @@
         + '</div>';
     }
 
+    // Two small supporting cards beside the ticket — gate details and a
+    // country extra — so the CTA row isn't just a ticket and two buttons
+    // floating in a lot of red space; every field here is read live from
+    // the same country/route/HOURS data as the rest of the page.
+    var ctaExtras = document.getElementById("dp-cta-extras");
+    if (ctaExtras) {
+      var weekdayHours = data.HOURS[0];
+      ctaExtras.innerHTML = '<div style="border:2px solid rgba(255,255,255,.4);padding:12px 14px;display:flex;flex-direction:column;gap:4px">'
+        + '<span style="font:600 8.5px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.7">Gate details</span>'
+        + '<span style="font:800 14px/1.25 \'Archivo\',sans-serif">' + esc(route.name) + ' · ' + esc(d.med) + '</span>'
+        + '<span style="font:400 11px/1.4 \'Archivo\',sans-serif;opacity:.85">Open ' + esc(weekdayHours.time) + ', ' + esc(weekdayHours.days.toLowerCase()) + '</span>'
+        + '</div>'
+        + '<div style="border:2px solid rgba(255,255,255,.4);padding:12px 14px;display:flex;flex-direction:column;gap:4px">'
+        + '<span style="font:600 8.5px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.7">Country extras</span>'
+        + '<span style="font:800 14px/1.25 \'Archivo\',sans-serif">' + esc(d.heroItem.name) + '</span>'
+        + '<span style="font:400 11px/1.4 \'Archivo\',sans-serif;opacity:.85">' + eur(d.heroItem.price) + ' · ' + d.items.length + ' dishes on the card</span>'
+        + '</div>';
+    }
+
     if (window.initHoverStyles) window.initHoverStyles(document.body);
     if (window.PP_REVEAL) window.PP_REVEAL.init();
   }
