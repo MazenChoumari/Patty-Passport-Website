@@ -94,6 +94,9 @@ html, body { overflow-x: hidden; }
      destination page and in the accessible label. */
   .pp-map-node-sub, .pp-map-node-name { display: none !important; }
   .pp-map-node-badge { padding: 4px 6px !important; }
+  /* Names are hidden above, so the Bosnia/Tunisia leader lines (js/med-map.js)
+     would just point at empty space — drop them at the same breakpoint. */
+  .pp-map-leader-lines { display: none !important; }
 }
 
 /* Home map nodes (js/index.js renderHomeMap) now reuse route-map.js's own
