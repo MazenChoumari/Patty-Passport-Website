@@ -223,7 +223,28 @@
         pills: [["Open " + namedCountry.name, "destination.html#" + namedCountry.code, YEL, INK], ["See it on the map", "route-map.html#" + namedCountry.code, BLU, "#fff"]]
       };
     }
-    if (/story|history|why|founder/.test(t)) {
+    if (/\bowners?\b|\bfounders?\b|who (created|started|built|made|owns|founded)|whose (idea|restaurant)/.test(t)) {
+      return {
+        question: raw,
+        answer: "Patty Passport was founded by Mazen and Ahmed. They built the concept around 21 distinct Mediterranean destinations, five routes and one shared passport journey.",
+        followUp: "The full story — how it started, what it's built on — is on Our Story.",
+        pills: [["Our story", "our-story.html", BLU, "#fff"], ["Meet the crew", "crew.html", CREAM, INK]]
+      };
+    }
+    // A request asking Patty Tooty to declare personal/romantic affection
+    // for a named individual — regardless of who's named — always gets
+    // this same safe, generic answer instead of any statement about a
+    // real person. A public commercial chatbot shouldn't be the one to
+    // publish that kind of claim about someone identifiable.
+    if (/\bbaddie\b|\bcrush\b|do you love|say you love|tell .* you love|marry me|be my (girlfriend|boyfriend)|who.?s your (favou?rite|favorite) person/.test(t)) {
+      return {
+        question: raw,
+        answer: "I love the whole Patty Passport crew — especially anyone ready to guide a table toward its next stamp.",
+        followUp: "Ask me about the founders or featured Journey Crew.",
+        pills: [["Our story", "our-story.html", BLU, "#fff"], ["Meet the crew", "crew.html", CREAM, INK]]
+      };
+    }
+    if (/story|history|why/.test(t)) {
       return {
         question: raw, answer: "Twenty-one Mediterranean countries that share a coastline and agree about almost nothing — including how to cook. We stopped averaging them into one beige menu.",
         followUp: "The passport turns that variety into a reason to come back nineteen more times.",
