@@ -398,6 +398,39 @@
     if (chicken && window.PP_ICON) chicken.innerHTML = window.PP_ICON("chickenMark", 28, "currentColor");
     if (beef && window.PP_ICON) beef.innerHTML = window.PP_ICON("beefMark", 28, "currentColor");
     if (kids && window.PP_ICON) kids.innerHTML = window.PP_ICON("kidsMark", 28, "currentColor");
+
+    var tagsIcon = document.getElementById("ev-tags-icon");
+    if (tagsIcon && window.PP_ICON) tagsIcon.innerHTML = window.PP_ICON("leafMark", 22, "currentColor");
+  }
+
+  // "Every guest has a route" dietary legend + transport panel — the tags
+  // guests actually see on menu items, and the parking/bus lines named
+  // as planning assumptions for the still-unbuilt Gate One site, not as
+  // confirmed public infrastructure.
+  var DIET_LEGEND = [
+    ["Halal-friendly", "#1d5c9e"], ["Kosher-sensitive", "#2b76c9"], ["Vegetarian", "#1f7a3d"],
+    ["Vegan", "#166534"], ["Alcohol-free", "#605d5d"], ["Alcohol-friendly", "#7a2b8a"],
+    ["Contains pork", "#ae1800"], ["Contains alcohol", "#7a2b8a"], ["Contains nuts", "#8a4a00"]
+  ];
+  function renderAccessSection() {
+    var legend = document.getElementById("ev-diet-legend");
+    if (legend) {
+      legend.innerHTML = DIET_LEGEND.map(function (t) {
+        return '<span style="padding:6px 10px;border:1.5px solid ' + t[1] + ';color:' + t[1] + ';font:800 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.06em;text-transform:uppercase">' + esc(t[0]) + '</span>';
+      }).join("");
+    }
+    var panel = document.getElementById("ev-transport-panel");
+    if (panel) {
+      var rows = [
+        ["Parking", "40–50 proposed surface spaces around the building"],
+        ["Bus access", "Planned connections on lines L1, L3 and L7 nearby"]
+      ];
+      panel.innerHTML = rows.map(function (r, i) {
+        return '<div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:11px 13px;' + (i > 0 ? "border-top:1px solid rgba(247,243,236,.2)" : "") + '">'
+          + '<span style="font:800 10px/1.3 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#f2b30c">' + esc(r[0]) + '</span>'
+          + '<span style="font:400 11.5px/1.4 \'Archivo\',sans-serif;color:#bab6b6;text-align:right">' + esc(r[1]) + '</span></div>';
+      }).join("");
+    }
   }
 
   function render() {
@@ -406,6 +439,7 @@
     initCountdowns();
     renderPackages();
     renderDietIcons();
+    renderAccessSection();
     renderTimeline();
     renderProps();
     renderFields();
