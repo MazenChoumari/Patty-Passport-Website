@@ -250,16 +250,45 @@
      top/bottom captions around the box already name both spectrums, so
      no extra tick labels are layered on top of the grid to collide with
      them. ── */
+  // Illustrative category-level estimates only (see the page's own
+  // disclaimer above the map) — not published or verified competitor data.
+  var COMPETITORS = [
+    ["McDonald's", 10, 90], ["Burger King", 22, 92], ["Carl's Jr", 16, 78],
+    ["TGB", 34, 70], ["VICIO", 46, 60], ["Five Guys", 58, 78],
+    ["Goiko", 72, 55], ["SteakBurger", 80, 42]
+  ];
+
+  // The site's own logo mark (same block-built passport icon nav.js draws
+  // at 44px in the header) — replaces the old Patty Tooty mascot marker,
+  // which was never the brand mark and didn't belong on a positioning map.
+  function siteLogoMark(size) {
+    var s = size || 40, k = s / 44;
+    function px(n) { return (n * k).toFixed(1) + "px"; }
+    return '<span style="position:relative;width:' + px(44) + ';height:' + px(44) + ';flex:none;background:#1b1a19;display:block;border:2px solid #f7f3ec">'
+      + '<span style="position:absolute;left:' + px(9) + ';top:' + px(9) + ';width:' + px(26) + ';height:' + px(8) + ';background:#f2b30c;display:block"></span>'
+      + '<span style="position:absolute;left:' + px(13) + ';top:' + px(11) + ';width:' + px(3) + ';height:' + px(3) + ';background:#1b1a19;display:block"></span>'
+      + '<span style="position:absolute;left:' + px(20) + ';top:' + px(11) + ';width:' + px(3) + ';height:' + px(3) + ';background:#1b1a19;display:block"></span>'
+      + '<span style="position:absolute;left:' + px(27) + ';top:' + px(11) + ';width:' + px(3) + ';height:' + px(3) + ';background:#1b1a19;display:block"></span>'
+      + '<span style="position:absolute;left:' + px(9) + ';top:' + px(19) + ';width:' + px(26) + ';height:' + px(3) + ';background:#f7f3ec;display:block"></span>'
+      + '<span style="position:absolute;left:' + px(9) + ';top:' + px(23) + ';width:' + px(26) + ';height:' + px(6) + ';background:#ec3013;display:block"></span>'
+      + '<span style="position:absolute;left:' + px(9) + ';top:' + px(30) + ';width:' + px(26) + ';height:' + px(6) + ';background:#f2b30c;display:block"></span>'
+      + '</span>';
+  }
+
   function renderPositioning() {
     var root = document.getElementById("inv-positioning-map");
     if (!root) return;
-    var pp = '<div style="position:absolute;left:62%;top:' + (100 - 76) + '%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:7px">'
-      + '<span id="inv-pos-mascot" style="width:46px;height:46px;border-radius:50%;background:#f2b30c;border:3px solid #f7f3ec;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 6px rgba(242,179,12,.22)"></span>'
+    var pp = '<div style="position:absolute;left:62%;top:24%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:7px;z-index:2">'
+      + siteLogoMark(40)
       + '<span style="font:800 11px/1.15 \'Archivo\',sans-serif;color:#f2b30c;white-space:nowrap;text-align:center">PATTY PASSPORT<br><span style="font:600 8.5px/1.3 \'Archivo\',sans-serif;color:#bab6b6;letter-spacing:.06em;text-transform:uppercase">Fair price · high immersion</span></span>'
       + '</div>';
-    root.innerHTML = pp;
-    var mascot = document.getElementById("inv-pos-mascot");
-    if (mascot && window.PP_TOOTY_ICON) mascot.innerHTML = window.PP_TOOTY_ICON(30);
+    var competitors = COMPETITORS.map(function (c) {
+      return '<div style="position:absolute;left:' + c[1] + '%;top:' + c[2] + '%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px">'
+        + '<span style="width:8px;height:8px;border-radius:50%;background:rgba(247,243,236,.4);border:1.5px solid rgba(247,243,236,.7)"></span>'
+        + '<span style="font:600 8.5px/1.1 \'Archivo\',sans-serif;color:#bab6b6;white-space:nowrap">' + esc(c[0]) + '</span>'
+        + '</div>';
+    }).join("");
+    root.innerHTML = competitors + pp;
   }
 
   /* ── break-even chart (SVG visuals only — all labels are real HTML text
@@ -289,15 +318,17 @@
     var lossPath = "M " + sx(0) + "," + sy(O.fixedMonthly) + " L " + beX + "," + beY + " L " + sx(0) + "," + sy(0) + " Z";
     var profitPath = "M " + beX + "," + beY + " L " + sx(xMax) + "," + sy(revMonth(xMax, rc.spend)) + " L " + sx(xMax) + "," + sy(tcMonth(xMax, rc.spend)) + " Z";
 
+    var NSS = ' vector-effect="non-scaling-stroke"'; // keeps hairline widths in real screen px at any container size, instead of scaling with the viewBox
     var caseDots = O.revenueCases.map(function (c) {
       var on = c.key === rc.key;
       var cx = sx(c.guests), cy = sy(revMonth(c.guests, c.spend));
-      return '<circle cx="' + cx + '" cy="' + cy + '" r="' + (on ? 1.5 : 1) + '" fill="' + (on ? YEL : BLU) + '" stroke="' + INK + '" stroke-width="0.35"/>';
+      return '<circle cx="' + cx + '" cy="' + cy + '" r="' + (on ? 0.62 : 0.42) + '" fill="' + (on ? YEL : BLU) + '" stroke="' + INK + '" stroke-width="1"' + NSS + '/>';
     }).join("");
 
     // Margin of safety: the distance on the x-axis between the break-even
     // point and where the base case actually sits — drawn as its own
-    // bracket on the baseline, not just implied by the intersection dot.
+    // bracket on the baseline, labelled directly on the chart (not just
+    // in the legend/facts list below) so it can't be missed.
     var marginGuests = rc.guests - v.beGuestsDay;
     var marginPct = rc.guests > 0 ? (marginGuests / rc.guests) * 100 : 0;
     var msX1 = sx(v.beGuestsDay), msX2 = sx(rc.guests);
@@ -305,10 +336,11 @@
     var msY = sy(0);
     var SAFE = "#1f7a3d";
     var marginBracket = msRight - msLeft > 0.3
-      ? '<line x1="' + msLeft + '" y1="' + msY + '" x2="' + msRight + '" y2="' + msY + '" stroke="' + SAFE + '" stroke-width="1.1" stroke-linecap="round"/>'
-        + '<line x1="' + msLeft + '" y1="' + (msY - 0.9) + '" x2="' + msLeft + '" y2="' + (msY + 0.9) + '" stroke="' + SAFE + '" stroke-width="0.45"/>'
-        + '<line x1="' + msRight + '" y1="' + (msY - 0.9) + '" x2="' + msRight + '" y2="' + (msY + 0.9) + '" stroke="' + SAFE + '" stroke-width="0.45"/>'
+      ? '<line x1="' + msLeft + '" y1="' + msY + '" x2="' + msRight + '" y2="' + msY + '" stroke="' + SAFE + '" stroke-width="1.3" stroke-linecap="round"' + NSS + '/>'
+        + '<line x1="' + msLeft + '" y1="' + (msY - 0.9) + '" x2="' + msLeft + '" y2="' + (msY + 0.9) + '" stroke="' + SAFE + '" stroke-width="1"' + NSS + '/>'
+        + '<line x1="' + msRight + '" y1="' + (msY - 0.9) + '" x2="' + msRight + '" y2="' + (msY + 0.9) + '" stroke="' + SAFE + '" stroke-width="1"' + NSS + '/>'
       : "";
+    var marginLabelLeft = (msLeft + msRight) / 2;
 
     // Gridlines are drawn in the SVG (pure geometry, scales cleanly); the
     // tick VALUES are real HTML text positioned over it by percentage, so
@@ -319,25 +351,30 @@
     var xTicks = [0, 0.25, 0.5, 0.75, 1].map(function (f) { return f * xMax; });
     var xAxisTicks = [0, 0.5, 1].map(function (f) { return f * xMax; });
     var gridLines = yTicks.map(function (val) {
-      return '<line x1="' + sx(0) + '" y1="' + sy(val) + '" x2="' + sx(xMax) + '" y2="' + sy(val) + '" stroke="rgba(27,26,25,.08)" stroke-width="0.25"/>';
+      return '<line x1="' + sx(0) + '" y1="' + sy(val) + '" x2="' + sx(xMax) + '" y2="' + sy(val) + '" stroke="rgba(27,26,25,.12)" stroke-width="1"' + NSS + '/>';
     }).join("") + xTicks.map(function (val) {
-      return '<line x1="' + sx(val) + '" y1="' + padT + '" x2="' + sx(val) + '" y2="' + sy(0) + '" stroke="rgba(27,26,25,.08)" stroke-width="0.25"/>';
+      return '<line x1="' + sx(val) + '" y1="' + padT + '" x2="' + sx(val) + '" y2="' + sy(0) + '" stroke="rgba(27,26,25,.12)" stroke-width="1"' + NSS + '/>';
     }).join("");
 
     var svg = '<svg viewBox="0 0 ' + vbW + ' ' + vbH + '" role="img" aria-label="Break-even chart: revenue and total cost by guests per day, current scenario ' + esc(rc.label) + '" style="display:block;width:100%;height:auto;background:#fff;border:2px solid #1b1a19">'
       + gridLines
-      + '<path d="' + lossPath + '" fill="' + RED + '" fill-opacity="0.06"/>'
-      + '<path d="' + profitPath + '" fill="' + YEL + '" fill-opacity="0.1"/>'
-      + '<path d="' + fixedLine + '" fill="none" stroke="#a3a3a3" stroke-width="0.28" stroke-dasharray="1.2,1.4"/>'
-      + '<path d="' + tcLine + '" fill="none" stroke="' + RED + '" stroke-width="0.55" stroke-opacity="0.85"/>'
-      + '<path d="' + revLine + '" fill="none" stroke="' + INK + '" stroke-width="0.7"/>'
-      + '<line x1="' + beX + '" y1="' + beY + '" x2="' + beX + '" y2="' + sy(0) + '" stroke="' + INK + '" stroke-width="0.3" stroke-dasharray="0.8,0.9"/>'
+      + '<path d="' + lossPath + '" fill="' + RED + '" fill-opacity="0.05"/>'
+      + '<path d="' + profitPath + '" fill="' + YEL + '" fill-opacity="0.08"/>'
+      + '<path d="' + fixedLine + '" fill="none" stroke="#8a8a8a" stroke-width="1"' + NSS + ' stroke-dasharray="3,3"/>'
+      + '<path d="' + tcLine + '" fill="none" stroke="' + RED + '" stroke-width="1.3"' + NSS + ' stroke-opacity="0.8"/>'
+      + '<path d="' + revLine + '" fill="none" stroke="' + INK + '" stroke-width="1.8"' + NSS + '/>'
+      + '<line x1="' + beX + '" y1="' + beY + '" x2="' + beX + '" y2="' + sy(0) + '" stroke="' + INK + '" stroke-width="1"' + NSS + ' stroke-dasharray="2,2"/>'
       + marginBracket
       + caseDots
-      + '<circle cx="' + beX + '" cy="' + beY + '" r="1.7" fill="' + INK + '" stroke="#fff" stroke-width="0.6"/>'
-      + '<line x1="' + sx(0) + '" y1="' + sy(0) + '" x2="' + sx(xMax) + '" y2="' + sy(0) + '" stroke="' + INK + '" stroke-width="0.45"/>'
-      + '<line x1="' + sx(0) + '" y1="' + padT + '" x2="' + sx(0) + '" y2="' + sy(0) + '" stroke="' + INK + '" stroke-width="0.45"/>'
+      + '<circle cx="' + beX + '" cy="' + beY + '" r="0.9" fill="' + INK + '" stroke="#fff" stroke-width="1.3"' + NSS + '/>'
+      + '<line x1="' + sx(0) + '" y1="' + sy(0) + '" x2="' + sx(xMax) + '" y2="' + sy(0) + '" stroke="' + INK + '" stroke-width="1.5"' + NSS + '/>'
+      + '<line x1="' + sx(0) + '" y1="' + padT + '" x2="' + sx(0) + '" y2="' + sy(0) + '" stroke="' + INK + '" stroke-width="1.5"' + NSS + '/>'
       + '</svg>';
+
+    var marginLabelTop = (msY / vbH) * 100;
+    var marginLabel = msRight - msLeft > 6
+      ? '<div style="position:absolute;left:' + marginLabelLeft + '%;top:' + marginLabelTop + '%;transform:translate(-50%,-135%);font:800 8px/1 \'Archivo\',sans-serif;letter-spacing:.04em;color:' + SAFE + ';white-space:nowrap;background:#fff;padding:1px 4px">Margin of safety · ' + marginPct.toFixed(0) + '%</div>'
+      : "";
 
     var yAxisLabels = yTicks.slice().reverse().map(function (val) {
       var topPct = (sy(val) / vbH) * 100;
@@ -349,6 +386,7 @@
     }).join("");
     var svgWithAxes = '<div style="position:relative;padding:0 0 22px 44px">' + svg
       + '<div style="position:absolute;left:0;top:0;width:44px;height:calc(100% - 22px)">' + yAxisLabels + '</div>'
+      + '<div style="position:absolute;left:44px;right:0;top:0;bottom:22px">' + marginLabel + '</div>'
       + '<div style="position:absolute;left:44px;right:0;bottom:0;height:20px">' + xAxisLabels + '</div>'
       + '</div>';
 
