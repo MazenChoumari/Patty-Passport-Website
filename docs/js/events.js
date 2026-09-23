@@ -35,35 +35,58 @@
 
   var UPCOMING = [
     { key: "dabke", month: "October", date: "2026-10-16T19:30:00", route: "LEV", routeName: "Levant",
-      title: "Levant Dabke Night", line: "The whole room links arms and joins the line — live percussion, a packed floor, a night that refuses to sit still.",
+      title: "Levant Dabke: The Whole Room Moves", line: "The whole room links arms and joins the line — live percussion, a packed floor, a night that refuses to sit still.",
       fact: "Dabke is a communal line dance from the Levant, tied to weddings, celebrations and group energy — in Palestine it's recognised on UNESCO's list of intangible cultural heritage.",
       tiers: [["Entry only", "€10"], ["Set menu", "€24"], ["Premium set", "€29"]],
       setLine: "Set menu: 1 drink, 1 burger, fries, dessert." },
     { key: "harbour", month: "November", date: "2026-11-13T19:30:00", route: "ADR", routeName: "Adriatic",
-      title: "Adriatic Harbour Songs", line: "Candlelight, close harmony and a harbour hush — the kind of night that makes the whole table stop talking to listen.",
+      title: "Adriatic Voices by Candlelight", line: "Candlelight, close harmony and a harbour hush — the kind of night that makes the whole table stop talking to listen.",
       fact: "Klapa — close-harmony singing carried down the Adriatic coast — is recognised by UNESCO as intangible cultural heritage.",
       tiers: [["Entry only", "€12"], ["Dinner menu", "€27"]],
       setLine: "Dinner menu: drink, burger, fries, dessert." },
     { key: "tribute", month: "December", date: "2026-12-19T20:00:00", route: null, routeName: "Tribute night",
-      title: "King of Pop Tribute Night", line: "Full choreography, the hits, the moonwalk — an electric, sold-out-feeling night built entirely around the legend's music. Tribute performance only; no official affiliation.",
-      fact: "Staged as a respectful tribute only, with no official affiliation — including a nod to the 1992 Heal the World Foundation's humanitarian legacy.",
+      title: "Michael Jackson: King of Pop Tribute", line: "An electric tribute to Michael Jackson's stagecraft and catalogue — from Billie Jean, Beat It, Human Nature and Smooth Criminal to the social force of They Don't Care About Us and Earth Song. Choreography, live energy and a moonwalk-ready floor bring the King of Pop's different eras into one route night.",
+      fact: "Tribute performance only. No official affiliation with Michael Jackson's estate, representatives or record labels.",
       tiers: [["Entry only", "€15"], ["Set menu", "€25"], ["Premium seating", "€35"]],
       setLine: "Set menu: entry, drink, burger, fries, dessert." },
     { key: "aegean", month: "January", date: "2027-01-22T19:30:00", route: "AEG", routeName: "Aegean",
-      title: "Aegean After Dark", line: "Rebetiko strings, island night air and the first big route night of the new year — this one fills fast.",
+      title: "Aegean After Dark: Rebetiko & Island Nights", line: "Rebetiko strings, island night air and the first big route night of the new year — this one fills fast.",
       fact: "Rebetiko — Greece's rebel folk music — is recognised by UNESCO as intangible cultural heritage.",
       tiers: [["Entry only", "€10"], ["Dinner menu", "€26"]],
       setLine: "Dinner menu: drink, burger, fries, dessert." }
   ];
 
+  // Countdowns run to real seconds (not just minutes), and once a target
+  // time passes they don't just vanish — they move through two more real
+  // states: "Happening now" while the event is presumed still running
+  // (a 3-hour service window, since these are dinner-length events), then
+  // "Departed" once that window has passed. Separately, reservations
+  // close 2 hours before the start (too last-minute to seat a new
+  // group), which drives the "Booking closed" state on the Reserve
+  // button itself rather than the countdown text.
+  var EVENT_DURATION_MS = 3 * 60 * 60 * 1000;
+  var BOOKING_CUTOFF_MS = 2 * 60 * 60 * 1000;
+
   function countdownParts(target) {
     var ms = target.getTime() - Date.now();
     if (ms <= 0) return null;
-    var totalMin = Math.floor(ms / 60000);
-    var d = Math.floor(totalMin / 1440);
-    var h = Math.floor((totalMin % 1440) / 60);
-    var m = totalMin % 60;
-    return { d: d, h: h, m: m };
+    var totalSec = Math.floor(ms / 1000);
+    var d = Math.floor(totalSec / 86400);
+    var h = Math.floor((totalSec % 86400) / 3600);
+    var m = Math.floor((totalSec % 3600) / 60);
+    var s = totalSec % 60;
+    return { d: d, h: h, m: m, s: s };
+  }
+
+  function eventPhase(target) {
+    var ms = target.getTime() - Date.now();
+    if (ms > 0) return "upcoming";
+    if (ms > -EVENT_DURATION_MS) return "now";
+    return "departed";
+  }
+  function bookingClosed(target) {
+    var ms = target.getTime() - Date.now();
+    return ms <= BOOKING_CUTOFF_MS; // true once inside the cutoff, through the event and after
   }
 
   function renderUpcoming() {
@@ -78,15 +101,17 @@
     el.innerHTML = UPCOMING.map(function (e, i) {
       var target = new Date(e.date);
       var parts = countdownParts(target);
+      var phase = eventPhase(target);
+      var closed = bookingClosed(target);
       var route = e.route && routes[e.route] ? routes[e.route] : { bg: INK, fg: CREAM };
       var isNext = e.key === soonestKey;
       var dateLabel = target.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
       var tiersHtml = e.tiers.map(function (t) {
         return '<span style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid rgba(27,26,25,.14)"><span style="font:600 11.5px/1.3 \'Archivo\',sans-serif;opacity:.85">' + esc(t[0]) + '</span><span style="font:800 13px/1 \'Archivo\',sans-serif">' + esc(t[1]) + '</span></span>';
       }).join("");
-      var countdownHtml = parts
-        ? '<div data-countdown="' + e.key + '" style="font:800 13px/1 \'Archivo\',sans-serif;letter-spacing:.02em">Departs in ' + parts.d + 'd · ' + String(parts.h).padStart(2, "0") + 'h · ' + String(parts.m).padStart(2, "0") + 'm</div>'
-        : '<div style="font:800 13px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;opacity:.6">Departed</div>';
+      var countdownHtml = phase === "upcoming"
+        ? '<div data-countdown="' + e.key + '" style="font:800 13px/1 \'Archivo\',sans-serif;letter-spacing:.02em">Departs in ' + parts.d + 'd · ' + String(parts.h).padStart(2, "0") + 'h · ' + String(parts.m).padStart(2, "0") + 'm · ' + String(parts.s).padStart(2, "0") + 's</div>'
+        : '<div data-countdown="' + e.key + '" style="font:800 13px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;opacity:.6">' + (phase === "now" ? "Happening now" : "Departed") + '</div>';
       // Poster strip: big departure date + a performance-motif mark
       // (vinyl disc for the three music nights, a medal/spotlight mark
       // for the tribute) instead of the card opening straight into text
@@ -99,7 +124,17 @@
         + '<span><span style="display:block;font:800 34px/1 \'Archivo\',sans-serif;letter-spacing:-.03em">' + target.getDate() + '</span><span style="display:block;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.18em;text-transform:uppercase;opacity:.75">' + target.toLocaleDateString("en-GB", { month: "short" }) + '</span></span>'
         + posterMark
         + '</div>';
-      return '<div data-rv="up" data-rv-d="' + (i * 70) + '" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:' + route.bg + ';color:' + route.fg + ';padding:22px 20px 24px;display:flex;flex-direction:column;gap:11px;position:relative' + (parts ? "" : ";opacity:.6") + '">'
+      // The reserve button's default dark background reads as invisible
+      // black-on-black against the tribute card's own INK background —
+      // pick a bright accent instead whenever the card itself is dark.
+      var cardIsDark = route.bg === INK;
+      var reserveBg = cardIsDark ? YEL : INK;
+      var reserveFg = cardIsDark ? INK : "#f7f3ec";
+      var reserveHoverBg = cardIsDark ? "#fff" : "#ec3013";
+      var reserveHtml = closed
+        ? '<span style="margin-top:auto;padding-top:6px;display:inline-flex;align-items:center;justify-content:space-between;padding:12px 14px;background:' + (cardIsDark ? "rgba(247,243,236,.18)" : "rgba(0,0,0,.25)") + ';color:' + route.fg + ';font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase" aria-disabled="true">Booking closed</span>'
+        : '<a href="#enquiry" data-enquire-pkg="' + esc(e.title) + '" style="margin-top:auto;padding-top:6px;display:inline-flex;align-items:center;justify-content:space-between;padding:12px 14px;background:' + reserveBg + ';color:' + reserveFg + ';text-decoration:none;font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase" data-hover="background:' + reserveHoverBg + '">Reserve a seat<span>→</span></a>';
+      return '<div data-rv="up" data-rv-d="' + (i * 70) + '" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:' + route.bg + ';color:' + route.fg + ';padding:22px 20px 24px;display:flex;flex-direction:column;gap:11px;position:relative' + (phase === "departed" ? ";opacity:.6" : "") + '">'
         + (isNext ? '<span style="position:absolute;right:0;top:0;padding:5px 9px;background:#1b1a19;color:#f2b30c;font:800 9px/1 \'Archivo\',sans-serif;letter-spacing:.14em;z-index:1">NEXT UP</span>' : "")
         + posterHtml
         + '<span style="font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75">' + esc(e.month) + ' · ' + esc(dateLabel) + '</span>'
@@ -109,7 +144,7 @@
         + '<p style="font:400 11px/1.4 \'Archivo\',sans-serif;margin:0;opacity:.7">' + esc(e.setLine) + '</p>'
         + '<p style="font:400 11.5px/1.5 \'Archivo\',sans-serif;font-style:italic;margin:0;opacity:.85;border-top:1px solid rgba(27,26,25,.14);padding-top:10px">' + esc(e.fact) + '</p>'
         + countdownHtml
-        + '<a href="#enquiry" data-enquire-pkg="' + esc(e.title) + '" style="margin-top:auto;padding-top:6px;display:inline-flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#1b1a19;color:#f7f3ec;text-decoration:none;font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase" data-hover="background:#ec3013">Reserve a seat<span>→</span></a>'
+        + reserveHtml
         + '</div>';
     }).join("");
 
@@ -122,20 +157,26 @@
   }
 
   var countdownTimer = null;
+  var lastPhase = {}, lastClosed = {};
   function tickCountdowns() {
     var changed = false;
     UPCOMING.forEach(function (e) {
+      var target = new Date(e.date);
+      var phase = eventPhase(target);
+      var closed = bookingClosed(target);
+      if (lastPhase[e.key] !== phase || lastClosed[e.key] !== closed) changed = true;
+      lastPhase[e.key] = phase; lastClosed[e.key] = closed;
+      if (changed) return; // full re-render below covers the text update too
       var el = document.querySelector('[data-countdown="' + e.key + '"]');
-      if (!el) return;
-      var parts = countdownParts(new Date(e.date));
-      if (!parts) { changed = true; return; }
-      el.textContent = "Departs in " + parts.d + "d · " + String(parts.h).padStart(2, "0") + "h · " + String(parts.m).padStart(2, "0") + "m";
+      if (!el || phase !== "upcoming") return;
+      var parts = countdownParts(target);
+      el.textContent = "Departs in " + parts.d + "d · " + String(parts.h).padStart(2, "0") + "h · " + String(parts.m).padStart(2, "0") + "m · " + String(parts.s).padStart(2, "0") + "s";
     });
     if (changed) renderUpcoming();
   }
   function initCountdowns() {
     if (countdownTimer) clearInterval(countdownTimer);
-    countdownTimer = setInterval(tickCountdowns, 30000);
+    countdownTimer = setInterval(tickCountdowns, 1000);
     if (window.PP_TRACK) window.PP_TRACK(function () { clearInterval(countdownTimer); });
   }
 
