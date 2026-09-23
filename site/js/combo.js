@@ -7,7 +7,20 @@
    second copy of a price. */
 (function () {
   var INK = "#1b1a19", CREAM = "#f7f3ec", RED = "#ec3013";
-  var KIND_LABEL = { veg: "Veg", chicken: "Chicken", beef: "Beef" };
+  // Which two (or, for salad, one) named entries in window.PP_DATA.COMBOS
+  // apply to each menu-item kind, and which "tier" slot each sits in. A
+  // burger's two tiers are genuinely two different combos (Quick Bite vs
+  // Full Buffet); fries only has one menu item today but two approved
+  // combo prices (Regular €6 vs Loaded €7), so that same two-tier picker
+  // doubles as "how much fries" instead of "how much food"; salad has
+  // just the one approved combo, so only the "full" tier is offered.
+  var TIER_COMBO_NAMES = {
+    veg: { quick: "Veg Quick Bite", full: "Veg Full Buffet" },
+    chicken: { quick: "Chicken Quick Bite", full: "Chicken Full Buffet" },
+    beef: { quick: "Beef Quick Bite", full: "Beef Full Buffet" },
+    fries: { quick: "Regular Fries Combo", full: "Loaded Fries Combo" },
+    salad: { full: "Salad Combo" }
+  };
 
   var state = { open: false, item: null, country: null, route: null, tier: "quick", drink: "soft", alcohol: false, hot: false };
 
@@ -25,8 +38,9 @@
   function findCombo(tier) {
     var D = window.PP_DATA;
     if (!D || !state.item) return null;
-    var label = KIND_LABEL[state.item.kind];
-    var name = tier === "quick" ? label + " Quick Bite" : label + " Full Buffet";
+    var names = TIER_COMBO_NAMES[state.item.kind];
+    var name = names && names[tier];
+    if (!name) return null;
     return D.COMBOS.filter(function (c) { return c.name === name; })[0] || null;
   }
 
@@ -44,11 +58,11 @@
     if (!state.open || !state.item) { root.innerHTML = ""; return; }
 
     var quick = findCombo("quick"), full = findCombo("full");
-    var tierBtn = function (key, combo, label) {
+    var tierBtn = function (key, combo) {
       if (!combo) return "";
       var on = state.tier === key;
       return '<button type="button" data-combo-tier="' + key + '" style="text-align:left;padding:14px 15px;background:' + (on ? INK : "#fff") + ';color:' + (on ? CREAM : INK) + ';border:2px solid #1b1a19;cursor:pointer" data-hover="background:#f2b30c;color:#1b1a19">'
-        + '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><span style="font:800 14px/1 \'Archivo\',sans-serif">' + esc(label) + '</span><span style="font:800 15px/1 \'Archivo\',sans-serif">' + eur(combo.price) + '</span></div>'
+        + '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><span style="font:800 14px/1 \'Archivo\',sans-serif">' + esc(combo.name) + '</span><span style="font:800 15px/1 \'Archivo\',sans-serif">' + eur(combo.price) + '</span></div>'
         + '<div style="font:400 11.5px/1.4 \'Archivo\',sans-serif;opacity:.8;margin-top:5px">' + esc(combo.contents) + '</div></button>';
     };
 
@@ -61,8 +75,8 @@
       + '<div style="font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979;margin-bottom:6px">Make it a combo</div>'
       + '<h2 style="font:800 26px/1.05 \'Archivo\',sans-serif;letter-spacing:-.03em;margin:0 0 4px">' + esc(state.item.name) + '</h2>'
       + '<div style="font:600 12px/1.4 \'Archivo\',sans-serif;color:#605d5d;margin-bottom:20px">' + esc(state.country ? state.country.name : "") + (state.route ? " · " + esc(state.route.name) + " route" : "") + '</div>'
-      + '<div style="font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:10px">Choose your combo</div>'
-      + '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">' + tierBtn("quick", quick, "Quick Bite") + tierBtn("full", full, "Full Experience") + '</div>'
+      + '<div style="font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:10px">' + (quick && full ? "Choose your combo" : "This combo") + '</div>'
+      + '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px">' + tierBtn("quick", quick) + tierBtn("full", full) + '</div>'
       + '<div style="font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#605d5d;margin-bottom:6px">Included drink</div>'
       + '<div style="display:flex;flex-wrap:wrap;gap:4px 22px;margin-bottom:14px">' + drinkRadio("soft", "Soft drink") + drinkRadio("cold", "Cold country drink") + '</div>'
       + '<div style="display:flex;flex-direction:column;gap:2px;border-top:2px solid rgba(27,26,25,.16);padding-top:12px;margin-bottom:22px">'
@@ -85,9 +99,10 @@
   }
 
   function openFor(item, country, route) {
-    if (!KIND_LABEL[item.kind]) return;
+    var tiers = TIER_COMBO_NAMES[item.kind];
+    if (!tiers) return;
     state.open = true; state.item = item; state.country = country || null; state.route = route || null;
-    state.tier = "quick"; state.drink = "soft"; state.alcohol = false; state.hot = false;
+    state.tier = tiers.quick ? "quick" : "full"; state.drink = "soft"; state.alcohol = false; state.hot = false;
     render();
   }
   function close() { state.open = false; render(); }
