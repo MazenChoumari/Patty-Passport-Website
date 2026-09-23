@@ -89,6 +89,34 @@
         + '<div style="font:800 22px/1.08 \'Archivo\',sans-serif;letter-spacing:-.025em;color:' + q.color + '">' + esc(q.value) + '</div></div>';
     }).join("");
 
+    // Destination Dossier — a single consolidated "official record" card
+    // pulling together fields that already exist in this country's data
+    // but were previously scattered or, in dietTags' case, never shown
+    // anywhere on the page at all. Nothing here is invented: every value
+    // is read straight off window.PP_DATA.COUNTRIES.
+    var dossierEl = document.getElementById("dp-dossier");
+    if (dossierEl) {
+      var dossierFields = [
+        ["Capital", d.capital],
+        ["Population", d.population],
+        ["Sea / coast", d.sea],
+        ["Route & gate", route.name + " · " + d.med],
+        ["Passport stamp", d.stamp],
+        ["Dietary notes", d.dietTags || "Ask the desk"],
+        ["Signature dish", d.heroItem.name + " · " + eur(d.heroItem.price)],
+        ["Landscape", d.nature]
+      ];
+      dossierEl.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 20px;background:#1b1a19;color:#f7f3ec">'
+        + '<span style="display:flex;align-items:center;gap:9px;font:800 10.5px/1 \'Archivo\',sans-serif;letter-spacing:.18em;text-transform:uppercase"><span style="width:7px;height:7px;background:#f2b30c;border-radius:50%"></span>Destination dossier</span>'
+        + '<span style="font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#f2b30c">File ' + esc(d.stamp) + '</span></div>'
+        + '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">'
+        + dossierFields.map(function (f) {
+          return '<div style="padding:16px 20px;border-right:1px solid rgba(27,26,25,.14);border-top:1px solid rgba(27,26,25,.14)">'
+            + '<span style="display:block;font:600 9px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#7d7979;margin-bottom:7px">' + esc(f[0]) + '</span>'
+            + '<span style="display:block;font:800 15px/1.25 \'Archivo\',sans-serif;letter-spacing:-.01em">' + esc(f[1]) + '</span></div>';
+        }).join("") + '</div>';
+    }
+
     document.getElementById("dp-culture-title").textContent = d.identity.toUpperCase();
     document.getElementById("dp-culture1").textContent = d.culture1;
     document.getElementById("dp-culture2").textContent = d.culture2;
