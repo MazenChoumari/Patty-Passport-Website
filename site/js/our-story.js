@@ -321,6 +321,34 @@
     });
   }
 
+  // "Two guests, same table" module beside the closing CTA: two illustrative
+  // 21-cell stamp rows (one nearly full, one empty) visualising the
+  // sentence right next to it ("some guests have been to nineteen... some
+  // have been to none") instead of leaving the right column carrying only
+  // two buttons against the full-height title/paragraph on the left.
+  function renderFirstTripModule() {
+    var root = document.getElementById("st-first-trip-module");
+    if (!root) return;
+    function cells(filled) {
+      var out = "";
+      for (var i = 0; i < 21; i++) {
+        out += '<span style="width:9px;height:9px;flex:none;' + (i < filled ? "background:#f2b30c" : "background:transparent;border:1.5px solid rgba(247,243,236,.35)") + '"></span>';
+      }
+      return '<div style="display:flex;flex-wrap:wrap;gap:4px">' + out + '</div>';
+    }
+    var rows = [
+      { label: "Frequent flyer", stamp: "19 / 21 stamped", filled: 19 },
+      { label: "First trip", stamp: "0 / 21 · starts tonight", filled: 0 }
+    ];
+    root.innerHTML = rows.map(function (r) {
+      return '<div style="display:flex;flex-direction:column;gap:9px">'
+        + '<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">'
+        + '<span style="font:800 13.5px/1.2 \'Archivo\',sans-serif">' + r.label + '</span>'
+        + '<span style="font:600 10px/1 \'Archivo\',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#bab6b6">' + r.stamp + '</span></div>'
+        + cells(r.filled) + '</div>';
+    }).join("");
+  }
+
   function render() {
     renderTicker();
     renderValues();
@@ -332,6 +360,7 @@
     renderTeam();
     renderReviewSelect();
     renderReviewStarInputs();
+    renderFirstTripModule();
     if (window.initHoverStyles) window.initHoverStyles(document.body);
     if (window.PP_REVEAL) window.PP_REVEAL.init();
   }
