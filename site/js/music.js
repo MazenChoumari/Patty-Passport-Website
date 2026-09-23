@@ -27,6 +27,21 @@
     return host;
   }
 
+  // Warms the connection to the domains the IFrame API and the embedded
+  // player both need (DNS + TLS handshake done ahead of the actual
+  // request) so the real fetches below start measurably faster instead
+  // of paying that setup cost right when the user clicks play.
+  function preconnect(href) {
+    if (document.querySelector('link[rel="preconnect"][href="' + href + '"]')) return;
+    var link = document.createElement("link");
+    link.rel = "preconnect";
+    link.href = href;
+    link.crossOrigin = "";
+    document.head.appendChild(link);
+  }
+  preconnect("https://www.youtube.com");
+  preconnect("https://www.google.com");
+
   function loadApi() {
     if (window.YT && window.YT.Player) { onApiReady(); return; }
     if (document.getElementById("pp-yt-api")) return;
@@ -39,6 +54,15 @@
       if (typeof prevCb === "function") prevCb();
       onApiReady();
     };
+  }
+
+  // js/nav.js's toggle sets its "Playing" label optimistically the instant
+  // it's clicked, before the YouTube player has necessarily finished
+  // loading — this event is how it finds out when audio has actually
+  // started/stopped, so it can show a real "Loading…" state instead of
+  // claiming playback that hasn't begun yet.
+  function announce(playing) {
+    window.dispatchEvent(new CustomEvent("pp-music-state", { detail: { playing: playing } }));
   }
 
   function onApiReady() {
@@ -61,6 +85,10 @@
           if (e.data === YT.PlayerState.ENDED) {
             e.target.seekTo(0);
             e.target.playVideo();
+          } else if (e.data === YT.PlayerState.PLAYING) {
+            announce(true);
+          } else if (e.data === YT.PlayerState.PAUSED) {
+            announce(false);
           }
         }
       }
@@ -76,7 +104,11 @@
     toggle: function (on) {
       if (!apiReady) { pendingOn = on; loadApi(); return; }
       applyState(on);
-    }
+    },
+    // True only once playVideo() can actually fire synchronously and
+    // start audio immediately — used by nav.js to decide whether a click
+    // shows "Playing" right away or a brief "Loading…" state first.
+    isReady: function () { return !!(player && typeof player.playVideo === "function"); }
   };
 
   /* Fix for the "first click doesn't start music" bug: browsers only allow
