@@ -502,18 +502,34 @@
     }).join("");
 
     document.getElementById("inv-pl-casename").textContent = rc.label;
+    // Full waterfall down to net profit, not just operating profit. Every
+    // stage through EBITDA is a real computed figure; depreciation,
+    // interest and tax are separated out as their own labeled stages but
+    // marked "Pending" rather than given an invented rate — there's no
+    // agreed capex schedule, no fixed rate on the €500k committed loan,
+    // and no confirmed entity/tax position yet, so EBIT/pre-tax/net all
+    // equal EBITDA numerically until those are real.
+    var contribution = v.revenue - v.food - v.labour - v.marketing;
     document.getElementById("inv-pl-rows").innerHTML = [
       { label: "Revenue", value: eur0(v.revenue), color: INK },
       { label: "Food & beverage (30%)", value: "−" + eur0(v.food), color: "#ae1800" },
       { label: "Labour (30%)", value: "−" + eur0(v.labour), color: "#ae1800" },
       { label: "Marketing (7%)", value: "−" + eur0(v.marketing), color: "#ae1800" },
+      { label: "Contribution margin", value: eur0(contribution), color: INK, sub: true },
       { label: "Fixed overhead", value: "−" + eur0(v.fixed), color: "#ae1800" },
-      { label: "Operating profit", value: eur0(v.profit), color: INK }
+      { label: "EBITDA", value: eur0(v.profit), color: INK, sub: true },
+      { label: "Depreciation", value: "Pending capex schedule", color: "#a3a3a3", pending: true },
+      { label: "EBIT", value: eur0(v.profit), color: INK, sub: true },
+      { label: "Interest", value: "Pending loan terms on €500k debt", color: "#a3a3a3", pending: true },
+      { label: "Pre-tax profit", value: eur0(v.profit), color: INK, sub: true },
+      { label: "Tax", value: "Pending entity & tax position", color: "#a3a3a3", pending: true },
+      { label: "Net profit", value: eur0(v.profit), color: INK, sub: true }
     ].map(function (p) {
-      return '<div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid rgba(27,26,25,.18)">'
-        + '<span style="font:600 12.5px/1.3 \'Archivo\',sans-serif;color:' + p.color + '">' + p.label + '</span>'
-        + '<span style="font:800 14px/1 \'Archivo\',sans-serif;color:' + p.color + '">' + p.value + '</span></div>';
-    }).join("");
+      return '<div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:' + (p.sub ? "11px 10px" : "9px 0") + ';border-bottom:1px solid rgba(27,26,25,.18);' + (p.sub ? "background:rgba(242,179,12,.14);margin:0 -10px" : "") + '">'
+        + '<span style="font:' + (p.sub ? "800" : "600") + ' 12.5px/1.3 \'Archivo\',sans-serif;color:' + p.color + '">' + p.label + '</span>'
+        + '<span style="font:' + (p.pending ? "700 11px" : "800 14px") + '/1 \'Archivo\',sans-serif;font-style:' + (p.pending ? "italic" : "normal") + ';color:' + p.color + '">' + p.value + '</span></div>';
+    }).join("")
+      + '<p style="font:400 10.5px/1.5 \'Archivo\',sans-serif;color:#7d7979;margin:12px 0 0">Net profit here still equals EBITDA — depreciation, interest and tax aren\'t modeled yet, so treat every stage below EBITDA as a placeholder, not a forecast.</p>';
 
     var rows = [
       [eur0(v.beMonthly), "Break-even revenue", "Per month, at " + (v.variablePct * 100).toFixed(0) + "% variable cost", CREAM, INK],
