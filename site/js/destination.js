@@ -55,7 +55,7 @@
     // cream so it reads clearly against this bar's dark background.
     document.getElementById("dp-greeting").innerHTML =
       window.PP_FLAGS.render(d.code, 34, { stroke: "#f7f3ec" })
-      + '<span style="min-width:0;flex:1 1 260px;display:flex;flex-direction:column;gap:6px">'
+      + '<span style="min-width:0;flex:1 1 260px;display:flex;flex-direction:column;gap:8px">'
       + (d.greetingNative ? '<span dir="auto" style="display:block;text-align:left;font:800 22px/1.3 \'Archivo\',sans-serif;overflow-wrap:anywhere">' + esc(d.greetingNative) + '</span>' : "")
       + (d.greetingRoman ? '<span style="display:block;font:800 12.5px/1.5 \'Archivo\',sans-serif;letter-spacing:.05em;color:#f2b30c;overflow-wrap:anywhere">' + esc(d.greetingRoman) + '</span>' : "")
       + '<span style="display:block;font:600 11px/1.5 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#bab6b6">Welcome</span>'
@@ -150,7 +150,10 @@
             + '<div style="display:flex;flex-wrap:wrap;gap:5px;padding-top:10px;border-top:2px solid rgba(27,26,25,.16)">'
             + it.tags.map(function (t) { return '<span style="padding:4px 7px;border:2px solid rgba(27,26,25,.28);color:' + (TAG_COLORS[t] || "#605d5d") + ';font:800 8.5px/1 \'Archivo\',sans-serif;letter-spacing:.11em;text-transform:uppercase">' + t + '</span>'; }).join("")
             + '</div>'
-            + '<button type="button" data-bag-add data-bag-kind="adult" data-bag-name="' + esc(it.name) + '" data-bag-price="' + it.price + '" data-bag-country="' + esc(d.code) + '" data-bag-country-name="' + esc(d.name) + '" data-bag-route="' + esc(route.name) + '" style="margin-top:auto;width:100%;padding:9px 10px;background:#1b1a19;color:#f7f3ec;border:0;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" data-hover="background:#ec3013">+ Add to bag</button>'
+            + '<div style="margin-top:auto;display:flex;flex-wrap:wrap;gap:6px">'
+            + '<button type="button" data-bag-add data-bag-kind="adult" data-bag-name="' + esc(it.name) + '" data-bag-price="' + it.price + '" data-bag-country="' + esc(d.code) + '" data-bag-country-name="' + esc(d.name) + '" data-bag-route="' + esc(route.name) + '" style="flex:1;padding:9px 10px;background:#1b1a19;color:#f7f3ec;border:0;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" data-hover="background:#ec3013">+ Add to bag</button>'
+            + (it.kind === "veg" || it.kind === "chicken" || it.kind === "beef" ? '<button type="button" data-combo-open="' + esc(it.name) + '" data-combo-kind="' + it.kind + '" data-combo-price="' + it.price + '" data-combo-country="' + esc(d.code) + '" data-combo-country-name="' + esc(d.name) + '" data-combo-route="' + esc(route.name) + '" style="flex:1;padding:9px 10px;background:transparent;color:#1b1a19;border:2px solid #1b1a19;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c;border-color:#f2b30c">Make it a combo</button>' : "")
+            + '</div>'
             + '</div>';
         }).join("") + '</div></div>';
     }).join("");
