@@ -82,36 +82,16 @@
   // example guest review verbatim; the last four ship with no seed review
   // (front-end only — filled in live via "Leave a Review").
   var TAG_COLORS = [RED, BLU, "#1f7a3d", YEL];
-  var TEAM = [
-    { name: "George Ammar", role: "Route Host", nationality: "Lebanese / Spanish",
-      bio: "Runs the floor on the busiest routes and never lets a table feel rushed between courses.",
-      reviews: [{ text: "George made our trip to Greece unforgettable. He explained the destination card so well and made our kids feel at home.", rating: 5 }] },
-    { name: "Lucía Fernández", role: "Passport Desk", nationality: "Spanish",
-      bio: "The first face at the desk — reads a party in seconds and picks the right first destination for them.",
-      reviews: [{ text: "Lucía greeted us with such warmth. She helped us choose Lebanon as our first destination and walked our child through the passport stamps.", rating: 5 }] },
-    { name: "Marco Rossi", role: "Kitchen Crew", nationality: "Italian",
-      bio: "Holds every country's plate to the same standard: nothing leaves the pass unless it tastes like the place it's from.",
-      reviews: [{ text: "Marco's attention to detail made our Italian burger taste like a real piazza moment.", rating: 4 }] },
-    { name: "Yasmin Haddad", role: "Destination Guide", nationality: "Lebanese",
-      bio: "Turns the passport into a game for younger guests — flags, phrases and a stamp they actually want to earn.",
-      reviews: [{ text: "Yasmin ran an amazing activity for our kids, teaching them about flags and flavors.", rating: 5 }] },
-    { name: "Nikos Papadopoulos", role: "Route Host", nationality: "Greek",
-      bio: "Keeps the Aegean route moving and always has a story about the dish that's about to land.",
-      reviews: [] },
-    { name: "Alicia Morales", role: "Table Captain", nationality: "Spanish",
-      bio: "Plans the birthdays and group journeys, from the first booking call to the final candle.",
-      reviews: [] },
-    { name: "Omar El Tayar", role: "Kitchen Crew", nationality: "Egyptian",
-      bio: "Runs the drinks pass across all twenty-one countries and knows which cooler pairs with which route.",
-      reviews: [] },
-    { name: "Sofia Costa", role: "Kitchen Crew", nationality: "Portuguese / Moroccan",
-      bio: "Closes every table's journey with the country's dessert — and keeps the sweet stamp worth waiting for.",
-      reviews: [] }
-  ].map(function (t, i) {
-    t.slotId = "st-team-" + i;
-    t.delay = (i % 4) * 70;
-    t.tag = TAG_COLORS[i % TAG_COLORS.length];
-    return t;
+  // Reads the shared window.PP_CREW_DATA (js/crew-data.js) — same names,
+  // roles and bios crew.html's full directory shows, so the two pages
+  // can't drift apart. Reviews start empty for every profile; nothing is
+  // pre-seeded, so a visitor only ever sees a real submitted review or
+  // an honest "No reviews yet."
+  var TEAM = ((window.PP_CREW_DATA && window.PP_CREW_DATA.FEATURED) || []).map(function (c, i) {
+    return {
+      name: c.name, role: c.role, nationality: c.nationality, bio: c.bio, reviews: [],
+      slotId: "st-team-" + i, delay: (i % 4) * 70, tag: TAG_COLORS[i % TAG_COLORS.length]
+    };
   });
 
   var hours = (window.PP_DATA && window.PP_DATA.HOURS) || [
