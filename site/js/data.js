@@ -295,13 +295,17 @@
 
   // Approved one-per-country plant/tree identity — used by the home
   // garden section (one plaque per country) and anywhere else a single
-  // shared "national plant" needs to stay consistent.
+  // shared "national plant" needs to stay consistent. Names were checked
+  // one by one against the actual uploaded photo at images/trees/<code>_
+  // tree.jpg (most were mismatched — e.g. lbn's photo is a pomegranate
+  // tree, not a cedar; tun's is a desert acacia, not a pomegranate), so
+  // every label here now matches what its own photo actually shows.
   var PLANTS = {
-    lbn: "Cedar of Lebanon", syr: "Aleppo pine", pse: "Olive tree", tur: "Turkish pine",
-    cyp: "Cyprus cedar", grc: "Cypress", ita: "Stone pine", esp: "Cork oak",
-    fra: "Plane tree", mco: "Italian cypress", mlt: "Carob", svn: "Istrian olive",
-    hrv: "Dalmatian black pine", bih: "European beech", mne: "Chestnut", alb: "Olive tree",
-    egy: "Date palm", lby: "Acacia", tun: "Pomegranate", dza: "Atlas cedar", mar: "Argan tree"
+    lbn: "Pomegranate", syr: "Aleppo Pistachio", pse: "Olive Tree", tur: "Anatolian Maple",
+    cyp: "Cyprus Golden Oak", grc: "Mediterranean Cypress", ita: "Apennine Fir", esp: "Cork Oak",
+    fra: "Stone Pine", mco: "Aleppo Pine", mlt: "Phoenician Juniper", svn: "Norway Spruce",
+    hrv: "Holm Oak", bih: "Bosnian Spruce", mne: "Dwarf Mountain Pine", alb: "Black Pine",
+    egy: "Nile Acacia", lby: "Libyan Juniper", tun: "Sahara Acacia", dza: "Atlas Cedar", mar: "Argan Tree"
   };
 
   var CULTURE_BY_CODE = {};
