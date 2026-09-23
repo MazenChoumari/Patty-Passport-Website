@@ -30,12 +30,20 @@
     ["05", "The room is the story", "Zones, boards, tickets, stamps, playlists. If it doesn't help the table travel, it doesn't go in.", "#e7e3dc", INK]
   ].map(function (v, i) { return { n: v[0], title: v[1], line: v[2], bg: v[3], fg: v[4], delay: i * 70 }; });
 
+  // Honest founder-led timeline — dates and milestones pending Mazen and
+  // Ahmed's confirmation before publication; nothing here is marked
+  // complete unless it actually is. 2026 stays present-tense since it's
+  // the year in progress. Matches the phased rollout on investors.html
+  // (Gate One opens 2028, not before) so the two pages can't contradict
+  // each other on when the terminal actually exists.
   var timeline = [
-    ["2022", "A kitchen argument", "A Lebanese cook and a Spanish cook spent a shift disagreeing about garlic. Both were right. That was the idea."],
-    ["2023", "Twenty-one plates", "Eighteen months developing one signature burger per Mediterranean country, tested on people from each of them."],
-    ["2024", "The passport", "The loyalty book replaced a points card in testing and doubled second visits within a month."],
-    ["2025", "Building the terminal", "Leganés site secured; five route zones, the check-in desk and the departures board designed as one system."],
-    ["2026", "Gate one opens", "240 seats, twenty-one destinations in rotation, and the first stamps in circulation."]
+    ["2022", "The gap becomes visible", "Mazen and Ahmed notice that many burger menus change names and toppings without changing the experience. Mediterranean restaurants, meanwhile, often compress many countries into one broad identity."],
+    ["2023", "The passport idea", "The concept becomes a restaurant where guests move between distinct countries through food, music, storytelling and stamps — not a generic burger restaurant with travel decoration."],
+    ["2024", "Building the 21-country system", "Countries are organised into five routes. Menu architecture, country identity, soundtrack logic, passport progression and route storytelling begin developing as one connected system."],
+    ["2025", "Turning the idea into a terminal", "The team develops the Leganés operating concept, guest journey, booking structure, route zones, investor model and site requirements."],
+    ["2026", "Site and funding preparation", "Focus moves to land/site evaluation, financing, planning assumptions, permissions, supplier preparation and validating the economics."],
+    ["2027", "Design and construction phase", "Complete planning, financing, licences, construction design, kitchen engineering, systems and recruitment preparation."],
+    ["2028", "Gate One opens", "Open the first terminal only after the location, capital, permissions, build and operating systems are ready."]
   ].map(function (t, i) { return { year: t[0], title: t[1], line: t[2], delay: i * 70 }; });
 
   var mood = [
