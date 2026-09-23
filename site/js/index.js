@@ -238,40 +238,60 @@
      real map image is supplied. ── */
   function escMap(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
-  /* Home has no route-filter legend to isolate a route and thin the
-     Italy/Monaco/Bosnia/Albania pocket the way the Route Map page can, so
-     names stay always-on here (matching route-map.js's own node markup —
-     class="pp-map-node-name", already hidden at phone width by the shared
-     media query in site.css) but the four nodes that visually collide in
-     that one pocket get a small manual pixel nudge away from their badge,
-     plus a shortened map tag for the one long name in the group. The
-     badge itself is never moved, so the true position + tap target don't
-     shift — only the text label offsets. */
-  var HOME_LABEL_NUDGE = {
-    mco: { dx: -38, dy: -2 },
-    ita: { dx: 30, dy: -6 },
-    bih: { dx: -14, dy: 20 },
-    alb: { dx: 50, dy: -30 }
-  };
-  var HOME_LABEL_SHORT = { bih: "Bosnia" };
+  /* Home map now borrows route-map.js's own node structure verbatim —
+     badge with the gate/med code inline (the same flight-code feel),
+     a plain-flow name label instead of an absolutely-positioned nudge
+     hack, and the same route-filter legend that isolates one chapter
+     and fades the rest to .22 opacity. That legend is what actually
+     solves the Italy/Monaco/Bosnia/Albania pocket on the Route Map page
+     — reusing it here instead of a manual per-node offset means both
+     maps share one real solution, not two different ones. */
+  var homeMapRoute = "ALL";
+  var HOME_MAP_ORDER = ["LEV", "AEG", "IBL", "ADR", "NAF"];
+
+  function renderHomeMapLegend(routes) {
+    var el = document.getElementById("home-map-legend");
+    if (!el) return;
+    var keys = ["ALL"].concat(HOME_MAP_ORDER);
+    el.innerHTML = keys.map(function (k) {
+      var label = k === "ALL" ? "All routes" : routes[k].name;
+      var dot = k === "ALL" ? "#f2b30c" : routes[k].bg;
+      var active = homeMapRoute === k;
+      return '<button type="button" data-home-route="' + k + '" style="display:inline-flex;align-items:center;gap:9px;padding:10px 13px;background:' + (active ? INK : "transparent") + ';border:2px solid #1b1a19;color:' + (active ? "#f7f3ec" : "#fff") + ';font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c;color:#1b1a19">'
+        + '<span style="width:9px;height:9px;background:' + dot + ';display:block"></span>' + escMap(label) + '</button>';
+    }).join("");
+  }
 
   function renderHomeMap(data) {
     var nodesEl = document.getElementById("home-map-nodes");
     if (!nodesEl || !window.PP_MED_MAP) return;
     var pos = window.PP_MED_MAP.POS;
     var routes = data.ROUTES;
+    var act = homeMapRoute;
+    var activeLabelEl = document.getElementById("home-map-active-label");
+    if (activeLabelEl) activeLabelEl.textContent = act === "ALL" ? "All five routes shown" : routes[act].name.toUpperCase() + " ROUTE ISOLATED";
     nodesEl.innerHTML = data.COUNTRIES.map(function (c, i) {
       var p = pos[c.code] || [50, 50];
       var ch = routes[c.routeKey];
+      var on = act === "ALL" || act === c.routeKey;
       var sway = (4 + (i % 5) * 0.6).toFixed(1) + "s";
-      var nudge = HOME_LABEL_NUDGE[c.code];
-      var nameText = HOME_LABEL_SHORT[c.code] || c.name;
-      var nameTransform = "translate(-50%,0)" + (nudge ? " translate(" + nudge.dx + "px," + nudge.dy + "px)" : "");
-      return '<a href="destination.html#' + c.code + '" class="pp-home-node" aria-label="' + escMap(c.name) + ' — ' + escMap(ch.name) + ' route, gate ' + escMap(c.med) + '" style="position:absolute;left:' + p[0] + '%;top:' + p[1] + '%;transform:translate(-50%,-50%);text-decoration:none">'
-        + '<span class="pp-home-tip"><b>' + escMap(ch.name) + ' route</b><span>Gate ' + escMap(c.med) + '</span></span>'
-        + '<span class="pp-map-node-badge" style="display:flex;align-items:center;padding:7px 10px;background:' + ch.bg + ';color:' + ch.fg + ';border:2px solid #1b1a19;font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;white-space:nowrap;animation:ppSway ' + sway + ' ease-in-out infinite">' + escMap(c.code.toUpperCase()) + '</span>'
-        + '<span class="pp-map-node-name" style="position:absolute;left:50%;top:100%;margin-top:5px;transform:' + nameTransform + ';font:800 11.5px/1 \'Archivo\',sans-serif;letter-spacing:-.005em;color:#fff;text-shadow:0 1px 3px rgba(27,26,25,.85);white-space:nowrap;pointer-events:none">' + escMap(nameText) + '</span></a>';
+      return '<a href="destination.html#' + c.code + '" class="pp-home-node" aria-label="' + escMap(c.name) + ' — ' + escMap(ch.name) + ' route, gate ' + escMap(c.med) + '" style="position:absolute;left:' + p[0] + '%;top:' + p[1] + '%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:flex-start;gap:5px;text-decoration:none;opacity:' + (on ? "1" : "0.22") + ';transition:opacity .3s ease">'
+        + '<span class="pp-map-node-badge" style="display:flex;align-items:center;gap:7px;padding:6px 9px;background:' + ch.bg + ';color:' + ch.fg + ';border:2px solid #1b1a19;font:800 10.5px/1 \'Archivo\',sans-serif;letter-spacing:.12em;white-space:nowrap;animation:ppSway ' + sway + ' ease-in-out infinite">' + escMap(c.code.toUpperCase()) + '<span class="pp-map-node-sub" style="font:600 8.5px/1;letter-spacing:.14em;opacity:.75">' + escMap(c.med) + '</span></span>'
+        + '<span class="pp-map-node-name" style="font:800 13px/1 \'Archivo\',sans-serif;letter-spacing:-.01em;color:#fff;text-shadow:0 1px 0 rgba(27,26,25,.6)">' + escMap(c.name) + '</span></a>';
     }).join("");
+  }
+
+  function initHomeMapFilter(data) {
+    function onClick(e) {
+      var btn = e.target.closest("[data-home-route]");
+      if (!btn) return;
+      homeMapRoute = btn.getAttribute("data-home-route");
+      renderHomeMapLegend(data.ROUTES);
+      renderHomeMap(data);
+      if (window.initHoverStyles) window.initHoverStyles(document.getElementById("home-map-legend"));
+    }
+    document.body.addEventListener("click", onClick);
+    if (window.PP_TRACK) window.PP_TRACK(function () { document.body.removeEventListener("click", onClick); });
   }
 
   var PP_STAMPED = 6;
@@ -597,7 +617,9 @@
       renderGardenRouteFilters(data.ROUTES);
       renderGardenPlaques(data.COUNTRIES, data.ROUTES);
       initGardenFilters(data);
+      renderHomeMapLegend(data.ROUTES);
       renderHomeMap(data);
+      initHomeMapFilter(data);
       initTootyPreview(data);
       if (window.initHoverStyles) window.initHoverStyles(document.body);
     } else {

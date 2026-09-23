@@ -96,24 +96,10 @@ html, body { overflow-x: hidden; }
   .pp-map-node-badge { padding: 4px 6px !important; }
 }
 
-/* — Home map node tooltip (js/index.js renderHomeMap) —
-   Country names are always-on on the Home map (js/index.js applies small
-   manual pixel nudges to the Italy/Monaco/Bosnia/Albania pocket so their
-   labels don't collide — see HOME_LABEL_NUDGE). This tooltip is a bonus
-   hover/focus reveal for the route + gate code, which the always-on name
-   label doesn't carry. Route-map.js's own nodes are untouched — this only
-   targets .pp-home-node. */
-.pp-home-node { position: relative; }
-.pp-home-tip {
-  position: absolute; left: 50%; bottom: 100%; transform: translateX(-50%) translateY(-5px);
-  background: #1b1a19; color: #f7f3ec; padding: 6px 10px; margin-bottom: 2px;
-  font: 700 10.5px/1.25 'Archivo', sans-serif; white-space: nowrap;
-  opacity: 0; pointer-events: none; transition: opacity .15s ease, transform .15s ease;
-  box-shadow: 0 6px 16px rgba(0,0,0,.32); z-index: 6;
-}
-.pp-home-tip b { display: block; font-size: 12px; letter-spacing: -.01em; }
-.pp-home-tip span { display: block; opacity: .7; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; margin-top: 1px; }
-.pp-home-node:hover .pp-home-tip, .pp-home-node:focus-visible .pp-home-tip { opacity: 1; transform: translateX(-50%) translateY(-9px); }
+/* Home map nodes (js/index.js renderHomeMap) now reuse route-map.js's own
+   node structure verbatim — badge with inline gate code, plain-flow name
+   label below, route-filter fade — so there is no Home-specific node CSS
+   left to carry here. */
 @media (max-width: 760px) {
 
   /* Shared nav (js/nav.js) — the top row (logo + music/passport/all-pages
