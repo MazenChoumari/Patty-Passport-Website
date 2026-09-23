@@ -94,6 +94,26 @@ html, body { overflow-x: hidden; }
      destination page and in the accessible label. */
   .pp-map-node-sub, .pp-map-node-name { display: none !important; }
   .pp-map-node-badge { padding: 4px 6px !important; }
+}
+
+/* — Home map node tooltip (js/index.js renderHomeMap) —
+   The Home map has no route-filter legend to thin out dense clusters
+   (Italy/Monaco/Bosnia etc.) the way the Route Map page does, so each
+   node there shows only its gate code and reveals name + route on
+   hover/focus instead of always-on subtext + name label. Route-map.js's
+   own nodes are untouched — this only targets .pp-home-node. */
+.pp-home-node { position: relative; }
+.pp-home-tip {
+  position: absolute; left: 50%; bottom: 100%; transform: translateX(-50%) translateY(-5px);
+  background: #1b1a19; color: #f7f3ec; padding: 6px 10px; margin-bottom: 2px;
+  font: 700 10.5px/1.25 'Archivo', sans-serif; white-space: nowrap;
+  opacity: 0; pointer-events: none; transition: opacity .15s ease, transform .15s ease;
+  box-shadow: 0 6px 16px rgba(0,0,0,.32); z-index: 6;
+}
+.pp-home-tip b { display: block; font-size: 12px; letter-spacing: -.01em; }
+.pp-home-tip span { display: block; opacity: .7; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; margin-top: 1px; }
+.pp-home-node:hover .pp-home-tip, .pp-home-node:focus-visible .pp-home-tip { opacity: 1; transform: translateX(-50%) translateY(-9px); }
+@media (max-width: 760px) {
 
   /* Shared nav (js/nav.js) — the top row (logo + music/passport/all-pages
      buttons) and the quick-gates strip are both fixed-width flex rows that
