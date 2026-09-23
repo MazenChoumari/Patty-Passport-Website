@@ -111,6 +111,32 @@
       btn.addEventListener("click", function () { state.route = btn.getAttribute("data-route"); render(); });
     });
 
+    renderPlanTicker(data);
+  }
+
+  // Closing "PLAN THE WHOLE SEA" boarding-pass ticker: one chip per route,
+  // gate range read live from COUNTRIES/ROUTES, duplicated once for a
+  // seamless loop (same technique as the departures tickers on Home,
+  // Menu, Destinations and Our Story) so the route map's own send-off
+  // carries the same terminal energy instead of sitting static.
+  function renderPlanTicker(data) {
+    var track = document.getElementById("rm-plan-ticker");
+    if (!track) return;
+    var countries = data.COUNTRIES, routes = data.ROUTES;
+    var chips = CH_ORDER.map(function (key) {
+      var route = routes[key];
+      var stops = countries.filter(function (c) { return c.routeKey === key; });
+      var meds = stops.map(function (s) { return s.med; });
+      var gateRange = meds.length ? (meds[0] + "–" + meds[meds.length - 1]) : "";
+      return '<span style="display:flex;align-items:center;gap:12px;padding:12px 22px;white-space:nowrap;border-right:1px dashed rgba(247,243,236,.3)">'
+        + '<span style="width:9px;height:9px;flex:none;background:' + route.bg + '"></span>'
+        + '<span style="font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.14em">' + esc(key) + '</span>'
+        + '<span style="font:600 10.5px/1 \'Archivo\',sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#bab6b6">' + esc(route.name) + '</span>'
+        + '<span style="font:600 10px/1 \'Archivo\',sans-serif;color:#7d7979">' + stops.length + ' stops · gate ' + esc(gateRange) + '</span>'
+        + '<span style="width:30px;height:9px;background:repeating-linear-gradient(90deg,currentColor 0 2px,transparent 2px 4px);opacity:.35"></span></span>';
+    }).join("");
+    track.innerHTML = chips + chips;
+
     if (window.initHoverStyles) window.initHoverStyles(document.body);
     if (window.PP_REVEAL) window.PP_REVEAL.init();
   }
