@@ -43,7 +43,12 @@
      [["Investor page", "investors.html", RED, "#fff"], ["Email the team", "mailto:invest@pattypassport.com", CREAM, INK]]]
   ];
 
-  var state = { t: 0, custom: null };
+  // history holds every exchange for the session, oldest first — the
+  // thread is a real growing conversation now, not one thread swapped
+  // out for the next. Each entry starts as just {question}; answer/
+  // followUp/pills land on it once the "thinking" delay resolves, so
+  // the same object reference update-in-place re-renders correctly.
+  var state = { history: [], thinking: false };
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
@@ -287,23 +292,33 @@
     }).join("");
   }
 
-  function threadHtml(th) {
+  function avatarHtml() {
+    return '<span style="width:26px;height:26px;flex:none;background:#f2b30c;border:2px solid #1b1a19;display:flex;align-items:center;justify-content:center">' + window.PP_TOOTY_ICON(18, "#1b1a19") + '</span>';
+  }
+
+  function welcomeHtml() {
+    return '<div style="display:flex;gap:11px;align-items:flex-start">' + avatarHtml()
+      + '<span style="max-width:80%;background:#fff;border:2px solid #1b1a19;padding:12px 13px;font:400 13.5px/1.5 \'Archivo\',sans-serif">Welcome to the terminal. Twenty-one countries are boarding tonight — tell me who\'s at the table and I\'ll pick your route.</span></div>';
+  }
+
+  // Renders one exchange — just the question bubble while th.answer isn't
+  // filled in yet (still "thinking"), the full answer group once it is.
+  function turnHtml(th) {
+    var out = '<div style="display:flex;justify-content:flex-end">'
+      + '<span style="max-width:78%;background:#2b76c9;color:#fff;border:2px solid #1b1a19;padding:12px 13px;font:400 13.5px/1.5 \'Archivo\',sans-serif">' + esc(th.question) + '</span></div>';
+    if (!th.answer) return out;
     var pillsHtml = th.pills.map(function (p) {
       return '<a href="' + p[1] + '" style="display:inline-flex;align-items:center;gap:7px;padding:9px 11px;background:' + p[2] + ';color:' + p[3] + ';border:2px solid #1b1a19;text-decoration:none;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase" data-hover="background:#1b1a19;color:#f7f3ec">' + esc(p[0]) + '<span>→</span></a>';
     }).join("");
-    return '<div style="display:flex;gap:11px;align-items:flex-start">'
-      + '<span style="width:26px;height:26px;flex:none;background:#f2b30c;border:2px solid #1b1a19;display:flex;align-items:center;justify-content:center">' + window.PP_TOOTY_ICON(18, "#1b1a19") + '</span>'
-      + '<span style="max-width:80%;background:#fff;border:2px solid #1b1a19;padding:12px 13px;font:400 13.5px/1.5 \'Archivo\',sans-serif">Welcome to the terminal. Twenty-one countries are boarding tonight — tell me who\'s at the table and I\'ll pick your route.</span></div>'
-      + '<div style="display:flex;justify-content:flex-end">'
-      + '<span style="max-width:78%;background:#2b76c9;color:#fff;border:2px solid #1b1a19;padding:12px 13px;font:400 13.5px/1.5 \'Archivo\',sans-serif">' + esc(th.question) + '</span></div>'
-      + '<div style="display:flex;gap:11px;align-items:flex-start">'
-      + '<span style="width:26px;height:26px;flex:none;background:#f2b30c;border:2px solid #1b1a19;display:flex;align-items:center;justify-content:center">' + window.PP_TOOTY_ICON(18, "#1b1a19") + '</span>'
+    return out + '<div style="display:flex;gap:11px;align-items:flex-start">' + avatarHtml()
       + '<span style="max-width:86%;display:flex;flex-direction:column;gap:10px">'
       + '<span style="background:#fff;border:2px solid #1b1a19;padding:12px 13px;font:400 13.5px/1.5 \'Archivo\',sans-serif">' + esc(th.answer) + '</span>'
       + '<span style="background:#fff;border:2px solid #1b1a19;padding:12px 13px;font:400 13px/1.5 \'Archivo\',sans-serif;color:#605d5d">' + esc(th.followUp) + '</span>'
-      + '<span style="display:flex;flex-wrap:wrap;gap:7px">' + pillsHtml + '</span></span></div>'
-      + '<div style="display:flex;gap:11px;align-items:center;margin-top:auto">'
-      + '<span style="width:26px;height:26px;flex:none;background:#f2b30c;border:2px solid #1b1a19;display:flex;align-items:center;justify-content:center">' + window.PP_TOOTY_ICON(18, "#1b1a19") + '</span>'
+      + '<span style="display:flex;flex-wrap:wrap;gap:7px">' + pillsHtml + '</span></span></div>';
+  }
+
+  function typingHtml() {
+    return '<div style="display:flex;gap:11px;align-items:center">' + avatarHtml()
       + '<span style="display:flex;align-items:center;gap:5px;background:#fff;border:2px solid #1b1a19;padding:12px 13px">'
       + '<span style="width:6px;height:6px;background:#1b1a19;animation:ppDots 1.2s ease-in-out infinite"></span>'
       + '<span style="width:6px;height:6px;background:#1b1a19;animation:ppDots 1.2s ease-in-out .2s infinite"></span>'
@@ -311,17 +326,31 @@
   }
 
   function chipsHtml() {
-    var i = state.t % THREADS.length;
     return THREADS.map(function (t, k) {
-      var on = !state.custom && k === i;
-      return '<button type="button" class="pt-chip" data-i="' + k + '" style="padding:10px 12px;background:' + (on ? INK : "transparent") + ';border:2px solid #1b1a19;color:' + (on ? CREAM : INK) + ';font:600 11.5px/1 \'Archivo\',sans-serif;cursor:pointer;text-align:left" data-hover="background:#f2b30c;color:#1b1a19">' + esc(t[0]) + '</button>';
+      return '<button type="button" class="pt-chip" data-i="' + k + '" style="padding:10px 12px;background:transparent;border:2px solid #1b1a19;color:' + INK + ';font:600 11.5px/1 \'Archivo\',sans-serif;cursor:pointer;text-align:left" data-hover="background:#f2b30c;color:#1b1a19">' + esc(t[0]) + '</button>';
     }).join("");
   }
 
-  function currentThread() {
-    if (state.custom) return state.custom;
-    var th = THREADS[state.t % THREADS.length];
-    return { question: th[0], answer: th[1], followUp: th[2], pills: th[3] };
+  // Pushes a new question onto the thread immediately (so it's visible
+  // right away), shows the typing indicator, then fills in the answer
+  // after a short delay — resolve() is called once that delay is up, so
+  // free-text questions (answerFor) and canned chip threads (already-
+  // written answer/followUp/pills) share the same real "thinking" beat
+  // instead of one appearing instantly and the other not.
+  function pushTurn(question, resolve) {
+    if (state.thinking) return;
+    var turn = { question: question };
+    state.history.push(turn);
+    state.thinking = true;
+    render();
+    setTimeout(function () {
+      var res = resolve();
+      turn.answer = res.answer;
+      turn.followUp = res.followUp;
+      turn.pills = res.pills;
+      state.thinking = false;
+      render();
+    }, 550 + Math.random() * 450);
   }
 
   function render() {
@@ -339,16 +368,24 @@
     }
     if (skillsRoot) skillsRoot.innerHTML = skillsHtml();
     if (jobsRoot) jobsRoot.innerHTML = jobsHtml();
-    threadRoot.innerHTML = threadHtml(currentThread());
+    threadRoot.innerHTML = welcomeHtml() + state.history.map(turnHtml).join("") + (state.thinking ? typingHtml() : "");
+    threadRoot.scrollTop = threadRoot.scrollHeight;
     if (chipsRoot) chipsRoot.innerHTML = chipsHtml();
 
     Array.prototype.forEach.call(document.querySelectorAll(".pt-chip"), function (btn) {
       btn.addEventListener("click", function () {
-        state.t = parseInt(btn.getAttribute("data-i"), 10) || 0;
-        state.custom = null;
-        render();
+        var th = THREADS[parseInt(btn.getAttribute("data-i"), 10) || 0];
+        pushTurn(th[0], function () { return { answer: th[1], followUp: th[2], pills: th[3] }; });
       });
     });
+
+    var form = document.getElementById("pt-form");
+    var input = document.getElementById("pt-input");
+    if (input) input.disabled = state.thinking;
+    if (form) {
+      var submitBtn = form.querySelector('button[type="submit"]');
+      if (submitBtn) submitBtn.disabled = state.thinking;
+    }
 
     if (window.initHoverStyles) window.initHoverStyles(document.body);
     if (window.PP_REVEAL) window.PP_REVEAL.init();
@@ -360,10 +397,9 @@
     if (form) form.addEventListener("submit", function (e) {
       e.preventDefault();
       var text = input ? input.value.trim() : "";
-      if (!text) return;
-      state.custom = answerFor(text);
+      if (!text || state.thinking) return;
+      pushTurn(text, function () { return answerFor(text); });
       if (input) input.value = "";
-      render();
     });
 
     render();

@@ -9,7 +9,7 @@
 (function () {
   var RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
 
-  var state = { open: false, messages: [] };
+  var state = { open: false, messages: [], thinking: false };
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
@@ -128,8 +128,17 @@
     }).join("") + '</div>';
   }
 
+  function typingBubbleHtml() {
+    return '<div style="display:flex;gap:8px;align-items:center;margin-bottom:10px">'
+      + '<span style="width:22px;height:22px;flex:none;background:' + YEL + ';border:2px solid ' + INK + ';display:flex;align-items:center;justify-content:center">' + window.PP_TOOTY_ICON(15, INK) + '</span>'
+      + '<span style="display:flex;align-items:center;gap:4px;background:#fff;border:2px solid ' + INK + ';padding:9px 10px">'
+      + '<span style="width:5px;height:5px;background:' + INK + ';animation:ptwDots 1.2s ease-in-out infinite"></span>'
+      + '<span style="width:5px;height:5px;background:' + INK + ';animation:ptwDots 1.2s ease-in-out .2s infinite"></span>'
+      + '<span style="width:5px;height:5px;background:' + INK + ';animation:ptwDots 1.2s ease-in-out .4s infinite"></span></span></div>';
+  }
+
   function panelBodyHtml() {
-    var log = state.messages.map(function (m) { return bubbleHtml(m.from, m.text) + (m.pills ? pillsHtml(m.pills) : ""); }).join("");
+    var log = state.messages.map(function (m) { return bubbleHtml(m.from, m.text) + (m.pills ? pillsHtml(m.pills) : ""); }).join("") + (state.thinking ? typingBubbleHtml() : "");
     var chips = QUICK.map(function (q, k) {
       return '<button type="button" class="ptw-chip" data-q="' + esc(q[1]) + '" style="padding:7px 9px;background:transparent;border:2px solid ' + INK + ';color:' + INK + ';font:600 10.5px/1 \'Archivo\',sans-serif;cursor:pointer" data-hover="background:' + YEL + '">' + esc(q[0]) + '</button>';
     }).join("");
@@ -169,16 +178,19 @@
 
       var form = root.querySelector("#ptw-form");
       var input = root.querySelector("#ptw-input");
+      if (input) input.disabled = state.thinking;
+      var sendBtn = form ? form.querySelector('button[type="submit"]') : null;
+      if (sendBtn) sendBtn.disabled = state.thinking;
       if (form) form.addEventListener("submit", function (e) {
         e.preventDefault();
         var text = input ? input.value.trim() : "";
-        if (!text) return;
+        if (!text || state.thinking) return;
         ask(text);
         if (input) input.value = "";
       });
 
       Array.prototype.forEach.call(root.querySelectorAll(".ptw-chip"), function (btn) {
-        btn.addEventListener("click", function () { ask(btn.getAttribute("data-q")); });
+        btn.addEventListener("click", function () { if (!state.thinking) ask(btn.getAttribute("data-q")); });
       });
 
       var log = root.querySelector("#ptw-log");
@@ -189,9 +201,14 @@
 
   function ask(text) {
     state.messages.push({ from: "user", text: esc(text) });
-    var res = answerFor(text);
-    state.messages.push({ from: "pt", text: res.text, pills: res.pills });
+    state.thinking = true;
     render();
+    setTimeout(function () {
+      var res = answerFor(text);
+      state.messages.push({ from: "pt", text: res.text, pills: res.pills });
+      state.thinking = false;
+      render();
+    }, 500 + Math.random() * 400);
   }
 
   function open() {
@@ -206,7 +223,7 @@
   function mount() {
     if (document.getElementById("ptw-root")) return;
     var style = document.createElement("style");
-    style.textContent = "@keyframes ptwBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}";
+    style.textContent = "@keyframes ptwBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}@keyframes ptwDots{0%,80%,100%{opacity:.2}40%{opacity:1}}";
     document.head.appendChild(style);
     var root = document.createElement("div");
     root.id = "ptw-root";
