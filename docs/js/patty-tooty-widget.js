@@ -139,11 +139,15 @@
 
   function panelBodyHtml() {
     var log = state.messages.map(function (m) { return bubbleHtml(m.from, m.text) + (m.pills ? pillsHtml(m.pills) : ""); }).join("") + (state.thinking ? typingBubbleHtml() : "");
-    var chips = QUICK.map(function (q, k) {
+    // Same "this is a real conversation now" reaction as the full page:
+    // the quick-question chips disappear the moment the user has actually
+    // asked something, instead of sitting under the transcript forever.
+    var conversationStarted = state.messages.some(function (m) { return m.from === "user"; }) || state.thinking;
+    var chipsHtml = conversationStarted ? "" : '<div style="padding:8px 12px;display:flex;flex-wrap:wrap;gap:6px;border-top:2px solid ' + INK + '">' + QUICK.map(function (q) {
       return '<button type="button" class="ptw-chip" data-q="' + esc(q[1]) + '" style="padding:7px 9px;background:transparent;border:2px solid ' + INK + ';color:' + INK + ';font:600 10.5px/1 \'Archivo\',sans-serif;cursor:pointer" data-hover="background:' + YEL + '">' + esc(q[0]) + '</button>';
-    }).join("");
+    }).join("") + '</div>';
     return '<div id="ptw-log" style="padding:12px;max-height:280px;overflow-y:auto;background:repeating-linear-gradient(0deg,rgba(27,26,25,.04) 0 1px,transparent 1px 36px)">' + log + '</div>'
-      + '<div style="padding:8px 12px;display:flex;flex-wrap:wrap;gap:6px;border-top:2px solid ' + INK + '">' + chips + '</div>'
+      + chipsHtml
       + '<form id="ptw-form" style="display:flex;align-items:center;gap:8px;border-top:2px solid ' + INK + ';padding:10px 12px">'
       + '<input type="text" id="ptw-input" placeholder="Ask Patty Tooty…" style="flex:1;min-width:0;background:transparent;border:0;border-bottom:2px solid rgba(27,26,25,.3);color:' + INK + ';font:400 12.5px/1.4 \'Archivo\',sans-serif;padding:6px 0;outline:none" />'
       + '<button type="submit" style="padding:9px 11px;background:' + RED + ';border:2px solid ' + INK + ';color:#fff;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" data-hover="background:' + INK + '">Send</button>'

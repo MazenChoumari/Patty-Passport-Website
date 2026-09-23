@@ -370,7 +370,16 @@
     if (jobsRoot) jobsRoot.innerHTML = jobsHtml();
     threadRoot.innerHTML = welcomeHtml() + state.history.map(turnHtml).join("") + (state.thinking ? typingHtml() : "");
     threadRoot.scrollTop = threadRoot.scrollHeight;
-    if (chipsRoot) chipsRoot.innerHTML = chipsHtml();
+
+    // Suggested questions are an entry point into the conversation, not
+    // a menu that should keep sitting there once one has actually
+    // started — hiding them the moment the first exchange lands is what
+    // makes this read as an active chat instead of a static panel of
+    // buttons with the transcript swapped out underneath it.
+    var chipsWrap = document.getElementById("pt-chips-wrap");
+    var conversationStarted = state.history.length > 0 || state.thinking;
+    if (chipsWrap) chipsWrap.style.display = conversationStarted ? "none" : "";
+    if (chipsRoot && !conversationStarted) chipsRoot.innerHTML = chipsHtml();
 
     Array.prototype.forEach.call(document.querySelectorAll(".pt-chip"), function (btn) {
       btn.addEventListener("click", function () {
