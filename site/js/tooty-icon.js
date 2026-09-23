@@ -25,7 +25,7 @@
       + '<circle cx="15.6" cy="11.9" r="1.7" fill="' + c + '"/>'
       + '<ellipse cx="12" cy="15.9" rx="4.2" ry="2.3" fill="' + c + '"/>'
       + '<ellipse cx="12" cy="17.15" rx="2.6" ry="1.7" fill="' + t + '"/>'
-      + '<path d="M3.3,19.9 Q12,22.9 20.7,19.9" fill="none" stroke="' + c + '" stroke-width="2" stroke-linecap="round"/>'
+      + '<path d="M3.3,20 Q12,24.7 20.7,20 Q12,20.85 3.3,20 Z" fill="' + c + '"/>'
       + '</svg>';
   }
   window.PP_TOOTY_ICON = icon;
