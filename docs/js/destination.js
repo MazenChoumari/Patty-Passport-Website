@@ -114,6 +114,32 @@
     }).join("");
     document.getElementById("dp-nature-slot").innerHTML = '<img src="images/destinations/' + d.code + '_nature.jpg" alt="' + esc(d.nature) + '" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">';
 
+    // Soundtrack access lives here now, not in the main nav — one track
+    // pulled from the shared window.PP_DATA.MUSIC_LIBRARY (same source
+    // soundtracks.html and the nav now-playing label read from), plus a
+    // way into the full collection.
+    var dpSoundtrack = document.getElementById("dp-soundtrack");
+    if (dpSoundtrack) {
+      var track = (data.MUSIC_LIBRARY || []).find(function (t) { return t.code === d.code; });
+      var trackTitle = track ? track.title : d.name + " soundtrack — coming soon";
+      var trackMeta = track ? [track.genre, track.city].filter(Boolean).join(" · ") : "";
+      var playable = track && track.src;
+      dpSoundtrack.innerHTML = '<div style="border:2px solid #1b1a19;padding:18px 20px 20px;display:flex;flex-direction:column;gap:12px;background:' + route.bg + ';color:' + route.fg + '">'
+        + '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;font:800 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.18em;text-transform:uppercase;opacity:.75"><span>Route soundtrack</span><span>' + esc(d.med) + '</span></div>'
+        + '<div style="display:flex;align-items:center;gap:12px">'
+        + '<span style="display:block;width:38px;height:38px;flex:none;border-radius:50%;background:repeating-radial-gradient(circle,' + route.fg + ' 0 2px,transparent 2px 4px);position:relative"><span style="position:absolute;inset:0;margin:auto;width:10px;height:10px;border-radius:50%;background:' + route.fg + '"></span></span>'
+        + '<span style="flex:1;min-width:0"><span style="display:block;font:800 15px/1.25 \'Archivo\',sans-serif">' + esc(trackTitle) + '</span>'
+        + (trackMeta ? '<span style="display:block;font:700 9px/1.3 \'Archivo\',sans-serif;letter-spacing:.08em;text-transform:uppercase;opacity:.7;margin-top:2px">' + esc(trackMeta) + '</span>' : '') + '</span></div>'
+        + '<div style="display:flex;align-items:center;gap:10px">'
+        + (playable
+          ? '<button type="button" id="dp-play-track" style="display:inline-flex;align-items:center;gap:6px;padding:9px 12px;background:rgba(0,0,0,.22);border:1.5px solid currentColor;color:inherit;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.08em;cursor:pointer" data-hover="background:rgba(0,0,0,.4)">▶ Play preview</button>'
+          : '<span aria-disabled="true" style="display:inline-flex;align-items:center;gap:6px;padding:9px 12px;background:rgba(0,0,0,.18);border:1.5px dashed currentColor;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.08em;opacity:.85">▶ Coming soon</span>')
+        + '<a href="soundtracks.html#' + esc(d.code) + '" style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:inherit;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.08em;text-transform:uppercase;opacity:.85" data-hover="opacity:1">View full soundtrack<span>→</span></a>'
+        + '</div></div>';
+      var playBtn = document.getElementById("dp-play-track");
+      if (playBtn) playBtn.addEventListener("click", function () { if (window.PP_MUSIC) window.PP_MUSIC.toggle(true); });
+    }
+
     var hero = d.heroItem;
     document.getElementById("dp-dish-slot").querySelector("span").textContent = hero.name + " — plated, close up";
     document.getElementById("dp-dish-name").textContent = hero.name;
