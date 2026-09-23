@@ -180,10 +180,14 @@
     </div>
   </div>
   <div style="position:relative;max-width:1180px;margin:0 auto;padding:0 32px 78px">
+    <div id="home-map-legend" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px"></div>
     <div style="position:relative;border:2px solid #1b1a19;background:#2b76c9;height:520px;overflow:hidden">
       <div style="position:absolute;inset:0;background-image:url('images/med-relief-map.jpg');background-size:cover;background-position:50% 80%;filter:saturate(.7) brightness(.6)"></div>
       <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(27,26,25,.4),rgba(27,26,25,.52))"></div>
       <div id="home-map-nodes"></div>
+      <div style="position:absolute;left:16px;bottom:16px;display:flex;align-items:center;gap:9px;padding:8px 11px;background:#1b1a19;color:#f7f3ec;font:600 9.5px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;pointer-events:none">
+        <span style="position:relative;width:9px;height:9px;background:#f2b30c;display:block"><span style="position:absolute;inset:0;border:2px solid #f2b30c;animation:ppPulse 2.6s ease-out infinite"></span></span><span id="home-map-active-label"></span>
+      </div>
     </div>
   </div>
 </section>
