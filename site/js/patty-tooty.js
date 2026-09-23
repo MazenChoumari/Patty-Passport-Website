@@ -276,16 +276,16 @@
 
   function jobsHtml() {
     var jobs = [
-      ["DS", "Choose tonight's country", "Tell it who's eating and it narrows twenty-one down to one, with a reason.", "Browse destinations", "destinations.html", CREAM, INK],
-      ["MN", "Filter the menu", "Halal, vegetarian, vegan, pescatarian, junior — the board rebuilds around the answer.", "Open the menu", "menu.html", YEL, INK],
-      ["KD", "Plan for kids", "Mild routes, junior portions, sticker stamps, and what happens at a birthday.", "Junior explorers", "junior-explorers.html", BLU, "#fff"],
-      ["RW", "Explain the rewards", "Which stamp unlocks what, and how pooling works for a family book.", "Reward ladder", "rewards.html", RED, "#fff"],
-      ["EV", "Size up a group", "Twelve people or a hundred and twenty — which package and which zone.", "Events & groups", "events.html", "#e7e3dc", INK],
-      ["RT", "Read the map", "Which chapter a country belongs to, and what else sits on that route.", "Route map", "route-map.html", CREAM, INK]
+      ["mapPin", "Choose tonight's country", "Tell it who's eating and it narrows twenty-one down to one, with a reason.", "Browse destinations", "destinations.html", CREAM, INK],
+      ["burgerMark", "Filter the menu", "Halal, vegetarian, vegan, pescatarian, junior — the board rebuilds around the answer.", "Open the menu", "menu.html", YEL, INK],
+      ["kidsMark", "Plan for kids", "Mild routes, junior portions, sticker stamps, and what happens at a birthday.", "Junior explorers", "junior-explorers.html", BLU, "#fff"],
+      ["medal", "Explain the rewards", "Which stamp unlocks what, and how pooling works for a family book.", "Reward ladder", "rewards.html", RED, "#fff"],
+      ["calendarMark", "Size up a group", "Twelve people or a hundred and twenty — which package and which zone.", "Events & groups", "events.html", "#e7e3dc", INK],
+      ["routeMark", "Read the map", "Which chapter a country belongs to, and what else sits on that route.", "Route map", "route-map.html", CREAM, INK]
     ];
     return jobs.map(function (j, k) {
       return '<a href="' + j[4] + '" data-rv="up" data-rv-d="' + (k * 65) + '" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:' + j[5] + ';color:' + j[6] + ';padding:22px 20px 24px;display:flex;flex-direction:column;gap:11px;min-height:215px;text-decoration:none;transition:background .2s ease" data-hover="background:#1b1a19;color:#f7f3ec">'
-        + '<span style="width:42px;height:42px;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font:800 12px/1 \'Archivo\',sans-serif">' + j[0] + '</span>'
+        + '<span style="width:42px;height:42px;border:2px solid currentColor;display:flex;align-items:center;justify-content:center">' + (window.PP_ICON ? window.PP_ICON(j[0], 24, "currentColor") : "") + '</span>'
         + '<h3 style="font:800 19px/1.06 \'Archivo\',sans-serif;letter-spacing:-.02em;margin:0">' + esc(j[1]) + '</h3>'
         + '<p style="font:400 12.5px/1.5 \'Archivo\',sans-serif;margin:0;opacity:.86">' + esc(j[2]) + '</p>'
         + '<span style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;font:800 10.5px/1 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase">' + esc(j[3]) + '<span>→</span></span></a>';

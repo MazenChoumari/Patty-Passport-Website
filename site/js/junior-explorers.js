@@ -16,13 +16,13 @@
   });
 
   var KIT_ITEMS = [
-    ["JR", "Junior Passport", "A real book with twenty-one pages and sticker stamps instead of ink — theirs to keep and fill.", CREAM, INK],
-    ["RB", "Route booklet", "One spread per route: the map, the flag, the word to learn and a puzzle to finish before food lands.", YEL, INK],
-    ["FS", "Flag sticker sheet", "Twenty-one flags. One goes in the book each visit; the rest end up on school folders.", BLU, "#fff"],
-    ["PC", "Postcard home", "Written at the table, stamped by the crew, posted by us if they want it sent.", RED, "#fff"],
-    ["WD", "Word of the destination", "One phrase in the local language, printed big. Saying it out loud earns the stamp.", CREAM, INK],
-    ["TT", "Explorer tote", "For birthdays and school journeys — the whole kit in a bag they carry out themselves.", "#e7e3dc", INK]
-  ].map(function (k, i) { return { mark: k[0], title: k[1], line: k[2], bg: k[3], fg: k[4], delay: String(i * 65) }; });
+    ["passportJunior", "Junior Passport", "A real book with twenty-one pages and sticker stamps instead of ink — theirs to keep and fill.", CREAM, INK],
+    ["booklet", "Route booklet", "One spread per route: the map, the flag, the word to learn and a puzzle to finish before food lands.", YEL, INK],
+    ["flagSticker", "Flag sticker sheet", "Twenty-one flags. One goes in the book each visit; the rest end up on school folders.", BLU, "#fff"],
+    ["postcard", "Postcard home", "Written at the table, stamped by the crew, posted by us if they want it sent.", RED, "#fff"],
+    ["wordBubble", "Word of the destination", "One phrase in the local language, printed big. Saying it out loud earns the stamp.", CREAM, INK],
+    ["tote", "Explorer tote", "For birthdays and school journeys — the whole kit in a bag they carry out themselves.", "#e7e3dc", INK]
+  ].map(function (k, i) { return { icon: k[0], title: k[1], line: k[2], bg: k[3], fg: k[4], delay: String(i * 65) }; });
 
   var ROUTE_ORDER = ["LEV", "AEG", "IBL", "ADR", "NAF"];
 
@@ -56,7 +56,7 @@
   function renderKitItems() {
     document.getElementById("jr-kit-items").innerHTML = KIT_ITEMS.map(function (k) {
       return '<div data-rv="up" data-rv-d="' + k.delay + '" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:' + k.bg + ';color:' + k.fg + ';padding:22px 20px 24px;display:flex;flex-direction:column;gap:11px;min-height:210px">'
-        + '<span style="width:44px;height:44px;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font:800 12px/1 \'Archivo\',sans-serif;letter-spacing:.04em">' + k.mark + '</span>'
+        + '<span style="width:44px;height:44px;border:2px solid currentColor;display:flex;align-items:center;justify-content:center">' + (window.PP_ICON ? window.PP_ICON(k.icon, 24, "currentColor") : "") + '</span>'
         + '<h3 style="font:800 20px/1.05 \'Archivo\',sans-serif;letter-spacing:-.02em;margin:0">' + esc(k.title) + '</h3>'
         + '<p style="font:400 13px/1.5 \'Archivo\',sans-serif;margin:0;opacity:.85">' + esc(k.line) + '</p></div>';
     }).join("");

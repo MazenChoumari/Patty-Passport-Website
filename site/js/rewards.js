@@ -109,7 +109,7 @@
       return '<button type="button" data-passport-type="' + key + '" data-rv="up" data-rv-d="' + (i * 80) + '" style="text-align:left;cursor:pointer;border:0;border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;outline:' + (on ? "3px solid #f2b30c;outline-offset:-3px" : "none") + ';background:' + t[4] + ';color:' + t[5] + ';padding:20px 18px 22px;display:flex;flex-direction:column;gap:12px;min-height:250px" data-hover="filter:brightness(1.06)">'
         + '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">'
         + '<span style="font:600 9px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.75">' + esc(t[1]) + '</span>'
-        + '<span style="width:36px;height:36px;flex:none;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font:800 10px/1 \'Archivo\',sans-serif;transform:rotate(-8deg)">' + t[3] + '</span></div>'
+        + '<span style="width:36px;height:36px;flex:none;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;transform:rotate(-8deg)">' + (window.PP_ICON ? window.PP_ICON("passport" + key.charAt(0).toUpperCase() + key.slice(1), 20, "currentColor") : t[3]) + '</span></div>'
         + '<h3 style="font:800 21px/1 \'Archivo\',sans-serif;letter-spacing:-.025em;margin:0">' + esc(t[2]) + '</h3>'
         + '<div style="display:flex;flex-direction:column;border-top:2px solid currentColor">' + featuresHtml + '</div>'
         + '<span style="margin-top:auto;font:800 13px/1 \'Archivo\',sans-serif">' + esc(t[7]) + '</span></button>';
