@@ -171,6 +171,19 @@
     document.getElementById("dp-cta-title").textContent = "FLY TO " + d.name.toUpperCase() + " THIS WEEK.";
     document.getElementById("dp-cta-text").textContent = "Book the table, tell the desk the destination, and the boarding pass prints with " + d.med + " on it.";
 
+    // A real boarding-pass mini card — the same ticket motif used on the
+    // home hero — so this CTA row isn't just two buttons floating in a
+    // lot of red space; it shows the actual card the desk prints.
+    var ctaTicket = document.getElementById("dp-cta-ticket");
+    if (ctaTicket) {
+      ctaTicket.innerHTML = '<div style="background:#f7f3ec;color:#1b1a19;border:2px solid #1b1a19;box-shadow:8px 8px 0 rgba(27,26,25,.35);transform:rotate(-2.5deg);padding:14px 16px;width:190px;flex:none">'
+        + '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;font:800 8.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.7;margin-bottom:9px"><span>Boarding ticket</span><span>' + esc(d.med) + '</span></div>'
+        + '<div style="display:flex;align-items:center;gap:9px;margin-bottom:8px">' + window.PP_FLAGS.render(d.code, 26, { stroke: "#1b1a19" }) + '<div style="font:800 19px/1.05 \'Archivo\',sans-serif;letter-spacing:-.02em">' + esc(d.name.toUpperCase()) + '</div></div>'
+        + '<div style="font:600 9px/1.4 \'Archivo\',sans-serif;letter-spacing:.11em;text-transform:uppercase;opacity:.75">Gate ' + esc(route.name) + ' · ' + esc(d.stamp) + '</div>'
+        + '<div style="height:13px;margin-top:11px;background:repeating-linear-gradient(90deg,currentColor 0 2px,transparent 2px 5px,currentColor 5px 8px,transparent 8px 12px);opacity:.5"></div>'
+        + '</div>';
+    }
+
     if (window.initHoverStyles) window.initHoverStyles(document.body);
     if (window.PP_REVEAL) window.PP_REVEAL.init();
   }
