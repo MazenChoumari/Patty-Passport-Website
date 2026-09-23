@@ -464,12 +464,47 @@
   var KIDS_MENU = {};
   KIDS_MENU_SRC.forEach(function (k) { KIDS_MENU[k.routeKey] = k; });
 
+  /* Passport types — three separate reward ladders sharing the same
+     3/5/8/21-stamp cadence, so switching the passport-type tab (Home
+     teaser, Rewards page, My Passport signup) genuinely swaps what a
+     guest earns, not just the label above it. */
+  var PASSPORT_TYPES = {
+    explorer: {
+      name: "Explorer", tagline: "The solo route — one passport, every destination.",
+      ladder: [
+        { stamps: 3, title: "Free country drink", desc: "Any destination's signature drink, on us." },
+        { stamps: 5, title: "Free loaded fries", desc: "A full loaded-fries plate from any route." },
+        { stamps: 8, title: "Secret destination burger", desc: "An off-menu burger the crew only tells stamped guests about." },
+        { stamps: 21, title: "World Traveller buffet", desc: "The full 21-country buffet, once the whole passport is stamped." }
+      ]
+    },
+    junior: {
+      name: "Junior", tagline: "The kids' route — smaller portions, its own ladder of wins.",
+      ladder: [
+        { stamps: 3, title: "Free kids dessert", desc: "Any country's junior dessert, picked by the explorer." },
+        { stamps: 5, title: "Free kids side", desc: "Fries or a fruit cup with the next junior combo." },
+        { stamps: 8, title: "Free drink + sticker sheet", desc: "A junior drink and that route's flag-sticker sheet unlocked." },
+        { stamps: 21, title: "Junior World Explorer combo", desc: "A full junior combo from every route, plus a graduation stamp." }
+      ]
+    },
+    family: {
+      name: "Family", tagline: "The table route — one passport, stamped for the whole group.",
+      ladder: [
+        { stamps: 3, title: "Free shared starter", desc: "A country salad or regular fries for the table." },
+        { stamps: 5, title: "Free loaded fries platter", desc: "A full shared loaded-fries platter, family-size." },
+        { stamps: 8, title: "Free round of drinks", desc: "One drink each, for the whole table." },
+        { stamps: 21, title: "Family World Traveller feast", desc: "The full shared buffet for the table, once the map is complete." }
+      ]
+    }
+  };
+
   window.PP_DATA = {
     PRICES: PRICES, COMBOS: COMBOS, UPGRADES: UPGRADES, MIN_SPEND: MIN_SPEND,
     KIDS_MENU: KIDS_MENU, KIDS_COMBO_PRICE: KIDS_COMBO_PRICE,
     ROUTES: ROUTES, COUNTRIES: COUNTRIES,
     SCENARIOS: SCENARIOS, FUNDING: FUNDING, OPERATING: OPERATING, SEVEN_PS: SEVEN_PS,
     LAND: LAND, BUILD_RATE: BUILD_RATE, EXTERIOR: EXTERIOR,
+    PASSPORT_TYPES: PASSPORT_TYPES,
     HOURS: [
       { days: "Monday — Friday", time: "10:00 — 22:00" },
       { days: "Weekends & holidays", time: "10:00 — 00:00" }
