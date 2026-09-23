@@ -15,11 +15,11 @@
   // still read live from PP_DATA.ROUTES so they can never drift from the
   // rest of the site's route palette.
   var CH_COPY = {
-    LEV: { num: "01", kicker: "Chapter one", blurb: "Cedar mountains, ancient ports, caravan kitchens and the table traditions of the eastern Mediterranean.", list: "Three destinations: Lebanon, Syria and Palestine." },
-    AEG: { num: "02", kicker: "Chapter two", blurb: "Bronze Age islands, imperial straits, olive groves and charcoal cooking across the sea-crossroads between Europe and Asia.", list: "Three destinations: Türkiye, Cyprus and Greece." },
-    IBL: { num: "03", kicker: "Chapter three", blurb: "Roman roads, medieval ports, Mediterranean agriculture and long-table cultures shaped by wheat, wine, olive oil and late evenings.", list: "Five destinations: Italy, Spain, France, Monaco and Malta." },
-    ADR: { num: "04", kicker: "Chapter four", blurb: "Venetian harbours, mountain interiors, Slavic traditions and a coast where stone, salt and smoke meet.", list: "Five destinations: Slovenia, Croatia, Bosnia & Herzegovina, Montenegro and Albania." },
-    NAF: { num: "05", kicker: "Chapter five", blurb: "River civilizations, Punic ports, Amazigh mountains, Saharan trade and spice-rich kitchens facing the southern shore.", list: "Five destinations: Egypt, Libya, Tunisia, Algeria and Morocco." }
+    LEV: { num: "01", kicker: "Chapter one", blurb: "Cedar mountains, ancient ports, caravan kitchens and the table traditions of the eastern Mediterranean.", list: "Lebanon, Syria and Palestine." },
+    AEG: { num: "02", kicker: "Chapter two", blurb: "Bronze Age islands, imperial straits, olive groves and charcoal cooking across the sea-crossroads between Europe and Asia.", list: "Türkiye, Cyprus and Greece." },
+    IBL: { num: "03", kicker: "Chapter three", blurb: "Roman roads, medieval ports, Mediterranean agriculture and long-table cultures shaped by wheat, wine, olive oil and late evenings.", list: "Italy, Spain, France, Monaco and Malta." },
+    ADR: { num: "04", kicker: "Chapter four", blurb: "Venetian harbours, mountain interiors, Slavic traditions and a coast where stone, salt and smoke meet.", list: "Slovenia, Croatia, Bosnia & Herzegovina, Montenegro and Albania." },
+    NAF: { num: "05", kicker: "Chapter five", blurb: "River civilizations, Punic ports, Amazigh mountains, Saharan trade and spice-rich kitchens facing the southern shore.", list: "Egypt, Libya, Tunisia, Algeria and Morocco." }
   };
   var CH_ORDER = ["LEV", "AEG", "IBL", "ADR", "NAF"];
 
