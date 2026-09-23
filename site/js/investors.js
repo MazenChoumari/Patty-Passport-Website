@@ -128,6 +128,8 @@
       [S.building.toLocaleString("en-GB") + " m²", "Building in this scenario"],
       [String(O.seats), "Seats at ~" + O.staff + " crew"],
       [k(v.revenue), "Annual revenue · " + rc.label.toLowerCase()],
+      ["€" + rc.spend, "Avg. spend target · " + rc.label.toLowerCase()],
+      [(rc.guests * O.days).toLocaleString("en-GB"), "Projected annual covers · " + rc.label.toLowerCase()],
       [S.label.replace("Plan ", ""), "Scenario selected"]
     ];
     document.getElementById("inv-headline").innerHTML = items.map(function (h, i) {
@@ -408,21 +410,42 @@
       + 'Break-even revenue/month = fixed overhead ÷ (1 − ' + (v.variablePct * 100).toFixed(0) + '%).'
       + '</div>';
 
-    var facts = '<dl style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px 20px;margin:18px 0 0;padding-top:16px;border-top:1px solid rgba(27,26,25,.18)">'
-      + [
-        ["Break-even (monthly)", eur0(v.beMonthly) + "/month"],
-        ["Break-even (annual)", eur0(v.beMonthly * 12) + "/year"],
-        ["Guests needed", Math.round(v.beGuestsDay) + "/day · " + Math.round(v.beGuestsMonth) + "/month"],
-        ["At variable cost", (v.variablePct * 100).toFixed(0) + "% of revenue"],
-        ["Margin of safety", Math.round(marginGuests) + " guests/day (" + marginPct.toFixed(0) + "%)"]
-      ].map(function (f) {
-        return '<div><dt style="font:600 9px/1.3 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#7d7979;margin:0 0 3px">' + f[0] + '</dt><dd style="font:800 15px/1.15 \'Archivo\',sans-serif;letter-spacing:-.015em;margin:0">' + f[1] + '</dd></div>';
-      }).join("")
-      + '</dl>';
-
     var note = '<p style="font:400 11.5px/1.55 \'Archivo\',sans-serif;color:#7d7979;margin:16px 0 0;max-width:70ch">Planning model only. Break-even depends on actual rent, staffing, trading days, mix, taxes, financing and final site design.</p>';
 
-    root.innerHTML = svgWithAxes + legend + formulas + facts + note;
+    root.innerHTML = svgWithAxes + legend + formulas + note;
+
+    // Compact break-even table (beside the chart): four grouped blocks —
+    // fixed costs, variable costs, output needed, margin of safety —
+    // instead of one long flat fact list, so the module reads as a real
+    // commercial planning table rather than a sprawling stat dump.
+    var tableRoot = document.getElementById("inv-be-table");
+    if (!tableRoot) return;
+    function group(label, rows) {
+      return '<div style="margin-bottom:20px">'
+        + '<div style="font:800 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#f2b30c;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(247,243,236,.28)">' + label + '</div>'
+        + rows.map(function (r) {
+          return '<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:6px 0">'
+            + '<span style="font:400 11px/1.35 \'Archivo\',sans-serif;color:#bab6b6">' + r[0] + '</span>'
+            + '<span style="font:800 13.5px/1.15 \'Archivo\',sans-serif;letter-spacing:-.01em;text-align:right;white-space:nowrap">' + r[1] + '</span></div>';
+        }).join("")
+        + '</div>';
+    }
+    tableRoot.innerHTML = group("Fixed costs", [
+      ["Overhead / month", eur0(O.fixedMonthly)],
+      ["Overhead / year", eur0(O.fixedMonthly * 12)]
+    ]) + group("Variable costs", [
+      ["Food &amp; beverage", (O.foodPct * 100).toFixed(0) + "% of revenue"],
+      ["Labour", (O.labourPct * 100).toFixed(0) + "% of revenue"],
+      ["Marketing", (O.marketingPct * 100).toFixed(0) + "% of revenue"],
+      ["Total variable rate", (v.variablePct * 100).toFixed(0) + "% of revenue"]
+    ]) + group("Output needed to break even", [
+      ["Revenue / month", eur0(v.beMonthly)],
+      ["Guests / day", Math.round(v.beGuestsDay)],
+      ["Guests / month", Math.round(v.beGuestsMonth)]
+    ]) + group("Margin of safety, " + esc(rc.label.toLowerCase()), [
+      ["Guests above break-even", Math.round(marginGuests) + "/day"],
+      ["Cushion", marginPct.toFixed(0) + "%"]
+    ]);
   }
 
   /* ── break-even & sales ── */
