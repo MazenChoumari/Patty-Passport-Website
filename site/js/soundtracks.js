@@ -9,7 +9,7 @@
 
   var CH_ORDER = ["LEV", "AEG", "IBL", "ADR", "NAF"];
 
-  var state = { route: "ALL", highlight: null };
+  var state = { route: "ALL", highlight: null, view: "all" };
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
@@ -19,6 +19,41 @@
     (D && D.MUSIC_LIBRARY || []).forEach(function (t) { out[t.code] = t; });
     return out;
   }
+
+  // Shared playback-order helper: takes the library and hands back tracks
+  // round-robin across the five routes (one Levant, one Aegean, one
+  // Iberian/Balearic, one Adriatic, one North African, then repeat)
+  // instead of playing an entire route back to back before moving on —
+  // so a future "play the Mediterranean" queue samples the whole map early
+  // rather than sitting in one route for a long stretch. Only tracks with
+  // a real `src` are ever included; this activates on its own as more
+  // tracks go live, with nothing invented ahead of time. Exposed on
+  // window so any other page (destination.js route soundtrack module,
+  // a future nav queue) can build the same order from the same library
+  // instead of re-implementing it.
+  function interleaveQueue(lib, routeKeys) {
+    var keys = routeKeys && routeKeys.length ? routeKeys : CH_ORDER;
+    var byRoute = {};
+    keys.forEach(function (k) { byRoute[k] = []; });
+    Object.keys(lib).forEach(function (code) {
+      var t = lib[code];
+      if (t && t.src && byRoute[t.route]) byRoute[t.route].push(t);
+    });
+    keys.forEach(function (k) { byRoute[k].sort(function (a, b) { return a.code < b.code ? -1 : 1; }); });
+    var queue = [], more = true;
+    while (more) {
+      more = false;
+      keys.forEach(function (k) {
+        if (byRoute[k].length) { queue.push(byRoute[k].shift()); more = true; }
+      });
+    }
+    return queue;
+  }
+
+  function readyTracks(lib) { return Object.keys(lib).map(function (c) { return lib[c]; }).filter(function (t) { return t && t.src; }); }
+  function pendingTracks(lib) { return Object.keys(lib).map(function (c) { return lib[c]; }).filter(function (t) { return t && !t.src; }); }
+
+  window.PP_SOUNDTRACKS = { interleaveQueue: interleaveQueue, readyTracks: readyTracks, pendingTracks: pendingTracks };
 
   function vinyl(fg) {
     return '<span class="pp-st-vinyl" style="display:block;width:52px;height:52px;border-radius:50%;background:repeating-radial-gradient(circle,' + fg + ' 0 2px,transparent 2px 5px);position:relative;flex:none">'
@@ -73,10 +108,42 @@
     }).join("");
 
     var lib = libraryByCode();
+    var ready = readyTracks(lib), pending = pendingTracks(lib);
+    var viewTabs = [
+      { key: "all", label: "All tracks", count: ready.length + pending.length },
+      { key: "ready", label: "View saved songs", count: ready.length },
+      { key: "pending", label: "Songs being prepared", count: pending.length }
+    ];
+    document.getElementById("st-view-tabs").innerHTML = viewTabs.map(function (v) {
+      var on = state.view === v.key;
+      return '<button type="button" data-view="' + v.key + '" style="padding:9px 12px;background:' + (on ? "#f2b30c" : "transparent") + ';border:2px solid #1b1a19;color:#1b1a19;font:800 10.5px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c">' + esc(v.label) + ' <span style="opacity:.65">' + v.count + '</span></button>';
+    }).join("");
+
+    var queueHtml = "";
+    if (state.view === "ready") {
+      var queue = interleaveQueue(lib, act === "ALL" ? null : [act]);
+      queueHtml = queue.length
+        ? '<div data-rv="up" style="margin-bottom:26px;border:2px solid #1b1a19;background:#fff;padding:16px">'
+        + '<div style="font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#605d5d;margin-bottom:11px">Suggested queue · one route in, one route out</div>'
+        + '<ol style="display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none">' + queue.map(function (t, i) {
+          return '<li><a href="#' + esc(t.code) + '" style="display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border:1.5px solid #1b1a19;text-decoration:none;color:#1b1a19;font:700 11px/1 \'Archivo\',sans-serif" data-hover="background:#f2b30c">'
+            + '<span style="opacity:.55">' + (i + 1) + '</span>' + esc(t.title) + '</a></li>';
+        }).join("") + '</ol></div>'
+        : '<p data-rv="up" style="margin:0 0 26px;font:400 13px/1.6 \'Archivo\',sans-serif;color:#605d5d">No saved songs on this route yet — check back as more tracks are approved.</p>';
+    } else if (state.view === "pending") {
+      queueHtml = '<p data-rv="up" style="margin:0 0 26px;font:400 13px/1.6 \'Archivo\',sans-serif;color:#605d5d;max-width:64ch">These destinations have a soundtrack slot reserved but no track approved yet — nothing is invented ahead of time. Cards below show what\'s coming, not what\'s playable.</p>';
+    }
+
     var chapters = CH_ORDER.filter(function (k) { return act === "ALL" || act === k; });
-    document.getElementById("st-routes").innerHTML = chapters.map(function (key, idx) {
+    document.getElementById("st-routes").innerHTML = queueHtml + chapters.map(function (key, idx) {
       var route = routes[key];
-      var stops = countries.filter(function (c) { return c.routeKey === key; });
+      var stops = countries.filter(function (c) {
+        if (c.routeKey !== key) return false;
+        if (state.view === "ready") return !!(lib[c.code] && lib[c.code].src);
+        if (state.view === "pending") return !(lib[c.code] && lib[c.code].src);
+        return true;
+      });
+      if (!stops.length) return "";
       return '<div data-rv="up" style="' + (idx > 0 ? "margin-top:34px;" : "") + '">'
         + '<div style="display:flex;align-items:baseline;gap:10px;margin-bottom:16px"><span style="padding:6px 10px;background:' + route.bg + ';color:' + route.fg + ';font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.12em">' + esc(route.name.toUpperCase()) + ' ROUTE</span><span style="font:600 11px/1 \'Archivo\',sans-serif;color:#7d7979">' + stops.length + ' destinations</span></div>'
         + '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px">' + stops.map(function (c) { return countryCard(c, route, lib); }).join("") + '</div>'
@@ -85,6 +152,10 @@
 
     Array.prototype.forEach.call(document.querySelectorAll("#st-legend [data-route]"), function (btn) {
       btn.addEventListener("click", function () { state.route = btn.getAttribute("data-route"); render(); });
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll("#st-view-tabs [data-view]"), function (btn) {
+      btn.addEventListener("click", function () { state.view = btn.getAttribute("data-view"); render(); });
     });
 
     Array.prototype.forEach.call(document.querySelectorAll("[data-play-track]"), function (btn) {
