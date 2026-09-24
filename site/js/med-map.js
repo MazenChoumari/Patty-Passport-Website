@@ -24,17 +24,23 @@
   var POS = {
     esp: [11, 44], mar: [9, 56], dza: [22, 61], fra: [27, 16],
     mco: [35, 26], ita: [40, 36], tun: [37, 61], mlt: [46, 56],
-    svn: [40, 8], hrv: [48, 16], bih: [30, 34], mne: [52, 28],
+    svn: [40, 8], hrv: [48, 16], bih: [28, 29], mne: [52, 28],
     alb: [42, 46], lby: [54, 72], grc: [56, 42], tur: [65, 27],
     cyp: [66, 48], egy: [70, 74], lbn: [80, 52], syr: [76, 40],
     pse: [73, 64]
   };
 
-  // Bosnia's pin sits close to Italy/Monaco (and, with its long name,
-  // reads close to Croatia/Montenegro too); Tunisia's sits close to
-  // Malta. Both keep their real pin — only the label is displaced.
+  // Bosnia's full name ("Bosnia & Herzegovina") is the widest label on
+  // the map — rather than splitting its pin and label apart (which,
+  // with the connecting line hidden on narrow screens, just looked like
+  // two disconnected things), it stays a single anchored pin+label unit
+  // like every other country and instead gets a shorter label — the pin
+  // itself was also nudged slightly clear of Italy/Monaco above. Only
+  // Tunisia still uses the split pin/label + leader-line treatment,
+  // since its own full name fits fine and its collision is purely with
+  // Malta's pin position, not its own label width.
+  var LABEL_ABBREV = { bih: "Bosnia & Herz." };
   var LABEL_OFFSET = {
-    bih: { desktop: [-8, 7], mobile: [-2, 13], abbrevMobile: "Bosnia & Herz." },
     tun: { desktop: [-4, 9], mobile: [-2, 14] }
   };
 
@@ -53,7 +59,7 @@
     var offsetDef = LABEL_OFFSET[opts.code];
     var narrow = isNarrow();
     var offset = offsetDef ? (narrow ? offsetDef.mobile : offsetDef.desktop) : null;
-    var labelText = (offsetDef && narrow && offsetDef.abbrevMobile) ? offsetDef.abbrevMobile : opts.name;
+    var labelText = LABEL_ABBREV[opts.code] || opts.name;
     var pinLeft = pos[0], pinTop = pos[1];
     var extra = opts.dataNode ? ' data-node="' + esc(opts.code) + '"' : "";
 
@@ -63,7 +69,7 @@
     if (!offset) {
       var html = '<a href="' + opts.href + '"' + extra + ' aria-label="' + esc(opts.ariaLabel) + '" style="position:absolute;left:' + pinLeft + '%;top:' + pinTop + '%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:flex-start;gap:5px;text-decoration:none;opacity:' + opts.opacity + ';transition:opacity .3s ease;z-index:2">'
         + badgeHtml
-        + '<span class="pp-map-node-name" style="' + nameStyle + '">' + esc(opts.name) + '</span></a>';
+        + '<span class="pp-map-node-name" style="' + nameStyle + '">' + esc(labelText) + '</span></a>';
       return { html: html, leader: null };
     }
 
