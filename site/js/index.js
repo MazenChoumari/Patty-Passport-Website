@@ -329,6 +329,20 @@
     initPassportReveal();
   }
 
+  /* "Everyone gets a passport" — three static cards (Junior/Explorer/
+     Family), independent of the pp-passport-tabs switcher above. Their
+     corner badges used to be plain "JR"/"EX"/"FM" text; now the same
+     redesigned passport icons used everywhere else (rewards.js,
+     my-passport.js, pp-passport-tabs above) so a passport type never
+     reads as bare initials anywhere on the site. */
+  function renderEveryonePassportIcons() {
+    if (!window.PP_ICON) return;
+    [["pp-everyone-icon-jr", "passportJunior"], ["pp-everyone-icon-ex", "passportExplorer"], ["pp-everyone-icon-fm", "passportFamily"]].forEach(function (pair) {
+      var el = document.getElementById(pair[0]);
+      if (el) el.innerHTML = window.PP_ICON(pair[1], 24, "currentColor");
+    });
+  }
+
   /* ── Passport type tabs + reward ladder: the reward ladder's cadence
      (3/5/8/21 stamps) is shared across passport types, but the titles,
      descriptions and the "NEXT" chip genuinely swap per type — this
@@ -623,6 +637,7 @@
     initParallax();
     initBoardingPass();
     initRouteChips();
+    renderEveryonePassportIcons();
     if (data) {
       renderHeroProps(data.COUNTRIES);
       renderTicker(data.COUNTRIES);
