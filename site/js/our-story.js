@@ -71,12 +71,12 @@
 
   // Crew role archetypes (unnamed) — the five on-route jobs.
   var crew = [
-    ["Route Host", "RH", "Greets the table, reads the route, and decides where you're flying tonight.", YEL, INK, "Route host welcoming guests at the door"],
-    ["Passport Desk", "PD", "Prints the boarding ticket, stamps the book, tracks the ladder.", RED, "#fff", "Crew member stamping a passport at the desk"],
-    ["Destination Guide", "DG", "Knows the country — the dish, the phrase, the story behind the plate.", BLU, "#fff", "Guide explaining a country card to guests"],
-    ["Kitchen Crew", "KC", "Cooks twenty-one countries without flattening any of them.", CREAM, INK, "Kitchen crew grilling at the pass"],
-    ["Table Captain", "TC", "Runs the service, the birthday games and the final stamp.", "#e7e3dc", INK, "Table captain serving a full family table"]
-  ].map(function (c, i) { return { role: c[0], code: c[1], line: c[2], bg: c[3], fg: c[4], slot: c[5], slotId: "st-crew-" + i, delay: i * 70 }; });
+    ["Route Host", "RH", "Greets the table, reads the route, and decides where you're flying tonight.", YEL, INK, "Route host welcoming guests at the door", "images/crew/route-host.jpg"],
+    ["Passport Desk", "PD", "Prints the boarding ticket, stamps the book, tracks the ladder.", RED, "#fff", "Crew member stamping a passport at the desk", "images/crew/passport-desk.jpg"],
+    ["Destination Guide", "DG", "Knows the country — the dish, the phrase, the story behind the plate.", BLU, "#fff", "Guide explaining a country card to guests", "images/crew/destination-guide.jpg"],
+    ["Kitchen Crew", "KC", "Cooks twenty-one countries without flattening any of them.", CREAM, INK, "Kitchen crew grilling at the pass", "images/crew/kitchen-crew.jpg"],
+    ["Table Captain", "TC", "Runs the service, the birthday games and the final stamp.", "#e7e3dc", INK, "Table captain serving a full family table", "images/crew/table-captain.jpg"]
+  ].map(function (c, i) { return { role: c[0], code: c[1], line: c[2], bg: c[3], fg: c[4], slot: c[5], img: c[6], slotId: "st-crew-" + i, delay: i * 70 }; });
 
   // Named team roster — master brief §5.6. First four carry the brief's
   // example guest review verbatim; the last four ship with no seed review
@@ -166,7 +166,9 @@
     document.getElementById("st-crew").innerHTML = crew.map(function (c) {
       return '<div data-rv="up" data-rv-d="' + c.delay + '" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:#f7f3ec;color:#1b1a19;display:flex;flex-direction:column">'
         + '<div style="position:relative;height:200px;border-bottom:2px solid #1b1a19">'
-        + '<div class="pp-placeholder" id="' + c.slotId + '" style="position:absolute;inset:0"><span>' + esc(c.slot) + '</span></div>'
+        + (c.img
+          ? '<img id="' + c.slotId + '" src="' + c.img + '" alt="' + esc(c.slot) + '" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">'
+          : '<div class="pp-placeholder" id="' + c.slotId + '" style="position:absolute;inset:0"><span>' + esc(c.slot) + '</span></div>')
         + '<span style="position:absolute;right:0;bottom:0;padding:6px 9px;background:' + c.bg + ';color:' + c.fg + ';font:800 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.14em;pointer-events:none">' + c.code + '</span></div>'
         + '<div style="padding:18px 16px 20px;display:flex;flex-direction:column;gap:9px;flex:1">'
         + '<h3 style="font:800 19px/1.05 \'Archivo\',sans-serif;letter-spacing:-.02em;margin:0">' + esc(c.role) + '</h3>'
