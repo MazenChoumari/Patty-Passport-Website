@@ -176,6 +176,27 @@
     }).join("");
   }
 
+  // No individual headshots exist for the 8 named featured-crew profiles
+  // (only the 5 unnamed role-archetype photos above do) — showing the
+  // plain grey "photo pending" placeholder here read as broken/empty
+  // rather than as a deliberate design choice, since it's the same
+  // treatment used for genuinely-missing content photos elsewhere. This
+  // is a proper initials avatar instead — a bold colour panel plus the
+  // person's monogram, the same pattern real products use before
+  // headshots are ready, so the card still reads as alive and specific
+  // to that person rather than "content missing".
+  function initialsOf(name) {
+    var parts = String(name || "").trim().split(/\s+/);
+    var first = parts[0] ? parts[0].charAt(0) : "";
+    var last = parts.length > 1 ? parts[parts.length - 1].charAt(0) : "";
+    return (first + last).toUpperCase();
+  }
+  function avatarHtml(t) {
+    var fg = t.tag === YEL ? "rgba(27,26,25,.9)" : "rgba(255,255,255,.94)";
+    return '<div style="position:absolute;inset:0;background:' + t.tag + ';display:flex;align-items:center;justify-content:center">'
+      + '<span aria-hidden="true" style="font:800 64px/1 \'Archivo\',sans-serif;letter-spacing:-.02em;color:' + fg + '">' + esc(initialsOf(t.name)) + '</span></div>';
+  }
+
   // Small inline star glyph, filled up to `n` (0-5) — aria-hidden since
   // the number is always spelled out in text alongside it.
   function starsHtml(n, size) {
@@ -214,8 +235,8 @@
 
       return '<div data-rv="up" data-rv-d="' + t.delay + '" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:#f7f3ec;display:flex;flex-direction:column">'
         + '<div style="position:relative;height:220px;border-bottom:2px solid #1b1a19">'
-        + '<div class="pp-placeholder" id="' + t.slotId + '" style="position:absolute;inset:0"><span>Portrait of ' + esc(t.name) + ' — ' + esc(t.role) + ' headshot (to be supplied)</span></div>'
-        + '<span style="position:absolute;left:0;top:0;padding:6px 10px;background:' + t.tag + ';color:#fff;font:800 9px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;pointer-events:none">' + esc(t.nationality) + '</span></div>'
+        + avatarHtml(t)
+        + '<span style="position:absolute;left:0;top:0;padding:6px 10px;background:#1b1a19;color:#fff;font:800 9px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;pointer-events:none">' + esc(t.nationality) + '</span></div>'
         + '<div style="padding:18px 18px 20px;display:flex;flex-direction:column;gap:9px;flex:1">'
         + '<h3 style="font:800 19px/1.1 \'Archivo\',sans-serif;letter-spacing:-.02em;margin:0">' + esc(t.name) + '</h3>'
         + '<span style="display:inline-flex;align-self:flex-start;padding:4px 8px;background:' + (ROLE_COLOR[t.role] || INK) + ';color:' + (ROLE_COLOR[t.role] === YEL ? INK : "#fff") + ';font:800 9px/1.3 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase">' + esc(t.role) + '</span>'
