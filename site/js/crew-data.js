@@ -1,5 +1,5 @@
 /* Patty Passport — single shared crew dataset, used by both crew.js
-   (the full 32-profile directory on crew.html) and our-story.js (the 8
+   (the full 35-profile directory on crew.html) and our-story.js (the 8
    "featured" profiles on our-story.html), so the two pages read the same
    names/roles/bios and can never drift apart. A representative staffing
    model, not a claim of real headcount — no profile here represents an
@@ -44,7 +44,10 @@
     ["Adrian Kowalski", "Kitchen Crew", "All routes", "Cross-trained on all five route stations.", "Polish", false],
     ["Salma Rahal", "Destination Guide", "All routes", "Wrote half the route booklets the kids use today.", "Algerian", false],
     ["Viktor Petrov", "Kitchen Crew", "Adriatic", "Built the alcohol-free cooler menu from scratch.", "Montenegrin", false],
-    ["Nadia Boumediene", "Table Captain", "N. Africa", "Runs corporate team departures without losing the fun.", "Algerian", false]
+    ["Nadia Boumediene", "Table Captain", "N. Africa", "Runs corporate team departures without losing the fun.", "Algerian", false],
+    ["Amar Hodžić", "Route Host", "Adriatic", "Learned every Adriatic gate flag before he learned the till.", "Bosnian", false],
+    ["Andreas Georgiou", "Passport Desk", "Aegean", "Stamps faster than the departures board can update.", "Cypriot", false],
+    ["Yasmine El Fassi", "Destination Guide", "N. Africa", "Explains ras el hanout without making it sound complicated.", "Moroccan", false]
   ].map(function (c) {
     return { name: c[0], role: c[1], route: c[2], bio: c[3], nationality: c[4], featured: c[5], group: ROLE_GROUP[c[1]] || "guest" };
   });
