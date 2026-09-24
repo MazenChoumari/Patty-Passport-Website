@@ -202,6 +202,33 @@
       + '<span style="font:600 13px/1.5 \'Archivo\',sans-serif">' + esc(seg.served) + '</span></div>';
   }
 
+  /* ── Ansoff growth matrix: four quadrants, each tied to something real
+     — the existing rollout plan, an already-shipped product, or (for
+     diversification) explicitly labeled as a long-range option rather
+     than a funded commitment, so the matrix doesn't quietly promise more
+     than the rollout plan actually commits to. ── */
+  var ANSOFF = [
+    { q: "Market penetration", axes: "Existing menu · existing city", title: "Grow inside Leganés first", line: "The passport reward ladder driving repeat visits, seasonal menu refreshes keeping the same 21-country card feeling new, and word-of-mouth through group/birthday packages — growth without opening anywhere new." },
+    { q: "Market development", axes: "Existing menu · new city", title: "Same format, new address", line: "The second Madrid gate in 2027, then Valencia and Barcelona from 2028 — the identical 21-country menu and passport format, taken to a new city rather than changed for it." },
+    { q: "Product development", axes: "New product · existing city", title: "New formats, same guests", line: "Country Night, seasonal passports, Junior Explorer kits and the events calendar — new things to book inside the same Leganés guest base, without a second site." },
+    { q: "Diversification", axes: "New product · new market", title: "A long-range option, not a committed plan", line: "Franchise licensing or expansion beyond Iberia sits here — genuinely the highest-risk quadrant, and explicitly not something this funding round or the rollout plan above commits to." }
+  ];
+  state.ansoff = 0;
+  function renderAnsoff() {
+    var grid = document.getElementById("inv-ansoff-grid");
+    var panel = document.getElementById("inv-ansoff-panel");
+    if (!grid || !panel) return;
+    grid.innerHTML = ANSOFF.map(function (a, i) {
+      var on = i === state.ansoff;
+      return '<button type="button" data-act="pick-ansoff" data-val="' + i + '" style="text-align:left;padding:16px 16px 18px;background:' + (on ? "#f2b30c" : "#1b1a19") + ';color:' + (on ? "#1b1a19" : "#f7f3ec") + ';border:0;cursor:pointer;min-height:92px;display:flex;flex-direction:column;gap:5px" data-hover="background:#f2b30c;color:#1b1a19">'
+        + '<span style="font:600 8px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;opacity:.7">' + esc(a.axes) + '</span>'
+        + '<span style="font:800 13.5px/1.2 \'Archivo\',sans-serif">' + esc(a.q) + '</span></button>';
+    }).join("");
+    var a = ANSOFF[state.ansoff] || ANSOFF[0];
+    panel.innerHTML = '<span style="display:block;font:800 18px/1.2 \'Archivo\',sans-serif;letter-spacing:-.02em;color:#f2b30c;margin-bottom:8px">' + esc(a.title) + '</span>'
+      + '<span style="font:400 13.5px/1.55 \'Archivo\',sans-serif;color:#bab6b6">' + esc(a.line) + '</span>';
+  }
+
   /* ── scenario selector / CAPEX / footprint / return ── */
   function renderScenario(v) {
     var D = v.D, S = v.S, rc = v.rc;
@@ -727,6 +754,7 @@
     renderAssumptions(v);
     renderPositioning();
     renderSegments();
+    renderAnsoff();
     renderFunding(v);
     renderContact(v);
     if (window.initHoverStyles) window.initHoverStyles(document.body);
@@ -764,6 +792,8 @@
         state.p = parseInt(val, 10); render(); break;
       case "pick-segment":
         state.segment = parseInt(val, 10); renderSegments(); break;
+      case "pick-ansoff":
+        state.ansoff = parseInt(val, 10); renderAnsoff(); break;
       case "pick-fscenario":
         state.fScenario = val; render(); break;
       case "pick-ticket":
