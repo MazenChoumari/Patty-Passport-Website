@@ -24,6 +24,8 @@
   @keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
   @keyframes ppDrift{0%{transform:translate3d(0,0,0) rotate(var(--r,0deg))}50%{transform:translate3d(0,-12px,0) rotate(calc(var(--r,0deg) + 1.2deg))}100%{transform:translate3d(0,0,0) rotate(var(--r,0deg))}}
   @keyframes ppDash{0%{background-position:0 0}100%{background-position:44px 0}}
+  @keyframes ppSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+  .pp-ev-vinyl{animation:ppSpin 5s linear infinite}
 </style>
 </head>
 <body>
