@@ -207,7 +207,16 @@
   }
 
   function renderTeam() {
-    document.getElementById("st-team").innerHTML = TEAM.map(function (t, i) {
+    var teamRoot = document.getElementById("st-team");
+    // TEAM is read from window.PP_CREW_DATA at script load — if that data
+    // file failed to load or run before this one, TEAM ends up an empty
+    // array and .map() below would just silently render nothing, which
+    // reads as a broken page rather than a clear problem. Say so instead.
+    if (!TEAM.length) {
+      teamRoot.innerHTML = '<div style="grid-column:1/-1;padding:40px 20px;text-align:center;font:600 13px/1.5 \'Archivo\',sans-serif;color:#7d7979">Crew profiles failed to load — please refresh the page.</div>';
+      return;
+    }
+    teamRoot.innerHTML = TEAM.map(function (t, i) {
       var reviewsHtml = t.reviews.length
         ? t.reviews.map(function (r) {
             var text = typeof r === "string" ? r : r.text;
