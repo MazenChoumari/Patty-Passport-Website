@@ -89,19 +89,20 @@
         + '<div style="font:800 22px/1.08 \'Archivo\',sans-serif;letter-spacing:-.025em;color:' + q.color + '">' + esc(q.value) + '</div></div>';
     }).join("");
 
-    // Destination Dossier — a single consolidated "official record" card
-    // pulling together fields that already exist in this country's data
-    // but were previously scattered or, in dietTags' case, never shown
-    // anywhere on the page at all. Nothing here is invented: every value
-    // is read straight off window.PP_DATA.COUNTRIES.
+    // Destination Dossier — geographic/operational facts that do NOT
+    // already appear in the black quickfacts strip just above (Capital,
+    // People, Water, Passport stamp) — this used to repeat three of
+    // those four fields, which just looked like the same box twice.
+    // Nothing here is invented: every value is read straight off
+    // window.PP_DATA.COUNTRIES.
     var dossierEl = document.getElementById("dp-dossier");
     if (dossierEl) {
       var dossierFields = [
-        ["Capital", d.capital],
-        ["Population", d.population],
-        ["Sea / coast", d.sea],
+        ["Area", d.area || "—"],
+        ["Land borders", d.borders || "—"],
+        ["Official language", d.language || "—"],
+        ["Currency", d.currency || "—"],
         ["Route & gate", route.name + " · " + d.med],
-        ["Passport stamp", d.stamp],
         ["Dietary notes", d.dietTags || "Ask the desk"],
         ["Signature dish", d.heroItem.name + " · " + eur(d.heroItem.price)],
         ["Landscape", d.nature]
