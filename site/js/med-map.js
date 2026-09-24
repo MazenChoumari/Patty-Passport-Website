@@ -24,22 +24,17 @@
   var POS = {
     esp: [11, 44], mar: [9, 56], dza: [22, 61], fra: [27, 16],
     mco: [35, 26], ita: [40, 36], tun: [37, 61], mlt: [46, 56],
-    svn: [40, 8], hrv: [48, 16], bih: [28, 29], mne: [52, 28],
+    svn: [40, 8], hrv: [48, 16], bih: [25, 29], mne: [52, 28],
     alb: [42, 46], lby: [54, 72], grc: [56, 42], tur: [65, 27],
     cyp: [66, 48], egy: [70, 74], lbn: [80, 52], syr: [76, 40],
     pse: [73, 64]
   };
 
-  // Bosnia's full name ("Bosnia & Herzegovina") is the widest label on
-  // the map — rather than splitting its pin and label apart (which,
-  // with the connecting line hidden on narrow screens, just looked like
-  // two disconnected things), it stays a single anchored pin+label unit
-  // like every other country and instead gets a shorter label — the pin
-  // itself was also nudged slightly clear of Italy/Monaco above. Only
-  // Tunisia still uses the split pin/label + leader-line treatment,
-  // since its own full name fits fine and its collision is purely with
-  // Malta's pin position, not its own label width.
-  var LABEL_ABBREV = { bih: "Bosnia & Herz." };
+  // Bosnia stays a single anchored pin+label unit, full name and all,
+  // like every other country — it's nudged a little further left than
+  // its real geographic position just to keep clear of Italy/Monaco.
+  // Only Tunisia still uses the split pin/label + leader-line treatment,
+  // since its collision is with Malta's pin position, not its own label.
   var LABEL_OFFSET = {
     tun: { desktop: [-4, 9], mobile: [-2, 14] }
   };
@@ -59,7 +54,7 @@
     var offsetDef = LABEL_OFFSET[opts.code];
     var narrow = isNarrow();
     var offset = offsetDef ? (narrow ? offsetDef.mobile : offsetDef.desktop) : null;
-    var labelText = LABEL_ABBREV[opts.code] || opts.name;
+    var labelText = opts.name;
     var pinLeft = pos[0], pinTop = pos[1];
     var extra = opts.dataNode ? ' data-node="' + esc(opts.code) + '"' : "";
 
