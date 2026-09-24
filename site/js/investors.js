@@ -36,7 +36,7 @@
     var profit = revenue - food - labour - marketing - fixed;
     var margin = profit / revenue;
     var roiLow = profit / S.totalHigh, roiHigh = profit / S.totalLow, roiMid = profit / S.mid;
-    var paybackMid = S.mid / profit;
+    var paybackMid = S.mid / profit, paybackLow = S.totalLow / profit, paybackHigh = S.totalHigh / profit;
     var gapLow = S.totalLow - D.FUNDING.committed, gapHigh = S.totalHigh - D.FUNDING.committed;
 
     var variablePct = O.foodPct + O.labourPct + O.marketingPct;
@@ -50,7 +50,7 @@
     return {
       D: D, S: S, O: O, rc: rc, revenue: revenue, food: food, labour: labour, marketing: marketing,
       fixed: fixed, profit: profit, margin: margin, roiLow: roiLow, roiHigh: roiHigh, roiMid: roiMid,
-      paybackMid: paybackMid, gapLow: gapLow, gapHigh: gapHigh, variablePct: variablePct,
+      paybackMid: paybackMid, paybackLow: paybackLow, paybackHigh: paybackHigh, gapLow: gapLow, gapHigh: gapHigh, variablePct: variablePct,
       beMonthly: beMonthly, beGuestsMonth: beGuestsMonth, beGuestsDay: beGuestsDay,
       ps: ps, siblings: siblings
     };
@@ -648,6 +648,55 @@
     }).join("");
   }
 
+  /* ── dedicated returns section, separate from the break-even module.
+     Inputs and outputs are listed explicitly so a reader can see what
+     feeds the ROI/payback figures without re-deriving it from the
+     scenario cards above. IRR is deliberately left out: a real IRR
+     needs a multi-year cash-flow series (build-out spend, then a ramp,
+     then steady-state profit each year) and this model only has one
+     flat annual profit figure repeated — annualizing that into an IRR
+     would look precise while being no more informative than the ROI %
+     already shown, so it's named and skipped instead of faked. ── */
+  function renderReturns(v) {
+    var S = v.S, rc = v.rc;
+    var inputsEl = document.getElementById("inv-roi-inputs");
+    if (inputsEl) {
+      inputsEl.innerHTML = [
+        ["Total investment (low)", eur0(S.totalLow)],
+        ["Total investment (mid)", eur0(S.mid)],
+        ["Total investment (high)", eur0(S.totalHigh)],
+        ["Annual operating profit (EBITDA)", eur0(v.profit)],
+        ["Sales case", rc.label]
+      ].map(function (r) {
+        return '<div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid rgba(247,243,236,.2)">'
+          + '<span style="font:400 12px/1.35 \'Archivo\',sans-serif;color:#bab6b6">' + r[0] + '</span>'
+          + '<span style="font:800 13px/1.15 \'Archivo\',sans-serif;text-align:right;white-space:nowrap">' + r[1] + '</span></div>';
+      }).join("");
+    }
+    var outputsEl = document.getElementById("inv-roi-outputs");
+    if (outputsEl) {
+      var outs = [
+        [(v.roiLow * 100).toFixed(1) + "%", "ROI at high investment", CREAM],
+        [(v.roiMid * 100).toFixed(1) + "%", "ROI at mid investment", YEL],
+        [(v.roiHigh * 100).toFixed(1) + "%", "ROI at low investment", "#e7e3dc"],
+        [v.paybackHigh.toFixed(1) + " yrs", "Payback at high investment", "rgba(247,243,236,.08)"],
+        [v.paybackMid.toFixed(1) + " yrs", "Payback at mid investment", "rgba(247,243,236,.08)"],
+        [v.paybackLow.toFixed(1) + " yrs", "Payback at low investment", "rgba(247,243,236,.08)"]
+      ];
+      outputsEl.innerHTML = outs.map(function (o, i) {
+        var dark = o[2].indexOf("rgba") === 0;
+        return '<div style="border:2px solid rgba(247,243,236,.3);padding:14px 14px 16px;background:' + o[2] + ';color:' + (dark ? "#f7f3ec" : INK) + ';display:flex;flex-direction:column;gap:6px">'
+          + '<span style="font:800 clamp(18px,2vw,24px)/1 \'Archivo\',sans-serif;letter-spacing:-.02em">' + o[0] + '</span>'
+          + '<span style="font:600 9.5px/1.3 \'Archivo\',sans-serif;letter-spacing:.06em;' + (dark ? "opacity:.75" : "opacity:.7") + '">' + o[1] + '</span></div>';
+      }).join("");
+    }
+    var irrEl = document.getElementById("inv-roi-irr-note");
+    if (irrEl) {
+      irrEl.innerHTML = '<span style="display:block;font:800 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#a3a3a3;margin-bottom:6px">IRR — intentionally not shown</span>'
+        + '<p style="font:400 12.5px/1.55 \'Archivo\',sans-serif;color:#7d7979;margin:0;max-width:78ch">A real IRR needs a multi-year cash-flow series — build-out spend, a ramp-up period, then steady-state profit year by year. This model only has one flat annual profit figure, so an IRR calculated from it would look more precise than the ROI percentages above while telling you nothing they don\'t already — it\'s left out rather than faked from a single year annualized.</p>';
+    }
+  }
+
   /* ── financial assumptions: every figure here is read live from
      PP_DATA.LAND/BUILD_RATE/EXTERIOR/SCENARIOS/OPERATING, never retyped ── */
   function renderAssumptions(v) {
@@ -751,6 +800,7 @@
     renderScenario(v);
     renderBreakeven(v);
     renderBreakevenChart(v);
+    renderReturns(v);
     renderAssumptions(v);
     renderPositioning();
     renderSegments();
