@@ -308,6 +308,36 @@
     egy: "Nile Acacia", lby: "Libyan Juniper", tun: "Sahara Acacia", dza: "Atlas Cedar", mar: "Argan Tree"
   };
 
+  // Plain geographic facts (area, land borders, official language, currency)
+  // — public, standard reference figures, rounded to the nearest sensible
+  // unit. Kept separate from CULTURE_SRC's narrative fields since these are
+  // objective and don't need editorial phrasing; added to fill the profile
+  // page's dossier slot with facts that don't already appear in the black
+  // quickfacts strip (capital/population/sea/stamp).
+  var GEO = {
+    lbn: { area: "10,452 km²", borders: "Syria, Israel", language: "Arabic", currency: "Lebanese pound" },
+    syr: { area: "185,180 km²", borders: "Turkey, Iraq, Jordan, Israel, Lebanon", language: "Arabic", currency: "Syrian pound" },
+    pse: { area: "6,020 km²", borders: "Israel, Jordan, Egypt", language: "Arabic", currency: "New Israeli shekel" },
+    tur: { area: "783,562 km²", borders: "Greece, Bulgaria, Georgia, Armenia, Iran, Iraq, Syria", language: "Turkish", currency: "Turkish lira" },
+    cyp: { area: "9,251 km²", borders: "No land borders — island nation", language: "Greek, Turkish", currency: "Euro" },
+    grc: { area: "131,957 km²", borders: "Albania, North Macedonia, Bulgaria, Türkiye", language: "Greek", currency: "Euro" },
+    ita: { area: "301,340 km²", borders: "France, Switzerland, Austria, Slovenia", language: "Italian", currency: "Euro" },
+    esp: { area: "505,990 km²", borders: "France, Portugal, Andorra, Morocco (Ceuta/Melilla)", language: "Spanish", currency: "Euro" },
+    fra: { area: "551,695 km²", borders: "Belgium, Germany, Switzerland, Italy, Spain, Monaco, Andorra", language: "French", currency: "Euro" },
+    mco: { area: "2.1 km²", borders: "France (only)", language: "French", currency: "Euro" },
+    mlt: { area: "316 km²", borders: "No land borders — island nation", language: "Maltese, English", currency: "Euro" },
+    svn: { area: "20,273 km²", borders: "Italy, Austria, Hungary, Croatia", language: "Slovene", currency: "Euro" },
+    hrv: { area: "56,594 km²", borders: "Slovenia, Hungary, Serbia, Bosnia & Herzegovina, Montenegro", language: "Croatian", currency: "Euro" },
+    bih: { area: "51,209 km²", borders: "Croatia, Serbia, Montenegro", language: "Bosnian, Croatian, Serbian", currency: "Convertible mark" },
+    mne: { area: "13,812 km²", borders: "Croatia, Bosnia & Herzegovina, Serbia, Kosovo, Albania", language: "Montenegrin", currency: "Euro" },
+    alb: { area: "28,748 km²", borders: "Montenegro, Kosovo, North Macedonia, Greece", language: "Albanian", currency: "Albanian lek" },
+    egy: { area: "1,010,408 km²", borders: "Libya, Sudan, Israel", language: "Arabic", currency: "Egyptian pound" },
+    lby: { area: "1,759,540 km²", borders: "Tunisia, Algeria, Niger, Chad, Sudan, Egypt", language: "Arabic", currency: "Libyan dinar" },
+    tun: { area: "163,610 km²", borders: "Algeria, Libya", language: "Arabic", currency: "Tunisian dinar" },
+    dza: { area: "2,381,741 km²", borders: "Morocco, Mauritania, Mali, Niger, Libya, Tunisia", language: "Arabic", currency: "Algerian dinar" },
+    mar: { area: "446,550 km²", borders: "Algeria, Spain (Ceuta/Melilla land border)", language: "Arabic", currency: "Moroccan dirham" }
+  };
+
   var CULTURE_BY_CODE = {};
   CULTURE_SRC.forEach(function (d) {
     CULTURE_BY_CODE[d[0]] = {
@@ -341,7 +371,9 @@
       facts: culture.facts || [], nature: culture.nature || "",
       capital: culture.capital || "", population: culture.population || "",
       sea: culture.sea || "", dietTags: culture.dietTags || "",
-      plant: PLANTS[c[0]] || ""
+      plant: PLANTS[c[0]] || "",
+      area: (GEO[c[0]] && GEO[c[0]].area) || "", borders: (GEO[c[0]] && GEO[c[0]].borders) || "",
+      language: (GEO[c[0]] && GEO[c[0]].language) || "", currency: (GEO[c[0]] && GEO[c[0]].currency) || ""
     };
   });
 
