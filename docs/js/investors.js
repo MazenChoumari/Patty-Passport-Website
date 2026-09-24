@@ -14,7 +14,8 @@
     scenario: "A1", revCase: "base", p: 0, siteFilter: "ALL",
     form: false, sent: false,
     fName: "", fEmail: "", fPhone: "", fMessage: "",
-    fScenario: "A1", fTicket: "€250k – €500k", fStructure: "Equity"
+    fScenario: "A1", fTicket: "€250k – €500k", fStructure: "Equity",
+    segment: 0
   };
 
   /* ── product positioning map: Patty Passport only, on a clean axis grid
@@ -166,6 +167,39 @@
           + '<span style="font:400 12.5px/1.5 \'Archivo\',sans-serif;opacity:.85">' + esc(c.line) + '</span></div>';
       }).join("")
       + '</div></div>';
+  }
+
+  /* ── market segmentation: eight guest profiles the format is actually
+     built to serve, each tied to a real, already-shipped product feature
+     — no fabricated share-of-market percentages, since no survey has
+     sized these groups. ── */
+  var SEGMENTS = [
+    { name: "Families with young kids", tag: "Junior route", served: "Junior Explorer passport, kids menu, family reunion package", line: "The sticker-stamp book and the kids combo are built so a five-year-old gets their own version of the same trip, not a shrunk-down adult menu." },
+    { name: "Solo diners & couples", tag: "Explorer route", served: "Explorer passport, Quick Bite / Full Experience combos", line: "One country, one visit — a real destination without a group booking or a special occasion attached to it." },
+    { name: "Birthday & celebration groups", tag: "Events", served: "Little/World Explorer Birthday packages, Country Night", line: "A themed room and a crew host instead of a reserved corner of the regular dining floor." },
+    { name: "Corporate & team outings", tag: "Events", served: "Team Departure package, private zone hire", line: "A private zone, a tasting flight across three destinations, and a host who isn't also running the rest of the floor." },
+    { name: "School & education groups", tag: "Events", served: "School Journey package", line: "A geography lesson that happens to be lunch — a destination guide, a country booklet, a free teacher table." },
+    { name: "Passport completionists", tag: "Rewards", served: "21-country reward ladder, all three passport types", line: "The guest who comes back specifically to fill the book — the ladder is the retention mechanism, not a bonus feature." },
+    { name: "Dietary-conscious guests", tag: "Menu", served: "Vegetarian / halal-friendly / allergen tags on every dish", line: "Every dish carries its own dietary tags on the menu and destination pages, not a separate hidden allergen sheet." },
+    { name: "Discovery-driven diners", tag: "Atmosphere", served: "Route soundtracks, rotating destination theming", line: "The guest choosing where to eat by which country sounds interesting this week, not by which dish they already know." }
+  ];
+  function renderSegments() {
+    var tabs = document.getElementById("inv-segment-tabs");
+    var panel = document.getElementById("inv-segment-panel");
+    if (!tabs || !panel) return;
+    tabs.innerHTML = SEGMENTS.map(function (s, i) {
+      var on = i === state.segment;
+      return '<button type="button" data-act="pick-segment" data-val="' + i + '" style="display:flex;flex-direction:column;gap:3px;padding:12px 14px;background:' + (on ? INK : "#fff") + ';border:2px solid #1b1a19;color:' + (on ? CREAM : INK) + ';font:800 11.5px/1.25 \'Archivo\',sans-serif;letter-spacing:-.005em;cursor:pointer;text-align:left" data-hover="background:#f2b30c;color:#1b1a19">'
+        + '<span style="font:600 8px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.65">' + esc(s.tag) + '</span>' + esc(s.name) + '</button>';
+    }).join("");
+    var seg = SEGMENTS[state.segment] || SEGMENTS[0];
+    panel.innerHTML = '<div style="display:flex;align-items:baseline;gap:12px;margin-bottom:10px;flex-wrap:wrap">'
+      + '<span style="font:800 clamp(24px,2.8vw,34px)/1 \'Archivo\',sans-serif;letter-spacing:-.03em">' + esc(seg.name) + '</span>'
+      + '<span style="padding:4px 9px;background:#f2b30c;color:#1b1a19;font:800 9px/1 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase">' + esc(seg.tag) + '</span></div>'
+      + '<p style="font:400 14.5px/1.6 \'Archivo\',sans-serif;color:#bab6b6;margin:0 0 16px;max-width:70ch">' + esc(seg.line) + '</p>'
+      + '<div style="border-top:1px solid rgba(247,243,236,.28);padding-top:12px">'
+      + '<span style="display:block;font:600 9px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#f2b30c;margin-bottom:6px">What already serves this guest</span>'
+      + '<span style="font:600 13px/1.5 \'Archivo\',sans-serif">' + esc(seg.served) + '</span></div>';
   }
 
   /* ── scenario selector / CAPEX / footprint / return ── */
@@ -692,6 +726,7 @@
     renderBreakevenChart(v);
     renderAssumptions(v);
     renderPositioning();
+    renderSegments();
     renderFunding(v);
     renderContact(v);
     if (window.initHoverStyles) window.initHoverStyles(document.body);
@@ -727,6 +762,8 @@
         state.revCase = val; render(); break;
       case "pick-ps":
         state.p = parseInt(val, 10); render(); break;
+      case "pick-segment":
+        state.segment = parseInt(val, 10); renderSegments(); break;
       case "pick-fscenario":
         state.fScenario = val; render(); break;
       case "pick-ticket":
