@@ -11,6 +11,17 @@
     "Table Captain": "guest", "Kitchen Crew": "kitchen"
   };
 
+  // The five fixed roles every crew member is assigned — one, and only
+  // one, of these. code/title/desc are the single shared source for the
+  // role badges and filter tabs on both crew.html and our-story.html.
+  var ROLES = [
+    ["RH", "Route Host", "Greets the table, reads the route, and decides where you're flying tonight."],
+    ["PD", "Passport Desk", "Prints the boarding ticket, stamps the book, tracks the ladder."],
+    ["DG", "Destination Guide", "Knows the country — the dish, the phrase, the story behind the plate."],
+    ["KC", "Kitchen Crew", "Cooks twenty-one countries without flattening any of them."],
+    ["TC", "Table Captain", "Runs the service, the birthday games and the final stamp."]
+  ].map(function (r) { return { code: r[0], title: r[1], desc: r[2] }; });
+
   var SRC = [
     ["George Ammar", "Route Host", "Levant", "Runs the floor on the busiest routes and never lets a table feel rushed between courses.", "Lebanese / Spanish", true],
     ["Lucía Fernández", "Passport Desk", "All routes", "The first face at the desk — reads a party in seconds and picks the right first destination for them.", "Spanish", true],
@@ -60,5 +71,5 @@
     // { name: "…", role: "…", route: "…", requestedBy: "owner", note: "awaiting consent to publish" }
   ];
 
-  window.PP_CREW_DATA = { ALL: SRC, FEATURED: SRC.filter(function (c) { return c.featured; }), PENDING_APPROVAL: PENDING_APPROVAL };
+  window.PP_CREW_DATA = { ALL: SRC, FEATURED: SRC.filter(function (c) { return c.featured; }), ROLES: ROLES, PENDING_APPROVAL: PENDING_APPROVAL };
 })();

@@ -8,7 +8,6 @@
    name. No profile here represents an identifiable real person. */
 (function () {
   var RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
-  var GROUP = { guest: "Guest-facing", kitchen: "Kitchen & Ops" };
   // Drawn only from the site's own palette (no invented green/purple) —
   // same mapping as our-story.js's featured-crew role tags.
   var ROLE_COLOR = {
@@ -17,8 +16,13 @@
   };
   var LIGHT_ROLE_COLORS = [YEL, "#e7e3dc"];
   function roleFg(role) { return LIGHT_ROLE_COLORS.indexOf(ROLE_COLOR[role]) > -1 ? INK : "#fff"; }
+  // The five fixed roles (js/crew-data.js) — code + full title, so the
+  // badge on every card and the filter tabs read identically everywhere.
+  function roles() { return (window.PP_CREW_DATA && window.PP_CREW_DATA.ROLES) || []; }
+  function roleByTitle(title) { return roles().filter(function (r) { return r.title === title; })[0]; }
+  function roleLabel(title) { var r = roleByTitle(title); return r ? r.code + " — " + r.title : title; }
 
-  var state = { q: "", group: "ALL" };
+  var state = { q: "", role: "ALL" };
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
@@ -26,21 +30,20 @@
     var q = state.q.trim().toLowerCase();
     var all = (window.PP_CREW_DATA && window.PP_CREW_DATA.ALL) || [];
     return all.filter(function (c) {
-      if (state.group !== "ALL" && c.group !== state.group) return false;
+      if (state.role !== "ALL" && c.role !== state.role) return false;
       if (!q) return true;
       return c.name.toLowerCase().indexOf(q) > -1 || c.role.toLowerCase().indexOf(q) > -1 || c.route.toLowerCase().indexOf(q) > -1;
     });
   }
 
   function renderGroupFilters() {
-    var keys = ["ALL", "guest", "kitchen"];
-    document.getElementById("cr-group-filters").innerHTML = keys.map(function (k) {
-      var label = k === "ALL" ? "All roles" : GROUP[k];
-      var active = state.group === k;
-      return '<button type="button" data-group="' + k + '" style="padding:10px 13px;background:' + (active ? INK : "transparent") + ';border:2px solid #1b1a19;color:' + (active ? CREAM : INK) + ';font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c;color:#1b1a19">' + esc(label) + '</button>';
+    var buttons = [{ key: "ALL", label: "All roles" }].concat(roles().map(function (r) { return { key: r.title, label: r.code }; }));
+    document.getElementById("cr-group-filters").innerHTML = buttons.map(function (b) {
+      var active = state.role === b.key;
+      return '<button type="button" data-role="' + esc(b.key) + '" title="' + esc(b.key === "ALL" ? "All roles" : b.key) + '" style="padding:10px 13px;background:' + (active ? INK : "transparent") + ';border:2px solid #1b1a19;color:' + (active ? CREAM : INK) + ';font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;cursor:pointer" data-hover="background:#f2b30c;color:#1b1a19">' + esc(b.label) + '</button>';
     }).join("");
-    Array.prototype.forEach.call(document.querySelectorAll("#cr-group-filters [data-group]"), function (btn) {
-      btn.addEventListener("click", function () { state.group = btn.getAttribute("data-group"); render(); });
+    Array.prototype.forEach.call(document.querySelectorAll("#cr-group-filters [data-role]"), function (btn) {
+      btn.addEventListener("click", function () { state.role = btn.getAttribute("data-role"); render(); });
     });
   }
 
@@ -72,7 +75,7 @@
         + (c.featured ? '<span style="padding:4px 7px;background:#f2b30c;color:#1b1a19;font:800 8.5px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase">Featured</span>' : '')
         + '</div>'
         + '<h3 style="font:800 16.5px/1.15 \'Archivo\',sans-serif;letter-spacing:-.01em;margin:0">' + esc(c.name) + '</h3>'
-        + '<span style="display:inline-flex;align-self:flex-start;padding:4px 8px;background:' + color + ';color:' + fg + ';font:800 9px/1.3 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase">' + esc(c.role) + '</span>'
+        + '<span style="display:inline-flex;align-self:flex-start;padding:4px 8px;background:' + color + ';color:' + fg + ';font:800 9px/1.3 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase">' + esc(roleLabel(c.role)) + '</span>'
         + '<div style="font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#7d7979">' + esc(c.route) + ' · ' + esc(c.nationality) + '</div>'
         + '<p style="font:400 12px/1.5 \'Archivo\',sans-serif;color:#605d5d;margin:0">' + esc(c.bio) + '</p>'
         + (c.featured ? '<a href="our-story.html" style="margin-top:auto;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#ae1800">Read bio &amp; reviews →</a>' : '')

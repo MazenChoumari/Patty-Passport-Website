@@ -12,6 +12,12 @@
   };
   var LIGHT_ROLE_COLORS = [YEL, "#e7e3dc"];
   function roleFg(role) { return LIGHT_ROLE_COLORS.indexOf(ROLE_COLOR[role]) > -1 ? INK : "#fff"; }
+  // The five fixed roles (js/crew-data.js) — code + full title, so the
+  // badge here reads identically to the one on crew.html.
+  function roleLabel(title) {
+    var r = ((window.PP_CREW_DATA && window.PP_CREW_DATA.ROLES) || []).filter(function (x) { return x.title === title; })[0];
+    return r ? r.code + " — " + r.title : title;
+  }
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
@@ -239,7 +245,7 @@
         + '<span style="position:absolute;left:0;top:0;padding:6px 10px;background:#1b1a19;color:#fff;font:800 9px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;pointer-events:none">' + esc(t.nationality) + '</span></div>'
         + '<div style="padding:18px 18px 20px;display:flex;flex-direction:column;gap:9px;flex:1">'
         + '<h3 style="font:800 19px/1.1 \'Archivo\',sans-serif;letter-spacing:-.02em;margin:0">' + esc(t.name) + '</h3>'
-        + '<span style="display:inline-flex;align-self:flex-start;padding:4px 8px;background:' + (ROLE_COLOR[t.role] || INK) + ';color:' + roleFg(t.role) + ';font:800 9px/1.3 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase">' + esc(t.role) + '</span>'
+        + '<span style="display:inline-flex;align-self:flex-start;padding:4px 8px;background:' + (ROLE_COLOR[t.role] || INK) + ';color:' + roleFg(t.role) + ';font:800 9px/1.3 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase">' + esc(roleLabel(t.role)) + '</span>'
         + summaryHtml
         + '<p style="font:400 12.5px/1.5 \'Archivo\',sans-serif;color:#605d5d;margin:0">' + esc(t.bio) + '</p>'
         + '<div data-team-reviews="' + i + '" style="margin-top:6px;border-top:2px solid rgba(27,26,25,.16)">' + reviewsHtml + '</div>'
