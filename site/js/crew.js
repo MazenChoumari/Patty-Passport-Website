@@ -52,6 +52,13 @@
     var empty = document.getElementById("cr-empty");
     if (!list.length) {
       grid.innerHTML = "";
+      // Distinguish "search found nothing" from "the crew data itself
+      // never loaded" (e.g. a script-load failure) — the second case is
+      // a real problem, not a normal empty search result, so it needs
+      // its own honest message instead of quietly looking like one.
+      empty.textContent = total
+        ? "No crew match that search."
+        : "Crew data failed to load — please refresh the page.";
       empty.style.display = "block";
       return;
     }

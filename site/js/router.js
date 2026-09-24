@@ -71,6 +71,14 @@
 
   function injectScript(src) {
     var s = document.createElement("script");
+    // Dynamically-created <script src> elements default to async=true —
+    // they'd execute in whichever order their network fetch happens to
+    // finish, not the order they were inserted. A page like our-story.html
+    // or crew.html ships its shared data file (crew-data.js) before its
+    // own render script (our-story.js/crew.js) specifically so the render
+    // script can read window.PP_CREW_DATA at top level; async=false keeps
+    // that same in-order guarantee for scripts re-injected after a swap.
+    s.async = false;
     s.src = src;
     document.body.appendChild(s);
   }
@@ -80,11 +88,15 @@
     return m ? m[1] : "";
   }
 
-  function extractPageScript(doc) {
-    var found = null;
+  // A page can ship more than one page-specific script (our-story.html and
+  // crew.html both load js/crew-data.js before their own render script) —
+  // every non-shared script needs to be re-injected after a swap, in
+  // document order, not just the last one.
+  function extractPageScripts(doc) {
+    var found = [];
     Array.prototype.forEach.call(doc.querySelectorAll("script[src]"), function (s) {
       var src = s.getAttribute("src");
-      if (src && SHARED_SCRIPTS.indexOf(stripQuery(src)) === -1) found = src;
+      if (src && SHARED_SCRIPTS.indexOf(stripQuery(src)) === -1) found.push(src);
     });
     return found;
   }
@@ -130,8 +142,7 @@
       if (!present[path]) injectScript(src);
     });
 
-    var pageScript = extractPageScript(doc);
-    if (pageScript) injectScript(pageScript);
+    extractPageScripts(doc).forEach(function (src) { injectScript(src); });
 
     if (window.initHoverStyles) window.initHoverStyles(view);
     if (window.PP_REVEAL) window.PP_REVEAL.init(view);
