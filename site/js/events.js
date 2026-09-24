@@ -106,31 +106,36 @@
       var route = e.route && routes[e.route] ? routes[e.route] : { bg: INK, fg: CREAM };
       var isNext = e.key === soonestKey;
       var dateLabel = target.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+      // The tier-list and fact-quote dividers default to a dark hairline
+      // (rgba(27,26,25,...)), which was invisible on the tribute card's
+      // own near-black background — lighten them whenever the card
+      // itself is dark so those lines stay visible.
+      var cardIsDark = route.bg === INK;
+      var hairline = cardIsDark ? "rgba(247,243,236,.22)" : "rgba(27,26,25,.14)";
       var tiersHtml = e.tiers.map(function (t) {
-        return '<span style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid rgba(27,26,25,.14)"><span style="font:600 11.5px/1.3 \'Archivo\',sans-serif;opacity:.85">' + esc(t[0]) + '</span><span style="font:800 13px/1 \'Archivo\',sans-serif">' + esc(t[1]) + '</span></span>';
+        return '<span style="display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid ' + hairline + '"><span style="font:600 11.5px/1.3 \'Archivo\',sans-serif;opacity:.85">' + esc(t[0]) + '</span><span style="font:800 13px/1 \'Archivo\',sans-serif">' + esc(t[1]) + '</span></span>';
       }).join("");
       var countdownHtml = phase === "upcoming"
         ? '<div data-countdown="' + e.key + '" style="font:800 13px/1 \'Archivo\',sans-serif;letter-spacing:.02em">Departs in ' + parts.d + 'd · ' + String(parts.h).padStart(2, "0") + 'h · ' + String(parts.m).padStart(2, "0") + 'm · ' + String(parts.s).padStart(2, "0") + 's</div>'
         : '<div data-countdown="' + e.key + '" style="font:800 13px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;opacity:.6">' + (phase === "now" ? "Happening now" : "Departed") + '</div>';
-      // Poster strip: big departure date + a performance-motif mark
-      // (vinyl disc for the three music nights, a medal/spotlight mark
-      // for the tribute) instead of the card opening straight into text
-      // — a mood visual without inventing a photo of an event that
-      // hasn't happened yet.
-      var posterMark = e.key === "tribute"
-        ? (window.PP_ICON ? window.PP_ICON("medal", 40, route.fg) : "")
-        : '<span style="display:block;width:46px;height:46px;flex:none;border-radius:50%;background:repeating-radial-gradient(circle,' + route.fg + ' 0 2px,transparent 2px 5px);position:relative"><span style="position:absolute;inset:0;margin:auto;width:12px;height:12px;border-radius:50%;background:' + route.fg + '"></span></span>';
+      // Poster strip: big departure date + a spinning vinyl-disc mark on
+      // every card, including the tribute night (it used to get a static
+      // medal instead, so it looked like a different kind of event) —
+      // a mood visual without inventing a photo of an event that hasn't
+      // happened yet.
+      var posterMark = '<span class="pp-ev-vinyl" style="display:block;width:46px;height:46px;flex:none;border-radius:50%;background:repeating-radial-gradient(circle,' + route.fg + ' 0 2px,transparent 2px 5px);position:relative"><span style="position:absolute;inset:0;margin:auto;width:12px;height:12px;border-radius:50%;background:' + route.fg + '"></span></span>';
       var posterHtml = '<div style="position:relative;margin:-22px -20px 4px;padding:18px 20px 16px;background:rgba(0,0,0,.16);display:flex;align-items:center;justify-content:space-between;gap:12px">'
         + '<span><span style="display:block;font:800 34px/1 \'Archivo\',sans-serif;letter-spacing:-.03em">' + target.getDate() + '</span><span style="display:block;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.18em;text-transform:uppercase;opacity:.75">' + target.toLocaleDateString("en-GB", { month: "short" }) + '</span></span>'
         + posterMark
         + '</div>';
-      // The reserve button's default dark background reads as invisible
-      // black-on-black against the tribute card's own INK background —
-      // pick a bright accent instead whenever the card itself is dark.
-      var cardIsDark = route.bg === INK;
-      var reserveBg = cardIsDark ? YEL : INK;
-      var reserveFg = cardIsDark ? INK : "#f7f3ec";
-      var reserveHoverBg = cardIsDark ? "#fff" : "#ec3013";
+      // Reserve button: the first two nights (Levant, Adriatic) share a
+      // black button that matches their lighter cards; the tribute and
+      // Aegean nights get a yellow button instead, so the four cards
+      // aren't all leaning on one accent colour.
+      var yellowButton = e.key === "tribute" || e.key === "aegean";
+      var reserveBg = yellowButton ? YEL : INK;
+      var reserveFg = yellowButton ? INK : "#f7f3ec";
+      var reserveHoverBg = yellowButton ? "#fff" : "#ec3013";
       var reserveHtml = closed
         ? '<span style="margin-top:auto;padding-top:6px;display:inline-flex;align-items:center;justify-content:space-between;padding:12px 14px;background:' + (cardIsDark ? "rgba(247,243,236,.18)" : "rgba(0,0,0,.25)") + ';color:' + route.fg + ';font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase" aria-disabled="true">Booking closed</span>'
         : '<a href="#enquiry" data-enquire-pkg="' + esc(e.title) + '" style="margin-top:auto;padding-top:6px;display:inline-flex;align-items:center;justify-content:space-between;padding:12px 14px;background:' + reserveBg + ';color:' + reserveFg + ';text-decoration:none;font:800 11px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase" data-hover="background:' + reserveHoverBg + '">Reserve a seat<span>→</span></a>';
@@ -142,7 +147,7 @@
         + '<p style="font:400 12.5px/1.5 \'Archivo\',sans-serif;margin:0;opacity:.9">' + esc(e.line) + '</p>'
         + '<div style="display:flex;flex-direction:column;margin-top:2px">' + tiersHtml + '</div>'
         + '<p style="font:400 11px/1.4 \'Archivo\',sans-serif;margin:0;opacity:.7">' + esc(e.setLine) + '</p>'
-        + '<p style="font:400 11.5px/1.5 \'Archivo\',sans-serif;font-style:italic;margin:0;opacity:.85;border-top:1px solid rgba(27,26,25,.14);padding-top:10px">' + esc(e.fact) + '</p>'
+        + '<p style="font:400 11.5px/1.5 \'Archivo\',sans-serif;font-style:italic;margin:0;opacity:.85;border-top:1px solid ' + hairline + ';padding-top:10px">' + esc(e.fact) + '</p>'
         + countdownHtml
         + reserveHtml
         + '</div>';
