@@ -157,47 +157,33 @@
     }).join("");
   }
 
-  // Family stamp-pooling visual for the "one book per child" CTA: three
-  // small Junior chips feeding into one Family counter. The counter only
-  // animates once the section actually scrolls into view (not on page
-  // load), and jumps straight to its end value under reduced-motion
-  // instead of stepping.
-  function renderPoolVisual() {
-    var root = document.getElementById("jr-pool-visual");
+  // The Junior Passport's own four-stamp ladder, read live from
+  // window.PP_DATA.PASSPORT_TYPES.junior so it can never drift from the
+  // real ladder shown on Rewards/My Passport — replaces an earlier visual
+  // here that animated Junior stamps pooling into the Family ladder,
+  // which wasn't how the two passports actually work (they're separate
+  // books with separate ladders). Each rung drifts gently in place using
+  // the same ppDrift keyframe as the kit photos above, so the panel
+  // still has a little life to it.
+  function renderJuniorLadder() {
+    var root = document.getElementById("jr-ladder-visual");
     if (!root) return;
-    function chip(rot, z) {
-      return '<div style="width:54px;height:72px;flex:none;background:#1b1a19;border:2px solid #fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;transform:rotate(' + rot + 'deg);margin-right:-16px;position:relative;z-index:' + z + '">'
-        + '<span style="font:800 13px/1 \'Archivo\',sans-serif;color:#f2b30c">JR</span>'
-        + '<span style="width:14px;height:14px;border:1.5px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font:800 8px/1 \'Archivo\',sans-serif">★</span></div>';
-    }
-    root.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;height:100%">'
-      + '<div style="display:flex;align-items:center">' + chip(-8, 1) + chip(4, 2) + chip(-3, 3) + '</div>'
-      + '<span aria-hidden="true" style="font:800 22px/1 \'Archivo\',sans-serif;opacity:.85">→</span>'
-      + '<div style="width:104px;height:104px;flex:none;background:#fff;color:#1b1a19;border:3px solid #1b1a19;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px">'
-      + '<span id="jr-pool-count" style="font:800 30px/1 \'Archivo\',sans-serif;letter-spacing:-.02em">0</span>'
-      + '<span style="font:800 8.5px/1.3 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase">Family ladder</span></div>'
+    var data = window.PP_DATA;
+    var ladder = data && data.PASSPORT_TYPES && data.PASSPORT_TYPES.junior ? data.PASSPORT_TYPES.junior.ladder : [];
+    if (!ladder.length) return;
+    var COLORS = [[YEL, INK], ["#fff", INK], [INK, CREAM], [YEL, INK]];
+    root.innerHTML = '<div style="display:flex;flex-direction:column;gap:14px">'
+      + ladder.map(function (r, i) {
+        var c = COLORS[i % COLORS.length];
+        var dur = (9 + i * 1.3).toFixed(1) + "s";
+        var delay = (i * 0.25).toFixed(2) + "s";
+        var rot = (i % 2 === 0 ? -1.4 : 1.2);
+        return '<div style="display:flex;align-items:center;gap:14px;background:' + c[0] + ';color:' + c[1] + ';border:2px solid #1b1a19;padding:12px 16px;transform:rotate(' + rot + 'deg);--r:' + rot + 'deg;animation:ppDrift ' + dur + ' ease-in-out ' + delay + ' infinite">'
+          + '<span style="width:38px;height:38px;flex:none;background:#1b1a19;color:#f2b30c;display:flex;align-items:center;justify-content:center;font:800 15px/1 \'Archivo\',sans-serif">' + r.stamps + '</span>'
+          + '<span style="flex:1;min-width:0"><span style="display:block;font:800 14px/1.2 \'Archivo\',sans-serif">' + esc(r.title) + '</span>'
+          + '<span style="display:block;font:400 11px/1.4 \'Archivo\',sans-serif;opacity:.8">' + esc(r.desc) + '</span></span></div>';
+      }).join("")
       + '</div>';
-
-    var countEl = document.getElementById("jr-pool-count");
-    if (!countEl || !window.IntersectionObserver) return;
-    var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var played = false;
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting || played) return;
-        played = true;
-        if (reduced) { countEl.textContent = "3"; io.disconnect(); return; }
-        var n = 0;
-        var step = setInterval(function () {
-          n++;
-          countEl.textContent = String(n);
-          if (n >= 3) clearInterval(step);
-        }, 380);
-        io.disconnect();
-      });
-    }, { threshold: 0.5 });
-    io.observe(root);
-    if (window.PP_TRACK) window.PP_TRACK(function () { io.disconnect(); });
   }
 
   function applyPick(spec) {
@@ -234,7 +220,7 @@
     renderKidsMenu();
     renderLearning();
     renderParents();
-    renderPoolVisual();
+    renderJuniorLadder();
     initKidsPicker();
     if (window.initHoverStyles) window.initHoverStyles(document.body);
     if (window.PP_REVEAL) window.PP_REVEAL.init();
