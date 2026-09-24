@@ -15,46 +15,38 @@
 
   var ICONS = {
     // Passport-type badges — each is the same booklet base (a rect + spine
-    // line, matching the site's other passport glyphs) with a distinct
-    // composition on the cover so the three types read apart even at a
-    // small badge size, not just by their differently-shaped emblem:
-    // Junior gets a booklet + a stuck-on sticker + a pencil drawing a
-    // route line; Explorer gets a single passport + a compass + a lone
-    // traveller silhouette; Family gets one shared passport + several
-    // small figures + a route line joining them underfoot.
+    // line, matching the site's other passport glyphs) with ONE bold,
+    // centered emblem on the cover, sized to still read clearly at a
+    // small badge (15-20px): Junior is a solid star, Explorer a compass
+    // needle, Family a cluster of three overlapping circles. Earlier
+    // versions packed several small corner details onto the cover, which
+    // shrank to illegible dots at badge size — this keeps one shape per
+    // type, centered, at a size that survives the shrink.
     passportJunior: function (size, c) {
       return svg(size, '<rect x="5" y="3" width="14" height="18" rx="1.6" ' + s(c) + '/>'
         + '<line x1="5" y1="3" x2="5" y2="21" ' + s(c) + '/>'
-        // sticker, stuck on at an angle near the top corner
-        + '<path d="M15 5.5 L15.6 6.9 L17.1 7.1 L16 8.1 L16.3 9.6 L15 8.9 L13.7 9.6 L14 8.1 L12.9 7.1 L14.4 6.9 Z" fill="' + c + '"/>'
-        // pencil sketching a short dashed route line across the lower cover
-        + '<path d="M7.3 17.6 L11.6 15.2" ' + s(c) + ' stroke-dasharray="1.6 1.7"/>'
-        + '<path d="M11.6 15.2 L13.1 14.3 L12.5 16 Z" fill="' + c + '"/>');
+        // one large centered star, filled solid so it stays legible small
+        + '<path d="M12 7.2 L13.3 10.8 L17.2 10.9 L14.1 13.3 L15.2 17.1 L12 14.9 L8.8 17.1 L9.9 13.3 L6.8 10.9 L10.7 10.8 Z" fill="' + c + '"/>');
     },
     passportExplorer: function (size, c) {
       return svg(size, '<rect x="5" y="3" width="14" height="18" rx="1.6" ' + s(c) + '/>'
         + '<line x1="5" y1="3" x2="5" y2="21" ' + s(c) + '/>'
-        // compass, upper cover
-        + '<circle cx="13" cy="9.4" r="2.7" ' + s(c) + '/>'
-        + '<path d="M14.3 8 L13.4 9.7 L11.7 10.6 L12.6 8.9 Z" fill="' + c + '"/>'
-        // single traveller silhouette, lower-left of the cover
-        + '<circle cx="8.6" cy="15.6" r="1.15" fill="' + c + '"/>'
-        + '<path d="M6.9 19.3 C6.9 17.1 10.3 17.1 10.3 19.3 Z" fill="' + c + '"/>');
+        // one large centered compass: ring + bold needle diamond, north
+        // half filled solid and south half faded, so it reads as a
+        // compass rather than a plain diamond even at small sizes
+        + '<circle cx="12" cy="12" r="5.4" ' + s(c) + '/>'
+        + '<path d="M12 7.6 L13.9 12 L12 12 Z" fill="' + c + '"/>'
+        + '<path d="M12 16.4 L10.1 12 L12 12 Z" fill="' + c + '" opacity=".4"/>'
+        + '<circle cx="12" cy="12" r="1" fill="' + c + '"/>');
     },
     passportFamily: function (size, c) {
       return svg(size, '<rect x="5" y="3" width="14" height="18" rx="1.6" ' + s(c) + '/>'
         + '<line x1="5" y1="3" x2="5" y2="21" ' + s(c) + '/>'
-        // three small figures sharing the one cover
-        + '<circle cx="9.3" cy="9.6" r="1" fill="' + c + '"/>'
-        + '<path d="M7.9 12.9 C7.9 11 10.7 11 10.7 12.9 Z" fill="' + c + '"/>'
-        + '<circle cx="13.7" cy="8.7" r="1.1" fill="' + c + '"/>'
-        + '<path d="M12.1 12.3 C12.1 10.2 15.3 10.2 15.3 12.3 Z" fill="' + c + '"/>'
-        + '<circle cx="16.6" cy="10.1" r="0.85" fill="' + c + '" opacity=".8"/>'
-        + '<path d="M15.4 12.9 C15.4 11.4 17.8 11.4 17.8 12.9 Z" fill="' + c + '" opacity=".8"/>'
-        // one route line joining everyone underfoot
-        + '<path d="M7.8 16.6 L17.4 16.6" ' + s(c) + '/>'
-        + '<circle cx="7.8" cy="16.6" r="0.9" fill="' + c + '"/>'
-        + '<circle cx="17.4" cy="16.6" r="0.9" fill="' + c + '"/>');
+        // three bold overlapping circles, clustered dead-center — reads
+        // as "group" at a glance, unlike three separate tiny figures
+        + '<circle cx="12" cy="8.8" r="3.1" fill="' + c + '" opacity=".85"/>'
+        + '<circle cx="9" cy="14.4" r="3.1" fill="' + c + '" opacity=".85"/>'
+        + '<circle cx="15" cy="14.4" r="3.1" fill="' + c + '" opacity=".85"/>');
     },
     // Junior Explorer Kit.
     booklet: function (size, c) {
