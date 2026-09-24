@@ -229,6 +229,15 @@
       + '<span style="font:400 13.5px/1.55 \'Archivo\',sans-serif;color:#bab6b6">' + esc(a.line) + '</span>';
   }
 
+  // Defensibility card icons — one glyph per moat argument, replacing
+  // the plain FM/RT/CT/SU/BR initials those cards used to show.
+  function renderMoatIcons() {
+    [["inv-moat-icon-fm", "blueprintMark"], ["inv-moat-icon-rt", "loopMark"], ["inv-moat-icon-ct", "layersMark"], ["inv-moat-icon-su", "chainMark"], ["inv-moat-icon-br", "globeMark"]].forEach(function (pair) {
+      var el = document.getElementById(pair[0]);
+      if (el && window.PP_ICON) el.innerHTML = window.PP_ICON(pair[1], 22, "currentColor");
+    });
+  }
+
   /* ── scenario selector / CAPEX / footprint / return ── */
   function renderScenario(v) {
     var D = v.D, S = v.S, rc = v.rc;
@@ -805,6 +814,7 @@
     renderPositioning();
     renderSegments();
     renderAnsoff();
+    renderMoatIcons();
     renderFunding(v);
     renderContact(v);
     if (window.initHoverStyles) window.initHoverStyles(document.body);
