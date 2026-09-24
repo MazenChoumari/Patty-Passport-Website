@@ -123,6 +123,35 @@
       return svg(size, '<path d="M4.5 9c1-2.6 3.6-4 7-4c4.3 0 8 2.6 8 6.4c0 3.6-3.3 6.4-7.4 6.4c-1 0-1.9-0.15-2.7-0.4c-0.5 1.4-1.7 2.4-3.4 2.4c-1.9 0-3-1.2-3-2.8c0-1.1 0.6-2 1.6-2.5c-0.7-1.6-0.8-3.6-0.1-5.5Z" ' + s(c) + '/>'
         + '<circle cx="9.5" cy="10" r="1" fill="' + c + '"/>'
         + '<circle cx="14" cy="12.3" r="1" fill="' + c + '"/>');
+    },
+    // Defensibility icons (investors.html "Why this defends itself") —
+    // one glyph per moat argument, replacing the plain two-letter
+    // initials (FM/RT/CT/SU/BR) those cards used to show.
+    blueprintMark: function (size, c) { // format, not recipe
+      return svg(size, '<rect x="3.5" y="3.5" width="17" height="17" rx="1.2" ' + s(c) + '/>'
+        + '<path d="M3.5 9h17M9 20.5V9" ' + s(c) + '/>'
+        + '<path d="M12.5 13.2h5.5M12.5 16.2h3.6" ' + s(c) + '/>');
+    },
+    loopMark: function (size, c) { // retention by design
+      return svg(size, '<path d="M5 12a7 7 0 0 1 12.3-4.5" ' + s(c) + '/>'
+        + '<path d="M17.8 4.3v3.6h-3.6" ' + s(c) + '/>'
+        + '<path d="M19 12a7 7 0 0 1-12.3 4.5" ' + s(c) + '/>'
+        + '<path d="M6.2 19.7v-3.6h3.6" ' + s(c) + '/>');
+    },
+    layersMark: function (size, c) { // reusable content
+      return svg(size, '<path d="M12 4 20.5 8.5 12 13 3.5 8.5Z" ' + s(c) + '/>'
+        + '<path d="M3.5 12.8 12 17.3l8.5-4.5" ' + s(c) + '/>'
+        + '<path d="M3.5 17 12 21.5 20.5 17" ' + s(c) + '/>');
+    },
+    chainMark: function (size, c) { // single supply chain
+      return svg(size, '<rect x="3" y="8.5" width="9" height="7" rx="3.5" ' + s(c) + '/>'
+        + '<rect x="11" y="8.5" width="9" height="7" rx="3.5" ' + s(c) + '/>');
+    },
+    globeMark: function (size, c) { // brand with a world
+      return svg(size, '<circle cx="12" cy="12" r="8.5" ' + s(c) + '/>'
+        + '<path d="M3.5 12h17M12 3.5v17" ' + s(c) + '/>'
+        + '<path d="M6 6.3c2 2 10 2 12 0M6 17.7c2-2 10-2 12 0" ' + s(c) + '/>'
+        + '<path d="M12 3.5c-2.6 2.3-4 5.3-4 8.5s1.4 6.2 4 8.5c2.6-2.3 4-5.3 4-8.5s-1.4-6.2-4-8.5Z" ' + s(c) + '/>');
     }
   };
 
