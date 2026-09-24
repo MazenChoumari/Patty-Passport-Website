@@ -4,11 +4,14 @@
    (front-end only, per master brief §5.6 — no backend). */
 (function () {
   var RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
-  // Same five approved service roles + colors as crew.html (js/crew.js).
+  // Same five approved service roles + colors as crew.html (js/crew.js) —
+  // drawn only from the site's own palette (no invented green/purple).
   var ROLE_COLOR = {
-    "Route Host": BLU, "Passport Desk": YEL, "Destination Guide": "#1f7a3d",
-    "Table Captain": "#7a4fae", "Kitchen Crew": RED
+    "Route Host": BLU, "Passport Desk": YEL, "Destination Guide": INK,
+    "Table Captain": "#e7e3dc", "Kitchen Crew": RED
   };
+  var LIGHT_ROLE_COLORS = [YEL, "#e7e3dc"];
+  function roleFg(role) { return LIGHT_ROLE_COLORS.indexOf(ROLE_COLOR[role]) > -1 ? INK : "#fff"; }
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
@@ -81,7 +84,6 @@
   // Named team roster — master brief §5.6. First four carry the brief's
   // example guest review verbatim; the last four ship with no seed review
   // (front-end only — filled in live via "Leave a Review").
-  var TAG_COLORS = [RED, BLU, "#1f7a3d", YEL];
   // Reads the shared window.PP_CREW_DATA (js/crew-data.js) — same names,
   // roles and bios crew.html's full directory shows, so the two pages
   // can't drift apart. Reviews start empty for every profile; nothing is
@@ -90,7 +92,7 @@
   var TEAM = ((window.PP_CREW_DATA && window.PP_CREW_DATA.FEATURED) || []).map(function (c, i) {
     return {
       name: c.name, role: c.role, nationality: c.nationality, bio: c.bio, reviews: [],
-      slotId: "st-team-" + i, delay: (i % 4) * 70, tag: TAG_COLORS[i % TAG_COLORS.length]
+      slotId: "st-team-" + i, delay: (i % 4) * 70
     };
   });
 
@@ -176,25 +178,14 @@
     }).join("");
   }
 
-  // No individual headshots exist for the 8 named featured-crew profiles
-  // (only the 5 unnamed role-archetype photos above do) — showing the
-  // plain grey "photo pending" placeholder here read as broken/empty
-  // rather than as a deliberate design choice, since it's the same
-  // treatment used for genuinely-missing content photos elsewhere. This
-  // is a proper initials avatar instead — a bold colour panel plus the
-  // person's monogram, the same pattern real products use before
-  // headshots are ready, so the card still reads as alive and specific
-  // to that person rather than "content missing".
-  function initialsOf(name) {
-    var parts = String(name || "").trim().split(/\s+/);
-    var first = parts[0] ? parts[0].charAt(0) : "";
-    var last = parts.length > 1 ? parts[parts.length - 1].charAt(0) : "";
-    return (first + last).toUpperCase();
-  }
+  // No individual headshots exist yet for the 8 named featured-crew
+  // profiles — same "photo pending" placeholder used for the founders
+  // (Mazen/Ahmed) above, so the honest not-yet-supplied treatment reads
+  // the same wherever it appears on this page rather than looking like
+  // two different systems. What makes each card feel alive is the name,
+  // role, nationality, bio and reviews below, not the image slot.
   function avatarHtml(t) {
-    var fg = t.tag === YEL ? "rgba(27,26,25,.9)" : "rgba(255,255,255,.94)";
-    return '<div style="position:absolute;inset:0;background:' + t.tag + ';display:flex;align-items:center;justify-content:center">'
-      + '<span aria-hidden="true" style="font:800 64px/1 \'Archivo\',sans-serif;letter-spacing:-.02em;color:' + fg + '">' + esc(initialsOf(t.name)) + '</span></div>';
+    return '<div class="pp-placeholder" style="position:absolute;inset:0"><span>Portrait of ' + esc(t.name) + ' — ' + esc(t.role) + ' headshot (to be supplied)</span></div>';
   }
 
   // Small inline star glyph, filled up to `n` (0-5) — aria-hidden since
@@ -239,7 +230,7 @@
         + '<span style="position:absolute;left:0;top:0;padding:6px 10px;background:#1b1a19;color:#fff;font:800 9px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;pointer-events:none">' + esc(t.nationality) + '</span></div>'
         + '<div style="padding:18px 18px 20px;display:flex;flex-direction:column;gap:9px;flex:1">'
         + '<h3 style="font:800 19px/1.1 \'Archivo\',sans-serif;letter-spacing:-.02em;margin:0">' + esc(t.name) + '</h3>'
-        + '<span style="display:inline-flex;align-self:flex-start;padding:4px 8px;background:' + (ROLE_COLOR[t.role] || INK) + ';color:' + (ROLE_COLOR[t.role] === YEL ? INK : "#fff") + ';font:800 9px/1.3 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase">' + esc(t.role) + '</span>'
+        + '<span style="display:inline-flex;align-self:flex-start;padding:4px 8px;background:' + (ROLE_COLOR[t.role] || INK) + ';color:' + roleFg(t.role) + ';font:800 9px/1.3 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase">' + esc(t.role) + '</span>'
         + summaryHtml
         + '<p style="font:400 12.5px/1.5 \'Archivo\',sans-serif;color:#605d5d;margin:0">' + esc(t.bio) + '</p>'
         + '<div data-team-reviews="' + i + '" style="margin-top:6px;border-top:2px solid rgba(27,26,25,.16)">' + reviewsHtml + '</div>'

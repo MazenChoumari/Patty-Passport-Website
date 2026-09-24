@@ -9,10 +9,14 @@
 (function () {
   var RED = "#ec3013", YEL = "#f2b30c", BLU = "#2b76c9", INK = "#1b1a19", CREAM = "#f7f3ec";
   var GROUP = { guest: "Guest-facing", kitchen: "Kitchen & Ops" };
+  // Drawn only from the site's own palette (no invented green/purple) —
+  // same mapping as our-story.js's featured-crew role tags.
   var ROLE_COLOR = {
-    "Route Host": BLU, "Passport Desk": YEL, "Destination Guide": "#1f7a3d",
-    "Table Captain": "#7a4fae", "Kitchen Crew": RED
+    "Route Host": BLU, "Passport Desk": YEL, "Destination Guide": INK,
+    "Table Captain": "#e7e3dc", "Kitchen Crew": RED
   };
+  var LIGHT_ROLE_COLORS = [YEL, "#e7e3dc"];
+  function roleFg(role) { return LIGHT_ROLE_COLORS.indexOf(ROLE_COLOR[role]) > -1 ? INK : "#fff"; }
 
   var state = { q: "", group: "ALL" };
 
@@ -54,14 +58,14 @@
     empty.style.display = "none";
     grid.innerHTML = list.map(function (c) {
       var color = ROLE_COLOR[c.role] || INK;
-      var roleFg = color === YEL ? INK : "#fff";
+      var fg = roleFg(c.role);
       return '<div style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:#fff;padding:20px 18px 22px;display:flex;flex-direction:column;gap:9px;min-height:190px">'
         + '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">'
-        + '<span style="width:40px;height:40px;flex:none;background:' + color + ';color:#fff;display:flex;align-items:center;justify-content:center;font:800 13px/1 \'Archivo\',sans-serif">' + esc(c.name.split(" ").map(function (w) { return w[0]; }).slice(0, 2).join("")) + '</span>'
+        + '<span style="width:40px;height:40px;flex:none;background:' + color + ';color:' + fg + ';display:flex;align-items:center;justify-content:center;font:800 13px/1 \'Archivo\',sans-serif">' + esc(c.name.split(" ").map(function (w) { return w[0]; }).slice(0, 2).join("")) + '</span>'
         + (c.featured ? '<span style="padding:4px 7px;background:#f2b30c;color:#1b1a19;font:800 8.5px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase">Featured</span>' : '')
         + '</div>'
         + '<h3 style="font:800 16.5px/1.15 \'Archivo\',sans-serif;letter-spacing:-.01em;margin:0">' + esc(c.name) + '</h3>'
-        + '<span style="display:inline-flex;align-self:flex-start;padding:4px 8px;background:' + color + ';color:' + roleFg + ';font:800 9px/1.3 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase">' + esc(c.role) + '</span>'
+        + '<span style="display:inline-flex;align-self:flex-start;padding:4px 8px;background:' + color + ';color:' + fg + ';font:800 9px/1.3 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase">' + esc(c.role) + '</span>'
         + '<div style="font:600 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#7d7979">' + esc(c.route) + ' · ' + esc(c.nationality) + '</div>'
         + '<p style="font:400 12px/1.5 \'Archivo\',sans-serif;color:#605d5d;margin:0">' + esc(c.bio) + '</p>'
         + (c.featured ? '<a href="our-story.html" style="margin-top:auto;font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#ae1800">Read bio &amp; reviews →</a>' : '')
