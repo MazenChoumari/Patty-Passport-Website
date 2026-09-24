@@ -23,6 +23,9 @@
   ::selection{background:rgba(236,48,19,.28)}
   @keyframes ppBlink{0%,55%{opacity:1}56%,100%{opacity:.15}}
   @keyframes ppPulse{0%{opacity:.3;transform:scale(1)}100%{opacity:0;transform:scale(2.4)}}
+  @keyframes ppDepartScroll{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+  #rw-departures-track{animation:ppDepartScroll 14s linear infinite}
+  #rw-departures-viewport:hover #rw-departures-track,#rw-departures-viewport:focus-within #rw-departures-track{animation-play-state:paused}
 </style>
 </head>
 <body>
@@ -107,7 +110,9 @@
     </div>
     <div data-rv="up" data-rv-d="150" style="border:2px solid rgba(255,255,255,.45)">
       <div style="padding:11px 15px;border-bottom:2px solid rgba(255,255,255,.45);font:800 9.5px/1 'Archivo',sans-serif;letter-spacing:.18em;text-transform:uppercase;opacity:.85">Next departures</div>
-      <div id="rw-departures"></div>
+      <div id="rw-departures-viewport" style="height:132px;overflow:hidden;position:relative">
+        <div id="rw-departures-track" style="position:absolute;left:0;right:0;top:0"></div>
+      </div>
     </div>
   </div>
 </section>

@@ -178,19 +178,28 @@
       statusEl.title = status ? status.days + " · " + status.hours : "";
     }
 
-    var board = document.getElementById("rw-departures");
+    // A continuously-scrolling departures board: all five routes, each
+    // row a solid block in its own route color (not just a small dot)
+    // so it reads clearly against this section's red backdrop, looping
+    // top-to-bottom forever. The route list is rendered twice back to
+    // back and the CSS animation (ppDepartScroll, in rewards.html)
+    // translates the track up by exactly one copy's height, so the
+    // loop point is seamless — pausable on hover/focus for anyone who
+    // wants to actually read one and click through.
+    var board = document.getElementById("rw-departures-track");
     if (!board) return;
-    var dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
-    var picks = [0, 1, 2].map(function (i) { return ROUTE_ORDER[(dayOfYear + i) % ROUTE_ORDER.length]; });
-    board.innerHTML = picks.map(function (key, i) {
-      var route = D.ROUTES[key];
-      var count = D.COUNTRIES.filter(function (c) { return c.routeKey === key; }).length;
-      return '<a href="route-map.html" style="display:flex;align-items:center;gap:12px;padding:13px 15px;text-decoration:none;color:#fff;' + (i > 0 ? "border-top:1px solid rgba(255,255,255,.28)" : "") + '" data-hover="background:rgba(27,26,25,.16)">'
-        + '<span style="width:8px;height:8px;flex:none;background:' + route.bg + ';border:1.5px solid #fff"></span>'
-        + '<span style="flex:1;min-width:0"><span style="display:block;font:800 13px/1.2 \'Archivo\',sans-serif">' + esc(route.name) + ' route</span>'
-        + '<span style="display:block;font:400 10.5px/1.4 \'Archivo\',sans-serif;opacity:.8">' + count + ' destinations · stamp available</span></span>'
-        + '<span style="font:800 11px/1 \'Archivo\',sans-serif">→</span></a>';
-    }).join("");
+    var ROW_H = 44;
+    function rows() {
+      return ROUTE_ORDER.map(function (key) {
+        var route = D.ROUTES[key];
+        var count = D.COUNTRIES.filter(function (c) { return c.routeKey === key; }).length;
+        return '<a href="route-map.html" style="display:flex;align-items:center;gap:12px;height:' + ROW_H + 'px;padding:0 15px;text-decoration:none;color:' + route.fg + ';background:' + route.bg + ';border-top:1px solid rgba(27,26,25,.2)" data-hover="filter:brightness(1.08)">'
+          + '<span style="flex:1;min-width:0"><span style="display:block;font:800 13px/1.2 \'Archivo\',sans-serif">' + esc(route.name) + ' route</span>'
+          + '<span style="display:block;font:400 10px/1.3 \'Archivo\',sans-serif;opacity:.8">' + count + ' destinations · stamp available</span></span>'
+          + '<span style="font:800 11px/1 \'Archivo\',sans-serif">→</span></a>';
+      }).join("");
+    }
+    board.innerHTML = rows() + rows();
   }
 
   window.PP_READY(function () {
