@@ -69,18 +69,38 @@
   // never has to be kept in sync with SHARED_SCRIPTS by hand.
   function stripQuery(src) { return src ? src.split("?")[0] : src; }
 
+  // Offset by the fixed nav bar's real height so a scroll target's own
+  // heading doesn't land hidden underneath it — the bar wraps to a
+  // second row under ~760px, so this is measured live, not assumed.
+  // Shared by both the same-page hash-click path and the cross-page
+  // navigate() path below, so a target like #team looks identical
+  // whichever way it was reached.
+  function navOffset() {
+    var bar = document.querySelector("[data-nav-root]");
+    return (bar ? bar.offsetHeight : 0) + 12;
+  }
+
   function injectScript(src) {
-    var s = document.createElement("script");
-    // Dynamically-created <script src> elements default to async=true —
-    // they'd execute in whichever order their network fetch happens to
-    // finish, not the order they were inserted. A page like our-story.html
-    // or crew.html ships its shared data file (crew-data.js) before its
-    // own render script (our-story.js/crew.js) specifically so the render
-    // script can read window.PP_CREW_DATA at top level; async=false keeps
-    // that same in-order guarantee for scripts re-injected after a swap.
-    s.async = false;
-    s.src = src;
-    document.body.appendChild(s);
+    // Returns a promise that resolves once this script has actually
+    // finished loading (and, since it runs synchronously at that point,
+    // finished executing) — callers that need the DOM it populates (e.g.
+    // scrolling to a hash target inside it) must wait on this rather
+    // than assuming the DOM is ready the instant the tag is appended.
+    return new Promise(function (resolve) {
+      var s = document.createElement("script");
+      // Dynamically-created <script src> elements default to async=true —
+      // they'd execute in whichever order their network fetch happens to
+      // finish, not the order they were inserted. A page like our-story.html
+      // or crew.html ships its shared data file (crew-data.js) before its
+      // own render script (our-story.js/crew.js) specifically so the render
+      // script can read window.PP_CREW_DATA at top level; async=false keeps
+      // that same in-order guarantee for scripts re-injected after a swap.
+      s.async = false;
+      s.onload = resolve;
+      s.onerror = resolve; // don't hang navigation on one failed script
+      s.src = src;
+      document.body.appendChild(s);
+    });
   }
 
   function extractActive(html) {
@@ -115,7 +135,7 @@
   function swapIn(doc, html, url) {
     var view = document.getElementById("pp-view");
     var newView = doc.getElementById("pp-view");
-    if (!view || !newView) return false;
+    if (!view || !newView) return { ok: false };
 
     clearPageCleanups();
     view.innerHTML = newView.innerHTML;
@@ -134,20 +154,28 @@
 
     if (window.PP_NAV) window.PP_NAV.setActive(extractActive(html));
 
+    var scriptPromises = [];
     var present = loadedScriptSrcs();
     Array.prototype.forEach.call(doc.querySelectorAll("script[src]"), function (s) {
       var src = s.getAttribute("src");
       var path = stripQuery(src);
       if (path === "js/router.js" || SHARED_SCRIPTS.indexOf(path) === -1) return;
-      if (!present[path]) injectScript(src);
+      if (!present[path]) scriptPromises.push(injectScript(src));
     });
 
-    extractPageScripts(doc).forEach(function (src) { injectScript(src); });
+    extractPageScripts(doc).forEach(function (src) { scriptPromises.push(injectScript(src)); });
 
     if (window.initHoverStyles) window.initHoverStyles(view);
     if (window.PP_REVEAL) window.PP_REVEAL.init(view);
     if (window.PP_TOOTY_WIDGET) window.PP_TOOTY_WIDGET.setVisible(!view.querySelector("#pt-thread"));
-    return true;
+    // Resolves once every re-injected script has actually finished
+    // loading and running its render logic — a hash-target scroll has
+    // to wait for this, since the target's final position (and the
+    // page's final height) isn't known until then. Content already in
+    // the static HTML (not JS-rendered) doesn't need this, but there's
+    // no cheap way to tell the two cases apart here, so every cross-page
+    // hash jump waits on it.
+    return { ok: true, ready: Promise.all(scriptPromises) };
   }
 
   function navigate(url, push) {
@@ -159,12 +187,25 @@
         if (mySeq !== navSeq) return;
         var doc = new DOMParser().parseFromString(html, "text/html");
         if (push) history.pushState({ ppRoute: true }, "", target.pathname + target.search + target.hash);
-        var ok = swapIn(doc, html, url);
-        if (!ok) { location.href = url; return; }
+        var result = swapIn(doc, html, url);
+        if (!result.ok) { location.href = url; return; }
         if (target.hash) {
-          var el = document.querySelector(target.hash);
-          if (el) el.scrollIntoView({ block: "start" });
-          else window.scrollTo(0, 0);
+          result.ready.then(function () {
+            if (mySeq !== navSeq) return;
+            var el = document.querySelector(target.hash);
+            if (!el) { window.scrollTo(0, 0); return; }
+            // Same corrective-snap pattern as the in-page hash-click
+            // handler below: a fresh page swap can still be settling
+            // (images, fonts) even after scripts have run, so verify
+            // and nudge once more shortly after the first jump.
+            window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - navOffset() });
+            setTimeout(function () {
+              var rect = el.getBoundingClientRect();
+              if (Math.abs(rect.top - navOffset()) > 24) {
+                window.scrollTo({ top: rect.top + window.scrollY - navOffset() });
+              }
+            }, 300);
+          });
         } else {
           window.scrollTo(0, 0);
         }
@@ -199,13 +240,6 @@
       if (!target) return; // no matching id: let native no-op behavior run
       e.preventDefault();
       history.pushState(null, "", a.getAttribute("href"));
-      // Offset by the fixed nav bar's real height so its target's own
-      // heading doesn't land hidden underneath it — the bar wraps to a
-      // second row under ~760px, so this is measured live, not assumed.
-      function navOffset() {
-        var bar = document.querySelector("[data-nav-root]");
-        return (bar ? bar.offsetHeight : 0) + 12;
-      }
       function scrollToTarget(behavior) {
         var top = target.getBoundingClientRect().top + window.scrollY - navOffset();
         window.scrollTo({ top: top, behavior: behavior });
