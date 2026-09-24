@@ -16,6 +16,10 @@
     ["Burgers", YEL, INK], ["Loaded fries", CREAM, INK], ["Salads", "#e7e3dc", INK],
     ["Drinks", BLU, "#fff"], ["Desserts", RED, "#fff"]
   ];
+  // Countries with a supplied Signature Plate photo — the rest keep the
+  // placeholder until a photo is shot for them.
+  var DISH_CODES = ["cyp", "dza", "egy", "esp", "fra", "grc", "ita", "lbn", "lby", "mar", "mco", "mlt", "pse", "svn", "syr", "tun", "tur"]
+    .reduce(function (acc, c) { acc[c] = true; return acc; }, {});
   function eur(n) { return "€" + n.toFixed(2).replace(/\.00$/, ".0"); }
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
@@ -170,7 +174,15 @@
     }
 
     var hero = d.heroItem;
-    document.getElementById("dp-dish-slot").querySelector("span").textContent = hero.name + " — plated, close up";
+    var dishNote = hero.name + " — plated, close up";
+    var dishSlot = document.getElementById("dp-dish-slot");
+    if (DISH_CODES[d.code]) {
+      dishSlot.className = "";
+      dishSlot.innerHTML = '<img src="images/destinations/' + d.code + '_dish.jpg" alt="' + esc(dishNote) + '" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">';
+    } else {
+      dishSlot.className = "pp-placeholder";
+      dishSlot.innerHTML = '<span>' + esc(dishNote) + '</span>';
+    }
     document.getElementById("dp-dish-name").textContent = hero.name;
     document.getElementById("dp-dish-desc").textContent = hero.desc;
     document.getElementById("dp-dish-price").textContent = eur(hero.price);

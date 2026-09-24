@@ -196,9 +196,9 @@
 
   var PROPS = [
     ["INVITATION PASS", "2%", "2%", "210px", CREAM, INK, "-5deg", "11s", "0s", "118px", "Printed boarding-pass invitation with guest name", "14px 14px 0 rgba(27,26,25,.3)", "images/events/prop-invitation-pass.jpg"],
-    ["ZONE DRESSING", "48%", "16%", "204px", "#fff", INK, "4deg", "13s", ".6s", "128px", "Zone dressed in the destination's colours", "-12px 14px 0 rgba(27,26,25,.28)"],
-    ["GROUP STAMP SHEET", "6%", "50%", "196px", RED, "#fff", "6deg", "10s", ".3s", "112px", "Sheet of stamps for the whole group", "12px 12px 0 rgba(27,26,25,.3)"],
-    ["CAKE ARRIVAL", "50%", "64%", "192px", INK, CREAM, "-7deg", "12s", "1s", "104px", "Destination cake arriving at the table", "-12px 12px 0 rgba(27,26,25,.28)"]
+    ["ZONE DRESSING", "48%", "16%", "204px", "#fff", INK, "4deg", "13s", ".6s", "128px", "Zone dressed in the destination's colours", "-12px 14px 0 rgba(27,26,25,.28)", "images/events/prop-zone-dressing.jpg"],
+    ["GROUP STAMP SHEET", "6%", "50%", "196px", RED, "#fff", "6deg", "10s", ".3s", "112px", "Sheet of stamps for the whole group", "12px 12px 0 rgba(27,26,25,.3)", "images/events/prop-group-stamp-sheet.jpg"],
+    ["CAKE ARRIVAL", "50%", "64%", "192px", INK, CREAM, "-7deg", "12s", "1s", "104px", "Destination cake arriving at the table", "-12px 12px 0 rgba(27,26,25,.28)", "images/events/prop-cake-arrival.jpg"]
   ].map(function (p, i) {
     return { label: p[0], x: p[1], y: p[2], w: p[3], bg: p[4], fg: p[5], r: p[6], dur: p[7], delay: p[8], h: p[9], note: p[10], shadow: p[11], img: p[12], slotId: "ev-prop-" + i };
   });
