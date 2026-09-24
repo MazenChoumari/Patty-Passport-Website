@@ -405,25 +405,17 @@
     if (kids && window.PP_ICON) kids.innerHTML = window.PP_ICON("kidsMark", 28, "currentColor");
 
     var tagsIcon = document.getElementById("ev-tags-icon");
-    if (tagsIcon && window.PP_ICON) tagsIcon.innerHTML = window.PP_ICON("leafMark", 22, "currentColor");
+    if (tagsIcon && window.PP_ICON) tagsIcon.innerHTML = window.PP_ICON("leafMark", 26, "currentColor");
+    var transportIcon = document.getElementById("ev-transport-icon");
+    if (transportIcon && window.PP_ICON) transportIcon.innerHTML = window.PP_ICON("mapPin", 26, "currentColor");
   }
 
-  // "Every guest has a route" dietary legend + transport panel — the tags
-  // guests actually see on menu items, and the parking/bus lines named
-  // as planning assumptions for the still-unbuilt Gate One site, not as
-  // confirmed public infrastructure.
-  var DIET_LEGEND = [
-    ["Halal-friendly", "#1d5c9e"], ["Kosher-sensitive", "#2b76c9"], ["Vegetarian", "#1f7a3d"],
-    ["Vegan", "#166534"], ["Alcohol-free", "#605d5d"], ["Alcohol-friendly", "#7a2b8a"],
-    ["Contains pork", "#ae1800"], ["Contains alcohol", "#7a2b8a"], ["Contains nuts", "#8a4a00"]
-  ];
+  // "Every guest has a route" access panel: the dietary-tag explanation
+  // (the full tag legend already lives on the menu page itself, so this
+  // just points there instead of repeating it) and the transport panel —
+  // parking/bus lines named as planning assumptions for the still-unbuilt
+  // Gate One site, not as confirmed public infrastructure.
   function renderAccessSection() {
-    var legend = document.getElementById("ev-diet-legend");
-    if (legend) {
-      legend.innerHTML = DIET_LEGEND.map(function (t) {
-        return '<span style="padding:6px 10px;border:1.5px solid ' + t[1] + ';color:' + t[1] + ';font:800 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.06em;text-transform:uppercase">' + esc(t[0]) + '</span>';
-      }).join("");
-    }
     var panel = document.getElementById("ev-transport-panel");
     if (panel) {
       var rows = [
