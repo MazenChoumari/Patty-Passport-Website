@@ -111,7 +111,7 @@
       + '<button type="button" id="mp-open-login" style="display:inline-flex;align-items:center;min-width:200px;padding:17px 20px;border:2px solid #1b1a19;background:transparent;color:#1b1a19;font:800 15px/1.1 \'Archivo\',sans-serif;cursor:pointer" data-hover="background:#f2b30c;border-color:#f2b30c">Log in<span style="margin-left:auto">→</span></button>'
       + '</div></div>'
       + '<div style="position:relative;min-height:420px;background:#2b76c9">'
-      + '<div class="pp-placeholder" style="position:absolute;inset:0"><span>Open passport booklet with stamps across the spread</span></div>'
+      + '<img src="images/pages/my-passport-hero.jpg" alt="Open passport booklet with stamps across the spread" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">'
       + '<div style="position:absolute;left:0;right:0;bottom:0;padding:13px 18px;background:rgba(27,26,25,.92);color:#f7f3ec;font:600 9.5px/1.5 \'Archivo\',sans-serif;letter-spacing:.12em;text-transform:uppercase;pointer-events:none">21 countries · 4 reward gates · nothing expires</div>'
       + '</div></div></section>';
   }

@@ -16,20 +16,20 @@
 
   var PACKAGES = [
     ["Little Explorer Birthday", "€18", "per child", "Weekday journeys for younger crews — short, loud, and finished before bedtime.",
-      ["Kids burger, fries, drink, mini dessert", "Two hours in the play zone", "Three sticker stamps per child", "Goodie bag at the gate", "Minimum 8 children"], CREAM, INK, "Children at a birthday table with passports"],
+      ["Kids burger, fries, drink, mini dessert", "Two hours in the play zone", "Three sticker stamps per child", "Goodie bag at the gate", "Minimum 8 children"], CREAM, INK, "Children at a birthday table with passports", "images/events/pkg-little-explorer.jpg"],
     ["World Explorer Birthday", "€22", "per child", "The weekend version: full country combo for the birthday child and a crew host running the games.",
-      ["Full country combo for the birthday child", "Crew host and destination games", "Zone dressed for the chosen country", "Name on the departures board", "Minimum 10 children"], YEL, INK, "Crew host running games at a kids party"],
+      ["Full country combo for the birthday child", "Crew host and destination games", "Zone dressed for the chosen country", "Name on the departures board", "Minimum 10 children"], YEL, INK, "Crew host running games at a kids party", "images/events/pkg-world-explorer.jpg"],
     ["Family Reunion", "€29", "per guest", "One route, one long table, three generations and a shared Family Passport.",
-      ["Signature plate per guest, any destination", "Shared mezze landing on arrival", "Family Passport with pooled stamps", "Printed boarding passes per seat", "Minimum 10 guests"], RED, "#fff", "Multi-generation family at a long dressed table"],
+      ["Signature plate per guest, any destination", "Shared mezze landing on arrival", "Family Passport with pooled stamps", "Printed boarding passes per seat", "Minimum 10 guests"], RED, "#fff", "Multi-generation family at a long dressed table", "images/events/pkg-family-reunion.jpg"],
     ["School Journey", "€14", "per pupil", "A guided lesson disguised as lunch — geography, language and food of one country.",
-      ["Destination guide leads the session", "Country booklet per pupil", "Junior combo and one stamp", "Teacher table included free", "Weekday mornings, min. 15 pupils"], BLU, "#fff", "School group with route booklets at the tables"],
+      ["Destination guide leads the session", "Country booklet per pupil", "Junior combo and one stamp", "Teacher table included free", "Weekday mornings, min. 15 pupils"], BLU, "#fff", "School group with route booklets at the tables", "images/events/pkg-school-journey.jpg"],
     ["Team Departure", "€34", "per guest", "Company dinners that aren't another set menu — a route, a host and something to talk about.",
-      ["Private zone for up to 40", "Three-destination tasting flight", "Route host and soundtrack", "Explorer Passport per guest", "Evenings, min. 12 guests"], "#e7e3dc", INK, "Company group dinner in a dressed private zone"]
+      ["Private zone for up to 40", "Three-destination tasting flight", "Route host and soundtrack", "Explorer Passport per guest", "Evenings, min. 12 guests"], "#e7e3dc", INK, "Company group dinner in a dressed private zone", "images/events/pkg-team-departure.jpg"]
   ].map(function (p, i) {
     return {
       name: p[0], price: p[1], line: p[3], bg: p[5], fg: p[6],
       kicker: p[2].toUpperCase(), includes: p[4],
-      slotId: "ev-pkg-" + i, slot: p[7], delay: String(i * 70)
+      slotId: "ev-pkg-" + i, slot: p[7], img: p[8], delay: String(i * 70)
     };
   });
 
@@ -195,12 +195,12 @@
   ].map(function (t, i) { return { time: t[0], title: t[1], line: t[2], delay: String(i * 60) }; });
 
   var PROPS = [
-    ["INVITATION PASS", "2%", "2%", "210px", CREAM, INK, "-5deg", "11s", "0s", "118px", "Printed boarding-pass invitation with guest name", "14px 14px 0 rgba(27,26,25,.3)"],
+    ["INVITATION PASS", "2%", "2%", "210px", CREAM, INK, "-5deg", "11s", "0s", "118px", "Printed boarding-pass invitation with guest name", "14px 14px 0 rgba(27,26,25,.3)", "images/events/prop-invitation-pass.jpg"],
     ["ZONE DRESSING", "48%", "16%", "204px", "#fff", INK, "4deg", "13s", ".6s", "128px", "Zone dressed in the destination's colours", "-12px 14px 0 rgba(27,26,25,.28)"],
     ["GROUP STAMP SHEET", "6%", "50%", "196px", RED, "#fff", "6deg", "10s", ".3s", "112px", "Sheet of stamps for the whole group", "12px 12px 0 rgba(27,26,25,.3)"],
     ["CAKE ARRIVAL", "50%", "64%", "192px", INK, CREAM, "-7deg", "12s", "1s", "104px", "Destination cake arriving at the table", "-12px 12px 0 rgba(27,26,25,.28)"]
   ].map(function (p, i) {
-    return { label: p[0], x: p[1], y: p[2], w: p[3], bg: p[4], fg: p[5], r: p[6], dur: p[7], delay: p[8], h: p[9], note: p[10], shadow: p[11], slotId: "ev-prop-" + i };
+    return { label: p[0], x: p[1], y: p[2], w: p[3], bg: p[4], fg: p[5], r: p[6], dur: p[7], delay: p[8], h: p[9], note: p[10], shadow: p[11], img: p[12], slotId: "ev-prop-" + i };
   });
 
   var FIELD_IDS = {
@@ -238,7 +238,9 @@
     document.getElementById("ev-packages").innerHTML = PACKAGES.map(function (p) {
       return '<div data-rv="up" data-rv-d="' + p.delay + '" style="border-right:2px solid #1b1a19;border-bottom:2px solid #1b1a19;background:' + p.bg + ';color:' + p.fg + ';display:flex;flex-direction:column">'
         + '<div style="position:relative;height:190px;border-bottom:2px solid #1b1a19">'
-        + '<div class="pp-placeholder" id="' + p.slotId + '" style="position:absolute;inset:0"><span>' + esc(p.slot) + '</span></div>'
+        + (p.img
+          ? '<img id="' + p.slotId + '" src="' + p.img + '" alt="' + esc(p.slot) + '" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">'
+          : '<div class="pp-placeholder" id="' + p.slotId + '" style="position:absolute;inset:0"><span>' + esc(p.slot) + '</span></div>')
         + '<span style="position:absolute;left:0;top:0;padding:7px 10px;background:#1b1a19;color:#f7f3ec;font:800 9.5px/1 \'Archivo\',sans-serif;letter-spacing:.16em;pointer-events:none">' + esc(p.kicker) + '</span></div>'
         + '<div style="padding:22px 20px 24px;display:flex;flex-direction:column;gap:13px;flex:1">'
         + '<div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px">'
@@ -276,7 +278,9 @@
       return '<div style="position:absolute;left:' + p.x + ';top:' + p.y + ';width:' + p.w + ';background:' + p.bg + ';color:' + p.fg + ';border:2px solid #1b1a19;box-shadow:' + p.shadow + ';transform:rotate(' + p.r + ');--r:' + p.r + ';animation:ppDrift ' + p.dur + ' ease-in-out ' + p.delay + ' infinite;padding:12px">'
         + '<div style="font:800 10px/1 \'Archivo\',sans-serif;letter-spacing:.16em;text-transform:uppercase;margin-bottom:9px">' + p.label + '</div>'
         + '<div style="position:relative;height:' + p.h + '">'
-        + '<div class="pp-placeholder" id="' + p.slotId + '" style="position:absolute;inset:0"><span>' + esc(p.note) + '</span></div>'
+        + (p.img
+          ? '<img id="' + p.slotId + '" src="' + p.img + '" alt="' + esc(p.note) + '" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">'
+          : '<div class="pp-placeholder" id="' + p.slotId + '" style="position:absolute;inset:0"><span>' + esc(p.note) + '</span></div>')
         + '</div></div>';
     }).join("");
   }
