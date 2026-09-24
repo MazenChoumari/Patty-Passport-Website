@@ -354,15 +354,27 @@
   };
   state.posView = "price";
 
-  // The "complete brand variant" marker: centred Patty Tooty mascot, a
-  // visible "21" stamp, yellow marker treatment, and a black terminal-grid
-  // motif behind it — distinct enough from the plain competitor dots
-  // below not to be mistaken for one, and never the bare/side-facing
-  // mascot glyph on its own.
+  // The positioning-map marker: the site's own logo mark (the exact same
+  // block-built passport icon js/nav.js draws at 44px in the header,
+  // "21" badge included) on a yellow terminal-grid backdrop — the real
+  // brand mark, not the Patty Tooty mascot, which is the chat/support
+  // character rather than the logo.
   function pattyPassportMarker(size) {
-    var s = size || 52;
+    var s = size || 52, logoSize = Math.round(s * 0.72), k = logoSize / 44;
+    function px(n) { return (n * k).toFixed(1) + "px"; }
+    var logo = '<span style="position:relative;width:' + px(44) + ';height:' + px(44) + ';flex:none;background:#1b1a19;display:block">'
+      + '<span style="position:absolute;left:' + px(4) + ';top:' + px(4) + ';right:' + px(4) + ';bottom:' + px(4) + ';border:' + px(2) + ' solid #f7f3ec;display:block"></span>'
+      + '<span style="position:absolute;left:' + px(9) + ';top:' + px(9) + ';width:' + px(26) + ';height:' + px(8) + ';background:#f2b30c;display:block"></span>'
+      + '<span style="position:absolute;left:' + px(13) + ';top:' + px(11) + ';width:' + px(3) + ';height:' + px(3) + ';background:#1b1a19;display:block"></span>'
+      + '<span style="position:absolute;left:' + px(20) + ';top:' + px(11) + ';width:' + px(3) + ';height:' + px(3) + ';background:#1b1a19;display:block"></span>'
+      + '<span style="position:absolute;left:' + px(27) + ';top:' + px(11) + ';width:' + px(3) + ';height:' + px(3) + ';background:#1b1a19;display:block"></span>'
+      + '<span style="position:absolute;left:' + px(9) + ';top:' + px(19) + ';width:' + px(26) + ';height:' + px(3) + ';background:#f7f3ec;display:block"></span>'
+      + '<span style="position:absolute;left:' + px(9) + ';top:' + px(23) + ';width:' + px(26) + ';height:' + px(6) + ';background:#ec3013;display:block"></span>'
+      + '<span style="position:absolute;left:' + px(9) + ';top:' + px(30) + ';width:' + px(26) + ';height:' + px(6) + ';background:#f2b30c;display:block"></span>'
+      + '<span style="position:absolute;right:' + px(-7) + ';bottom:' + px(-7) + ';width:' + px(20) + ';height:' + px(20) + ';border:' + px(2) + ' solid #ec3013;background:#f7f3ec;display:flex;align-items:center;justify-content:center;font:800 ' + px(8) + '/1 \'Archivo\',sans-serif;color:#ec3013;transform:rotate(-12deg)">21</span>'
+      + '</span>';
     return '<span style="position:relative;width:' + s + 'px;height:' + s + 'px;flex:none;display:flex;align-items:center;justify-content:center;background:#f2b30c;border:2px solid #1b1a19;background-image:repeating-linear-gradient(0deg,rgba(27,26,25,.18) 0 1px,transparent 1px 9px),repeating-linear-gradient(90deg,rgba(27,26,25,.18) 0 1px,transparent 1px 9px)">'
-      + (window.PP_TOOTY_ICON_STAMPED ? window.PP_TOOTY_ICON_STAMPED(Math.round(s * 0.6), "#1b1a19", "#ec3013", "#1b1a19", "#f2b30c") : "")
+      + logo
       + '</span>';
   }
 
@@ -684,20 +696,29 @@
     }
     var outputsEl = document.getElementById("inv-roi-outputs");
     if (outputsEl) {
-      var outs = [
+      // Override the container's original single-grid styling (from the
+      // static HTML shell) now that it holds two separately-labeled rows
+      // stacked vertically instead of one flat grid of mixed figures.
+      outputsEl.style.display = "block";
+      var roiRow = [
         [(v.roiLow * 100).toFixed(1) + "%", "ROI at high investment", CREAM],
         [(v.roiMid * 100).toFixed(1) + "%", "ROI at mid investment", YEL],
-        [(v.roiHigh * 100).toFixed(1) + "%", "ROI at low investment", "#e7e3dc"],
-        [v.paybackHigh.toFixed(1) + " yrs", "Payback at high investment", "rgba(247,243,236,.08)"],
-        [v.paybackMid.toFixed(1) + " yrs", "Payback at mid investment", "rgba(247,243,236,.08)"],
-        [v.paybackLow.toFixed(1) + " yrs", "Payback at low investment", "rgba(247,243,236,.08)"]
+        [(v.roiHigh * 100).toFixed(1) + "%", "ROI at low investment", "#e7e3dc"]
       ];
-      outputsEl.innerHTML = outs.map(function (o, i) {
-        var dark = o[2].indexOf("rgba") === 0;
+      var paybackRow = [
+        [v.paybackHigh.toFixed(1) + " yrs", "Payback at high investment"],
+        [v.paybackMid.toFixed(1) + " yrs", "Payback at mid investment"],
+        [v.paybackLow.toFixed(1) + " yrs", "Payback at low investment"]
+      ];
+      function outCard(o, dark) {
         return '<div style="border:2px solid rgba(247,243,236,.3);padding:14px 14px 16px;background:' + o[2] + ';color:' + (dark ? "#f7f3ec" : INK) + ';display:flex;flex-direction:column;gap:6px">'
           + '<span style="font:800 clamp(18px,2vw,24px)/1 \'Archivo\',sans-serif;letter-spacing:-.02em">' + o[0] + '</span>'
           + '<span style="font:600 9.5px/1.3 \'Archivo\',sans-serif;letter-spacing:.06em;' + (dark ? "opacity:.75" : "opacity:.7") + '">' + o[1] + '</span></div>';
-      }).join("");
+      }
+      outputsEl.innerHTML = '<span style="display:block;font:600 8.5px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#7d7979;margin-bottom:8px">Return on investment</span>'
+        + '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0;margin-bottom:18px">' + roiRow.map(function (o) { return outCard(o, false); }).join("") + '</div>'
+        + '<span style="display:block;font:600 8.5px/1 \'Archivo\',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#7d7979;margin-bottom:8px">Payback period</span>'
+        + '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0">' + paybackRow.map(function (o) { return outCard([o[0], o[1], "rgba(247,243,236,.08)"], true); }).join("") + '</div>';
     }
     var irrEl = document.getElementById("inv-roi-irr-note");
     if (irrEl) {
