@@ -178,7 +178,7 @@
     var dishSlot = document.getElementById("dp-dish-slot");
     if (DISH_CODES[d.code]) {
       dishSlot.className = "";
-      dishSlot.innerHTML = '<img src="images/destinations/' + d.code + '_dish.jpg" alt="' + esc(dishNote) + '" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">';
+      dishSlot.innerHTML = '<img src="images/destinations/' + d.code + '_dish.jpg" alt="' + esc(dishNote) + '" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 78%">';
     } else {
       dishSlot.className = "pp-placeholder";
       dishSlot.innerHTML = '<span>' + esc(dishNote) + '</span>';
